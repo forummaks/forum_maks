@@ -9,7 +9,7 @@ CREATE TABLE phpbb_attach_quota (
   quota_type smallint(2) NOT NULL default '0',
   quota_limit_id mediumint(8) unsigned NOT NULL default '0',
   KEY quota_type (quota_type)
-) TYPE=MyISAM;
+) ENGINE=MyISAM DEFAULT CHARSET=utf8;
 
 # --------------------------------------------------------
 #
@@ -26,7 +26,7 @@ CREATE TABLE phpbb_attachments (
   KEY attach_id_privmsgs_id (attach_id,privmsgs_id),
   KEY post_id (post_id),
   KEY privmsgs_id (privmsgs_id)
-) TYPE=MyISAM;
+) ENGINE=MyISAM DEFAULT CHARSET=utf8;
 
 # --------------------------------------------------------
 #
@@ -37,7 +37,7 @@ CREATE TABLE phpbb_attachments_config (
   config_name varchar(255) NOT NULL default '',
   config_value varchar(255) NOT NULL default '',
   PRIMARY KEY  (config_name)
-) TYPE=MyISAM;
+) ENGINE=MyISAM DEFAULT CHARSET=utf8;
 
 # --------------------------------------------------------
 #
@@ -60,7 +60,7 @@ CREATE TABLE phpbb_attachments_desc (
   KEY filetime (filetime),
   KEY physical_filename (physical_filename(10)),
   KEY filesize (filesize)
-) TYPE=MyISAM;
+) ENGINE=MyISAM DEFAULT CHARSET=utf8;
 
 # --------------------------------------------------------
 #
@@ -85,7 +85,7 @@ CREATE TABLE phpbb_auth_access (
   auth_download tinyint(1) NOT NULL default '0',
   KEY group_id (group_id),
   KEY forum_id (forum_id)
-) TYPE=MyISAM;
+) ENGINE=MyISAM DEFAULT CHARSET=utf8;
 
 # --------------------------------------------------------
 #
@@ -99,7 +99,7 @@ CREATE TABLE phpbb_banlist (
   ban_email varchar(255) default NULL,
   PRIMARY KEY  (ban_id),
   KEY ban_ip_user_id (ban_ip,ban_userid)
-) TYPE=MyISAM;
+) ENGINE=MyISAM DEFAULT CHARSET=utf8;
 
 # --------------------------------------------------------
 #
@@ -110,7 +110,7 @@ CREATE TABLE phpbb_bt_config (
   config_name varchar(255) NOT NULL default '',
   config_value varchar(255) NOT NULL default '',
   PRIMARY KEY  (config_name)
-) TYPE=MyISAM;
+) ENGINE=MyISAM DEFAULT CHARSET=utf8;
 
 # --------------------------------------------------------
 #
@@ -124,7 +124,7 @@ CREATE TABLE phpbb_bt_search_results (
   search_array text NOT NULL,
   search_settings text NOT NULL,
   PRIMARY KEY  (session_id)
-) TYPE=MyISAM;
+) ENGINE=MyISAM DEFAULT CHARSET=utf8;
 
 # --------------------------------------------------------
 #
@@ -138,7 +138,7 @@ CREATE TABLE phpbb_bt_tor_dl_stat (
   t_up_total bigint(20) unsigned NOT NULL default '0',
   t_down_total bigint(20) unsigned NOT NULL default '0',
   PRIMARY KEY  (torrent_id,user_id)
-) TYPE=MyISAM;
+) ENGINE=MyISAM DEFAULT CHARSET=utf8;
 
 # --------------------------------------------------------
 #
@@ -169,7 +169,7 @@ CREATE TABLE phpbb_bt_torrents (
   UNIQUE KEY topic_id (topic_id),
   UNIQUE KEY attach_id (attach_id),
   KEY reg_time (reg_time)
-) TYPE=MyISAM;
+) ENGINE=MyISAM DEFAULT CHARSET=utf8;
 
 # --------------------------------------------------------
 #
@@ -196,7 +196,7 @@ CREATE TABLE phpbb_bt_tracker (
   expire_time int(11) NOT NULL default '0',
   KEY torrent_id (torrent_id),
   KEY user_id (user_id)
-) TYPE=MyISAM;
+) ENGINE=MyISAM DEFAULT CHARSET=utf8;
 
 # --------------------------------------------------------
 #
@@ -211,7 +211,7 @@ CREATE TABLE phpbb_bt_users (
   u_down_total bigint(20) unsigned NOT NULL default '0',
   PRIMARY KEY  (user_id),
   UNIQUE KEY auth_key (auth_key)
-) TYPE=MyISAM;
+) ENGINE=MyISAM DEFAULT CHARSET=utf8;
 
 # --------------------------------------------------------
 #
@@ -226,7 +226,7 @@ CREATE TABLE phpbb_bt_users_dl_status (
   update_time int(11) NOT NULL default '0',
   PRIMARY KEY  (topic_id,user_id),
   KEY user_id (user_id)
-) TYPE=MyISAM;
+) ENGINE=MyISAM DEFAULT CHARSET=utf8;
 
 # --------------------------------------------------------
 #
@@ -239,7 +239,7 @@ CREATE TABLE phpbb_categories (
   cat_order mediumint(8) unsigned NOT NULL default '0',
   PRIMARY KEY  (cat_id),
   KEY cat_order (cat_order)
-) TYPE=MyISAM;
+) ENGINE=MyISAM DEFAULT CHARSET=utf8;
 
 # --------------------------------------------------------
 #
@@ -250,7 +250,7 @@ CREATE TABLE phpbb_config (
   config_name varchar(255) NOT NULL default '',
   config_value varchar(255) NOT NULL default '',
   PRIMARY KEY  (config_name)
-) TYPE=MyISAM;
+) ENGINE=MyISAM DEFAULT CHARSET=utf8;
 
 # --------------------------------------------------------
 #
@@ -262,7 +262,7 @@ CREATE TABLE phpbb_confirm (
   session_id char(32) NOT NULL default '',
   code char(6) NOT NULL default '',
   PRIMARY KEY  (session_id,confirm_id)
-) TYPE=MyISAM;
+) ENGINE=MyISAM DEFAULT CHARSET=utf8;
 
 # --------------------------------------------------------
 #
@@ -273,7 +273,7 @@ CREATE TABLE phpbb_disallow (
   disallow_id mediumint(8) unsigned NOT NULL auto_increment,
   disallow_username varchar(25) NOT NULL default '',
   PRIMARY KEY  (disallow_id)
-) TYPE=MyISAM;
+) ENGINE=MyISAM DEFAULT CHARSET=utf8;
 
 # --------------------------------------------------------
 #
@@ -290,7 +290,7 @@ CREATE TABLE phpbb_extension_groups (
   max_filesize int(20) NOT NULL default '0',
   forum_permissions varchar(255) NOT NULL default '',
   PRIMARY KEY  (group_id)
-) TYPE=MyISAM;
+) ENGINE=MyISAM DEFAULT CHARSET=utf8;
 
 # --------------------------------------------------------
 #
@@ -303,7 +303,7 @@ CREATE TABLE phpbb_extensions (
   extension varchar(100) NOT NULL default '',
   `comment` varchar(100) default NULL,
   PRIMARY KEY  (ext_id)
-) TYPE=MyISAM;
+) ENGINE=MyISAM DEFAULT CHARSET=utf8;
 
 # --------------------------------------------------------
 #
@@ -315,7 +315,7 @@ CREATE TABLE phpbb_flags (
   flag_name varchar(25) default '',
   flag_image varchar(25) default '',
   PRIMARY KEY  (flag_id)
-) TYPE=MyISAM;
+) ENGINE=MyISAM DEFAULT CHARSET=utf8;
 
 # --------------------------------------------------------
 #
@@ -326,7 +326,7 @@ CREATE TABLE phpbb_forbidden_extensions (
   ext_id mediumint(8) unsigned NOT NULL auto_increment,
   extension varchar(100) NOT NULL default '',
   PRIMARY KEY  (ext_id)
-) TYPE=MyISAM;
+) ENGINE=MyISAM DEFAULT CHARSET=utf8;
 
 # --------------------------------------------------------
 #
@@ -340,7 +340,7 @@ CREATE TABLE phpbb_forum_prune (
   prune_freq smallint(5) unsigned NOT NULL default '0',
   PRIMARY KEY  (prune_id),
   KEY forum_id (forum_id)
-) TYPE=MyISAM;
+) ENGINE=MyISAM DEFAULT CHARSET=utf8;
 
 # --------------------------------------------------------
 #
@@ -388,7 +388,7 @@ CREATE TABLE phpbb_forums (
   KEY forums_order (forum_order),
   KEY cat_id (cat_id),
   KEY forum_last_post_id (forum_last_post_id)
-) TYPE=MyISAM;
+) ENGINE=MyISAM DEFAULT CHARSET=utf8;
 
 # --------------------------------------------------------
 #
@@ -404,7 +404,7 @@ CREATE TABLE phpbb_groups (
   group_single_user tinyint(1) NOT NULL default '1',
   PRIMARY KEY  (group_id),
   KEY group_single_user (group_single_user)
-) TYPE=MyISAM;
+) ENGINE=MyISAM DEFAULT CHARSET=utf8;
 
 # --------------------------------------------------------
 #
@@ -431,7 +431,7 @@ CREATE TABLE phpbb_posts (
   KEY topic_id (topic_id),
   KEY poster_id (poster_id),
   KEY post_time (post_time)
-) TYPE=MyISAM;
+) ENGINE=MyISAM DEFAULT CHARSET=utf8;
 
 # --------------------------------------------------------
 #
@@ -444,7 +444,7 @@ CREATE TABLE phpbb_posts_text (
   post_subject varchar(120) default NULL,
   post_text text,
   PRIMARY KEY  (post_id)
-) TYPE=MyISAM;
+) ENGINE=MyISAM DEFAULT CHARSET=utf8;
 
 # --------------------------------------------------------
 #
@@ -467,7 +467,7 @@ CREATE TABLE phpbb_privmsgs (
   PRIMARY KEY  (privmsgs_id),
   KEY privmsgs_from_userid (privmsgs_from_userid),
   KEY privmsgs_to_userid (privmsgs_to_userid)
-) TYPE=MyISAM;
+) ENGINE=MyISAM DEFAULT CHARSET=utf8;
 
 # --------------------------------------------------------
 #
@@ -479,7 +479,7 @@ CREATE TABLE phpbb_privmsgs_text (
   privmsgs_bbcode_uid varchar(10) NOT NULL default '0',
   privmsgs_text text,
   PRIMARY KEY  (privmsgs_text_id)
-) TYPE=MyISAM;
+) ENGINE=MyISAM DEFAULT CHARSET=utf8;
 
 # --------------------------------------------------------
 #
@@ -491,7 +491,7 @@ CREATE TABLE phpbb_quota_limits (
   quota_desc varchar(20) NOT NULL default '',
   quota_limit bigint(20) unsigned NOT NULL default '0',
   PRIMARY KEY  (quota_limit_id)
-) TYPE=MyISAM;
+) ENGINE=MyISAM DEFAULT CHARSET=utf8;
 
 # --------------------------------------------------------
 #
@@ -505,7 +505,7 @@ CREATE TABLE phpbb_ranks (
   rank_special tinyint(1) default '0',
   rank_image varchar(255) default NULL,
   PRIMARY KEY  (rank_id)
-) TYPE=MyISAM;
+) ENGINE=MyISAM DEFAULT CHARSET=utf8;
 
 # --------------------------------------------------------
 #
@@ -518,7 +518,7 @@ CREATE TABLE phpbb_search_results (
   search_array text NOT NULL,
   PRIMARY KEY  (search_id),
   KEY session_id (session_id)
-) TYPE=MyISAM;
+) ENGINE=MyISAM DEFAULT CHARSET=utf8;
 
 # --------------------------------------------------------
 #
@@ -531,7 +531,7 @@ CREATE TABLE phpbb_search_wordlist (
   word_common tinyint(1) unsigned NOT NULL default '0',
   PRIMARY KEY  (word_text),
   KEY word_id (word_id)
-) TYPE=MyISAM;
+) ENGINE=MyISAM DEFAULT CHARSET=utf8;
 
 # --------------------------------------------------------
 #
@@ -544,7 +544,7 @@ CREATE TABLE phpbb_search_wordmatch (
   title_match tinyint(1) NOT NULL default '0',
   KEY post_id (post_id),
   KEY word_id (word_id)
-) TYPE=MyISAM;
+) ENGINE=MyISAM DEFAULT CHARSET=utf8;
 
 # --------------------------------------------------------
 #
@@ -563,7 +563,7 @@ CREATE TABLE phpbb_sessions (
   PRIMARY KEY  (session_id),
   KEY session_user_id (session_user_id),
   KEY session_id_ip_user_id (session_id,session_ip,session_user_id)
-) TYPE=MyISAM;
+) ENGINE=MyISAM DEFAULT CHARSET=utf8;
 
 # --------------------------------------------------------
 #
@@ -576,7 +576,7 @@ CREATE TABLE phpbb_smilies (
   smile_url varchar(100) default NULL,
   emoticon varchar(75) default NULL,
   PRIMARY KEY  (smilies_id)
-) TYPE=MyISAM;
+) ENGINE=MyISAM DEFAULT CHARSET=utf8;
 
 # --------------------------------------------------------
 #
@@ -628,7 +628,7 @@ CREATE TABLE phpbb_themes (
   img_size_poll smallint(5) unsigned default NULL,
   img_size_privmsg smallint(5) unsigned default NULL,
   PRIMARY KEY  (themes_id)
-) TYPE=MyISAM;
+) ENGINE=MyISAM DEFAULT CHARSET=utf8;
 
 # --------------------------------------------------------
 #
@@ -668,7 +668,7 @@ CREATE TABLE phpbb_themes_name (
   span_class2_name char(50) default NULL,
   span_class3_name char(50) default NULL,
   PRIMARY KEY  (themes_id)
-) TYPE=MyISAM;
+) ENGINE=MyISAM DEFAULT CHARSET=utf8;
 
 # --------------------------------------------------------
 #
@@ -698,7 +698,7 @@ CREATE TABLE phpbb_topics (
   KEY topic_status (topic_status),
   KEY topic_type (topic_type),
   FULLTEXT KEY topic_title (topic_title)
-) TYPE=MyISAM;
+) ENGINE=MyISAM DEFAULT CHARSET=utf8;
 
 # --------------------------------------------------------
 #
@@ -716,7 +716,7 @@ CREATE TABLE phpbb_topics_move (
   recycle_move_fid smallint(5) unsigned NOT NULL default '0',
   PRIMARY KEY  (id),
   KEY forum_id (forum_id)
-) TYPE=MyISAM;
+) ENGINE=MyISAM DEFAULT CHARSET=utf8;
 
 # --------------------------------------------------------
 #
@@ -730,7 +730,7 @@ CREATE TABLE phpbb_topics_watch (
   KEY topic_id (topic_id),
   KEY user_id (user_id),
   KEY notify_status (notify_status)
-) TYPE=MyISAM;
+) ENGINE=MyISAM DEFAULT CHARSET=utf8;
 
 # --------------------------------------------------------
 #
@@ -743,7 +743,7 @@ CREATE TABLE phpbb_user_group (
   user_pending tinyint(1) default NULL,
   KEY group_id (group_id),
   KEY user_id (user_id)
-) TYPE=MyISAM;
+) ENGINE=MyISAM DEFAULT CHARSET=utf8;
 
 # --------------------------------------------------------
 #
@@ -801,7 +801,7 @@ CREATE TABLE phpbb_users (
   user_from_flag varchar(25) default NULL,
   PRIMARY KEY  (user_id),
   KEY user_session_time (user_session_time)
-) TYPE=MyISAM;
+) ENGINE=MyISAM DEFAULT CHARSET=utf8;
 
 # --------------------------------------------------------
 #
@@ -816,7 +816,7 @@ CREATE TABLE phpbb_vote_desc (
   vote_length int(11) NOT NULL default '0',
   PRIMARY KEY  (vote_id),
   KEY topic_id (topic_id)
-) TYPE=MyISAM;
+) ENGINE=MyISAM DEFAULT CHARSET=utf8;
 
 # --------------------------------------------------------
 #
@@ -830,7 +830,7 @@ CREATE TABLE phpbb_vote_results (
   vote_result int(11) NOT NULL default '0',
   KEY vote_option_id (vote_option_id),
   KEY vote_id (vote_id)
-) TYPE=MyISAM;
+) ENGINE=MyISAM DEFAULT CHARSET=utf8;
 
 # --------------------------------------------------------
 #
@@ -844,7 +844,7 @@ CREATE TABLE phpbb_vote_voters (
   KEY vote_id (vote_id),
   KEY vote_user_id (vote_user_id),
   KEY vote_user_ip (vote_user_ip)
-) TYPE=MyISAM;
+) ENGINE=MyISAM DEFAULT CHARSET=utf8;
 
 # --------------------------------------------------------
 #
@@ -856,9 +856,9 @@ CREATE TABLE phpbb_words (
   word char(100) NOT NULL default '',
   replacement char(100) NOT NULL default '',
   PRIMARY KEY  (word_id)
-) TYPE=MyISAM;
+) ENGINE=MyISAM DEFAULT CHARSET=utf8;
 
 # --------------------------------------------------------
 #
 
-ALTER TABLE phpbb_bt_tracker TYPE = HEAP;
+ALTER TABLE phpbb_bt_tracker ENGINE=MyISAM DEFAULT CHARSET=utf8;
