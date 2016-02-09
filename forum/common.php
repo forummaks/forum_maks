@@ -161,12 +161,7 @@ if( !get_magic_quotes_gpc() )
 // malicious rewriting of language and otherarray values via
 // URI params
 //
-$board_config = array();
-$userdata = array();
-$theme = array();
-$images = array();
-$lang = array();
-$nav_links = array();
+$board_config = $userdata = $theme = $images = $lang = $nav_links = array();
 $gen_simple_header = FALSE;
 
 include($phpbb_root_path . 'config.'.$phpEx);
