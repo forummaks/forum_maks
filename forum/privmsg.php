@@ -1,25 +1,4 @@
 <?php
-/***************************************************************************
- *                               privmsgs.php
- *                            -------------------
- *   begin                : Saturday, Jun 9, 2001
- *   copyright            : (C) 2001 The phpBB Group
- *   email                : support@phpbb.com
- *
- *   $Id: privmsg.php,v 1.96.2.40 2005/07/19 20:01:19 acydburn Exp $
- *
- *
- ***************************************************************************/
-
-/***************************************************************************
- *
- *   This program is free software; you can redistribute it and/or modify
- *   it under the terms of the GNU General Public License as published by
- *   the Free Software Foundation; either version 2 of the License, or
- *   (at your option) any later version.
- *
- ***************************************************************************/
-
 define('IN_PHPBB', true);
 //sv
 define('IN_PM', TRUE);

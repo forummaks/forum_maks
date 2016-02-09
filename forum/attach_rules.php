@@ -1,25 +1,4 @@
 <?php
-/***************************************************************************
- *								attach_rules.php
- *                            -------------------
- *   begin                : Monday, Apr 1, 2002
- *   copyright            : (C) 2002 Meik Sievertsen
- *   email                : acyd.burn@gmx.de
- *
- *   $Id: attach_rules.php,v 1.6 2004/10/31 16:46:59 acydburn Exp $
- *
- *
- ***************************************************************************/
-
-/***************************************************************************
- *
- *   This program is free software; you can redistribute it and/or modify
- *   it under the terms of the GNU General Public License as published by
- *   the Free Software Foundation; either version 2 of the License, or
- *   (at your option) any later version.
- *
- ***************************************************************************/
-
 if ( defined('IN_PHPBB') )
 {
 	die('Hacking attempt');
