@@ -24,19 +24,19 @@
 //
 
 // Auth Related Entries
-$lang['Rules_attach_can'] = 'Вы <b>можете</b> прикреплять файлы к сообщениям';
-$lang['Rules_attach_cannot'] = 'Вы <b>не можете</b> прикреплять файлы к сообщениям';
-$lang['Rules_download_can'] = ' Вы <b>можете</b> скачивать файлы';
-$lang['Rules_download_cannot'] = 'Вы <b>не можете</b> скачивать файлы';
+$lang['Rules_attach_can'] = 'Р’С‹ <b>РјРѕР¶РµС‚Рµ</b> РїСЂРёРєСЂРµРїР»СЏС‚СЊ С„Р°Р№Р»С‹ Рє СЃРѕРѕР±С‰РµРЅРёСЏРј';
+$lang['Rules_attach_cannot'] = 'Р’С‹ <b>РЅРµ РјРѕР¶РµС‚Рµ</b> РїСЂРёРєСЂРµРїР»СЏС‚СЊ С„Р°Р№Р»С‹ Рє СЃРѕРѕР±С‰РµРЅРёСЏРј';
+$lang['Rules_download_can'] = ' Р’С‹ <b>РјРѕР¶РµС‚Рµ</b> СЃРєР°С‡РёРІР°С‚СЊ С„Р°Р№Р»С‹';
+$lang['Rules_download_cannot'] = 'Р’С‹ <b>РЅРµ РјРѕР¶РµС‚Рµ</b> СЃРєР°С‡РёРІР°С‚СЊ С„Р°Р№Р»С‹';
 $lang['Sorry_auth_view_attach'] = 'Sorry but you are not authorized to view or download this Attachment';
 
 // Viewtopic -> Display of Attachments
-$lang['Description'] = 'Описание'; // used in Administration Panel too...
-$lang['Downloaded'] = 'Скачан';
-$lang['Download'] = 'Скачать'; // this Language Variable is defined in lang_admin.php too, but we are unable to access it from the main Language File
-$lang['Filesize'] = 'Размер';
+$lang['Description'] = 'РћРїРёСЃР°РЅРёРµ'; // used in Administration Panel too...
+$lang['Downloaded'] = 'РЎРєР°С‡Р°РЅ';
+$lang['Download'] = 'РЎРєР°С‡Р°С‚СЊ'; // this Language Variable is defined in lang_admin.php too, but we are unable to access it from the main Language File
+$lang['Filesize'] = 'Р Р°Р·РјРµСЂ';
 $lang['Viewed'] = 'Viewed';
-$lang['Download_number'] = '%d раз(а)'; // replace %d with count
+$lang['Download_number'] = '%d СЂР°Р·(Р°)'; // replace %d with count
 $lang['Extension_disabled_after_posting'] = 'The Extension \'%s\' was deactivated by an board admin, therefore this Attachment is not displayed.'; // used in Posts and PM's, replace %s with mime type
 
 // Posting/PM -> Initial Display
@@ -44,18 +44,18 @@ $lang['Attach_posting_cp'] = 'Attachment Posting Control Panel';
 $lang['Attach_posting_cp_explain'] = 'If you click on Add an Attachment, you will see the box for adding Attachments.<br />If you click on Posted Attachments, you will see a list of already attached Files and you are able to edit them.<br />If you want to Replace (Upload new Version) an Attachment, you have to click both links. Add the Attachment as you normally would do, thereafter don\'t click on Add Attachment, rather click on Upload New Version at the Attachment Entry you intend to update.';
 
 // Posting/PM -> Posting Attachments
-$lang['Add_attachment'] = 'Прикрепить';
-$lang['Add_attachment_title'] = 'Прикрепить файл';
-$lang['Add_attachment_explain'] = 'Если вы не хотите прикреплять файл, оставьте поля пустыми';
-$lang['File_name'] = 'Имя файла';
-$lang['File_comment'] = 'Комментарии';
+$lang['Add_attachment'] = 'РџСЂРёРєСЂРµРїРёС‚СЊ';
+$lang['Add_attachment_title'] = 'РџСЂРёРєСЂРµРїРёС‚СЊ С„Р°Р№Р»';
+$lang['Add_attachment_explain'] = 'Р•СЃР»Рё РІС‹ РЅРµ С…РѕС‚РёС‚Рµ РїСЂРёРєСЂРµРїР»СЏС‚СЊ С„Р°Р№Р», РѕСЃС‚Р°РІСЊС‚Рµ РїРѕР»СЏ РїСѓСЃС‚С‹РјРё';
+$lang['File_name'] = 'РРјСЏ С„Р°Р№Р»Р°';
+$lang['File_comment'] = 'РљРѕРјРјРµРЅС‚Р°СЂРёРё';
 
 // Posting/PM -> Posted Attachments
 $lang['Posted_attachments'] = 'Posted Attachments';
-$lang['Options'] = 'Настройки';
-$lang['Update_comment'] = 'Обновить комментарий';
-$lang['Delete_attachments'] = 'Удалить вложения';
-$lang['Delete_attachment'] = 'Удалить вложение';
+$lang['Options'] = 'РќР°СЃС‚СЂРѕР№РєРё';
+$lang['Update_comment'] = 'РћР±РЅРѕРІРёС‚СЊ РєРѕРјРјРµРЅС‚Р°СЂРёР№';
+$lang['Delete_attachments'] = 'РЈРґР°Р»РёС‚СЊ РІР»РѕР¶РµРЅРёСЏ';
+$lang['Delete_attachment'] = 'РЈРґР°Р»РёС‚СЊ РІР»РѕР¶РµРЅРёРµ';
 $lang['Delete_thumbnail'] = 'Delete Thumbnail';
 $lang['Upload_new_version'] = 'Upload New Version';
 
@@ -110,27 +110,27 @@ $lang['Allowed_extensions_and_sizes'] = 'Allowed Extensions and Sizes';
 $lang['Note_user_empty_group_permissions'] = 'NOTE:<br />You are normally allowed to attach files within this Forum, <br />but since no Extension Group is allowed to be attached here, <br />you are unable to attach anything. If you try, <br />you will receive an Error Message.<br />';
 
 // Quota Variables
-$lang['Upload_quota'] = 'Квота';
+$lang['Upload_quota'] = 'РљРІРѕС‚Р°';
 $lang['Pm_quota'] = 'PM Quota';
 $lang['User_upload_quota_reached'] = 'Sorry, you have reached your maximum Upload Quota Limit of %d %s'; // replace %d with Size, %s with Size Lang (MB for example)
 
 // User Attachment Control Panel
 $lang['User_acp_title'] = 'User ACP';
-$lang['UACP'] = 'Панель управления вложениями пользователя';
-$lang['User_uploaded_profile'] = 'Закачано: %s';
-$lang['User_quota_profile'] = 'Квота: %s';
-$lang['Upload_percent_profile'] = '%d%% от общего';
+$lang['UACP'] = 'РџР°РЅРµР»СЊ СѓРїСЂР°РІР»РµРЅРёСЏ РІР»РѕР¶РµРЅРёСЏРјРё РїРѕР»СЊР·РѕРІР°С‚РµР»СЏ';
+$lang['User_uploaded_profile'] = 'Р—Р°РєР°С‡Р°РЅРѕ: %s';
+$lang['User_quota_profile'] = 'РљРІРѕС‚Р°: %s';
+$lang['Upload_percent_profile'] = '%d%% РѕС‚ РѕР±С‰РµРіРѕ';
 
 // Common Variables
-$lang['Bytes'] = 'Байт';
+$lang['Bytes'] = 'Р‘Р°Р№С‚';
 $lang['KB'] = 'KB';
 $lang['MB'] = 'MB';
-$lang['Attach_search_query'] = 'Поиск вложений';
+$lang['Attach_search_query'] = 'РџРѕРёСЃРє РІР»РѕР¶РµРЅРёР№';
 $lang['Test_settings'] = 'Test Settings';
 $lang['Not_assigned'] = 'Not Assigned';
 $lang['No_file_comment_available'] = 'No File Comment available';
-$lang['Attachbox_limit'] = 'Ваш &laquo;Attachments box&raquo; заполнен на %d%%';
+$lang['Attachbox_limit'] = 'Р’Р°С€ &laquo;Attachments box&raquo; Р·Р°РїРѕР»РЅРµРЅ РЅР° %d%%';
 $lang['No_quota_limit'] = 'No Quota Limit';
-$lang['Unlimited'] = 'Без ограничений';
+$lang['Unlimited'] = 'Р‘РµР· РѕРіСЂР°РЅРёС‡РµРЅРёР№';
 
 ?>
