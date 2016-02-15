@@ -1,31 +1,7 @@
 <?php
-/***************************************************************************
-*                                 prune.php
-*                            -------------------
-*   begin                : Thursday, June 14, 2001
-*   copyright            : (C) 2001 The phpBB Group
-*   email                : support@phpbb.com
-*
-*   $Id: prune.php,v 1.19.2.6 2003/03/18 23:23:57 acydburn Exp $
-*
-*
-***************************************************************************/
+if (!defined('FT_ROOT')) die(basename(__FILE__));
 
-/***************************************************************************
- *
- *   This program is free software; you can redistribute it and/or modify
- *   it under the terms of the GNU General Public License as published by
- *   the Free Software Foundation; either version 2 of the License, or
- *   (at your option) any later version.
- *
- ***************************************************************************/
-
-if ( !defined('IN_PHPBB') )
-{
-   die("Hacking attempt");
-}
-
-require($phpbb_root_path . 'includes/functions_search.'.$phpEx);
+require(FT_ROOT . 'includes/functions_search.php');
 
 function prune($forum_id, $prune_date, $prune_all = false)
 {

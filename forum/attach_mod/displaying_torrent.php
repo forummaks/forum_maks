@@ -1,10 +1,6 @@
 <?php
 
-if (!defined('IN_PHPBB'))
-{
-	die('Hacking attempt');
-	exit;
-}
+if (!defined('FT_ROOT')) die(basename(__FILE__));
 
 global $board_config, $bb_cfg, $forum_topic_data, $poster_id, $is_auth;
 

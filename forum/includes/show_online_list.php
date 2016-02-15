@@ -1,5 +1,7 @@
 <?php
 
+if (!defined('FT_ROOT')) die(basename(__FILE__));
+
 $template->assign_vars(array('SHOW_ONLINE_LIST' => TRUE));
 $user_forum_sql = ( !empty($forum_id) ) ? "AND s.session_page = " . intval($forum_id) : '';
 $sql = "SELECT u.username, u.user_id, u.user_allow_viewonline, u.user_level, s.session_logged_in, s.session_ip

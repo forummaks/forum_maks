@@ -1,8 +1,10 @@
 <?php
 
+if (!defined('FT_ROOT')) die(basename(__FILE__));
+
 function send_pm($user_from_id, $user_to_id, $pm_subject, $pm_message)
 {
-	global $board_config, $lang, $db, $phpbb_root_path, $phpEx;
+	global $board_config, $lang, $db;
 	
 	$sql = "SELECT *
 		FROM " . USERS_TABLE . " 

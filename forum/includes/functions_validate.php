@@ -1,30 +1,7 @@
 <?php
-/***************************************************************************
- *                          functions_validate.php
- *                            -------------------
- *   begin                : Saturday, Feb 13, 2001
- *   copyright            : (C) 2001 The phpBB Group
- *   email                : support@phpbb.com
- *
- *   $Id: functions_validate.php,v 1.6.2.13 2005/07/19 20:01:15 acydburn Exp $
- *
- *
- ***************************************************************************/
 
-/***************************************************************************
- *
- *   This program is free software; you can redistribute it and/or modify
- *   it under the terms of the GNU General Public License as published by
- *   the Free Software Foundation; either version 2 of the License, or
- *   (at your option) any later version.
- *
- ***************************************************************************/
+if (!defined('FT_ROOT')) die(basename(__FILE__));
 
-//
-// Check to see if the username has been taken, or if it is disallowed.
-// Also checks if it includes the " character, which we don't allow in usernames.
-// Used for registering, changing names, and posting anonymously with a username
-//
 function validate_username($username)
 {
 	global $db, $lang, $userdata;

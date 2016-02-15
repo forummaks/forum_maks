@@ -19,10 +19,8 @@ if ($ignore_request && (@$_GET['uploaded'] || @$_GET['downloaded']))
 }
 */
 
-define('IN_PHPBB', TRUE);
-
 require('config.php');
-include('includes/tr_announcer.'. PHP_EXT);
+include('includes/tr_announcer.php');
 
 exit;
 

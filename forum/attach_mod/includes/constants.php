@@ -1,30 +1,5 @@
 <?php
-/***************************************************************************
- *                               constants.php
- *                            -------------------
- *   begin                : Saturday, Mar 30, 2002
- *   copyright            : (C) 2002 Meik Sievertsen
- *   email                : acyd.burn@gmx.de
- *
- *   $Id: constants.php,v 1.30 2005/07/16 14:32:26 acydburn Exp $
- *
- *
- ***************************************************************************/
-
-/***************************************************************************
- *
- *   This program is free software; you can redistribute it and/or modify
- *   it under the terms of the GNU General Public License as published by
- *   the Free Software Foundation; either version 2 of the License', or
- *   ('at your option) any later version.
- *
- ***************************************************************************/
-
-if ( !defined('IN_PHPBB') )
-{
-	die("Hacking attempt");
-	exit;
-}
+if (!defined('FT_ROOT')) die(basename(__FILE__));
 
 // Attachment Debug Mode
 define('ATTACH_DEBUG', 0);		// Attachment Mod Debugging off

@@ -1,34 +1,5 @@
 <?php
-/***************************************************************************
- *                            functions_thumbs.php
- *                            -------------------
- *   begin                : Sat, Jul 27, 2002
- *   copyright            : (C) 2002 Meik Sievertsen
- *   email                : acyd.burn@gmx.de
- *
- *   $Id: functions_thumbs.php,v 1.29 2005/07/16 14:32:27 acydburn Exp $
- *
- *
- ***************************************************************************/
-
-/***************************************************************************
- *
- *   This program is free software; you can redistribute it and/or modify
- *   it under the terms of the GNU General Public License as published by
- *   the Free Software Foundation; either version 2 of the License, or
- *   (at your option) any later version.
- *
- *
- ***************************************************************************/
-
-//
-// All Attachment Functions needed to create Thumbnails
-//
-if ( !defined('IN_PHPBB') )
-{
-	die('Hacking attempt');
-	exit;
-}
+if (!defined('FT_ROOT')) die(basename(__FILE__));
 
 $imagick = '';
 

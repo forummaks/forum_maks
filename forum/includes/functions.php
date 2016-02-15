@@ -1,25 +1,6 @@
 <?php
-/***************************************************************************
- *                               functions.php
- *                            -------------------
- *   begin                : Saturday, Feb 13, 2001
- *   copyright            : (C) 2001 The phpBB Group
- *   email                : support@phpbb.com
- *
- *   $Id: functions.php,v 1.133.2.35 2005/07/19 20:01:11 acydburn Exp $
- *
- *
- ***************************************************************************/
 
-/***************************************************************************
- *
- *   This program is free software; you can redistribute it and/or modify
- *   it under the terms of the GNU General Public License as published by
- *   the Free Software Foundation; either version 2 of the License, or
- *   (at your option) any later version.
- *
- *
- ***************************************************************************/
+if (!defined('FT_ROOT')) die(basename(__FILE__));
 
 function file_put_contents_php4 ($location, $whattowrite)
 {
@@ -425,7 +406,7 @@ function get_userdata($user, $force_str = false)
 //sf - add [, $return_forums_ary = FALSE]
 function make_jumpbox($action, $match_forum_id = 0, $return_forums_ary = FALSE)
 {
-	global $template, $userdata, $lang, $db, $nav_links, $phpEx, $SID;
+	global $template, $userdata, $lang, $db, $nav_links, $SID;
 
 //	$is_auth = auth(AUTH_VIEW, AUTH_LIST_ALL, $userdata);
 
@@ -484,7 +465,7 @@ function make_jumpbox($action, $match_forum_id = 0, $return_forums_ary = FALSE)
 						// 'chapter' and 'forum' can create multiple items, therefore we are using a nested array.
 						//
 						$nav_links['chapter forum'][$forum_rows[$j]['forum_id']] = array (
-							'url' => append_sid("viewforum.$phpEx?" . POST_FORUM_URL . "=" . $forum_rows[$j]['forum_id']),
+							'url' => append_sid("viewforum.php?" . POST_FORUM_URL . "=" . $forum_rows[$j]['forum_id']),
 							//sf
 							'title' => (($forum_rows[$j]['forum_parent']) ? SF_SEL_SPACER : '') . $forum_rows[$j]['forum_name']
 						);
@@ -558,7 +539,7 @@ function make_jumpbox($action, $match_forum_id = 0, $return_forums_ary = FALSE)
 function init_userprefs($userdata)
 {
 	global $board_config, $theme, $images;
-	global $template, $lang, $phpEx, $phpbb_root_path;
+	global $template, $lang;
 	global $nav_links;
 
 	if ( $userdata['user_id'] != ANONYMOUS )
@@ -579,21 +560,21 @@ function init_userprefs($userdata)
 		}
 	}
 
-	if ( !file_exists(@phpbb_realpath($phpbb_root_path . 'language/lang_' . $board_config['default_lang'] . '/lang_main.'.$phpEx)) )
+	if ( !file_exists(@phpbb_realpath(FT_ROOT . 'language/lang_' . $board_config['default_lang'] . '/lang_main.php')) )
 	{
 		$board_config['default_lang'] = 'english';
 	}
 
-	include($phpbb_root_path . 'language/lang_' . $board_config['default_lang'] . '/lang_main.' . $phpEx);
+	include(FT_ROOT . 'language/lang_' . $board_config['default_lang'] . '/lang_main.php');
 
 	if ( defined('IN_ADMIN') )
 	{
-		if( !file_exists(@phpbb_realpath($phpbb_root_path . 'language/lang_' . $board_config['default_lang'] . '/lang_admin.'.$phpEx)) )
+		if( !file_exists(@phpbb_realpath(FT_ROOT . 'language/lang_' . $board_config['default_lang'] . '/lang_admin.php')) )
 		{
 			$board_config['default_lang'] = 'english';
 		}
 
-		include($phpbb_root_path . 'language/lang_' . $board_config['default_lang'] . '/lang_admin.' . $phpEx);
+		include(FT_ROOT . 'language/lang_' . $board_config['default_lang'] . '/lang_admin.php');
 	}
 
 	include_attach_lang();
@@ -620,19 +601,19 @@ function init_userprefs($userdata)
 	// and be able to change the variables within code.
 	//
 	$nav_links['top'] = array (
-		'url' => append_sid($phpbb_root_path . 'index.' . $phpEx),
+		'url' => append_sid(FT_ROOT . 'index.php'),
 		'title' => sprintf($lang['Forum_Index'], $board_config['sitename'])
 	);
 	$nav_links['search'] = array (
-		'url' => append_sid($phpbb_root_path . 'search.' . $phpEx),
+		'url' => append_sid(FT_ROOT . 'search.php'),
 		'title' => $lang['Search']
 	);
 	$nav_links['help'] = array (
-		'url' => append_sid($phpbb_root_path . 'faq.' . $phpEx),
+		'url' => append_sid(FT_ROOT . 'faq.php'),
 		'title' => $lang['FAQ']
 	);
 	$nav_links['author'] = array (
-		'url' => append_sid($phpbb_root_path . 'memberlist.' . $phpEx),
+		'url' => append_sid(FT_ROOT . 'memberlist.php'),
 		'title' => $lang['Memberlist']
 	);
 
@@ -641,7 +622,7 @@ function init_userprefs($userdata)
 
 function setup_style($style)
 {
-	global $db, $board_config, $template, $images, $phpbb_root_path;
+	global $db, $board_config, $template, $images;
 
 	$sql = "SELECT *
 		FROM " . THEMES_TABLE . "
@@ -659,19 +640,19 @@ function setup_style($style)
 	$template_path = 'templates/' ;
 	$template_name = $row['template_name'] ;
 
-	$template = new Template($phpbb_root_path . $template_path . $template_name);
+	$template = new Template(FT_ROOT . $template_path . $template_name);
 
 	if ( $template )
 	{
 		$current_template_path = $template_path . $template_name;
-		@include($phpbb_root_path . $template_path . $template_name . '/' . $template_name . '.cfg');
+		@include(FT_ROOT . $template_path . $template_name . '/' . $template_name . '.cfg');
 
 		if ( !defined('TEMPLATE_CONFIG') )
 		{
 			message_die(CRITICAL_ERROR, "Could not open $template_name template config file", '', __LINE__, __FILE__);
 		}
 
-		$img_lang = ( file_exists(@phpbb_realpath($phpbb_root_path . $current_template_path . '/images/lang_' . $board_config['default_lang'])) ) ? $board_config['default_lang'] : 'english';
+		$img_lang = ( file_exists(@phpbb_realpath(FT_ROOT . $current_template_path . '/images/lang_' . $board_config['default_lang'])) ) ? $board_config['default_lang'] : 'english';
 
 		while( list($key, $value) = @each($images) )
 		{
@@ -901,7 +882,7 @@ function obtain_word_list(&$orig_word, &$replacement_word)
 //
 function message_die($msg_code, $msg_text = '', $msg_title = '', $err_line = '', $err_file = '', $sql = '')
 {
-	global $db, $template, $board_config, $theme, $lang, $phpEx, $phpbb_root_path, $nav_links, $gen_simple_header, $images;
+	global $db, $template, $board_config, $theme, $lang, $nav_links, $gen_simple_header, $images;
 	global $userdata, $user_ip, $session_length;
 	global $starttime;
 
@@ -956,17 +937,17 @@ function message_die($msg_code, $msg_text = '', $msg_title = '', $err_line = '',
 		{
 			if ( !empty($board_config['default_lang']) )
 			{
-				include($phpbb_root_path . 'language/lang_' . $board_config['default_lang'] . '/lang_main.'.$phpEx);
+				include(FT_ROOT . 'language/lang_' . $board_config['default_lang'] . '/lang_main.php');
 			}
 			else
 			{
-				include($phpbb_root_path . 'language/lang_english/lang_main.'.$phpEx);
+				include(FT_ROOT . 'language/lang_english/lang_main.php');
 			}
 		}
 
 		if ( empty($template) )
 		{
-			$template = new Template($phpbb_root_path . 'templates/' . $board_config['board_template']);
+			$template = new Template(FT_ROOT . 'templates/' . $board_config['board_template']);
 		}
 		if ( empty($theme) )
 		{
@@ -978,11 +959,11 @@ function message_die($msg_code, $msg_text = '', $msg_title = '', $err_line = '',
 		//
 		if ( !defined('IN_ADMIN') )
 		{
-			include($phpbb_root_path . 'includes/page_header.'.$phpEx);
+			include(FT_ROOT . 'includes/page_header.php');
 		}
 		else
 		{
-			include($phpbb_root_path . 'admin/page_header_admin.'.$phpEx);
+			include(FT_ROOT . 'admin/page_header_admin.php');
 		}
 	}
 
@@ -1019,7 +1000,7 @@ function message_die($msg_code, $msg_text = '', $msg_title = '', $err_line = '',
 			// Critical errors mean we cannot rely on _ANY_ DB information being
 			// available so we're going to dump out a simple echo'd statement
 			//
-			include($phpbb_root_path . 'language/lang_english/lang_main.'.$phpEx);
+			include(FT_ROOT . 'language/lang_english/lang_main.php');
 
 			if ( $msg_text == '' )
 			{
@@ -1074,11 +1055,11 @@ function message_die($msg_code, $msg_text = '', $msg_title = '', $err_line = '',
 
 		if ( !defined('IN_ADMIN') )
 		{
-			include($phpbb_root_path . 'includes/page_tail.'.$phpEx);
+			include(FT_ROOT . 'includes/page_tail.php');
 		}
 		else
 		{
-			include($phpbb_root_path . 'admin/page_footer_admin.'.$phpEx);
+			include(FT_ROOT . 'admin/page_footer_admin.php');
 		}
 	}
 	else
@@ -1097,9 +1078,7 @@ function message_die($msg_code, $msg_text = '', $msg_title = '', $err_line = '',
 // dougk_ff7 <October 5, 2002>
 function phpbb_realpath($path)
 {
-	global $phpbb_root_path, $phpEx;
-
-	return (!@function_exists('realpath') || !@realpath($phpbb_root_path . 'includes/functions.'.$phpEx)) ? $path : @realpath($path);
+	return (!@function_exists('realpath') || !@realpath(FT_ROOT . 'includes/functions.php')) ? $path : @realpath($path);
 }
 
 function redirect($url)

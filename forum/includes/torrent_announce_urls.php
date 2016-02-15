@@ -1,10 +1,6 @@
 <?php
 
-if (!defined('IN_PHPBB'))
-{
-	die('Hacking attempt');
-	exit;
-}
+if (!defined('FT_ROOT')) die(basename(__FILE__));
 
 $announce_urls = array();
 

@@ -1,30 +1,6 @@
 <?php
 
-/***************************************************************************
- *                               constants.php
- *                            -------------------
- *   begin                : Saturday', Feb 13', 2001
- *   copyright            : ('C) 2001 The phpBB Group
- *   email                : support@phpbb.com
- *
- *   $Id: constants.php,v 1.47.2.5 2004/11/18 17:49:42 acydburn Exp $
- *
- *
- ***************************************************************************/
-
-/***************************************************************************
- *
- *   This program is free software; you can redistribute it and/or modify
- *   it under the terms of the GNU General Public License as published by
- *   the Free Software Foundation; either version 2 of the License', or
- *   ('at your option) any later version.
- *
- ***************************************************************************/
-
-if (!defined('IN_PHPBB'))
-{
-	die("Hacking attempt");
-}
+if (!defined('FT_ROOT')) die(basename(__FILE__));
 
 // Debug Level
 //define('DEBUG', 1); // Debugging on
@@ -170,9 +146,6 @@ define('WORDS_TABLE', $table_prefix.'words');
 define('VOTE_DESC_TABLE', $table_prefix.'vote_desc');
 define('VOTE_RESULTS_TABLE', $table_prefix.'vote_results');
 define('VOTE_USERS_TABLE', $table_prefix.'vote_voters');
-
-//bt
-require_once($phpbb_root_path .'includes/constants_bt.'. $phpEx);
 
 define('TP_VER',      '0.3.5');
 define('TP_NAME',     'TorrentPier');

@@ -19,17 +19,17 @@ define('TR_INC_PATH', TR_PATH .'includes/');
 // cache
 define('TR_USE_CACHE', TRUE);
 define('CACHE_DIR',    BB_PATH .'cache/');
-define('CACHE_TR_CFG', CACHE_DIR .'tracker_config.'. PHP_EXT);
+define('CACHE_TR_CFG', CACHE_DIR .'tracker_config.php');
 
 // phpBB includes
-define('INC_BB_CFG',   BB_PATH .'config.'. PHP_EXT);
-define('INC_BB_CONST', BB_PATH .'includes/constants_bt.'. PHP_EXT);
+define('INC_BB_CFG',   BB_PATH .'config.php');
+define('INC_BB_CONST', BB_PATH .'includes/constants_bt.php');
 
 // tracker includes
-define('INC_TR_FUNC_MAIN',  TR_INC_PATH .'functions_main.'. PHP_EXT);
-define('INC_TR_FUNC_USER',  TR_INC_PATH .'functions_user.'. PHP_EXT);
-define('INC_TR_FUNC_CACHE', TR_INC_PATH .'functions_cache.'. PHP_EXT);
-define('INC_TR_DB_INIT',    TR_INC_PATH .'tr_db.'. PHP_EXT);
+define('INC_TR_FUNC_MAIN',  TR_INC_PATH .'functions_main.php');
+define('INC_TR_FUNC_USER',  TR_INC_PATH .'functions_user.php');
+define('INC_TR_FUNC_CACHE', TR_INC_PATH .'functions_cache.php');
+define('INC_TR_DB_INIT',    TR_INC_PATH .'tr_db.php');
 
 // misc
 define('TR_GZIP_LEVEL', 7);
@@ -71,9 +71,7 @@ if (TR_USE_CACHE)
 $dbg = (ALLOW_TR_DEBUG && @$_GET['dbg']) ? TRUE : FALSE;
 define('DBG_MODE', $dbg);
 
-$phpEx = PHP_EXT;
 $tr_root_path = TR_PATH;
-$phpbb_root_path = BB_PATH;
 
 require(INC_BB_CFG);
 require(INC_BB_CONST);

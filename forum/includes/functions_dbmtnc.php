@@ -1,22 +1,6 @@
 <?php
-/***************************************************************************
- *                           functions_dbmtnc.php
- *                            -------------------
- *   begin                : Fri Feb 07, 2003
- *   copyright            : (C) 2004 Philipp Kordowich
- *                          Parts: (C) 2002 The phpBB Group
- *
- *   part of DB Maintenance Mod 1.3.4
- ***************************************************************************/
 
-/***************************************************************************
- *
- *   This program is free software; you can redistribute it and/or modify
- *   it under the terms of the GNU General Public License as published by
- *   the Free Software Foundation; either version 2 of the License, or
- *   (at your option) any later version.
- *
- ***************************************************************************/
+if (!defined('FT_ROOT')) die(basename(__FILE__));
 
 // List of tables used
 $tables = array('auth_access', 'banlist', 'categories', 'config', 'disallow', 'forums', 'forum_prune', 'groups', 'posts', 'posts_text', 'privmsgs', 'privmsgs_text', 'ranks', 'search_results', 'search_wordlist', 'search_wordmatch', 'sessions', 'smilies', 'themes', 'themes_name', 'topics', 'topics_watch', 'user_group', 'users', 'vote_desc', 'vote_results', 'vote_voters', 'words');

@@ -1,10 +1,6 @@
 <?php
 
-if (!defined('IN_PHPBB'))
-{
-	die('Hacking attempt');
-	exit;
-}
+if (!defined('FT_ROOT')) die(basename(__FILE__));
 
 $show_canceled_in_count_mode  = FALSE;
 $title_date_format            = 'Y-m-d';

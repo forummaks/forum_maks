@@ -1,5 +1,7 @@
 <?php
 
+if (!defined('FT_ROOT')) die(basename(__FILE__));
+
 // $topics = topic_id[,topic_id,topic_id ...]
 function get_dl_topics ($topics, $real_topics_dl_status)
 {

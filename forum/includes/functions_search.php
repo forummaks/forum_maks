@@ -1,23 +1,6 @@
 <?php
-/***************************************************************************
-*                              functions_search.php
-*                              -------------------
-*     begin                : Wed Sep 05 2001
-*     copyright            : (C) 2002 The phpBB Group
-*     email                : support@phpbb.com
-*
-*     $Id: functions_search.php,v 1.8.2.19 2004/11/18 17:49:45 acydburn Exp $
-*
-****************************************************************************/
 
-/***************************************************************************
- *
- *   This program is free software; you can redistribute it and/or modify
- *   it under the terms of the GNU General Public License as published by
- *   the Free Software Foundation; either version 2 of the License, or
- *   (at your option) any later version.
- *
- ***************************************************************************/
+if (!defined('FT_ROOT')) die(basename(__FILE__));
 
 function clean_words($mode, &$entry, &$stopword_list, &$synonym_list)
 {

@@ -1,5 +1,7 @@
 <?php
 
+if (!defined('FT_ROOT')) die(basename(__FILE__));
+
 function get_torrent_info ($attach_id)
 {
 	global $db;

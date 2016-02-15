@@ -1,53 +1,7 @@
 <?php
-/***************************************************************************
- *                                 auth.php
- *                            -------------------
- *   begin                : Saturday, Feb 13, 2001
- *   copyright            : (C) 2001 The phpBB Group
- *   email                : support@phpbb.com
- *
- *   $Id: auth.php,v 1.37.2.5 2004/03/01 16:49:03 psotfx Exp $
- *
- *
- ***************************************************************************/
+if (!defined('FT_ROOT')) die(basename(__FILE__));
 
-/***************************************************************************
- *
- *   This program is free software; you can redistribute it and/or modify
- *   it under the terms of the GNU General Public License as published by
- *   the Free Software Foundation; either version 2 of the License, or
- *   (at your option) any later version.
- *
- ***************************************************************************/
 
-/*
-	$type's accepted (pre-pend with AUTH_):
-	VIEW, READ, POST, REPLY, EDIT, DELETE, STICKY, ANNOUNCE, VOTE, POLLCREATE
-
-	Possible options ($type/forum_id combinations):
-
-	* If you include a type and forum_id then a specific lookup will be done and
-	the single result returned
-
-	* If you set type to AUTH_ALL and specify a forum_id an array of all auth types
-	will be returned
-
-	* If you provide a forum_id a specific lookup on that forum will be done
-
-	* If you set forum_id to AUTH_LIST_ALL and specify a type an array listing the
-	results for all forums will be returned
-
-	* If you set forum_id to AUTH_LIST_ALL and type to AUTH_ALL a multidimensional
-	array containing the auth permissions for all types and all forums for that
-	user is returned
-
-	All results are returned as associative arrays, even when a single auth type is
-	specified.
-
-	If available you can send an array (either one or two dimensional) containing the
-	forum auth levels, this will prevent the auth function having to do its own
-	lookup
-*/
 function auth($type, $forum_id, $userdata, $f_access = '')
 {
 	global $db, $lang;

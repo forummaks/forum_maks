@@ -1,10 +1,5 @@
 <?php
 
-if (!defined('IN_PHPBB'))
-{
-	exit;
-}
-
 require(INC_TR_DB_INIT);
 
 $up_add = $down_add = $bl_add = 0;

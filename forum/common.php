@@ -1,22 +1,19 @@
 <?php
-if ( !defined('IN_PHPBB') )
-{
-	die("Hacking attempt");
-}
 
+if (isset($_REQUEST['GLOBALS'])) die();
+
+ignore_user_abort(true);
 define('TIMENOW',   time());
+$starttime = array_sum(explode(' ', microtime()));
 
-if (!preg_match('#^(.*)\.loc$#i', $_SERVER['SERVER_NAME']))
-{
-	error_reporting (E_ERROR | E_WARNING | E_PARSE); // This will NOT report uninitialized variables
-}
-else
-{
-	error_reporting(E_ALL);
-}
-set_magic_quotes_runtime(0); // Disable magic_quotes_runtime
+if (empty($_SERVER['REMOTE_ADDR']))     $_SERVER['REMOTE_ADDR'] = '127.0.0.1';
+if (empty($_SERVER['HTTP_USER_AGENT'])) $_SERVER['HTTP_USER_AGENT'] = '';
+if (empty($_SERVER['HTTP_REFERER']))    $_SERVER['HTTP_REFERER'] = '';
+if (empty($_SERVER['SERVER_NAME']))     $_SERVER['SERVER_NAME'] = '';
 
-// The following code (unsetting globals) was contributed by Matt Kavanagh
+if (!defined('FT_ROOT')) define('FT_ROOT', './');
+
+header('X-Frame-Options: SAMEORIGIN');
 
 // PHP5 with register_long_arrays off?
 if (!isset($HTTP_POST_VARS) && isset($_POST))
@@ -60,7 +57,7 @@ if (@phpversion() < '4.0.0')
 else if (@ini_get('register_globals') == '1' || strtolower(@ini_get('register_globals')) == 'on')
 {
 	// PHP4+ path
-	$not_unset = array('HTTP_GET_VARS', 'HTTP_POST_VARS', 'HTTP_COOKIE_VARS', 'HTTP_SERVER_VARS', 'HTTP_SESSION_VARS', 'HTTP_ENV_VARS', 'HTTP_POST_FILES', 'phpEx', 'phpbb_root_path');
+	$not_unset = array('HTTP_GET_VARS', 'HTTP_POST_VARS', 'HTTP_COOKIE_VARS', 'HTTP_SERVER_VARS', 'HTTP_SESSION_VARS', 'HTTP_ENV_VARS', 'HTTP_POST_FILES');
 
 	// Not only will array_merge give a warning if a parameter
 	// is not an array, it will actually fail. So we check if
@@ -164,20 +161,26 @@ if( !get_magic_quotes_gpc() )
 $board_config = $userdata = $theme = $images = $lang = $nav_links = array();
 $gen_simple_header = FALSE;
 
-include($phpbb_root_path . 'config.'.$phpEx);
+include(FT_ROOT . 'config.php');
 
 if( !defined("PHPBB_INSTALLED") )
 {
-	header("Location: install/install.$phpEx");
+	header("Location: install/install.php");
 	exit;
 }
 
-include($phpbb_root_path . 'includes/constants.'.$phpEx);
-include($phpbb_root_path . 'includes/template.'.$phpEx);
-include($phpbb_root_path . 'includes/sessions.'.$phpEx);
-include($phpbb_root_path . 'includes/auth.'.$phpEx);
-include($phpbb_root_path . 'includes/functions.'.$phpEx);
-include($phpbb_root_path . 'includes/db.'.$phpEx);
+include(FT_ROOT . 'includes/constants.php');
+include(FT_ROOT . 'includes/template.php');
+include(FT_ROOT . 'includes/sessions.php');
+include(FT_ROOT . 'includes/auth.php');
+include(FT_ROOT . 'includes/functions.php');
+include(FT_ROOT . 'db/mysql.php');
+
+$db = new sql_db($dbhost, $dbuser, $dbpasswd, $dbname, false);
+if(!$db->db_connect_id)
+{
+	message_die(CRITICAL_ERROR, 'Could not connect to the database');
+}
 
 //
 // Obtain and encode users IP
@@ -210,7 +213,22 @@ while ( $row = $db->sql_fetchrow($result) )
 $board_config['server_name'] = $_SERVER['SERVER_NAME'];
 //End Allow multiple domain names
 
-include($phpbb_root_path . 'attach_mod/attachment_mod.'.$phpEx);
+include(FT_ROOT . 'attach_mod/attachment_mod.php');
+
+define('BT_CONFIG_TABLE',      $table_prefix.'bt_config');          // phpbb_bt_config
+define('BT_SEARCH_TABLE',      $table_prefix.'bt_search_results');  // phpbb_bt_search_results
+define('BT_TOR_DL_STAT_TABLE', $table_prefix.'bt_tor_dl_stat');     // phpbb_bt_tor_dl_stat
+define('BT_TORRENTS_TABLE',    $table_prefix.'bt_torrents');        // phpbb_bt_torrents
+define('BT_TRACKER_TABLE',     $table_prefix.'bt_tracker');         // phpbb_bt_tracker
+define('BT_USERS_TABLE',       $table_prefix.'bt_users');           // phpbb_bt_users
+define('BT_USR_DL_STAT_TABLE', $table_prefix.'bt_users_dl_status'); // phpbb_bt_users_dl_status
+
+define('BT_AUTH_KEY_LENGTH',   10);
+
+define('DL_STATUS_WILL',       0);
+define('DL_STATUS_DOWN',       1);
+define('DL_STATUS_COMPLETE',   2);
+define('DL_STATUS_CANCEL',     3);
 
 if (file_exists('install') || file_exists('contrib'))
 {

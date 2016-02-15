@@ -1,5 +1,7 @@
 <?php
 
+if (!defined('FT_ROOT')) die(basename(__FILE__));
+
 function get_config_ary ($config_table)
 {
 	global $db;

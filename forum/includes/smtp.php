@@ -1,23 +1,6 @@
 <?php
-/***************************************************************************
- *                              smtp.php
- *                       -------------------
- *   begin                : Wed May 09 2001
- *   copyright            : (C) 2001 The phpBB Group
- *   email                : support@phpbb.com
- *
- *   $Id: smtp.php,v 1.16.2.10 2005/05/06 20:50:11 acydburn Exp $
- *
- ***************************************************************************/
 
-/***************************************************************************
- *
- *   This program is free software; you can redistribute it and/or modify
- *   it under the terms of the GNU General Public License as published by
- *   the Free Software Foundation; either version 2 of the License, or
- *   (at your option) any later version.
- *
- ***************************************************************************/
+if (!defined('FT_ROOT')) die(basename(__FILE__));
 
 define('SMTP_INCLUDED', 1);
 

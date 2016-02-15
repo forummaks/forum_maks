@@ -1,29 +1,6 @@
 <?php
-/***************************************************************************
- *                            functions_admin.php
- *                            -------------------
- *   begin                : Saturday, Feb 13, 2001
- *   copyright            : (C) 2001 The phpBB Group
- *   email                : support@phpbb.com
- *
- *   $Id: functions_admin.php,v 1.5.2.3 2002/07/19 17:03:47 psotfx Exp $
- *
- *
- ***************************************************************************/
+if (!defined('FT_ROOT')) die(basename(__FILE__));
 
-/***************************************************************************
- *
- *   This program is free software; you can redistribute it and/or modify
- *   it under the terms of the GNU General Public License as published by
- *   the Free Software Foundation; either version 2 of the License, or
- *   (at your option) any later version.
- *
- *
- ***************************************************************************/
-
-//
-// Simple version of jumpbox, just lists authed forums
-//
 function make_forum_select($box_name, $ignore_forum = false, $select_forum = '')
 {
 	global $db;

@@ -1,30 +1,5 @@
 <?php
-/***************************************************************************
- *							posting_attachments.php
- *                            -------------------
- *   begin                : Monday, Jul 15, 2002
- *   copyright            : (C) 2002 Meik Sievertsen
- *   email                : acyd.burn@gmx.de
- *
- *   $Id: posting_attachments.php,v 1.70 2005/07/16 14:32:22 acydburn Exp $
- *
- *
- ***************************************************************************/
-
-/***************************************************************************
- *
- *   This program is free software; you can redistribute it and/or modify
- *   it under the terms of the GNU General Public License as published by
- *   the Free Software Foundation; either version 2 of the License, or
- *   (at your option) any later version.
- *
- ***************************************************************************/
-
-if ( !defined('IN_PHPBB') )
-{
-	die('Hacking attempt');
-	exit;
-}
+if (!defined('FT_ROOT')) die(basename(__FILE__));
 
 //
 // Base Class for Attaching

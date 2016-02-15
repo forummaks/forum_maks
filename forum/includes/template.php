@@ -1,48 +1,6 @@
 <?php
 
-/***************************************************************************
- *                               template.php
- *                            ------------------
- *   copyright            : (C) 2001 The phpBB Group
- *   email                : support@phpbb.com
- *
- *   phpBB version        : 2.0.x
- *   eXtreme Styles mod   : 2.2.1
- *   Support              : http://www.phpbbstyles.com
- *
- *   file revision        : 67
- *   project revision     : 68
- *   last modified        : 17 Apr 2005  23:15:23
- *
- ***************************************************************************/
-
-/***************************************************************************
- *
- *   This program is free software; you can redistribute it and/or modify
- *   it under the terms of the GNU General Public License as published by
- *   the Free Software Foundation; either version 2 of the License, or
- *   (at your option) any later version.
- *
- ***************************************************************************/
-
-/**
- *
- * Template class. By Nathan Codding of the phpBB group.
- * The interface was originally inspired by PHPLib templates,
- * and the template file formats are quite similar.
- *
- * eXtreme Styles mod by CyberAlien.
- *
- * IF, ELSEIF, ENDIF tags are backported from phpBB 2.2
- *
- * Documentation for this mod can be found here:
- * http://www.phpbbstyles.com
- *
- * Support for eXtreme Styles mod is provided at http://www.phpbbstyles.com
- *
- * Thanks to DMaJ007 for idea on how to include some extra tags.
- *
- */
+if (!defined('FT_ROOT')) die(basename(__FILE__));
 
 define('XS_SEPARATOR', '.');
 define('XS_DIR_CACHE', 'cache');
@@ -183,7 +141,7 @@ class Template {
 	 */
 	function load_config($root, $edit_db)
 	{
-		global $board_config, $phpbb_root_path, $phpEx;
+		global $board_config;
 		// getting mod version from config and comparing with real data
 		$ver = isset($board_config['xs_version']) ? $board_config['xs_version'] : 0;
 		// check configuration
@@ -204,7 +162,7 @@ class Template {
 			'xs_auto_compile'			=> 1,
 			'xs_auto_recompile'			=> 1,
 			'xs_use_cache'				=> 1,
-			'xs_php'					=> $phpEx,
+			'xs_php'					=> php,
 			'xs_def_template'			=> 'subSilver',
 			'xs_check_switches'			=> 1,
 			'xs_warn_includes'			=> 1,
@@ -317,16 +275,16 @@ class Template {
 	 */
 	function set_rootdir($dir)
 	{
-		global $board_config, $phpbb_root_path;
+		global $board_config;
 		if (!@is_dir($dir))
 		{
 			return false;
 		}
 		$dir = str_replace('\\', '/', $dir);
 		// creating absolute path for cache
-		$this->cachedir = $phpbb_root_path . XS_DIR_CACHE . '/';
+		$this->cachedir = FT_ROOT . XS_DIR_CACHE . '/';
 		// creating absolute path for current template and root dir
-		$this->tpldir = $phpbb_root_path . 'templates/';
+		$this->tpldir = FT_ROOT . 'templates/';
 		$this->tpldir_len = strlen($this->tpldir);
 		$this->root = $dir;
 		$this->tpl = $this->template_name($dir);
@@ -2107,14 +2065,14 @@ class Template {
 
 	function xs_startup()
 	{
-		global $phpEx, $board_config, $phpbb_root_path;
+		global $board_config;
 		if(empty($this->xs_started))
 		{	// adding predefined variables
 			$this->xs_started = 1;
 			// file extension with session ID (eg: "php?sid=123&" or "php?")
 			// can be used to make custom URLs without modding phpbb
 			// contains "&" or "?" at the end so you can easily append paramenters
-			$php = append_sid($phpEx);
+			$php = append_sid(php);
 			if(strpos($php, '?'))
 			{
 				$php .= '&';
@@ -2239,11 +2197,10 @@ class Template {
 	*/
 	function _add_config($tpl, $add_vars = true)
 	{
-		global $phpbb_root_path;
-		if(@file_exists($phpbb_root_path . 'templates/' . $tpl . '/xs_config.cfg'))
+		if(@file_exists(FT_ROOT . 'templates/' . $tpl . '/xs_config.cfg'))
 		{
 			$style_config = array();
-			include($phpbb_root_path . 'templates/' . $tpl . '/xs_config.cfg');
+			include(FT_ROOT . 'templates/' . $tpl . '/xs_config.cfg');
 			if(count($style_config))
 			{
 				global $board_config, $db;
@@ -2291,11 +2248,10 @@ class Template {
 	*/
 	function _refresh_config($tpl, $add_vars = false)
 	{
-		global $phpbb_root_path;
-		if(@file_exists($phpbb_root_path . 'templates/' . $tpl . '/xs_config.cfg'))
+		if(@file_exists(FT_ROOT . 'templates/' . $tpl . '/xs_config.cfg'))
 		{
 			$style_config = array();
-			include($phpbb_root_path . 'templates/' . $tpl . '/xs_config.cfg');
+			include(FT_ROOT . 'templates/' . $tpl . '/xs_config.cfg');
 			if(count($style_config))
 			{
 				global $board_config, $db;

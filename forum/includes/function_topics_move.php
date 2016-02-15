@@ -1,15 +1,12 @@
 <?php
 
-if ( !defined('IN_PHPBB') )
-{
-   die("Hacking attempt");
-}
+if (!defined('FT_ROOT')) die(basename(__FILE__));
 
-require($phpbb_root_path . 'includes/functions_search.'.$phpEx);
-require_once($phpbb_root_path .'includes/function_sendpm.'.$phpEx);
-require_once($phpbb_root_path . 'includes/bbcode.'.$phpEx);
-require_once($phpbb_root_path . 'includes/functions_post.'.$phpEx);
-require_once($phpbb_root_path . 'includes/functions_admin.'.$phpEx);
+require(FT_ROOT . 'includes/functions_search.php');
+require_once(FT_ROOT .'includes/function_sendpm.php');
+require_once(FT_ROOT . 'includes/bbcode.php');
+require_once(FT_ROOT . 'includes/functions_post.php');
+require_once(FT_ROOT . 'includes/functions_admin.php');
 
 
 function move($forum_id, $move_fid, $mode, $waits_days=0, $topic_id=0)
