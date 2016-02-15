@@ -14,7 +14,7 @@
 	<table cellspacing="0" cellpadding="0" width="100%">
 	<tr>
       	<td width="100%" style="padding-left: 1px">
-		<div style="font-size: 13px; font-weight: bold; letter-spacing: 1px; padding: 6px 0 3px 0; color: #333333;">Новости трекера</div>
+		<div style="font-size: 13px; font-weight: bold; letter-spacing: 1px; padding: 6px 0 3px 0; color: #333333;">РќРѕРІРѕСЃС‚Рё С‚СЂРµРєРµСЂР°</div>
 		<table cellpadding="0">
 	      <!-- BEGIN news -->
 		<tr>

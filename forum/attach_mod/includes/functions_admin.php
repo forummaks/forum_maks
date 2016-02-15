@@ -1,33 +1,7 @@
 <?php
-/***************************************************************************
- *                            functions_admin.php
- *                            -------------------
- *   begin                : Sunday, Mar 31, 2002
- *   copyright            : (C) 2002 Meik Sievertsen
- *   email                : acyd.burn@gmx.de
- *
- *   $Id: functions_admin.php,v 1.16 2004/11/30 17:56:11 acydburn Exp $
- *
- *
- ***************************************************************************/
 
-/***************************************************************************
- *
- *   This program is free software; you can redistribute it and/or modify
- *   it under the terms of the GNU General Public License as published by
- *   the Free Software Foundation; either version 2 of the License, or
- *   (at your option) any later version.
- *
- *
- ***************************************************************************/
+if (!defined('FT_ROOT')) die(basename(__FILE__));
 
-//
-// All Attachment Functions only needed in Admin
-//
-
-//
-// Set/Change Quotas
-//
 function process_quota_settings($mode, $id, $quota_type, $quota_limit_id = 0)
 {
 	global $db;

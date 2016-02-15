@@ -1,36 +1,10 @@
 <?php
-/***************************************************************************
- *                            functions_includes.php
- *                            -------------------
- *   begin                : Sunday, Mar 31, 2002
- *   copyright            : (C) 2002 Meik Sievertsen
- *   email                : acyd.burn@gmx.de
- *
- *   $Id: functions_includes.php,v 1.39 2005/05/10 16:03:54 acydburn Exp $
- *
- *
- ***************************************************************************/
 
-/***************************************************************************
- *
- *   This program is free software; you can redistribute it and/or modify
- *   it under the terms of the GNU General Public License as published by
- *   the Free Software Foundation; either version 2 of the License, or
- *   (at your option) any later version.
- *
- *
- ***************************************************************************/
+if (!defined('FT_ROOT')) die(basename(__FILE__));
 
-//
-// These are functions called directly from phpBB2 Files
-//
-
-//
-// Include the FAQ-File (faq.php)
-//
 function attach_faq_include($lang_file)
 {
-	global $phpbb_root_path, $board_config, $phpEx, $faq, $attach_config;
+	global $board_config, $faq, $attach_config;
 
 	if (intval($attach_config['disable_mod']))
 	{
@@ -39,13 +13,13 @@ function attach_faq_include($lang_file)
 
 	if ($lang_file == 'lang_faq')
 	{
-		if (!file_exists($phpbb_root_path . 'language/lang_' . $board_config['default_lang'] . '/lang_faq_attach.'.$phpEx))
+		if (!file_exists(FT_ROOT . 'language/lang_' . $board_config['default_lang'] . '/lang_faq_attach.php'))
 		{
-			include($phpbb_root_path . 'language/lang_english/lang_faq_attach.'.$phpEx);
+			include(FT_ROOT . 'language/lang_english/lang_faq_attach.php');
 		}
 		else
 		{
-			include($phpbb_root_path . 'language/lang_' . $board_config['default_lang'] . '/lang_faq_attach.' . $phpEx);
+			include(FT_ROOT . 'language/lang_' . $board_config['default_lang'] . '/lang_faq_attach.php');
 		}
 	}
 }
@@ -149,7 +123,7 @@ function attach_setup_viewtopic_auth(&$order_sql, &$sql)
 //
 function attach_build_auth_levels($is_auth, &$s_auth_can)
 {
-	global $lang, $attach_config, $phpEx, $forum_id;
+	global $lang, $attach_config, $forum_id;
 
 	if (intval($attach_config['disable_mod']))
 	{
@@ -169,9 +143,7 @@ function attach_build_auth_levels($is_auth, &$s_auth_can)
 //
 function attachment_quota_settings($admin_mode, $submit = FALSE, $mode)
 {
-	global $template, $db, $HTTP_POST_VARS, $HTTP_GET_VARS, $lang, $lang, $phpbb_root_path, $phpEx, $attach_config;
-
-	include_once($phpbb_root_path . 'attach_mod/includes/constants.'.$phpEx);
+	global $template, $db, $HTTP_POST_VARS, $HTTP_GET_VARS, $lang, $lang, $attach_config;
 
 	if (!intval($attach_config['allow_ftp_upload']))
 	{
@@ -189,8 +161,8 @@ function attachment_quota_settings($admin_mode, $submit = FALSE, $mode)
 		$upload_dir = $attach_config['download_path'];
 	}
 
-	include_once($phpbb_root_path . 'attach_mod/includes/functions_selects.' . $phpEx);
-	include_once($phpbb_root_path . 'attach_mod/includes/functions_admin.' . $phpEx);
+	include_once(FT_ROOT . 'attach_mod/includes/functions_selects.php');
+	include_once(FT_ROOT . 'attach_mod/includes/functions_admin.php');
 
 	if ($admin_mode == 'user')
 	{
@@ -368,7 +340,7 @@ function attachment_quota_settings($admin_mode, $submit = FALSE, $mode)
 //
 function display_upload_attach_box_limits($user_id, $group_id = 0)
 {
-	global $attach_config, $board_config, $phpbb_root_path, $lang, $db, $template, $phpEx, $userdata, $profiledata;
+	global $attach_config, $board_config, $lang, $db, $template, $userdata, $profiledata;
 
 	if (intval($attach_config['disable_mod']))
 	{
@@ -553,7 +525,7 @@ function display_upload_attach_box_limits($user_id, $group_id = 0)
 	$template->assign_vars(array(
 		'L_UACP' => $lang['UACP'],
 		'L_UPLOAD_QUOTA' => $lang['Upload_quota'],
-		'U_UACP' => append_sid($phpbb_root_path . 'uacp.' . $phpEx . '?u=' . $user_id . '&amp;sid=' . $userdata['session_id']),
+		'U_UACP' => append_sid(FT_ROOT . 'uacp.php?u=' . $user_id . '&amp;sid=' . $userdata['session_id']),
 		'UPLOADED' => sprintf($lang['User_uploaded_profile'], $user_uploaded),
 		'QUOTA' => sprintf($lang['User_quota_profile'], $user_quota),
 		'UPLOAD_LIMIT_IMG_WIDTH' => $upload_limit_img_length,
@@ -580,11 +552,11 @@ function perform_attach_pageregister($session_page, $in_admin = false)
 	{
 		case (PAGE_UACP):
 			$location = $lang['User_acp_title'];
-			$location_url = ($in_admin) ? "index.$phpEx?pane=right" : "index.$phpEx";
+			$location_url = ($in_admin) ? "index.php?pane=right" : "index.php";
 			break;
 		case (PAGE_RULES):
 			$location = $lang['Rules_page'];
-			$location_url = ($in_admin) ? "index.$phpEx?pane=right" : "index.$phpEx";
+			$location_url = ($in_admin) ? "index.php?pane=right" : "index.php";
 			break;
 	}
 }

@@ -96,13 +96,13 @@ $tor_auth_reg = ($tor_auth && $forum_topic_data['allow_reg_tracker'] && $post_id
 $tor_auth_del = ($tor_auth && $tor_reged) ? TRUE : FALSE;
 
 $tracker_link  = ($tor_reged) ? $lang['Bt_Reg_YES'] : $lang['Bt_Reg_NO'];
-$download_link = append_sid("download.$phpEx?id=$attach_id");
+$download_link = append_sid("download.php?id=$attach_id");
 $description   = ($comment) ? $comment : preg_replace("#.torrent$#i", '', $display_name);
 
 if ($tor_auth_reg || $tor_auth_del)
 {
-	$reg_href   = "torrent.$phpEx?mode=reg&amp;id=$attach_id&amp;sid="	. $userdata['session_id'];
-	$unreg_href = "torrent.$phpEx?mode=unreg&amp;id=$attach_id&amp;sid=". $userdata['session_id'];
+	$reg_href   = "torrent.php?mode=reg&amp;id=$attach_id&amp;sid="	. $userdata['session_id'];
+	$unreg_href = "torrent.php?mode=unreg&amp;id=$attach_id&amp;sid=". $userdata['session_id'];
 
 	$reg_tor_url   = '<a class="genmed" href="'.$reg_href.'">'   . $lang['Bt_Reg_on_tracker']     .'</a>';
 	$unreg_tor_url = '<a class="genmed" href="'.$unreg_href.'">'. $lang['Bt_Unreg_from_tracker'] .'</a>';
@@ -151,18 +151,18 @@ else
 
 	switch ($tor_row['topic_check_status'])
 	         {
-	         case 1: $topic_check_status='<span style="color:indigo;font-weight:bold;">&#9674; Проверяется</span>.'; break; 
-	         case 2: $topic_check_status='<span style="color:green;font-weight:bold;">&radic; Оформлено</span>.'; break; 
-	         case 3: $topic_check_status='<span style="color:#E6C506;font-weight:bold;">&#8776; Недооформлено</span>.'; break; 
-	         case 4: $topic_check_status='<span style="color:red;font-weight:bold;">&#8800; Неоформлено</span>.'; break; 
-	         case 5: $topic_check_status='<span style="color:blue;font-weight:bold;">&#8734;  Повтор</span>'; 
-			 $topic_check_status.=($tor_row['topic_check_duble_tid'])?' <a href="viewtopic.'.$phpEx.'?t='.$tor_row['topic_check_duble_tid'].'">(?)</a>.':'.';
+	         case 1: $topic_check_status='<span style="color:indigo;font-weight:bold;">&#9674; РџСЂРѕРІРµСЂСЏРµС‚СЃСЏ</span>.'; break; 
+	         case 2: $topic_check_status='<span style="color:green;font-weight:bold;">&radic; РћС„РѕСЂРјР»РµРЅРѕ</span>.'; break; 
+	         case 3: $topic_check_status='<span style="color:#E6C506;font-weight:bold;">&#8776; РќРµРґРѕРѕС„РѕСЂРјР»РµРЅРѕ</span>.'; break; 
+	         case 4: $topic_check_status='<span style="color:red;font-weight:bold;">&#8800; РќРµРѕС„РѕСЂРјР»РµРЅРѕ</span>.'; break; 
+	         case 5: $topic_check_status='<span style="color:blue;font-weight:bold;">&#8734;  РџРѕРІС‚РѕСЂ</span>'; 
+			 $topic_check_status.=($tor_row['topic_check_duble_tid'])?' <a href="viewtopic.php?t='.$tor_row['topic_check_duble_tid'].'">(?)</a>.':'.';
 		 break; 
-	         default: $topic_check_status='<span style="color:red;font-weight:bold;">? Не проверено</span>.';
+	         default: $topic_check_status='<span style="color:red;font-weight:bold;">? РќРµ РїСЂРѕРІРµСЂРµРЅРѕ</span>.';
 	         }
 	if ($tor_row['topic_check_status'])
 	{
-		$topic_check_status.= '<span style="font-style:italic;">'.' (<a href="profile.'.$phpEx.'?mode=viewprofile&u='.$tor_row['topic_check_uid'].'"><b>'.$tor_row['username'].'</b></a>:'.create_date('d.m.Y, H:i:s', $tor_row['topic_check_date'], $userdata['user_timezone']).')</span>';
+		$topic_check_status.= '<span style="font-style:italic;">'.' (<a href="profile.php?mode=viewprofile&u='.$tor_row['topic_check_uid'].'"><b>'.$tor_row['username'].'</b></a>:'.create_date('d.m.Y, H:i:s', $tor_row['topic_check_date'], $userdata['user_timezone']).')</span>';
 	}
 	$download_url=(in_array($tor_row['topic_check_status'], array(4, 5)))? $lang['Download']:'<a href="'.$download_link.'" style="font-size: 13px; font-weight: bold; text-decoration: none">'.$lang['Download'].'</a>';
 
@@ -188,7 +188,7 @@ else
 	if ($is_auth['auth_mod'])
 	{
 		$template->assign_block_vars('postrow.attach.tor_reged.mod', array(
-			'ACT' => "topic_check_status.$phpEx",
+			'ACT' => "topic_check_status.php",
 			'SID'       => $userdata['session_id'],
 			'ATTACH_ID' => $attach_id,
 			'IN_NATIVE_F' => (!$tor_row['topic_check_first_fid'])
@@ -197,7 +197,7 @@ else
 	if ($userdata['user_id']==$poster_id && ($tor_row['topic_check_status']=='3' || $tor_row['topic_check_status']=='4') )
 	{
 		$template->assign_block_vars('postrow.attach.tor_reged.auther', array(
-			'ACT' => "topic_check_status.$phpEx",
+			'ACT' => "topic_check_status.php",
 			'SID'       => $userdata['session_id'],
 			'ATTACH_ID' => $attach_id
 		));
@@ -211,7 +211,7 @@ else
 	if ($tor_auth_del)
 	{
 		$template->assign_block_vars('postrow.attach.tor_reged.controls', array(
-			'ACTION'    => "torrent.$phpEx",
+			'ACTION'    => "torrent.php",
 			'SID'       => $userdata['session_id'],
 			'ATTACH_ID' => $attach_id
 		));
@@ -427,7 +427,7 @@ else
 				}
 				else
 				{
-					$u_prof_href = append_sid("profile.$phpEx?mode=viewprofile&amp;u=". $peer['user_id']) .'#torrent';
+					$u_prof_href = append_sid("profile.php?mode=viewprofile&amp;u=". $peer['user_id']) .'#torrent';
 				}
 
 				if (isset($peer['user_id']) && $peer['user_id'] == ANONYMOUS)
@@ -456,7 +456,7 @@ else
 						if (!defined('SEEDER_EXIST'))
 						{
 							define('SEEDER_EXIST', TRUE);
-							$seed_order_action = append_sid("viewtopic.$phpEx?". POST_TOPIC_URL ."=$bt_topic_id&amp;spmode=full") .'#seeders';
+							$seed_order_action = append_sid("viewtopic.php?". POST_TOPIC_URL ."=$bt_topic_id&amp;spmode=full") .'#seeders';
 
 							$template->assign_block_vars("$x_full", array(
 								'SEED_ORD_ACT'   => $seed_order_action,
@@ -485,7 +485,7 @@ else
 						if (!defined('LEECHER_EXIST'))
 						{
 							define('LEECHER_EXIST', TRUE);
-							$leech_order_action = append_sid("viewtopic.$phpEx?". POST_TOPIC_URL ."=$bt_topic_id&amp;spmode=full") .'#leechers';
+							$leech_order_action = append_sid("viewtopic.php?". POST_TOPIC_URL ."=$bt_topic_id&amp;spmode=full") .'#leechers';
 
 							$template->assign_block_vars("$x_full", array(
 								'LEECH_ORD_ACT'     => $leech_order_action,
@@ -610,7 +610,7 @@ else
 		if (($s_mode == 'count' && !$seed_count) || (!$seeders && !defined('SEEDER_EXIST')))
 		{
 			$last_seeder_name = '';
-			$last_seen_time = ($tor_row['seeder_last_seen']) ? create_date($s_last_seed_date_format, $tor_row['seeder_last_seen'], $board_config['board_timezone']) : 'Никогда';
+			$last_seen_time = ($tor_row['seeder_last_seen']) ? create_date($s_last_seed_date_format, $tor_row['seeder_last_seen'], $board_config['board_timezone']) : 'РќРёРєРѕРіРґР°';
 
 			if ($last_seeder_uid = $tor_row['last_seeder_uid'])
 			{
@@ -618,9 +618,9 @@ else
 					FROM '. USERS_TABLE ."
 					WHERE user_id = $last_seeder_uid
 					LIMIT 1";
-				$last_seeder_name = ($row = @$db->sql_fetchrow($db->sql_query($sql))) ? '<b><a class="seed" href="'. append_sid("profile.$phpEx?mode=viewprofile&amp;". POST_USERS_URL .'='. $tor_row['last_seeder_uid']) .'">'. $row['username'] .'</a></b>' : '';
+				$last_seeder_name = ($row = @$db->sql_fetchrow($db->sql_query($sql))) ? '<b><a class="seed" href="'. append_sid("profile.php?mode=viewprofile&amp;". POST_USERS_URL .'='. $tor_row['last_seeder_uid']) .'">'. $row['username'] .'</a></b>' : '';
 			}
-			$template->assign_vars(array('SEEDER_LAST_SEEN' => "Полный источник $last_seeder_name был: $last_seen_time"));
+			$template->assign_vars(array('SEEDER_LAST_SEEN' => "РџРѕР»РЅС‹Р№ РёСЃС‚РѕС‡РЅРёРє $last_seeder_name Р±С‹Р»: $last_seen_time"));
 		}
 	}
 
@@ -641,7 +641,7 @@ if ($board_config['bt_allow_spmode_change'] && $s_mode != 'full')
 {
 	$template->assign_vars(array(
 		'PEERS_FULL_LINK'  => TRUE,
-		'SPMODE_FULL_HREF' => append_sid("viewtopic.$phpEx?". POST_TOPIC_URL ."=$bt_topic_id&amp;spmode=full") .'#seeders',
+		'SPMODE_FULL_HREF' => append_sid("viewtopic.php?". POST_TOPIC_URL ."=$bt_topic_id&amp;spmode=full") .'#seeders',
 		'L_SPMODE_FULL'    => $lang['spmode_full']
 	));
 }

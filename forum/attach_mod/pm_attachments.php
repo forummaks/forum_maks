@@ -178,7 +178,7 @@ class attach_pm extends attach_parent
 	//
 	function privmsgs_attachment_mod($mode)
 	{
-		global $attach_config, $template, $lang, $userdata, $HTTP_POST_VARS, $phpbb_root_path, $phpEx, $db;
+		global $attach_config, $template, $lang, $userdata, $HTTP_POST_VARS, $db;
 		global $confirm, $delete, $delete_all, $post_id, $privmsgs_id, $privmsg_id, $submit, $refresh, $mark_list, $folder;
 
 		if ($folder != 'outbox')
@@ -215,7 +215,7 @@ class attach_pm extends attach_parent
 			if ( !$userdata['session_logged_in'] )
 			{
 				$header_location = ( @preg_match('/Microsoft|WebSTAR|Xitami/', getenv('SERVER_SOFTWARE')) ) ? 'Refresh: 0; URL=' : 'Location: ';
-				header($header_location . append_sid("login.$phpEx?redirect=privmsg.$phpEx&folder=inbox", true));
+				header($header_location . append_sid("login.php?redirect=privmsg.php&folder=inbox", true));
 				exit;
 			}
 			

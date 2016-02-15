@@ -1,33 +1,7 @@
 <?php
-/***************************************************************************
- *                            functions_filetypes.php
- *                            -------------------
- *   begin                : Sat, Jul 27, 2002
- *   copyright            : (C) 2002 Meik Sievertsen
- *   email                : acyd.burn@gmx.de
- *
- *   $Id: functions_filetypes.php,v 1.3 2003/01/15 23:24:26 acydburn Exp $
- *
- *
- ***************************************************************************/
 
-/***************************************************************************
- *
- *   This program is free software; you can redistribute it and/or modify
- *   it under the terms of the GNU General Public License as published by
- *   the Free Software Foundation; either version 2 of the License, or
- *   (at your option) any later version.
- *
- *
- ***************************************************************************/
+if (!defined('FT_ROOT')) die(basename(__FILE__));
 
-//
-// All Attachment Functions needed to determine Special Files/Dimensions
-//
-
-//
-// Read Long Int (4 Bytes) from File
-//
 function read_longint($fp)
 {
 	$data = fread($fp, 4);

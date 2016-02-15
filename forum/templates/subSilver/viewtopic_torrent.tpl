@@ -61,10 +61,10 @@
                                     <tr>
                                     <td class="row6" colspan="2" align="center"> 
 						<!-- IF SEED_COUNT -->
-							<span class="seed">Ñèäû:&nbsp; <b>{SEED_COUNT}</b> &nbsp;[&nbsp; {SEED_SPEED} &nbsp;]</span> &nbsp;
+							<span class="seed">Ð¡Ð¸Ð´Ñ‹:&nbsp; <b>{SEED_COUNT}</b> &nbsp;[&nbsp; {SEED_SPEED} &nbsp;]</span> &nbsp;
 						<!-- ENDIF -->
 						<!-- IF LEECH_COUNT -->
-							<span class="leech">Ëè÷è:&nbsp; <b>{LEECH_COUNT}</b> &nbsp;[&nbsp; {LEECH_SPEED} &nbsp;]</span> &nbsp;
+							<span class="leech">Ð›Ð¸Ñ‡Ð¸:&nbsp; <b>{LEECH_COUNT}</b> &nbsp;[&nbsp; {LEECH_SPEED} &nbsp;]</span> &nbsp;
                                     <!-- ENDIF -->
                                     <!-- IF PEERS_FULL_LINK && PEER_EXIST -->
 					      <a href="{SPMODE_FULL_HREF}" class="gen">{L_SPMODE_FULL}</a>

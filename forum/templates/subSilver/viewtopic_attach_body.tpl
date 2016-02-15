@@ -214,23 +214,23 @@
 	<tr class="row1">
 		<td width="15%" class="genmed">&nbsp;{L_TRACKER}:&nbsp;</td>
 		<td width="70%" class="genmed">&nbsp;{postrow.attach.tor_reged.TRACKER_LINK}</td>
-            <td width="15%" class="gensmall" rowspan="5" align="center" style="padding: 5px">{postrow.attach.tor_reged.S_UPLOAD_IMAGE}<br />{postrow.attach.tor_reged.U_DOWNLOAD_URL}<br />{postrow.attach.tor_reged.FILESIZE}<br /><hr><input type="button" style="border: solid 1px;background-color:#FAFAFA;" value="Список файлов" onclick="$('#submit-buttons').slideToggle();"></td>
+            <td width="15%" class="gensmall" rowspan="5" align="center" style="padding: 5px">{postrow.attach.tor_reged.S_UPLOAD_IMAGE}<br />{postrow.attach.tor_reged.U_DOWNLOAD_URL}<br />{postrow.attach.tor_reged.FILESIZE}<br /><hr><input type="button" style="border: solid 1px;background-color:#FAFAFA;" value="РЎРїРёСЃРѕРє С„Р°Р№Р»РѕРІ" onclick="$('#submit-buttons').slideToggle();"></td>
 	</tr>
       <tr class="row1">
-		<td class="genmed">&nbsp;Статус:</td>
+		<td class="genmed">&nbsp;РЎС‚Р°С‚СѓСЃ:</td>
 		<td class="genmed">&nbsp;{postrow.attach.tor_reged.TOPIC_CHECK_STATUS} 
 <!-- BEGIN mod -->
 			<form method="POST" action="{postrow.attach.tor_reged.mod.ACT}">
 			<select name="topic_check_status" onchange='add_field(this)'>
-			<option value="-1">>>Сменить статус<<
-			<option value="1">Проверяется
-			<option value="2">Oформлено
-			<!-- IF postrow.attach.tor_reged.mod.IN_NATIVE_F --><option value="3">Недооформлено<!-- ENDIF -->
-			<option value="4">Неоформлено
-			<option value="5">Повтор</select>
+			<option value="-1">>>РЎРјРµРЅРёС‚СЊ СЃС‚Р°С‚СѓСЃ<<
+			<option value="1">РџСЂРѕРІРµСЂСЏРµС‚СЃСЏ
+			<option value="2">OС„РѕСЂРјР»РµРЅРѕ
+			<!-- IF postrow.attach.tor_reged.mod.IN_NATIVE_F --><option value="3">РќРµРґРѕРѕС„РѕСЂРјР»РµРЅРѕ<!-- ENDIF -->
+			<option value="4">РќРµРѕС„РѕСЂРјР»РµРЅРѕ
+			<option value="5">РџРѕРІС‚РѕСЂ</select>
 			<input id="choose_status" type="text" name="duble_tid" value="0" size="3" class="post" style="display:none;" />
 			<input type="hidden" name="id" value="{postrow.attach.tor_reged.mod.ATTACH_ID}" /><input type="hidden" name="sid" value="{postrow.attach.tor_reged.mod.SID}" />
-			<input type="submit" value="Да">
+			<input type="submit" value="Р”Р°">
 			</form>
 <!-- END mod --> 
 <!-- BEGIN auther -->
@@ -238,7 +238,7 @@
 			<input type="hidden" name="id" value="{postrow.attach.tor_reged.auther.ATTACH_ID}" />
 			<input type="hidden" name="sid" value="{postrow.attach.tor_reged.auther.SID}" />
 			<input type="checkbox" name="i_edited" value="1" />
-			<input type="submit" value="Я исправил">
+			<input type="submit" value="РЇ РёСЃРїСЂР°РІРёР»">
 			</form>
 
 <!-- END auther -->
@@ -283,7 +283,7 @@
 
 <!-- END attach -->
 
-<!-- Таблица отображения списка файлов -->
+<!-- РўР°Р±Р»РёС†Р° РѕС‚РѕР±СЂР°Р¶РµРЅРёСЏ СЃРїРёСЃРєР° С„Р°Р№Р»РѕРІ -->
    <style type="text/css">
    #submit-buttons { display: none; }
    #infobox-wrap { width: 95%; }
@@ -302,4 +302,4 @@
     </tr>
     </table>
    </div>
-<!-- Таблица отображения списка файлов -->
+<!-- РўР°Р±Р»РёС†Р° РѕС‚РѕР±СЂР°Р¶РµРЅРёСЏ СЃРїРёСЃРєР° С„Р°Р№Р»РѕРІ -->

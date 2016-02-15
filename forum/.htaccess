@@ -1,9 +1,10 @@
-<Files "config.php">
-Order Allow,Deny
-Deny from All
-</Files>
+## set default server charset
+AddDefaultCharset UTF-8
 
-<Files "common.php">
-Order Allow,Deny
-Deny from All
-</Files>
+## folder listing access control
+Options All -Indexes
+
+## deny access to system files
+<FilesMatch "\.(.*sql|tpl|db|inc|log|md)|(config|common).php$">
+deny from all
+</FilesMatch>

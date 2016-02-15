@@ -1,33 +1,7 @@
 <?php
-/***************************************************************************
- *                            functions_delete.php
- *                            -------------------
- *   begin                : Sat, Jul 20, 2002
- *   copyright            : (C) 2002 Meik Sievertsen
- *   email                : acyd.burn@gmx.de
- *
- *   $Id: functions_delete.php,v 1.14 2004/11/30 17:56:11 acydburn Exp $
- *
- *
- ***************************************************************************/
 
-/***************************************************************************
- *
- *   This program is free software; you can redistribute it and/or modify
- *   it under the terms of the GNU General Public License as published by
- *   the Free Software Foundation; either version 2 of the License, or
- *   (at your option) any later version.
- *
- *
- ***************************************************************************/
+if (!defined('FT_ROOT')) die(basename(__FILE__));
 
-//
-// All Attachment Functions processing the Deletion Process
-//
-
-//
-// Delete Attachment(s) from post(s) (intern)
-//
 function delete_attachment($post_id_array = 0, $attach_id_array = 0, $page = 0, $user_id = 0)
 {
 	global $db;

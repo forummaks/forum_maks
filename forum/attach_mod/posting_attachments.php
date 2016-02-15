@@ -619,8 +619,7 @@ class attach_parent
 						//bt
 						if ($this->attachment_extension_list[$actual_element] === TORRENT_EXT && $attachments[$actual_element]['tracker_status'])
 						{
-							global $phpbb_root_path, $phpEx;
-							include_once($phpbb_root_path .'includes/functions_torrent.'. $phpEx);
+							include_once(FT_ROOT .'includes/functions_torrent.php');
 							tracker_unregister($attachment_id);
 						}
 						//bt end
@@ -805,8 +804,7 @@ class attach_parent
 	//
 	function display_attachment_bodies()
 	{
-		global $attach_config, $db, $is_auth, $lang, $mode, $phpEx, $template, $upload_dir, $userdata, $HTTP_POST_VARS, $forum_id;
-		global $phpbb_root_path;
+		global $attach_config, $db, $is_auth, $lang, $mode, $template, $upload_dir, $userdata, $HTTP_POST_VARS, $forum_id;
 
 		//
 		// Choose what to display
@@ -867,7 +865,7 @@ class attach_parent
 			'L_POSTED_ATTACHMENTS' => $lang['Posted_attachments'],
 			'L_FILE_NAME' => $lang['File_name'],
 			'L_FILE_COMMENT' => $lang['File_comment'],
-			'RULES' => '<a href="' . append_sid($phpbb_root_path . "attach_rules.$phpEx?f=$u_rules_id") . '" target="_blank">' . $lang['Allowed_extensions_and_sizes'] . '</a>',
+			'RULES' => '<a href="' . append_sid(FT_ROOT . "attach_rules.php?f=$u_rules_id") . '" target="_blank">' . $lang['Allowed_extensions_and_sizes'] . '</a>',
 
 			'S_HIDDEN' => $s_hidden)
 		);
@@ -945,7 +943,7 @@ class attach_parent
 				}
 				else
 				{
-					$download_link = append_sid('download.' . $phpEx . '?id=' . $this->attachment_id_list[$i]);
+					$download_link = append_sid('download.php?id=' . $this->attachment_id_list[$i]);
 				}
 
 				$template->assign_block_vars('attach_row', array(

@@ -1,29 +1,6 @@
 <?php
-/***************************************************************************
- *                            functions_selects.php
- *                            -------------------
- *   begin                : Saturday, Mar 30, 2002
- *   copyright            : (C) 2002 Meik Sievertsen
- *   email                : acyd.burn@gmx.de
- *
- *   $Id: functions_selects.php,v 1.11 2004/07/31 15:15:54 acydburn Exp $
- *
- *
- ***************************************************************************/
 
-/***************************************************************************
- *
- *   This program is free software; you can redistribute it and/or modify
- *   it under the terms of the GNU General Public License as published by
- *   the Free Software Foundation; either version 2 of the License, or
- *   (at your option) any later version.
- *
- *
- ***************************************************************************/
-
-//
-// Functions to build select boxes ;)
-//
+if (!defined('FT_ROOT')) die(basename(__FILE__));
 
 function group_select($select_name, $default_group = 0)
 {

@@ -1,33 +1,7 @@
 <?php
-/***************************************************************************
- *                            functions_attach.php
- *                            -------------------
- *   begin                : Friday, Mar 29, 2002
- *   copyright            : (C) 2002 Meik Sievertsen
- *   email                : acyd.burn@gmx.de
- *
- *   $Id: functions_attach.php,v 1.42 2005/05/09 19:30:29 acydburn Exp $
- *
- *
- ***************************************************************************/
 
-/***************************************************************************
- *
- *   This program is free software; you can redistribute it and/or modify
- *   it under the terms of the GNU General Public License as published by
- *   the Free Software Foundation; either version 2 of the License, or
- *   (at your option) any later version.
- *
- *
- ***************************************************************************/
+if (!defined('FT_ROOT')) die(basename(__FILE__));
 
-//
-// All Attachment Functions needed everywhere
-//
-
-//
-// A simple dectobase64 function
-//
 function base64_pack($number)
 {
 	$chars = '0123456789abcdefghijklmnopqrstuvwxyzABCDEFGHIJKLMNOPQRSTUVWXYZ+-';

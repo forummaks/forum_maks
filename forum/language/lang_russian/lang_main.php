@@ -1120,7 +1120,7 @@ $lang['Transl_Rules'] = 'Правила транслита';
 //qr end
 
 //bt
-include($phpbb_root_path .'language/lang_russian/lang_main_bt.'. $phpEx);
+include(FT_ROOT .'language/lang_russian/lang_main_bt.php');
 //bt end
 
 //txtb

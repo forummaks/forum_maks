@@ -163,12 +163,6 @@ $gen_simple_header = FALSE;
 
 include(FT_ROOT . 'config.php');
 
-if( !defined("PHPBB_INSTALLED") )
-{
-	header("Location: install/install.php");
-	exit;
-}
-
 include(FT_ROOT . 'includes/constants.php');
 include(FT_ROOT . 'includes/template.php');
 include(FT_ROOT . 'includes/sessions.php');
@@ -229,11 +223,6 @@ define('DL_STATUS_WILL',       0);
 define('DL_STATUS_DOWN',       1);
 define('DL_STATUS_COMPLETE',   2);
 define('DL_STATUS_CANCEL',     3);
-
-if (file_exists('install') || file_exists('contrib'))
-{
-	message_die(GENERAL_MESSAGE, 'Please ensure both the install/ and contrib/ directories are deleted');
-}
 
 //
 // Show 'Board is disabled' message if needed.

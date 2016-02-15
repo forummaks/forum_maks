@@ -112,6 +112,15 @@ define('AUTH_VOTE', 10);
 define('AUTH_ATTACH', 11);
 
 // Table names
+define('ATTACH_CONFIG_TABLE', $table_prefix . 'attachments_config');
+define('EXTENSION_GROUPS_TABLE', $table_prefix . 'extension_groups');
+define('EXTENSIONS_TABLE', $table_prefix . 'extensions');
+define('FORBIDDEN_EXTENSIONS_TABLE', $table_prefix . 'forbidden_extensions');
+define('ATTACHMENTS_DESC_TABLE', $table_prefix . 'attachments_desc');
+define('ATTACHMENTS_TABLE', $table_prefix . 'attachments');
+define('QUOTA_TABLE', $table_prefix . 'attach_quota');
+define('QUOTA_LIMITS_TABLE', $table_prefix . 'quota_limits');
+
 define('TOPICS_MOVE_TABLE', $table_prefix.'topics_move');
 define('CONFIRM_TABLE', $table_prefix.'confirm');
 define('AUTH_ACCESS_TABLE', $table_prefix.'auth_access');
@@ -196,5 +205,42 @@ define('SF_SEL_SPACER', '&nbsp;|-&nbsp;');
 // FLAGHACK-start
 define('FLAG_TABLE', $table_prefix.'flags');
 // FLAGHACK-end
+
+// Attachment Debug Mode
+define('ATTACH_DEBUG', 0);		// Attachment Mod Debugging off
+//define('ATTACH_DEBUG', 1);	// Attachment Mod Debugging on
+
+//define('ATTACH_QUERY_DEBUG', 1);
+
+// Auth
+define('AUTH_DOWNLOAD', 20);
+
+// Download Modes
+define('INLINE_LINK', 1);
+define('PHYSICAL_LINK', 2);
+
+// Categories
+define('NONE_CAT', 0);
+define('IMAGE_CAT', 1);
+define('STREAM_CAT', 2);
+define('SWF_CAT', 3);
+// Pages
+define('PAGE_UACP', -32);
+define('PAGE_RULES', -33);
+
+// Misc
+define('MEGABYTE', 1024);
+define('ADMIN_MAX_ATTACHMENTS', 50); // Maximum Attachments in Posts or PM's for Admin Users
+define('THUMB_DIR', 'thumbs');
+define('MODE_THUMBNAIL', 1);
+
+// Forum Extension Group Permissions
+define('GPERM_ALL', 0); // ALL FORUMS
+
+// Quota Types
+define('QUOTA_UPLOAD_LIMIT', 1);
+define('QUOTA_PM_LIMIT', 2);
+
+define('ATTACH_VERSION', '2.3.14');
 
 ?>

@@ -1,7 +1,6 @@
 <?php
 if (!defined('FT_ROOT')) die(basename(__FILE__));
 
-include(FT_ROOT . 'attach_mod/includes/constants.php');
 include(FT_ROOT . 'attach_mod/includes/functions_includes.php');
 include(FT_ROOT . 'attach_mod/includes/functions_attach.php');
 include(FT_ROOT . 'attach_mod/includes/functions_delete.php');
@@ -15,28 +14,28 @@ if (defined('ATTACH_INSTALL'))
 
 function include_attach_lang()
 {
-	global $phpbb_root_path, $phpEx, $lang, $board_config, $attach_config;
+	global $lang, $board_config, $attach_config;
 
 	//
 	// Include Language
 	//
 	$language = $board_config['default_lang'];
 
-	if (!file_exists($phpbb_root_path . 'language/lang_' . $language . '/lang_main_attach.'.$phpEx))
+	if (!file_exists(FT_ROOT . 'language/lang_' . $language . '/lang_main_attach.php'))
 	{
 		$language = $attach_config['board_lang'];
 	}
 
-	include($phpbb_root_path . 'language/lang_' . $language . '/lang_main_attach.' . $phpEx);
+	include(FT_ROOT . 'language/lang_' . $language . '/lang_main_attach.php');
 
 	if (defined('IN_ADMIN'))
 	{
-		if (!file_exists($phpbb_root_path . 'language/lang_' . $language . '/lang_admin_attach.'.$phpEx))
+		if (!file_exists(FT_ROOT . 'language/lang_' . $language . '/lang_admin_attach.php'))
 		{
 			$language = $attach_config['board_lang'];
 		}
 
-		include($phpbb_root_path . 'language/lang_' . $language . '/lang_admin_attach.' . $phpEx);
+		include(FT_ROOT . 'language/lang_' . $language . '/lang_admin_attach.php');
 	}
 
 }
@@ -68,7 +67,7 @@ function get_config()
 //
 // Get Attachment Config
 //
-$cache_dir = $phpbb_root_path . '/cache';
+$cache_dir = FT_ROOT . '/cache';
 $cache_file = $cache_dir . '/attach_config.php';
 $attach_config = array();
 
@@ -102,11 +101,11 @@ else
 
 // Please do not change the include-order, it is valuable for proper execution.
 // Functions for displaying Attachment Things
-include($phpbb_root_path . 'attach_mod/displaying.'.$phpEx);
+include(FT_ROOT . 'attach_mod/displaying.php');
 // Posting Attachments Class (HAVE TO BE BEFORE PM)
-include($phpbb_root_path . 'attach_mod/posting_attachments.'.$phpEx);
+include(FT_ROOT . 'attach_mod/posting_attachments.php');
 // PM Attachments Class
-include($phpbb_root_path . 'attach_mod/pm_attachments.'.$phpEx);
+include(FT_ROOT . 'attach_mod/pm_attachments.php');
 
 if (!intval($attach_config['allow_ftp_upload']))
 {

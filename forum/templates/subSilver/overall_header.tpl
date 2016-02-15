@@ -77,7 +77,7 @@ $(function(){
 	$('#quick-search').submit(function(){
 		var action = $('#search-action').val();
 		var txt = $('#search-text').val();
-		if (txt=='поиск...' || txt == '') {
+		if (txt=='РїРѕРёСЃРє...' || txt == '') {
 			$('#search-text').val('').addClass('hl-err-input').focus();
 			return false;
 		}
@@ -171,10 +171,10 @@ a.svistok:link, a.svistok:visited, a.svistok:hover, a.svistok:active {
 <!-- IF LOGGED_IN -->
 <div style="position: absolute; top: 3px; right: 12px;">
 <form id="quick-search" action="" method="post">
-	<input id="search-text" type="text" name="nm" style="width: 150px; color:#666666; font-style:italic;" id="sk" size="50" value="поиск..." onfocus="if ((this.style.color=='rgb(102, 102, 102)') || (this.style.color=='#666666')) {this.value=''; this.style.color='#000000'; this.style.fontStyle='normal'}" onblur="if (this.value=='' && ((this.style.color=='rgb(0, 0, 0)') || (this.style.color=='#000000'))) {this.style.color='#666666'; this.style.fontStyle='italic'; this.value='поиск...';};"/>
+	<input id="search-text" type="text" name="nm" style="width: 150px; color:#666666; font-style:italic;" id="sk" size="50" value="РїРѕРёСЃРє..." onfocus="if ((this.style.color=='rgb(102, 102, 102)') || (this.style.color=='#666666')) {this.value=''; this.style.color='#000000'; this.style.fontStyle='normal'}" onblur="if (this.value=='' && ((this.style.color=='rgb(0, 0, 0)') || (this.style.color=='#000000'))) {this.style.color='#666666'; this.style.fontStyle='italic'; this.value='РїРѕРёСЃРє...';};"/>
 		<select id="search-action">
-			<option value="tracker.php" selected="selected"> по трекеру </option>
-			<option value="search.php"> по форуму </option>
+			<option value="tracker.php" selected="selected"> РїРѕ С‚СЂРµРєРµСЂСѓ </option>
+			<option value="search.php"> РїРѕ С„РѕСЂСѓРјСѓ </option>
 		</select>
 		<input type="submit" class="mainoption" value="&raquo;" style="width: 30px;" />
 </form>		
@@ -189,7 +189,7 @@ a.svistok:link, a.svistok:visited, a.svistok:hover, a.svistok:active {
       <td align="left">
       <!-- //bt -->
 	<!-- BEGIN user_ratio -->
-      <span class="mainmenu">Отдано: <span class="seedsmall"><b>{user_ratio.U_UP_TOTAL}</b></span> &#0183; Бонус: <span class="seedsmall"><b>{user_ratio.U_BONUS_TOTAL}</b></span> &#0183; Скачано: <span class="leechsmall"><b>{user_ratio.U_DOWN_TOTAL}</b></span> &#0183; Рейтинг: <span class="small"><b>{user_ratio.U_RATIO}</b></span></span>
+      <span class="mainmenu">РћС‚РґР°РЅРѕ: <span class="seedsmall"><b>{user_ratio.U_UP_TOTAL}</b></span> &#0183; Р‘РѕРЅСѓСЃ: <span class="seedsmall"><b>{user_ratio.U_BONUS_TOTAL}</b></span> &#0183; РЎРєР°С‡Р°РЅРѕ: <span class="leechsmall"><b>{user_ratio.U_DOWN_TOTAL}</b></span> &#0183; Р РµР№С‚РёРЅРі: <span class="small"><b>{user_ratio.U_RATIO}</b></span></span>
       <!-- END user_ratio -->
 	<!-- //bt end --> 
       </td>
@@ -199,9 +199,9 @@ a.svistok:link, a.svistok:visited, a.svistok:hover, a.svistok:active {
 	<!-- ENDIF -->
       </td>
       <td align="right">
-      <a href="{U_EDIT_PROFILE}" class="mainmenu">Настройки</a> &#0183;
-      <a href="{U_PROFILE}" class="mainmenu">Торрент-профиль</a> &#0183;
-      <a href="{U_LOGIN_LOGOUT}" class="mainmenu" onclick="return confirm('Выйти?');">{L_LOGIN_LOGOUT}</a>
+      <a href="{U_EDIT_PROFILE}" class="mainmenu">РќР°СЃС‚СЂРѕР№РєРё</a> &#0183;
+      <a href="{U_PROFILE}" class="mainmenu">РўРѕСЂСЂРµРЅС‚-РїСЂРѕС„РёР»СЊ</a> &#0183;
+      <a href="{U_LOGIN_LOGOUT}" class="mainmenu" onclick="return confirm('Р’С‹Р№С‚Рё?');">{L_LOGIN_LOGOUT}</a>
       </td>
          </tr>
    </table>
@@ -220,7 +220,7 @@ a.svistok:link, a.svistok:visited, a.svistok:hover, a.svistok:active {
 <input class="post" type="text" name="username" size="10" />
 {L_PASSWORD}:
 <input class="post" type="password" name="password" size="10" maxlength="32" />
-<input class="text" type="checkbox" name="autologin" /> Запомнить&nbsp; 
+<input class="text" type="checkbox" name="autologin" /> Р—Р°РїРѕРјРЅРёС‚СЊ&nbsp; 
 <input type="submit" class="mainoption" name="login" value="{L_LOGIN}" /> &nbsp;&#0183;&nbsp;
 <a href="{U_SEND_PASSWORD}" style="text-decoration:none">{L_FORGOTTEN_PASSWORD}</a> 
 </td>
