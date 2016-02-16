@@ -1,29 +1,7 @@
 <?php
-/***************************************************************************
-                                emailer.php
-                             -------------------
-    begin                : Sunday Aug. 12, 2001
-    copyright            : (C) 2001 The phpBB Group
-    email                : support@phpbb.com
 
-    $Id: emailer.php,v 1.15.2.34 2003/07/26 11:41:35 acydburn Exp $
+if (!defined('FT_ROOT')) die(basename(__FILE__));
 
-***************************************************************************/
-
-/***************************************************************************
- *
- *   This program is free software; you can redistribute it and/or modify
- *   it under the terms of the GNU General Public License as published by
- *   the Free Software Foundation; either version 2 of the License, or
- *   (at your option) any later version.
- *
- ***************************************************************************/
-
-//
-// The emailer class has support for attaching files, that isn't implemented
-// in the 2.0 release but we can probable find some way of using it in a future
-// release
-//
 class emailer
 {
 	var $msg, $subject, $extra_headers;
@@ -86,7 +64,7 @@ class emailer
 
 	function use_template($template_file, $template_lang = '')
 	{
-		global $board_config, $phpbb_root_path;
+		global $board_config;
 
 		if (trim($template_file) == '')
 		{
@@ -100,11 +78,11 @@ class emailer
 
 		if (empty($this->tpl_msg[$template_lang . $template_file]))
 		{
-			$tpl_file = $phpbb_root_path . 'language/lang_' . $template_lang . '/email/' . $template_file . '.tpl';
+			$tpl_file = FT_ROOT . 'language/lang_' . $template_lang . '/email/' . $template_file . '.tpl';
 
 			if (!@file_exists(@phpbb_realpath($tpl_file)))
 			{
-				$tpl_file = $phpbb_root_path . 'language/lang_' . $board_config['default_lang'] . '/email/' . $template_file . '.tpl';
+				$tpl_file = FT_ROOT . 'language/lang_' . $board_config['default_lang'] . '/email/' . $template_file . '.tpl';
 
 				if (!@file_exists(@phpbb_realpath($tpl_file)))
 				{
@@ -135,7 +113,7 @@ class emailer
 	// Send the mail out to the recipients set previously in var $this->address
 	function send()
 	{
-		global $board_config, $lang, $phpEx, $phpbb_root_path, $db;
+		global $board_config, $lang, $db;
 
     	// Escape all quotes, else the eval will fail.
 		$this->msg = str_replace ("'", "\'", $this->msg);
@@ -199,7 +177,7 @@ class emailer
 		{
 			if ( !defined('SMTP_INCLUDED') )
 			{
-				include($phpbb_root_path . 'includes/smtp.' . $phpEx);
+				require(FT_ROOT . 'includes/smtp.php');
 			}
 
 			$result = smtpmail($to, $this->subject, $this->msg, $this->extra_headers);
@@ -237,10 +215,6 @@ class emailer
 		return true;
 	}
 
-	// Encodes the given string for proper display for this encoding ... nabbed
-	// from php.net and modified. There is an alternative encoding method which
-	// may produce lesd output but it's questionable as to its worth in this
-	// scenario IMO
 	function encode($str)
 	{
 		if ($this->encoding == '')
@@ -368,6 +342,4 @@ class emailer
 		return $encoded;
 	}
 
-} // class emailer
-
-?>
+}

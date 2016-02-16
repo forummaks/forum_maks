@@ -2,8 +2,11 @@
 
 if (!defined('FT_ROOT')) die(basename(__FILE__));
 
+unset($stopwords, $synonyms_match, $synonyms_replace);
+$board_config = $userdata = $theme = $images = $lang = $nav_links = array();
+$gen_simple_header = false;
+
 // Debug Level
-//define('DEBUG', 1); // Debugging on
 define('DEBUG', 1); // Debugging off
 
 // User Levels <- Do not change the values of USER or ADMIN
@@ -65,12 +68,12 @@ define('PRIVMSGS_SAVED_OUT_MAIL', 4);
 define('PRIVMSGS_UNREAD_MAIL', 5);
 
 // URL PARAMETERS
-define('POST_TOPIC_URL', 't');
-define('POST_CAT_URL', 'c');
-define('POST_FORUM_URL', 'f');
-define('POST_USERS_URL', 'u');
-define('POST_POST_URL', 'p');
-define('POST_GROUPS_URL', 'g');
+define('POST_TOPIC_URL', 	't');
+define('POST_CAT_URL', 		'c');
+define('POST_FORUM_URL', 	'f');
+define('POST_USERS_URL', 	'u');
+define('POST_POST_URL', 	'p');
+define('POST_GROUPS_URL', 	'g');
 
 // Session parameters
 define('SESSION_METHOD_COOKIE', 100);
@@ -111,50 +114,65 @@ define('AUTH_POLLCREATE', 9);
 define('AUTH_VOTE', 10);
 define('AUTH_ATTACH', 11);
 
+define('BT_AUTH_KEY_LENGTH',   10);
+
+define('DL_STATUS_WILL',       0);
+define('DL_STATUS_DOWN',       1);
+define('DL_STATUS_COMPLETE',   2);
+define('DL_STATUS_CANCEL',     3);
+
 // Table names
-define('ATTACH_CONFIG_TABLE', $table_prefix . 'attachments_config');
-define('EXTENSION_GROUPS_TABLE', $table_prefix . 'extension_groups');
-define('EXTENSIONS_TABLE', $table_prefix . 'extensions');
-define('FORBIDDEN_EXTENSIONS_TABLE', $table_prefix . 'forbidden_extensions');
-define('ATTACHMENTS_DESC_TABLE', $table_prefix . 'attachments_desc');
-define('ATTACHMENTS_TABLE', $table_prefix . 'attachments');
-define('QUOTA_TABLE', $table_prefix . 'attach_quota');
-define('QUOTA_LIMITS_TABLE', $table_prefix . 'quota_limits');
+define('ATTACH_CONFIG_TABLE', 			'phpbb_attachments_config');
+define('EXTENSION_GROUPS_TABLE',   		'phpbb_extension_groups');
+define('EXTENSIONS_TABLE',  			'phpbb_extensions');
+define('FORBIDDEN_EXTENSIONS_TABLE',  	'phpbb_forbidden_extensions');
+define('ATTACHMENTS_DESC_TABLE', 		'phpbb_attachments_desc');
+define('ATTACHMENTS_TABLE', 			'phpbb_attachments');
+define('QUOTA_TABLE',  					'phpbb_attach_quota');
+define('QUOTA_LIMITS_TABLE',  			'phpbb_quota_limits');
 
-define('TOPICS_MOVE_TABLE', $table_prefix.'topics_move');
-define('CONFIRM_TABLE', $table_prefix.'confirm');
-define('AUTH_ACCESS_TABLE', $table_prefix.'auth_access');
-define('BANLIST_TABLE', $table_prefix.'banlist');
+define('BT_CONFIG_TABLE',      			'phpbb_bt_config');          // phpbb_bt_config
+define('BT_SEARCH_TABLE',      			'phpbb_bt_search_results');  // phpbb_bt_search_results
+define('BT_TOR_DL_STAT_TABLE', 			'phpbb_bt_tor_dl_stat');     // phpbb_bt_tor_dl_stat
+define('BT_TORRENTS_TABLE',    			'phpbb_bt_torrents');        // phpbb_bt_torrents
+define('BT_TRACKER_TABLE',     			'phpbb_bt_tracker');         // phpbb_bt_tracker
+define('BT_USERS_TABLE',       			'phpbb_bt_users');           // phpbb_bt_users
+define('BT_USR_DL_STAT_TABLE', 			'phpbb_bt_users_dl_status'); // phpbb_bt_users_dl_status
 
-define('CATEGORIES_TABLE', $table_prefix.'categories');
-define('CONFIG_TABLE', $table_prefix.'config');
-define('DISALLOW_TABLE', $table_prefix.'disallow');
-define('FORUMS_TABLE', $table_prefix.'forums');
-define('GROUPS_TABLE', $table_prefix.'groups');
-define('POSTS_TABLE', $table_prefix.'posts');
+define('TOPICS_MOVE_TABLE', 			'phpbb_topics_move');
+define('CONFIRM_TABLE',					'phpbb_confirm');
+define('AUTH_ACCESS_TABLE', 			'phpbb_auth_access');
+define('BANLIST_TABLE',					'phpbb_banlist');
 
-define('POSTS_TEXT_TABLE', $table_prefix.'posts_text');
-define('PRIVMSGS_TABLE', $table_prefix.'privmsgs');
-define('PRIVMSGS_TEXT_TABLE', $table_prefix.'privmsgs_text');
-define('PRIVMSGS_IGNORE_TABLE', $table_prefix.'privmsgs_ignore');
-define('PRUNE_TABLE', $table_prefix.'forum_prune');
-define('RANKS_TABLE', $table_prefix.'ranks');
-define('SEARCH_TABLE', $table_prefix.'search_results');
-define('SEARCH_WORD_TABLE', $table_prefix.'search_wordlist');
-define('SEARCH_MATCH_TABLE', $table_prefix.'search_wordmatch');
-define('SESSIONS_TABLE', $table_prefix.'sessions');
-define('SMILIES_TABLE', $table_prefix.'smilies');
-define('THEMES_TABLE', $table_prefix.'themes');
-define('THEMES_NAME_TABLE', $table_prefix.'themes_name');
-define('TOPICS_TABLE', $table_prefix.'topics');
+define('CATEGORIES_TABLE', 				'phpbb_categories');
+define('CONFIG_TABLE', 					'phpbb_config');
+define('DISALLOW_TABLE', 				'phpbb_disallow');
+define('FORUMS_TABLE', 					'phpbb_forums');
+define('GROUPS_TABLE', 					'phpbb_groups');
+define('POSTS_TABLE',					'phpbb_posts');
 
-define('TOPICS_WATCH_TABLE', $table_prefix.'topics_watch');
-define('USER_GROUP_TABLE', $table_prefix.'user_group');
-define('USERS_TABLE', $table_prefix.'users');
-define('WORDS_TABLE', $table_prefix.'words');
-define('VOTE_DESC_TABLE', $table_prefix.'vote_desc');
-define('VOTE_RESULTS_TABLE', $table_prefix.'vote_results');
-define('VOTE_USERS_TABLE', $table_prefix.'vote_voters');
+define('POSTS_TEXT_TABLE', 				'phpbb_posts_text');
+define('PRIVMSGS_TABLE', 				'phpbb_privmsgs');
+define('PRIVMSGS_TEXT_TABLE', 			'phpbb_privmsgs_text');
+define('PRIVMSGS_IGNORE_TABLE',			'phpbb_privmsgs_ignore');
+define('PRUNE_TABLE', 					'phpbb_forum_prune');
+define('RANKS_TABLE', 					'phpbb_ranks');
+define('SEARCH_TABLE', 					'phpbb_search_results');
+define('SEARCH_WORD_TABLE', 			'phpbb_search_wordlist');
+define('SEARCH_MATCH_TABLE', 			'phpbb_search_wordmatch');
+define('SESSIONS_TABLE', 				'phpbb_sessions');
+define('SMILIES_TABLE', 				'phpbb_smilies');
+define('THEMES_TABLE', 					'phpbb_themes');
+define('THEMES_NAME_TABLE', 			'phpbb_themes_name');
+define('TOPICS_TABLE', 					'phpbb_topics');
+
+define('TOPICS_WATCH_TABLE', 			'phpbb_topics_watch');
+define('USER_GROUP_TABLE', 				'phpbb_user_group');
+define('USERS_TABLE', 					'phpbb_users');
+define('WORDS_TABLE', 					'phpbb_words');
+define('VOTE_DESC_TABLE',				'phpbb_vote_desc');
+define('VOTE_RESULTS_TABLE', 			'phpbb_vote_results');
+define('VOTE_USERS_TABLE', 				'phpbb_vote_voters');
 
 define('TP_VER',      '0.3.5');
 define('TP_NAME',     'TorrentPier');
@@ -203,7 +221,7 @@ define('SF_SEL_SPACER', '&nbsp;|-&nbsp;');
 //sf end
 
 // FLAGHACK-start
-define('FLAG_TABLE', $table_prefix.'flags');
+define('FLAG_TABLE', 'phpbb_flags');
 // FLAGHACK-end
 
 // Attachment Debug Mode
@@ -242,5 +260,3 @@ define('QUOTA_UPLOAD_LIMIT', 1);
 define('QUOTA_PM_LIMIT', 2);
 
 define('ATTACH_VERSION', '2.3.14');
-
-?>

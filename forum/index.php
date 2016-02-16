@@ -497,12 +497,12 @@ $template->assign_vars(array(
 //
 //latest news
 //
-if ($bb_cfg['show_latest_news'] AND $news_forum_ids = $bb_cfg['latest_news_forum_id'])
+if ($ft_cfg['show_latest_news'] AND $news_forum_ids = $ft_cfg['latest_news_forum_id'])
 {
 	$template->assign_vars(array(
 		'SHOW_LATEST_NEWS' => true,
 	));
-  $news_count = max($bb_cfg['latest_news_count'], 1);	
+  $news_count = max($ft_cfg['latest_news_count'], 1);	
 	
 	$sql = "SELECT t.topic_id, t.topic_title, t.topic_last_post_id, p.post_time
 		FROM " . TOPICS_TABLE . " AS t, " . POSTS_TABLE . " AS p, " . FORUMS_TABLE . " AS f

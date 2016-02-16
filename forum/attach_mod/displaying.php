@@ -1,4 +1,5 @@
 <?php
+
 if (!defined('FT_ROOT')) die(basename(__FILE__));
 
 $allowed_extensions = array();
@@ -917,7 +918,7 @@ function display_attachments($post_id)
 			//bt
 			if ($link && ($attachments['_'. $post_id][$i]['extension'] === TORRENT_EXT))
 			{
-				include(FT_ROOT .'attach_mod/displaying_torrent.php');
+				require(FT_ROOT .'attach_mod/displaying_torrent.php');
 			}
 
 			else if ($link)
@@ -946,5 +947,3 @@ function display_attachments($post_id)
 		}
 	}
 }
-
-?>

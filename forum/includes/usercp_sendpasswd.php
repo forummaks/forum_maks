@@ -37,7 +37,7 @@ if ( isset($HTTP_POST_VARS['submit']) )
 				message_die(GENERAL_ERROR, 'Could not update new password information', '', __LINE__, __FILE__, $sql);
 			}
 
-			include(FT_ROOT . 'includes/emailer.php');
+			require(FT_ROOT . 'includes/emailer.php');
 			$emailer = new emailer($board_config['smtp_delivery']);
 
 			$emailer->from($board_config['board_email']);
@@ -85,7 +85,7 @@ else
 //
 // Output basic page
 //
-include(FT_ROOT . 'includes/page_header.php');
+require(FT_ROOT . 'includes/page_header.php');
 
 $template->set_filenames(array(
 	'body' => 'profile_send_pass.tpl')
@@ -108,4 +108,4 @@ $template->assign_vars(array(
 
 $template->pparse('body');
 
-include(FT_ROOT . 'includes/page_tail.php');
+require(FT_ROOT . 'includes/page_tail.php');

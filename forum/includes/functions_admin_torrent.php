@@ -156,5 +156,3 @@ function update_config_table ($table_name, $default_cfg, $cfg, $type)
 	}
 	return;
 }
-
-?>

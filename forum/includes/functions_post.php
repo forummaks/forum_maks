@@ -112,7 +112,7 @@ function prepare_post(&$mode, &$post_data, &$bbcode_on, &$html_on, &$smilies_on,
 
 		if (!$userdata['session_logged_in'] || ($userdata['session_logged_in'] && $username != $userdata['username']))
 		{
-			include(FT_ROOT . 'includes/functions_validate.php');
+			require(FT_ROOT . 'includes/functions_validate.php');
 
 			$result = validate_username($username);
 			if ($result['error'])
@@ -201,7 +201,7 @@ function submit_post($mode, &$post_data, &$message, &$meta, &$forum_id, &$topic_
 	global $userdata, $user_ip;
 	global $is_auth;
 
-	include(FT_ROOT . 'includes/functions_search.php');
+	require(FT_ROOT . 'includes/functions_search.php');
 
 	$current_time = time();
 
@@ -509,7 +509,7 @@ function delete_post($mode, &$post_data, &$message, &$meta, &$forum_id, &$topic_
 
 	if ($mode != 'poll_delete')
 	{
-		include(FT_ROOT . 'includes/functions_search.php');
+		require(FT_ROOT . 'includes/functions_search.php');
 
 		$sql = "DELETE FROM " . POSTS_TABLE . "
 			WHERE post_id = $post_id";
@@ -687,7 +687,7 @@ function user_notification($mode, &$post_data, &$topic_title, &$forum_id, &$topi
 
 				if (sizeof($bcc_list_ary))
 				{
-					include(FT_ROOT . 'includes/emailer.php');
+					require(FT_ROOT . 'includes/emailer.php');
 					$emailer = new emailer($board_config['smtp_delivery']);
 
 					$script_name = preg_replace('/^\/?(.*?)\/?$/', '\1', trim($board_config['script_path']));
@@ -805,7 +805,7 @@ function generate_smilies($mode, $page_id)
 		$gen_simple_header = TRUE;
 
 		$page_title = $lang['Emoticons'] . " - $topic_title";
-		include(FT_ROOT . 'includes/page_header.php');
+		require(FT_ROOT . 'includes/page_header.php');
 
 		$template->set_filenames(array(
 			'smiliesbody' => 'posting_smilies.tpl')
@@ -890,7 +890,7 @@ function generate_smilies($mode, $page_id)
 	{
 		$template->pparse('smiliesbody');
 
-		include(FT_ROOT . 'includes/page_tail.php');
+		require(FT_ROOT . 'includes/page_tail.php');
 	}
 }
 

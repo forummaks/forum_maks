@@ -8,10 +8,9 @@ require_once(FT_ROOT . 'includes/bbcode.php');
 require_once(FT_ROOT . 'includes/functions_post.php');
 require_once(FT_ROOT . 'includes/functions_admin.php');
 
-
 function move($forum_id, $move_fid, $mode, $waits_days=0, $topic_id=0)
 {
-	global $db, $lang, $board_config, $phpEx;
+	global $db, $lang, $board_config;
 
 	// Before moving, lets try to clean up the invalid topic entries
 	$sql = 'SELECT topic_id FROM ' . TOPICS_TABLE . '
@@ -133,12 +132,12 @@ function move($forum_id, $move_fid, $mode, $waits_days=0, $topic_id=0)
 					{
 						case 2:
 							$pm_subject='”ведомление о присвоении статуса "оформлено" дл€ вашего релиза.';
-							$pm_message='ѕривет, '.$send_pm_data[$i]['poster_name'].'. \n\n'.'¬аша тема: '.'[url='.$server_protocol.$server_name.$server_port.$script_path.'/viewtopic.'.$phpEx.'?t='.$send_pm_data[$i]['topic_id'].']'.$send_pm_data[$i]['topic_title'].'[/url]'.', теперь соответствует правилам оформлени€ релизов и была перенесена в соответствующий '.'[url='.$server_protocol.$server_name.$server_port.$script_path.'/viewforum.'.$phpEx.'?f='.$move_fid.']форум[/url]';
+							$pm_message='ѕривет, '.$send_pm_data[$i]['poster_name'].'. \n\n'.'¬аша тема: '.'[url='.$server_protocol.$server_name.$server_port.$script_path.'/viewtopic.php?t='.$send_pm_data[$i]['topic_id'].']'.$send_pm_data[$i]['topic_title'].'[/url]'.', теперь соответствует правилам оформлени€ релизов и была перенесена в соответствующий '.'[url='.$server_protocol.$server_name.$server_port.$script_path.'/viewforum.php?f='.$move_fid.']форум[/url]';
 						break;
 						case 3:
 						case 4:
 							$pm_subject='”ведомление о переносе темы в форум неоформленных релизов.';
-							$pm_message='ѕривет, '.$send_pm_data[$i]['poster_name'].'. \n\n'.'¬аша тема: '.'[url='.$server_protocol.$server_name.$server_port.$script_path.'/viewtopic.'.$phpEx.'?t='.$send_pm_data[$i]['topic_id'].']'.$send_pm_data[$i]['topic_title'].'[/url]'.', созданна€ в форуме '.'[url='.$server_protocol.$server_name.$server_port.$script_path.'/viewforum.'.$phpEx.'?f='.$forum_id.']'.$send_pm_data[$i]['forum_name'].'[/url]'.', была перенесена в форум [url='.$server_protocol.$server_name.$server_port.$script_path.'/viewforum.'.$phpEx.'?f='.$move_fid.']неоформленных релизов[/url]'.', как не соответствующа€ правилам оформлени€ релизов. ¬ернуть обратно тему вы сможете, после того как оформите тему по правилам и нажмете кнопку "исправил", после этого модератор проверит ее снова и если она будет соответствовать правилам, и не будет €вл€тьс€ повтором(на момент проверки), модератор перенесет ее обратно.';
+							$pm_message='ѕривет, '.$send_pm_data[$i]['poster_name'].'. \n\n'.'¬аша тема: '.'[url='.$server_protocol.$server_name.$server_port.$script_path.'/viewtopic.php?t='.$send_pm_data[$i]['topic_id'].']'.$send_pm_data[$i]['topic_title'].'[/url]'.', созданна€ в форуме '.'[url='.$server_protocol.$server_name.$server_port.$script_path.'/viewforum.php?f='.$forum_id.']'.$send_pm_data[$i]['forum_name'].'[/url]'.', была перенесена в форум [url='.$server_protocol.$server_name.$server_port.$script_path.'/viewforum.php?f='.$move_fid.']неоформленных релизов[/url]'.', как не соответствующа€ правилам оформлени€ релизов. ¬ернуть обратно тему вы сможете, после того как оформите тему по правилам и нажмете кнопку "исправил", после этого модератор проверит ее снова и если она будет соответствовать правилам, и не будет €вл€тьс€ повтором(на момент проверки), модератор перенесет ее обратно.';
 						break;
 					}
 					send_pm($user_from_id, $user_to_id, $pm_subject, $pm_message);
@@ -240,5 +239,3 @@ function topics_move($forum_id, $mode, $topic_id=0, $first_fid=0)
 
 	return;
 }
-
-?>

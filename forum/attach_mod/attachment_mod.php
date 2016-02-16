@@ -1,23 +1,18 @@
 <?php
 if (!defined('FT_ROOT')) die(basename(__FILE__));
 
-include(FT_ROOT . 'attach_mod/includes/functions_includes.php');
-include(FT_ROOT . 'attach_mod/includes/functions_attach.php');
-include(FT_ROOT . 'attach_mod/includes/functions_delete.php');
-include(FT_ROOT . 'attach_mod/includes/functions_thumbs.php');
-include(FT_ROOT . 'attach_mod/includes/functions_filetypes.php');
-
-if (defined('ATTACH_INSTALL'))
-{
-	return;
-}
+require(FT_ROOT . 'attach_mod/includes/functions_includes.php');
+require(FT_ROOT . 'attach_mod/includes/functions_attach.php');
+require(FT_ROOT . 'attach_mod/includes/functions_delete.php');
+require(FT_ROOT . 'attach_mod/includes/functions_thumbs.php');
+require(FT_ROOT . 'attach_mod/includes/functions_filetypes.php');
 
 function include_attach_lang()
 {
 	global $lang, $board_config, $attach_config;
 
 	//
-	// Include Language
+	// require Language
 	//
 	$language = $board_config['default_lang'];
 
@@ -26,7 +21,7 @@ function include_attach_lang()
 		$language = $attach_config['board_lang'];
 	}
 
-	include(FT_ROOT . 'language/lang_' . $language . '/lang_main_attach.php');
+	require(FT_ROOT . 'language/lang_' . $language . '/lang_main_attach.php');
 
 	if (defined('IN_ADMIN'))
 	{
@@ -35,7 +30,7 @@ function include_attach_lang()
 			$language = $attach_config['board_lang'];
 		}
 
-		include(FT_ROOT . 'language/lang_' . $language . '/lang_admin_attach.php');
+		require(FT_ROOT . 'language/lang_' . $language . '/lang_admin_attach.php');
 	}
 
 }
@@ -75,7 +70,7 @@ if (file_exists($cache_dir) && is_dir($cache_dir) && is_writable($cache_dir))
 {
 	if (file_exists($cache_file))
 	{
-		include($cache_file);
+		require($cache_file);
 	}
 	else
 	{
@@ -99,13 +94,13 @@ else
 	$attach_config = get_config();
 }
 
-// Please do not change the include-order, it is valuable for proper execution.
+// Please do not change the require-order, it is valuable for proper execution.
 // Functions for displaying Attachment Things
-include(FT_ROOT . 'attach_mod/displaying.php');
+require(FT_ROOT . 'attach_mod/displaying.php');
 // Posting Attachments Class (HAVE TO BE BEFORE PM)
-include(FT_ROOT . 'attach_mod/posting_attachments.php');
+require(FT_ROOT . 'attach_mod/posting_attachments.php');
 // PM Attachments Class
-include(FT_ROOT . 'attach_mod/pm_attachments.php');
+require(FT_ROOT . 'attach_mod/pm_attachments.php');
 
 if (!intval($attach_config['allow_ftp_upload']))
 {
@@ -115,5 +110,3 @@ else
 {
 	$upload_dir = $attach_config['download_path'];
 }
-
-?>

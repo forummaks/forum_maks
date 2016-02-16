@@ -691,7 +691,7 @@ function init_userprefs($userdata)
 		$board_config['default_lang'] = 'english';
 	}
 
-	include(FT_ROOT . 'language/lang_' . $board_config['default_lang'] . '/lang_main.php');
+	require(FT_ROOT . 'language/lang_' . $board_config['default_lang'] . '/lang_main.php');
 
 	if ( defined('IN_ADMIN') )
 	{
@@ -700,7 +700,7 @@ function init_userprefs($userdata)
 			$board_config['default_lang'] = 'english';
 		}
 
-		include(FT_ROOT . 'language/lang_' . $board_config['default_lang'] . '/lang_admin.php');
+		require(FT_ROOT . 'language/lang_' . $board_config['default_lang'] . '/lang_admin.php');
 	}
 
 	include_attach_lang();
@@ -771,7 +771,7 @@ function setup_style($style)
 	if ( $template )
 	{
 		$current_template_path = $template_path . $template_name;
-		@include(FT_ROOT . $template_path . $template_name . '/' . $template_name . '.cfg');
+		@require(FT_ROOT . $template_path . $template_name . '/' . $template_name . '.cfg');
 
 		if ( !defined('TEMPLATE_CONFIG') )
 		{
@@ -987,25 +987,6 @@ function obtain_word_list(&$orig_word, &$replacement_word)
 	return true;
 }
 
-//
-// This is general replacement for die(), allows templated
-// output in users (or default) language, etc.
-//
-// $msg_code can be one of these constants:
-//
-// GENERAL_MESSAGE : Use for any simple text message, eg. results
-// of an operation, authorisation failures, etc.
-//
-// GENERAL ERROR : Use for any error which occurs _AFTER_ the
-// common.php include and session code, ie. most errors in
-// pages/functions
-//
-// CRITICAL_MESSAGE : Used when basic config data is available but
-// a session may not exist, eg. banned users
-//
-// CRITICAL_ERROR : Used when config data cannot be obtained, eg
-// no database connection. Should _not_ be used in 99.5% of cases
-//
 function message_die($msg_code, $msg_text = '', $msg_title = '', $err_line = '', $err_file = '', $sql = '')
 {
 	global $db, $template, $board_config, $theme, $lang, $nav_links, $gen_simple_header, $images;
@@ -1063,11 +1044,11 @@ function message_die($msg_code, $msg_text = '', $msg_title = '', $err_line = '',
 		{
 			if ( !empty($board_config['default_lang']) )
 			{
-				include(FT_ROOT . 'language/lang_' . $board_config['default_lang'] . '/lang_main.php');
+				require(FT_ROOT . 'language/lang_' . $board_config['default_lang'] . '/lang_main.php');
 			}
 			else
 			{
-				include(FT_ROOT . 'language/lang_english/lang_main.php');
+				require(FT_ROOT . 'language/lang_english/lang_main.php');
 			}
 		}
 
@@ -1085,11 +1066,11 @@ function message_die($msg_code, $msg_text = '', $msg_title = '', $err_line = '',
 		//
 		if ( !defined('IN_ADMIN') )
 		{
-			include(FT_ROOT . 'includes/page_header.php');
+			require(FT_ROOT . 'includes/page_header.php');
 		}
 		else
 		{
-			include(FT_ROOT . 'admin/page_header_admin.php');
+			require(FT_ROOT . 'admin/page_header_admin.php');
 		}
 	}
 
@@ -1126,7 +1107,7 @@ function message_die($msg_code, $msg_text = '', $msg_title = '', $err_line = '',
 			// Critical errors mean we cannot rely on _ANY_ DB information being
 			// available so we're going to dump out a simple echo'd statement
 			//
-			include(FT_ROOT . 'language/lang_english/lang_main.php');
+			require(FT_ROOT . 'language/lang_english/lang_main.php');
 
 			if ( $msg_text == '' )
 			{
@@ -1181,11 +1162,11 @@ function message_die($msg_code, $msg_text = '', $msg_title = '', $err_line = '',
 
 		if ( !defined('IN_ADMIN') )
 		{
-			include(FT_ROOT . 'includes/page_tail.php');
+			require(FT_ROOT . 'includes/page_tail.php');
 		}
 		else
 		{
-			include(FT_ROOT . 'admin/page_footer_admin.php');
+			require(FT_ROOT . 'admin/page_footer_admin.php');
 		}
 	}
 	else
@@ -1196,12 +1177,6 @@ function message_die($msg_code, $msg_text = '', $msg_title = '', $err_line = '',
 	exit;
 }
 
-//
-// This function is for compatibility with PHP 4.x's realpath()
-// function.  In later versions of PHP, it needs to be called
-// to do checks with some functions.  Older versions of PHP don't
-// seem to need this, so we'll just return the original value.
-// dougk_ff7 <October 5, 2002>
 function phpbb_realpath($path)
 {
 	return (!@function_exists('realpath') || !@realpath(FT_ROOT . 'includes/functions.php')) ? $path : @realpath($path);
@@ -1286,5 +1261,3 @@ function get_forum_display_sort_option($selected_row=0, $action='list', $list='s
 	return $res;
 }
 //-- fin mod : topic display order -----------------------------------------------------------------
-
-?>

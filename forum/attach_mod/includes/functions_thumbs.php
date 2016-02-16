@@ -1,4 +1,5 @@
 <?php
+
 if (!defined('FT_ROOT')) die(basename(__FILE__));
 
 $imagick = '';
@@ -217,5 +218,3 @@ function create_thumbnail($source, $new_file, $mimetype)
 	
 	return true;
 }
-
-?>

@@ -1,4 +1,5 @@
 <?php
+
 if (!defined('FT_ROOT')) die(basename(__FILE__));
 
 //
@@ -60,5 +61,3 @@ if ( @$do_gzip_compress )
 }
 
 exit;
-
-?>

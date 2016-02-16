@@ -2402,5 +2402,3 @@ function xs_switch($tpl, $name)
 {
 	return (isset($tpl->_tpldata[$name.'.']) && count($tpl->_tpldata[$name.'.']) > 0);
 }
-
-?>

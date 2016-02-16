@@ -1,4 +1,5 @@
 <?php
+
 if (!defined('FT_ROOT')) die(basename(__FILE__));
 
 function make_forum_select($box_name, $ignore_forum = false, $select_forum = '')
@@ -152,5 +153,3 @@ function sync($type, $id = false)
 
 	return true;
 }
-
-?>

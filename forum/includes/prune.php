@@ -1,4 +1,5 @@
 <?php
+
 if (!defined('FT_ROOT')) die(basename(__FILE__));
 
 require(FT_ROOT . 'includes/functions_search.php');
@@ -29,7 +30,7 @@ function prune($forum_id, $prune_date, $prune_all = false)
 		$sql_topics .= ( ( $sql_topics != '' ) ? ', ' : '' ) . $row['topic_id'];
 	}
 	$db->sql_freeresult($result);
-	// Fix stupid bug (http://code.naklon.info/PhpBBbugsRU#h86-3)
+
 	$sql = "SELECT t.topic_id
 		FROM " . TOPICS_TABLE . " t
 		WHERE t.forum_id = $forum_id
@@ -155,5 +156,3 @@ function auto_prune($forum_id = 0)
 
 	return;
 }
-
-?>

@@ -267,5 +267,3 @@ function synch_dl_topics ($forum_id, $synch_type)
 
 	return;
 }
-
-?>

@@ -223,7 +223,7 @@ else
 	}
 
       // torrent info
-      if ($tor_reged && $bb_cfg['show_tor_info'])
+      if ($tor_reged && $ft_cfg['show_tor_info'])
       {
          $template->assign_vars(array(
             'SHOW_DL_LIST'          => true,
@@ -655,5 +655,3 @@ $template->assign_vars(array(
 	'SEED_EXIST'   => ($seeders || defined('SEEDER_EXIST')) ? TRUE : FALSE,
 	'LEECH_EXIST'  => ($leechers || defined('LEECHER_EXIST')) ? TRUE : FALSE
 ));
-
-?>

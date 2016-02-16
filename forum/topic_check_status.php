@@ -15,13 +15,6 @@ init_userprefs($userdata);
 
 $user_id = $userdata['user_id'];
 $current_time=time();
-$script_path = preg_replace('/^\/?(.*?)\/?$/', "\\1", trim($board_config['script_path']));
-$server_name = trim($board_config['server_name']);
-$server_protocol = ( $board_config['cookie_secure'] ) ? 'https://' : 'http://';
-$server_port = ( $board_config['server_port'] <> 80 ) ? ':' . trim($board_config['server_port']) . '/' : '/';
-$phpbb_root_url = $server_protocol.$server_name.$server_port.$script_path;
-
-
 
 // Check if user logged in
 if (!$userdata['session_logged_in'])
@@ -171,4 +164,4 @@ if ( isset($HTTP_POST_VARS['topic_check_status']) || isset($HTTP_GET_VARS['topic
 	
 }
 
-redirect(append_sid("viewtopic.$phpEx?t=".$tor_data['topic_id'], TRUE));
+redirect(append_sid("viewtopic.php?t=".$tor_data['topic_id'], TRUE));

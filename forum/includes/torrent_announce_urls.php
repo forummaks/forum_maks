@@ -13,5 +13,3 @@ $announce_urls = array();
 //
 
 // $announce_urls[] = 'http://mp/bt/';
-
-?>

@@ -1,6 +1,6 @@
 <?php
-if (!defined('FT_ROOT')) die(basename(__FILE__));
 
+if (!defined('FT_ROOT')) die(basename(__FILE__));
 
 function auth($type, $forum_id, $userdata, $f_access = '')
 {
@@ -138,17 +138,6 @@ function auth($type, $forum_id, $userdata, $f_access = '')
 	{
 		$key = $auth_fields[$i];
 
-		//
-		// If the user is logged on and the forum type is either ALL or REG then the user has access
-		//
-		// If the type if ACL, MOD or ADMIN then we need to see if the user has specific permissions
-		// to do whatever it is they want to do ... to do this we pull relevant information for the
-		// user (and any groups they belong to)
-		//
-		// Now we compare the users access level against the forums. We assume here that a moderator
-		// and admin automatically have access to an ACL forum, similarly we assume admins meet an
-		// auth requirement of MOD
-		//
 		if ( $forum_id != AUTH_LIST_ALL )
 		{
 			$value = $f_access[$key];
@@ -279,5 +268,3 @@ function auth_check_user($type, $key, $u_access, $is_admin)
 
 	return $auth_user;
 }
-
-?>

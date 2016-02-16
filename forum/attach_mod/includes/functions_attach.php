@@ -871,5 +871,3 @@ function get_var($var_name, $default)
 		return $var;
 	}
 }
-
-?>

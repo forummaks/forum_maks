@@ -1,4 +1,5 @@
 <?php
+
 if (!defined('FT_ROOT')) die(basename(__FILE__));
 
 //
@@ -1683,5 +1684,3 @@ function execute_posting_attachment_handling()
 	$attachment_mod['posting'] = new attach_posting();
 	$attachment_mod['posting']->posting_attachment_mod();
 }
-
-?>

@@ -1,9 +1,7 @@
 <?php
+
 if (!defined('FT_ROOT')) die(basename(__FILE__));
 
-//
-// Class for Private Messaging
-//
 class attach_pm extends attach_parent
 {
 	var $pm_delete_attachments = FALSE;
@@ -255,5 +253,3 @@ function execute_privmsgs_attachment_handling($mode)
 		$attachment_mod['pm']->privmsgs_attachment_mod($mode);
 	}
 }
-
-?>

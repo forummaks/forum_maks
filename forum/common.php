@@ -85,11 +85,6 @@ else if (@ini_get('register_globals') == '1' || strtolower(@ini_get('register_gl
 	unset($input);
 }
 
-//
-// addslashes to vars if magic_quotes_gpc is off
-// this is a security precaution to prevent someone
-// trying to break out of a SQL statement.
-//
 if( !get_magic_quotes_gpc() )
 {
 	if( is_array($HTTP_GET_VARS) )
@@ -153,22 +148,14 @@ if( !get_magic_quotes_gpc() )
 	}
 }
 
-//
-// Define some basic configuration arrays this also prevents
-// malicious rewriting of language and otherarray values via
-// URI params
-//
-$board_config = $userdata = $theme = $images = $lang = $nav_links = array();
-$gen_simple_header = FALSE;
+require(FT_ROOT . 'config.php');
 
-include(FT_ROOT . 'config.php');
-
-include(FT_ROOT . 'includes/constants.php');
-include(FT_ROOT . 'includes/template.php');
-include(FT_ROOT . 'includes/sessions.php');
-include(FT_ROOT . 'includes/auth.php');
-include(FT_ROOT . 'includes/functions.php');
-include(FT_ROOT . 'db/mysql.php');
+require(FT_ROOT . 'includes/constants.php');
+require(FT_ROOT . 'includes/template.php');
+require(FT_ROOT . 'includes/sessions.php');
+require(FT_ROOT . 'includes/auth.php');
+require(FT_ROOT . 'includes/functions.php');
+require(FT_ROOT . 'db/mysql.php');
 
 $db = new sql_db($dbhost, $dbuser, $dbpasswd, $dbname, false);
 if(!$db->db_connect_id)
@@ -207,23 +194,7 @@ while ( $row = $db->sql_fetchrow($result) )
 $board_config['server_name'] = $_SERVER['SERVER_NAME'];
 //End Allow multiple domain names
 
-include(FT_ROOT . 'attach_mod/attachment_mod.php');
-
-define('BT_CONFIG_TABLE',      $table_prefix.'bt_config');          // phpbb_bt_config
-define('BT_SEARCH_TABLE',      $table_prefix.'bt_search_results');  // phpbb_bt_search_results
-define('BT_TOR_DL_STAT_TABLE', $table_prefix.'bt_tor_dl_stat');     // phpbb_bt_tor_dl_stat
-define('BT_TORRENTS_TABLE',    $table_prefix.'bt_torrents');        // phpbb_bt_torrents
-define('BT_TRACKER_TABLE',     $table_prefix.'bt_tracker');         // phpbb_bt_tracker
-define('BT_USERS_TABLE',       $table_prefix.'bt_users');           // phpbb_bt_users
-define('BT_USR_DL_STAT_TABLE', $table_prefix.'bt_users_dl_status'); // phpbb_bt_users_dl_status
-
-define('BT_AUTH_KEY_LENGTH',   10);
-
-define('DL_STATUS_WILL',       0);
-define('DL_STATUS_DOWN',       1);
-define('DL_STATUS_COMPLETE',   2);
-define('DL_STATUS_CANCEL',     3);
-
+require(FT_ROOT . 'attach_mod/attachment_mod.php');
 //
 // Show 'Board is disabled' message if needed.
 //

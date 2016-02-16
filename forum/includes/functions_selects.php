@@ -83,5 +83,3 @@ function tz_select($default, $select_name = 'timezone')
 
 	return $tz_select;
 }
-
-?>

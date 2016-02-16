@@ -1,4 +1,5 @@
 <?php
+
 if (!defined('FT_ROOT')) die(basename(__FILE__));
 
 define('HEADER_INC', TRUE);
@@ -410,5 +411,3 @@ header ('Expires: 0');
 header ('Pragma: no-cache');
 
 $template->pparse('overall_header');
-
-?>

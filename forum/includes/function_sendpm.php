@@ -85,5 +85,3 @@ function send_pm($user_from_id, $user_to_id, $pm_subject, $pm_message)
 
 	return;
 }
-
-?>

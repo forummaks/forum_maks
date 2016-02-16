@@ -2,75 +2,6 @@
 define('FT_ROOT', './');
 require(FT_ROOT . 'common.php');
 
-//
-// Delete the / * to uncomment the block, and edit the values (read the comments) to
-// enable additional security to your board (preventing third site linkage)
-//
-/*
-define('ALLOWED_DENIED', 0);
-define('DENIED_ALLOWED', 1);
-
-//
-// From this line on you are able to edit the stuff
-//
-
-// Possible Values:
-// ALLOWED_DENIED <- First allow the listed sites, and then deny all others
-// DENIED_ALLOWED <- First deny the listed sites, and then allow all others
-$allow_deny_order = ALLOWED_DENIED;
-
-//
-// Allowed Syntax:
-// Full Domain Name -> www.opentools.de
-// Partial Domain Names -> opentools.de
-//
-$sites = array(
-	$board_config['server_name'],	// This is your domain
-	'opentools.de',
-	'phpbb.com',
-	'phpbbhacks.com',
-	'phpbb.de'
-);
-
-// This is the message displayed, if someone links to this site...
-$lang['Denied_Message'] = 'You are not authorized to view, download or link to this Site.';
-
-// End of editable area
-
-//
-// Parse the order and evaluate the array
-//
-
-$site = explode('?', $HTTP_SERVER_VARS['HTTP_REFERER']);
-$url = trim($site[0]);
-//$url = $HTTP_HOST;
-
-if ($url != '')
-{
-	$allowed = ($allow_deny_order == ALLOWED_DENIED) ? FALSE : TRUE;
-
-	for ($i = 0; $i < count($sites); $i++)
-	{
-		if (strstr($url, $sites[$i]))
-		{
-			$allowed = ($allow_deny_order == ALLOWED_DENIED) ? TRUE : FALSE;
-			break;
-		}
-	}
-}
-else
-{
-	$allowed = TRUE;
-}
-
-if ($allowed == FALSE)
-{
-	message_die(GENERAL_MESSAGE, $lang['Denied_Message']);
-}
-
-// Delete the following line, to uncomment this block
-*/
-
 $download_id = get_var('id', 0);
 $thumbnail = get_var('thumb', 0);
 
@@ -93,59 +24,6 @@ function send_file_to_browser($attachment, $upload_dir)
 		{
 			$gotit = TRUE;
 		}
-	}
-
-	//
-	// Determine the Browser the User is using, because of some nasty incompatibilities.
-	// Most of the methods used in this function are from phpMyAdmin. :)
-	//
-	if (!empty($_SERVER['HTTP_USER_AGENT']))
-	{
-		$HTTP_USER_AGENT = $_SERVER['HTTP_USER_AGENT'];
-	}
-	else if (!empty($HTTP_SERVER_VARS['HTTP_USER_AGENT']))
-	{
-		$HTTP_USER_AGENT = $HTTP_SERVER_VARS['HTTP_USER_AGENT'];
-	}
-	else if (!isset($HTTP_USER_AGENT))
-	{
-		$HTTP_USER_AGENT = '';
-	}
-
-	if (ereg('Opera(/| )([0-9].[0-9]{1,2})', $HTTP_USER_AGENT, $log_version))
-	{
-		$browser_version = $log_version[2];
-		$browser_agent = 'opera';
-	}
-	else if (ereg('MSIE ([0-9].[0-9]{1,2})', $HTTP_USER_AGENT, $log_version))
-	{
-		$browser_version = $log_version[1];
-		$browser_agent = 'ie';
-	}
-	else if (ereg('OmniWeb/([0-9].[0-9]{1,2})', $HTTP_USER_AGENT, $log_version))
-	{
-		$browser_version = $log_version[1];
-		$browser_agent = 'omniweb';
-	}
-	else if (ereg('Netscape([0-9]{1})', $HTTP_USER_AGENT, $log_version))
-	{
-		$browser_version = $log_version[1];
-		$browser_agent = 'netscape';
-	}
-	else if (ereg('Mozilla/([0-9].[0-9]{1,2})', $HTTP_USER_AGENT, $log_version))
-	{
-		$browser_version = $log_version[1];
-		$browser_agent = 'mozilla';
-	}
-	else if (ereg('Konqueror/([0-9].[0-9]{1,2})', $HTTP_USER_AGENT, $log_version))
-	{
-		$browser_version = $log_version[1];
-		$browser_agent = 'konqueror';
-	}
-	else
-	{
-		$browser_version = 0;
-		$browser_agent = 'other';
 	}
 
 	// Correct the mime type - we force application/octetstream for all files, except images

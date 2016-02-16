@@ -347,5 +347,3 @@ function delete_attachment($post_id_array = 0, $attach_id_array = 0, $page = 0, 
 		$db->sql_freeresult($result);
 	}
 }
-
-?>

@@ -15,11 +15,11 @@ function attach_faq_include($lang_file)
 	{
 		if (!file_exists(FT_ROOT . 'language/lang_' . $board_config['default_lang'] . '/lang_faq_attach.php'))
 		{
-			include(FT_ROOT . 'language/lang_english/lang_faq_attach.php');
+			require(FT_ROOT . 'language/lang_english/lang_faq_attach.php');
 		}
 		else
 		{
-			include(FT_ROOT . 'language/lang_' . $board_config['default_lang'] . '/lang_faq_attach.php');
+			require(FT_ROOT . 'language/lang_' . $board_config['default_lang'] . '/lang_faq_attach.php');
 		}
 	}
 }
@@ -161,8 +161,8 @@ function attachment_quota_settings($admin_mode, $submit = FALSE, $mode)
 		$upload_dir = $attach_config['download_path'];
 	}
 
-	include_once(FT_ROOT . 'attach_mod/includes/functions_selects.php');
-	include_once(FT_ROOT . 'attach_mod/includes/functions_admin.php');
+	require_once(FT_ROOT . 'attach_mod/includes/functions_selects.php');
+	require_once(FT_ROOT . 'attach_mod/includes/functions_admin.php');
 
 	if ($admin_mode == 'user')
 	{
@@ -560,5 +560,3 @@ function perform_attach_pageregister($session_page, $in_admin = false)
 			break;
 	}
 }
-
-?>

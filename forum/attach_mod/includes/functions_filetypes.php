@@ -387,5 +387,3 @@ function swf_getdimension($file)
 	fclose($fp);
 	return ($size);
 }
-
-?>

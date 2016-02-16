@@ -156,7 +156,7 @@ function tracker_unregister ($attach_id, $mode = '')
 
 function delete_torrent ($attach_id, $mode = '')
 {
-	global $phpEx, $lang, $userdata;
+	global $lang, $userdata;
 	global $reg_mode, $topic_id;
 
 	$attach_id = intval($attach_id);
@@ -186,7 +186,7 @@ function delete_torrent ($attach_id, $mode = '')
 
 function tracker_register ($attach_id, $mode = '')
 {
-	global $phpEx, $db, $template, $attach_config, $board_config, $phpbb_root_path, $lang, $return_message;
+	global $db, $template, $attach_config, $board_config, $lang, $return_message;
 	global $reg_mode;
 
 	$template->assign_vars(array('META' => ''));
@@ -235,7 +235,7 @@ function tracker_register ($attach_id, $mode = '')
 
 	torrent_auth_check($forum_id, $torrent['poster_id']);
 
-	$filename = $phpbb_root_path . $attach_config['upload_dir'] .'/'. $torrent['physical_filename'];
+	$filename = FT_ROOT . $attach_config['upload_dir'] .'/'. $torrent['physical_filename'];
 
 	if (!is_file($filename))
 	{
@@ -254,7 +254,7 @@ function tracker_register ($attach_id, $mode = '')
 
 	if ($board_config['bt_check_announce_url'])
 	{
-		include_once($phpbb_root_path .'includes/torrent_announce_urls.'.$phpEx);
+		require_once(FT_ROOT .'includes/torrent_announce_urls.php');
 
 		$ann = (@$tor['announce']) ? $tor['announce'] : '';
 		$announce_urls['main_url'] = $board_config['bt_announce_url'];
@@ -360,7 +360,7 @@ function tracker_register ($attach_id, $mode = '')
 
 	if ($reg_mode == 'request' || $reg_mode == 'newtopic')
 	{
-		$mess = sprintf($lang['Bt_Registered'], append_sid("download.$phpEx?id=$attach_id"));
+		$mess = sprintf($lang['Bt_Registered'], append_sid("download.php?id=$attach_id"));
 		exit_redirect($mess, $post_id, $forum_id);
 	}
 
@@ -369,7 +369,7 @@ function tracker_register ($attach_id, $mode = '')
 
 function send_torrent_with_passkey ($filename)
 {
-	global $attachment, $auth_pages, $db, $userdata, $board_config, $phpEx, $lang;
+	global $attachment, $auth_pages, $db, $userdata, $board_config, $lang;
 
 	if (!$board_config['bt_add_auth_key'] || $attachment['extension'] !== TORRENT_EXT || !$size = @filesize($filename))
 	{
@@ -416,11 +416,11 @@ function send_torrent_with_passkey ($filename)
 	{
 		if ($post_id)
 		{
-			redirect(append_sid("login.$phpEx?redirect=viewtopic.$phpEx&". POST_POST_URL ."=$post_id", TRUE));
+			redirect(append_sid("login.php?redirect=viewtopic.php&". POST_POST_URL ."=$post_id", TRUE));
 		}
 		else
 		{
-			redirect(append_sid("login.$phpEx?redirect=index.$phpEx", TRUE));
+			redirect(append_sid("login.php?redirect=index.php", TRUE));
 		}
 	}
 
@@ -463,7 +463,7 @@ function send_torrent_with_passkey ($filename)
 		}
 		else
 		{
-			$mess = sprintf($lang['Passkey_err_empty'], append_sid("profile.$phpEx?mode=editprofile#bittorrent"));
+			$mess = sprintf($lang['Passkey_err_empty'], append_sid("profile.php?mode=editprofile#bittorrent"));
 			message_die(GENERAL_ERROR, $mess);
 		}
 	}
@@ -491,7 +491,7 @@ function send_torrent_with_passkey ($filename)
 
 	// add publisher & topic url
 	$publisher = $board_config['bt_add_publisher'];
-	$publisher_url = ($post_id) ? make_url("viewtopic.$phpEx?". POST_POST_URL ."=$post_id") : '';
+	$publisher_url = ($post_id) ? make_url("viewtopic.php?". POST_POST_URL ."=$post_id") : '';
 
 	if ($publisher)
 	{
@@ -671,10 +671,10 @@ function get_registered_torrents ($id, $mode)
 
 function exit_redirect ($message, $post_id, $forum_id)
 {
-	global $template, $lang, $phpEx;
+	global $template, $lang;
 
-	$exit_meta = '<meta http-equiv="refresh" content="300;url='. append_sid("viewtopic.$phpEx?". POST_POST_URL ."=". $post_id) .'#'. $post_id .'">';
-	$exit_message = $message .'<br /><br />'. sprintf($lang['Click_return_topic'], '<a href="'. append_sid("viewtopic.$phpEx?". POST_POST_URL ."=". $post_id) .'#'. $post_id .'">', '</a>') .'<br /><br />'. sprintf($lang['Click_return_forum'], '<a href="'. append_sid("viewforum.$phpEx?". POST_FORUM_URL ."=$forum_id") .'">', '</a>');
+	$exit_meta = '<meta http-equiv="refresh" content="300;url='. append_sid("viewtopic.php?". POST_POST_URL ."=". $post_id) .'#'. $post_id .'">';
+	$exit_message = $message .'<br /><br />'. sprintf($lang['Click_return_topic'], '<a href="'. append_sid("viewtopic.php?". POST_POST_URL ."=". $post_id) .'#'. $post_id .'">', '</a>') .'<br /><br />'. sprintf($lang['Click_return_forum'], '<a href="'. append_sid("viewforum.php?". POST_FORUM_URL ."=$forum_id") .'">', '</a>');
 	$template->assign_vars(array('META' => $exit_meta));
 	message_die(GENERAL_MESSAGE, $exit_message);
 }
@@ -907,5 +907,3 @@ function bencode($var)
 		return strlen($var) .':'. $var;
 	}
 }
-
-?>

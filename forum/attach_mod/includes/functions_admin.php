@@ -528,5 +528,3 @@ function limit_array($array, $start, $pagelimit)
 
 	return $limit_array;
 }
-
-?>

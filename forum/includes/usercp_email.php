@@ -71,7 +71,7 @@ if ( $result = $db->sql_query($sql) )
 					WHERE user_id = " . $userdata['user_id'];
 				if ( $result = $db->sql_query($sql) )
 				{
-					include(FT_ROOT . 'includes/emailer.php');
+					require(FT_ROOT . 'includes/emailer.php');
 					$emailer = new emailer($board_config['smtp_delivery']);
 
 					$emailer->from($userdata['user_email']);
@@ -131,7 +131,7 @@ if ( $result = $db->sql_query($sql) )
 			}
 		}
 
-		include(FT_ROOT . 'includes/page_header.php');
+		require(FT_ROOT . 'includes/page_header.php');
 
 		$template->set_filenames(array(
 			'body' => 'profile_send_email.tpl')
@@ -170,7 +170,7 @@ if ( $result = $db->sql_query($sql) )
 
 		$template->pparse('body');
 
-		include(FT_ROOT . 'includes/page_tail.php');
+		require(FT_ROOT . 'includes/page_tail.php');
 	}
 	else
 	{
