@@ -1,10 +1,7 @@
 <?php
 
-define('IN_PHPBB', TRUE);
-$phpbb_root_path = './';
-
-include($phpbb_root_path .'extension.inc');
-include($phpbb_root_path .'common.'. $phpEx);
+define('FT_ROOT', './');
+require(FT_ROOT . 'common.php');
 
 $userdata = session_pagestart($user_ip, PAGE_TRACKER);
 init_userprefs($userdata);
@@ -18,7 +15,7 @@ $clean_search_interv = 3;    // clean phpbb_bt_search_results table interval (in
 $tor_colspan         = 11;   // colspan with all columns
 
 $tor_per_page        = $board_config['topics_per_page'];
-$tracker_basename    = "tracker.$phpEx";
+$tracker_basename    = "tracker.php";
 
 $current_time = (isset($_GET['time']) && $_GET['time'] == 'all') ? 0 : time();
 $time_format  = 'H:i';
@@ -34,7 +31,7 @@ $guest = (!$userdata['session_logged_in']) ? TRUE : FALSE;
 
 if ($board_config['bt_tor_browse_only_reg'] && $guest)
 {
-	redirect(append_sid("login.$phpEx?redirect=$tracker_basename", TRUE));
+	redirect(append_sid("login.php?redirect=$tracker_basename", TRUE));
 }
 
 $def        = (isset($_GET['def'])) ? TRUE : FALSE;
@@ -872,27 +869,27 @@ if ($forum_val && $allowed_forums_sql)
 				         {
 					        case 1: 
 							$tcs_id='<span style="color:indigo;">&#9674;</span>'; 
-							$tcs_title='Проверяется';
+							$tcs_title='РџСЂРѕРІРµСЂСЏРµС‚СЃСЏ';
 						break; 
 						case 2: 
 							$tcs_id='<span style="color:green;">&radic;</span>'; 
-							$tcs_title='Оформлено';
+							$tcs_title='РћС„РѕСЂРјР»РµРЅРѕ';
 						break; 
 						case 3: 
 							$tcs_id='<span style="color:#E6C506;">&#8776;</span>'; 
-							$tcs_title='Недоофолмлено';
+							$tcs_title='РќРµРґРѕРѕС„РѕР»РјР»РµРЅРѕ';
 						break; 
 					        case 4: 
 							$tcs_id='<span style="color:red;">&#8800;</span>'; 
-							$tcs_title='Неоформлено';
+							$tcs_title='РќРµРѕС„РѕСЂРјР»РµРЅРѕ';
 						break; 
 					        case 5: 
 							$tcs_id='<span style="color:blue;">&#8734;</span>'; 
-							$tcs_title='Повтор';
+							$tcs_title='РџРѕРІС‚РѕСЂ';
 						break; 
 					        default: 
 							$tcs_id='<span style="color:red;">?</span>';
-							$tcs_title='Не проверено';
+							$tcs_title='РќРµ РїСЂРѕРІРµСЂРµРЅРѕ';
 
 				         }
 
@@ -904,7 +901,7 @@ if ($forum_val && $allowed_forums_sql)
 					'FORUM_HREF'   => append_sid("$tracker_basename?$forum_key=". $tor_row['forum_id']),
 					'FORUM_NAME'   => $tor_row['forum_name'],
 					'TOPIC_ID'     => $tor_row['topic_id'],
-					'TOPIC_HREF'   => append_sid("viewtopic.$phpEx?$topic_key=". $tor_row['topic_id']),
+					'TOPIC_HREF'   => append_sid("viewtopic.php?$topic_key=". $tor_row['topic_id']),
 					'TOPIC_TITLE'  => $tor_row['topic_title'],
 					'POSTER_ID'    => $tor_row['poster_id'],
 					'POSTER_HREF'  => append_sid("$tracker_basename?$poster_id_key=". $tor_row['poster_id']),
@@ -920,7 +917,7 @@ if ($forum_val && $allowed_forums_sql)
 					'POST_IMG'     => $post_img,
 					'USER_AUTHOR'  => (!$guest && $tor_row['poster_id'] == $user_id) ? TRUE : FALSE,
 
-					'DL_TOR_HREF'  => append_sid("download.$phpEx?id=". $att_id),
+					'DL_TOR_HREF'  => append_sid("download.php?id=". $att_id),
 					'TOR_SIZE_RAW' => $size,
 					'TOR_SIZE'     => humn_size($size, '', '', ' '),
 					'UL_SPEED'     => $ul_sp,
@@ -1104,13 +1101,11 @@ $template->assign_vars(array(
 	'L_TITLE_MATCH'   => $lang['Bt_Title_match']
 ));
 
-$page_title = 'Трекер';
-include($phpbb_root_path .'includes/page_header.'. $phpEx);
+$page_title = 'РўСЂРµРєРµСЂ';
+include(FT_ROOT .'includes/page_header.php');
 
 $template->set_filenames(array('body' => 'tracker.tpl'));
 
 $template->pparse('body');
 
-include($phpbb_root_path .'includes/page_tail.'. $phpEx);
-
-?>
+include(FT_ROOT .'includes/page_tail.php');

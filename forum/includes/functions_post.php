@@ -1,4 +1,5 @@
 <?php
+
 if (!defined('FT_ROOT')) die(basename(__FILE__));
 
 $html_entities_match = array('#&(?!(\#[0-9]+;))#', '#<#', '#>#');
@@ -102,7 +103,7 @@ function unprepare_message($message)
 //
 function prepare_post(&$mode, &$post_data, &$bbcode_on, &$html_on, &$smilies_on, &$error_msg, &$username, &$bbcode_uid, &$subject, &$message, &$poll_title, &$poll_options, &$poll_length)
 {
-	global $board_config, $userdata, $lang, $phpEx, $phpbb_root_path;
+	global $board_config, $userdata, $lang;
 
 	// Check username
 	if (!empty($username))
@@ -111,7 +112,7 @@ function prepare_post(&$mode, &$post_data, &$bbcode_on, &$html_on, &$smilies_on,
 
 		if (!$userdata['session_logged_in'] || ($userdata['session_logged_in'] && $username != $userdata['username']))
 		{
-			include($phpbb_root_path . 'includes/functions_validate.'.$phpEx);
+			include(FT_ROOT . 'includes/functions_validate.php');
 
 			$result = validate_username($username);
 			if ($result['error'])
@@ -196,11 +197,11 @@ function prepare_post(&$mode, &$post_data, &$bbcode_on, &$html_on, &$smilies_on,
 function submit_post($mode, &$post_data, &$message, &$meta, &$forum_id, &$topic_id, &$post_id, &$poll_id, &$topic_type, &$bbcode_on, &$html_on, &$smilies_on, &$attach_sig, &$bbcode_uid, &$post_username, &$post_subject, &$post_message, &$poll_title, &$poll_options, &$poll_length, $update_post_time)
 //upt end
 {
-	global $board_config, $lang, $db, $phpbb_root_path, $phpEx;
+	global $board_config, $lang, $db;
 	global $userdata, $user_ip;
 	global $is_auth;
 
-	include($phpbb_root_path . 'includes/functions_search.'.$phpEx);
+	include(FT_ROOT . 'includes/functions_search.php');
 
 	$current_time = time();
 
@@ -375,8 +376,8 @@ function submit_post($mode, &$post_data, &$message, &$meta, &$forum_id, &$topic_
 		}
 	}
 
-	$meta = '<meta http-equiv="refresh" content="1;url=' . append_sid("viewtopic.$phpEx?" . POST_POST_URL . "=" . $post_id) . '#' . $post_id . '">';
-	$message = $lang['Stored'] . '<br /><br />' . sprintf($lang['Click_view_message'], '<a href="' . append_sid("viewtopic.$phpEx?" . POST_POST_URL . "=" . $post_id) . '#' . $post_id . '">', '</a>') . '<br /><br />' . sprintf($lang['Click_return_forum'], '<a href="' . append_sid("viewforum.$phpEx?" . POST_FORUM_URL . "=$forum_id") . '">', '</a>');
+	$meta = '<meta http-equiv="refresh" content="1;url=' . append_sid("viewtopic.php?" . POST_POST_URL . "=" . $post_id) . '#' . $post_id . '">';
+	$message = $lang['Stored'] . '<br /><br />' . sprintf($lang['Click_view_message'], '<a href="' . append_sid("viewtopic.php?" . POST_POST_URL . "=" . $post_id) . '#' . $post_id . '">', '</a>') . '<br /><br />' . sprintf($lang['Click_return_forum'], '<a href="' . append_sid("viewforum.$phpEx?" . POST_FORUM_URL . "=$forum_id") . '">', '</a>');
 
 	return false;
 }
@@ -503,12 +504,12 @@ function update_post_stats(&$mode, &$post_data, &$forum_id, &$topic_id, &$post_i
 //
 function delete_post($mode, &$post_data, &$message, &$meta, &$forum_id, &$topic_id, &$post_id, &$poll_id)
 {
-	global $board_config, $lang, $db, $phpbb_root_path, $phpEx;
+	global $board_config, $lang, $db;
 	global $userdata, $user_ip;
 
 	if ($mode != 'poll_delete')
 	{
-		include($phpbb_root_path . 'includes/functions_search.'.$phpEx);
+		include(FT_ROOT . 'includes/functions_search.php');
 
 		$sql = "DELETE FROM " . POSTS_TABLE . "
 			WHERE post_id = $post_id";
@@ -586,16 +587,16 @@ function delete_post($mode, &$post_data, &$message, &$meta, &$forum_id, &$topic_
 
 	if ($mode == 'delete' && $post_data['first_post'] && $post_data['last_post'])
 	{
-		$meta = '<meta http-equiv="refresh" content="3;url=' . append_sid("viewforum.$phpEx?" . POST_FORUM_URL . '=' . $forum_id) . '">';
+		$meta = '<meta http-equiv="refresh" content="3;url=' . append_sid("viewforum.php?" . POST_FORUM_URL . '=' . $forum_id) . '">';
 		$message = $lang['Deleted'];
 	}
 	else
 	{
-		$meta = '<meta http-equiv="refresh" content="3;url=' . append_sid("viewtopic.$phpEx?" . POST_TOPIC_URL . '=' . $topic_id) . '">';
-		$message = (($mode == 'poll_delete') ? $lang['Poll_delete'] : $lang['Deleted']) . '<br /><br />' . sprintf($lang['Click_return_topic'], '<a href="' . append_sid("viewtopic.$phpEx?" . POST_TOPIC_URL . "=$topic_id") . '">', '</a>');
+		$meta = '<meta http-equiv="refresh" content="3;url=' . append_sid("viewtopic.php?" . POST_TOPIC_URL . '=' . $topic_id) . '">';
+		$message = (($mode == 'poll_delete') ? $lang['Poll_delete'] : $lang['Deleted']) . '<br /><br />' . sprintf($lang['Click_return_topic'], '<a href="' . append_sid("viewtopic.php?" . POST_TOPIC_URL . "=$topic_id") . '">', '</a>');
 	}
 
-	$message .=  '<br /><br />' . sprintf($lang['Click_return_forum'], '<a href="' . append_sid("viewforum.$phpEx?" . POST_FORUM_URL . "=$forum_id") . '">', '</a>');
+	$message .=  '<br /><br />' . sprintf($lang['Click_return_forum'], '<a href="' . append_sid("viewforum.php?" . POST_FORUM_URL . "=$forum_id") . '">', '</a>');
 
 	return;
 }
@@ -605,7 +606,7 @@ function delete_post($mode, &$post_data, &$message, &$meta, &$forum_id, &$topic_
 //
 function user_notification($mode, &$post_data, &$topic_title, &$forum_id, &$topic_id, &$post_id, &$notify_user)
 {
-	global $board_config, $lang, $db, $phpbb_root_path, $phpEx;
+	global $board_config, $lang, $db;
 	global $userdata, $user_ip;
 
 	$current_time = time();
@@ -686,11 +687,11 @@ function user_notification($mode, &$post_data, &$topic_title, &$forum_id, &$topi
 
 				if (sizeof($bcc_list_ary))
 				{
-					include($phpbb_root_path . 'includes/emailer.'.$phpEx);
+					include(FT_ROOT . 'includes/emailer.php');
 					$emailer = new emailer($board_config['smtp_delivery']);
 
 					$script_name = preg_replace('/^\/?(.*?)\/?$/', '\1', trim($board_config['script_path']));
-					$script_name = ($script_name != '') ? $script_name . '/viewtopic.'.$phpEx : 'viewtopic.'.$phpEx;
+					$script_name = ($script_name != '') ? $script_name . '/viewtopic.php' : 'viewtopic.php';
 					$server_name = trim($board_config['server_name']);
 					$server_protocol = ($board_config['cookie_secure']) ? 'https://' : 'http://';
 					$server_port = ($board_config['server_port'] <> 80) ? ':' . trim($board_config['server_port']) . '/' : '/';
@@ -788,7 +789,7 @@ function user_notification($mode, &$post_data, &$topic_title, &$forum_id, &$topi
 //
 function generate_smilies($mode, $page_id)
 {
-	global $db, $board_config, $template, $lang, $images, $theme, $phpEx, $phpbb_root_path;
+	global $db, $board_config, $template, $lang, $images, $theme;
 	global $user_ip, $session_length, $starttime;
 	global $userdata;
 
@@ -804,7 +805,7 @@ function generate_smilies($mode, $page_id)
 		$gen_simple_header = TRUE;
 
 		$page_title = $lang['Emoticons'] . " - $topic_title";
-		include($phpbb_root_path . 'includes/page_header.'.$phpEx);
+		include(FT_ROOT . 'includes/page_header.php');
 
 		$template->set_filenames(array(
 			'smiliesbody' => 'posting_smilies.tpl')
@@ -873,7 +874,7 @@ function generate_smilies($mode, $page_id)
 
 				$template->assign_vars(array(
 					'L_MORE_SMILIES' => $lang['More_emoticons'],
-					'U_MORE_SMILIES' => append_sid("posting.$phpEx?mode=smilies"))
+					'U_MORE_SMILIES' => append_sid("posting.php?mode=smilies"))
 				);
 			}
 
@@ -889,14 +890,14 @@ function generate_smilies($mode, $page_id)
 	{
 		$template->pparse('smiliesbody');
 
-		include($phpbb_root_path . 'includes/page_tail.'.$phpEx);
+		include(FT_ROOT . 'includes/page_tail.php');
 	}
 }
 
 //bot
 function insert_post ($mode, $topic_id, $forum_id = '', $old_forum_id = '', $new_topic_id = '', $new_topic_title = '', $old_topic_id = '', $message = '', $poster_id = '')
 {
-	global $board_config, $lang, $db, $phpbb_root_path, $phpEx;
+	global $board_config, $lang, $db;
 	global $userdata, $user_ip, $is_auth;
 
 	if (!$topic_id)
@@ -935,14 +936,14 @@ function insert_post ($mode, $topic_id, $forum_id = '', $old_forum_id = '', $new
 			$forum_name[$row['forum_id']] = $row['forum_name'];
 		}
 
-		$post_text  = sprintf($lang['Bot_topic_moved_from_to'], "<a class=\"postLink\" href=\"viewforum.$phpEx?f=$old_forum_id\">$forum_name[$old_forum_id]</a>", "<a class=\"postLink\" href=\"viewforum.$phpEx?f=$forum_id\">$forum_name[$forum_id]</a></b>", $username);
+		$post_text  = sprintf($lang['Bot_topic_moved_from_to'], "<a class=\"postLink\" href=\"viewforum.php?f=$old_forum_id\">$forum_name[$old_forum_id]</a>", "<a class=\"postLink\" href=\"viewforum.php?f=$forum_id\">$forum_name[$forum_id]</a></b>", $username);
 
 		$poster_id = BOT_UID;
 		$poster_ip = '7f000001';
 	}
 	else if ($mode == 'after_split_to_old')
 	{
-		$post_text  = sprintf($lang['Bot_mess_splits'], "<a class=\"postLink\" href=\"viewtopic.$phpEx?t=$new_topic_id\">$new_topic_title</a>", $username);
+		$post_text  = sprintf($lang['Bot_mess_splits'], "<a class=\"postLink\" href=\"viewtopic.php?t=$new_topic_id\">$new_topic_title</a>", $username);
 
 		$poster_id = BOT_UID;
 		$poster_ip = '7f000001';
@@ -964,7 +965,7 @@ function insert_post ($mode, $topic_id, $forum_id = '', $old_forum_id = '', $new
 			$old_topic_title = bt_sql_esc($row['topic_title']);
 			$post_time = $row['post_time'] - 1;
 
-			$post_text  = sprintf($lang['Bot_topic_splits'], "<a class=\"postLink\" href=\"viewtopic.$phpEx?t=$old_topic_id\">$old_topic_title</a>", $username);
+			$post_text  = sprintf($lang['Bot_topic_splits'], "<a class=\"postLink\" href=\"viewtopic.php?t=$old_topic_id\">$old_topic_title</a>", $username);
 
 			$poster_id = BOT_UID;
 			$poster_ip = '7f000001';
@@ -1030,11 +1031,8 @@ function insert_post ($mode, $topic_id, $forum_id = '', $old_forum_id = '', $new
 		message_die(GENERAL_ERROR, 'Error in posting', '', __LINE__, __FILE__, $sql);
 	}
 
-	$redirect_message = $lang['Stored'] .'<br /><br />'. sprintf($lang['Click_view_message'], '<a href="'. append_sid("viewtopic.$phpEx?". POST_POST_URL ."=". $post_id) .'#'. $post_id .'">', '</a>') .'<br /><br />'. sprintf($lang['Click_return_forum'], '<a href="'. append_sid("viewforum.$phpEx?". POST_FORUM_URL ."=$forum_id") .'">', '</a>');
-	$redirect_meta = '<meta http-equiv="refresh" content="1;url='. append_sid("viewtopic.$phpEx?". POST_POST_URL ."=". $post_id) .'#'. $post_id .'">';
+	$redirect_message = $lang['Stored'] .'<br /><br />'. sprintf($lang['Click_view_message'], '<a href="'. append_sid("viewtopic.php?". POST_POST_URL ."=". $post_id) .'#'. $post_id .'">', '</a>') .'<br /><br />'. sprintf($lang['Click_return_forum'], '<a href="'. append_sid("viewforum.php?". POST_FORUM_URL ."=$forum_id") .'">', '</a>');
+	$redirect_meta = '<meta http-equiv="refresh" content="1;url='. append_sid("viewtopic.php?". POST_POST_URL ."=". $post_id) .'#'. $post_id .'">';
 
 	return;
 }
-//bot end
-
-?>

@@ -1,12 +1,10 @@
 <?php
 unset($HTTP_GET_VARS['highlight'], $_GET['highlight']);
 
-define('IN_PHPBB', true);
-$phpbb_root_path = './';
-include($phpbb_root_path . 'extension.inc');
-include($phpbb_root_path . 'common.'.$phpEx);
-include($phpbb_root_path . 'includes/bbcode.'.$phpEx);
-include($phpbb_root_path . 'includes/functions_search.'.$phpEx);
+define('FT_ROOT', './');
+require(FT_ROOT . 'common.php');
+require(FT_ROOT . 'includes/bbcode.php');
+require(FT_ROOT . 'includes/functions_search.php');
 
 //
 // Start session management
@@ -256,7 +254,7 @@ else if ( $search_keywords != '' || $search_author != '' || $search_id )
 				}
 				else
 				{
-					redirect(append_sid("login.$phpEx?redirect=search.$phpEx&search_id=newposts", true));
+					redirect(append_sid("login.php?redirect=search.php&search_id=newposts", true));
 				}
 
 				$show_results = 'topics';
@@ -273,7 +271,7 @@ else if ( $search_keywords != '' || $search_author != '' || $search_id )
 				}
 				else
 				{
-					redirect(append_sid("login.$phpEx?redirect=search.$phpEx&search_id=egosearch", true));
+					redirect(append_sid("login.php?redirect=search.php&search_id=egosearch", true));
 				}
 
 				$show_results = 'topics';
@@ -338,8 +336,8 @@ else if ( $search_keywords != '' || $search_author != '' || $search_id )
 		}
 		else if ( $search_keywords != '' )
 		{
-			$stopword_array = @file($phpbb_root_path . 'language/lang_' . $board_config['default_lang'] . '/search_stopwords.txt');
-			$synonym_array = @file($phpbb_root_path . 'language/lang_' . $board_config['default_lang'] . '/search_synonyms.txt');
+			$stopword_array = @file(FT_ROOT . 'language/lang_' . $board_config['default_lang'] . '/search_stopwords.txt');
+			$synonym_array = @file(FT_ROOT . 'language/lang_' . $board_config['default_lang'] . '/search_synonyms.txt');
 
 			$split_search = array();
 			$split_search = ( !strstr($multibyte_charset, $lang['ENCODING']) ) ?  split_words(clean_words('search', stripslashes($search_keywords), $stopword_array, $synonym_array), 'search') : split(' ', $search_keywords);
@@ -458,7 +456,7 @@ else if ( $search_keywords != '' || $search_author != '' || $search_id )
 
 		//
 		// If user is logged in then we'll check to see which (if any) private
-		// forums they are allowed to view and include them in the search.
+		// forums they are allowed to view and require them in the search.
 		//
 		// If not logged in we explicitly prevent searching of private forums
 		//
@@ -671,7 +669,7 @@ else if ( $search_keywords != '' || $search_author != '' || $search_id )
 		{
 			if (!$userdata['session_logged_in'])
 			{
-				redirect(append_sid("login.$phpEx?redirect=index.$phpEx", TRUE));
+				redirect(append_sid("login.php?redirect=index.php", TRUE));
 			}
 
 			if ($auth_sql != '')
@@ -802,7 +800,7 @@ else if ( $search_keywords != '' || $search_author != '' || $search_id )
 		//
 		// Limit the character length (and with this the results displayed at all following pages) to prevent
 		// truncated result arrays. Normally, search results above 12000 are affected.
-		// - to include or not to include
+		// - to require or not to require
 		/*
 		$max_result_length = 60000;
 		if (strlen($search_results) > $max_result_length)
@@ -936,7 +934,7 @@ else if ( $search_keywords != '' || $search_author != '' || $search_id )
 		// Output header
 		//
 		$page_title = $lang['Search'];
-		include($phpbb_root_path . 'includes/page_header.'.$phpEx);
+		require(FT_ROOT . 'includes/page_header.php');
 
 		//bt
 		if ($dl_search)
@@ -955,7 +953,7 @@ else if ( $search_keywords != '' || $search_author != '' || $search_id )
 					'L_DL_DOWN'     => $lang['dlDown'],
 					'L_DL_COMPLETE' => $lang['dlComplete'],
 					'L_DL_CANCEL'   => $lang['dlCancel'],
-					'S_DL_TOPICS_ACTION' => append_sid("dl_list.$phpEx")
+					'S_DL_TOPICS_ACTION' => append_sid("dl_list.php")
 				));
 
 				if ($dl_uid == $userdata['user_id'] && $board_config['bt_show_dl_list_buttons'])
@@ -979,7 +977,7 @@ else if ( $search_keywords != '' || $search_author != '' || $search_id )
 				'body' => 'search_results_topics.tpl')
 			);
 		}
-		make_jumpbox('viewforum.'.$phpEx);
+		make_jumpbox('viewforum.php');
 
 		$l_search_matches = ( $total_match_count == 1 ) ? sprintf($lang['Found_search_match'], $total_match_count) : sprintf($lang['Found_search_matches'], $total_match_count);
 
@@ -1019,9 +1017,9 @@ else if ( $search_keywords != '' || $search_author != '' || $search_id )
 
 		for($i = 0; $i < count($searchset); $i++)
 		{
-			$forum_url = append_sid("viewforum.$phpEx?" . POST_FORUM_URL . '=' . $searchset[$i]['forum_id']);
-			$topic_url = append_sid("viewtopic.$phpEx?" . POST_TOPIC_URL . '=' . $searchset[$i]['topic_id'] /* . "&amp;highlight=$highlight_active" */);
-			$post_url = (isset($searchset[$i]['post_id'])) ? append_sid("viewtopic.$phpEx?" . POST_POST_URL . '=' . $searchset[$i]['post_id'] /* . "&amp;highlight=$highlight_active" */) . '#' . $searchset[$i]['post_id'] : '';
+			$forum_url = append_sid("viewforum.php?" . POST_FORUM_URL . '=' . $searchset[$i]['forum_id']);
+			$topic_url = append_sid("viewtopic.php?" . POST_TOPIC_URL . '=' . $searchset[$i]['topic_id'] /* . "&amp;highlight=$highlight_active" */);
+			$post_url = (isset($searchset[$i]['post_id'])) ? append_sid("viewtopic.php?" . POST_POST_URL . '=' . $searchset[$i]['post_id'] /* . "&amp;highlight=$highlight_active" */) . '#' . $searchset[$i]['post_id'] : '';
 
 			$post_date = create_date($board_config['default_dateformat'], $searchset[$i]['post_time'], $board_config['board_timezone']);
 
@@ -1162,7 +1160,7 @@ else if ( $search_keywords != '' || $search_author != '' || $search_id )
 
 				}
 
-				$poster = ( $searchset[$i]['user_id'] != ANONYMOUS ) ? '<a href="' . append_sid("profile.$phpEx?mode=viewprofile&amp;" . POST_USERS_URL . "=" . $searchset[$i]['user_id']) . '">' : '';
+				$poster = ( $searchset[$i]['user_id'] != ANONYMOUS ) ? '<a href="' . append_sid("profile.php?mode=viewprofile&amp;" . POST_USERS_URL . "=" . $searchset[$i]['user_id']) . '">' : '';
 				$poster .= ( $searchset[$i]['user_id'] != ANONYMOUS ) ? $searchset[$i]['username'] : ( ( $searchset[$i]['post_username'] != "" ) ? $searchset[$i]['post_username'] : $lang['Guest'] );
 				$poster .= ( $searchset[$i]['user_id'] != ANONYMOUS ) ? '</a>' : '';
 
@@ -1266,7 +1264,7 @@ else if ( $search_keywords != '' || $search_author != '' || $search_id )
 					$times = 1;
 					for($j = 0; $j < $replies + 1; $j += $board_config['posts_per_page'])
 					{
-						$goto_page .= '<a href="' . append_sid("viewtopic.$phpEx?" . POST_TOPIC_URL . "=" . $topic_id . "&amp;start=$j") . '">' . $times . '</a>';
+						$goto_page .= '<a href="' . append_sid("viewtopic.php?" . POST_TOPIC_URL . "=" . $topic_id . "&amp;start=$j") . '">' . $times . '</a>';
 						if ( $times == 1 && $total_pages > 4 )
 						{
 							$goto_page .= ' ... ';
@@ -1378,7 +1376,7 @@ else if ( $search_keywords != '' || $search_author != '' || $search_id )
 									$folder_image = $folder_new;
 									$folder_alt = $lang['New_posts'];
 
-									$newest_post_img = '<a href="' . append_sid("viewtopic.$phpEx?" . POST_TOPIC_URL . "=$topic_id&amp;view=newest") . '"><img src="' . $images['icon_newest_reply'] . '" alt="' . $lang['View_newest_post'] . '" title="' . $lang['View_newest_post'] . '" border="0" width="18" height="9" /></a> ';
+									$newest_post_img = '<a href="' . append_sid("viewtopic.php?" . POST_TOPIC_URL . "=$topic_id&amp;view=newest") . '"><img src="' . $images['icon_newest_reply'] . '" alt="' . $lang['View_newest_post'] . '" title="' . $lang['View_newest_post'] . '" border="0" width="18" height="9" /></a> ';
 								}
 								else
 								{
@@ -1395,7 +1393,7 @@ else if ( $search_keywords != '' || $search_author != '' || $search_id )
 								$folder_image = $folder_new;
 								$folder_alt = $lang['New_posts'];
 
-								$newest_post_img = '<a href="' . append_sid("viewtopic.$phpEx?" . POST_TOPIC_URL . "=$topic_id&amp;view=newest") . '"><img src="' . $images['icon_newest_reply'] . '" alt="' . $lang['View_newest_post'] . '" title="' . $lang['View_newest_post'] . '" border="0" width="18" height="9" /></a> ';
+								$newest_post_img = '<a href="' . append_sid("viewtopic.php?" . POST_TOPIC_URL . "=$topic_id&amp;view=newest") . '"><img src="' . $images['icon_newest_reply'] . '" alt="' . $lang['View_newest_post'] . '" title="' . $lang['View_newest_post'] . '" border="0" width="18" height="9" /></a> ';
 							}
 							else
 							{
@@ -1420,7 +1418,7 @@ else if ( $search_keywords != '' || $search_author != '' || $search_id )
 				}
 
 
-				$topic_author = ( $searchset[$i]['user_id'] != ANONYMOUS ) ? '<a href="' . append_sid("profile.$phpEx?mode=viewprofile&amp;" . POST_USERS_URL . '=' . $searchset[$i]['user_id']) . '">' : '';
+				$topic_author = ( $searchset[$i]['user_id'] != ANONYMOUS ) ? '<a href="' . append_sid("profile.php?mode=viewprofile&amp;" . POST_USERS_URL . '=' . $searchset[$i]['user_id']) . '">' : '';
 				$topic_author .= ( $searchset[$i]['user_id'] != ANONYMOUS ) ? $searchset[$i]['username'] : ( ( $searchset[$i]['post_username'] != '' ) ? $searchset[$i]['post_username'] : $lang['Guest'] );
 
 				$topic_author .= ( $searchset[$i]['user_id'] != ANONYMOUS ) ? '</a>' : '';
@@ -1431,7 +1429,7 @@ else if ( $search_keywords != '' || $search_author != '' || $search_id )
 
 				$last_post_author = ( $searchset[$i]['id2'] == ANONYMOUS ) ? ( ($searchset[$i]['post_username2'] != '' ) ? $searchset[$i]['post_username2'] . ' ' : $lang['Guest'] . ' ' ) : '<a href="' . append_sid("profile.$phpEx?mode=viewprofile&amp;" . POST_USERS_URL . '='  . $searchset[$i]['id2']) . '">' . $searchset[$i]['user2'] . '</a>';
 
-				$last_post_url = '<a href="' . append_sid("viewtopic.$phpEx?"  . POST_POST_URL . '=' . $searchset[$i]['topic_last_post_id']) . '#' . $searchset[$i]['topic_last_post_id'] . '"><img src="' . $images['icon_latest_reply'] . '" alt="' . $lang['View_latest_post'] . '" title="' . $lang['View_latest_post'] . '" border="0" width="18" height="9" /></a>';
+				$last_post_url = '<a href="' . append_sid("viewtopic.php?"  . POST_POST_URL . '=' . $searchset[$i]['topic_last_post_id']) . '#' . $searchset[$i]['topic_last_post_id'] . '"><img src="' . $images['icon_latest_reply'] . '" alt="' . $lang['View_latest_post'] . '" title="' . $lang['View_latest_post'] . '" border="0" width="18" height="9" /></a>';
 
 				$template->assign_block_vars('searchresults', array(
 					'FORUM_NAME' => $searchset[$i]['forum_name'],
@@ -1462,7 +1460,7 @@ else if ( $search_keywords != '' || $search_author != '' || $search_id )
 			}
 		}
 
-		$base_url = "search.$phpEx?search_id=$search_id";
+		$base_url = "search.php?search_id=$search_id";
 
 		//bt
 		if ($dl_search)
@@ -1493,13 +1491,13 @@ else if ( $search_keywords != '' || $search_author != '' || $search_id )
 		//mr
 		$template->assign_vars(array(
 			'L_MARK_FORUMS_READ' => $lang['Mark_all_forums'],
-			'U_MARK_READ' => append_sid("index.$phpEx?mark=forums")
+			'U_MARK_READ' => append_sid("index.php?mark=forums")
 		));
 		//mr end
 
 		$template->pparse('body');
 
-		include($phpbb_root_path . 'includes/page_tail.'.$phpEx);
+		require(FT_ROOT . 'includes/page_tail.php');
 	}
 	else
 	{
@@ -1594,12 +1592,12 @@ for($i = 0; $i < count($previous_days); $i++)
 // Output the basic page
 //
 $page_title = $lang['Search'];
-include($phpbb_root_path . 'includes/page_header.'.$phpEx);
+require(FT_ROOT . 'includes/page_header.php');
 
 $template->set_filenames(array(
 	'body' => 'search_body.tpl')
 );
-make_jumpbox('viewforum.'.$phpEx);
+make_jumpbox('viewforum.php');
 
 $template->assign_vars(array(
 	'L_SEARCH_QUERY' => $lang['Search_query'],
@@ -1624,7 +1622,7 @@ $template->assign_vars(array(
 	'L_TOPICS' => $lang['Topics'],
 	'L_POSTS' => $lang['Posts'],
 
-	'S_SEARCH_ACTION' => append_sid("search.$phpEx?mode=results"),
+	'S_SEARCH_ACTION' => append_sid("search.php?mode=results"),
 	'S_CHARACTER_OPTIONS' => $s_characters,
 	'S_FORUM_OPTIONS' => $s_forums,
 	'S_CATEGORY_OPTIONS' => $s_categories,
@@ -1635,6 +1633,4 @@ $template->assign_vars(array(
 
 $template->pparse('body');
 
-include($phpbb_root_path . 'includes/page_tail.'.$phpEx);
-
-?>
+require(FT_ROOT . 'includes/page_tail.php');

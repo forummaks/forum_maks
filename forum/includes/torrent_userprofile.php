@@ -1,10 +1,6 @@
 <?php
 
-if (!defined('IN_PHPBB') || !defined('IN_VIEWPROFILE'))
-{
-	die('Hacking attempt');
-	exit;
-}
+if (!defined('IN_PROFILE')) die(basename(__FILE__));
 
 if (!$profiledata['user_id'] || $profiledata['user_id'] == ANONYMOUS)
 {
@@ -29,7 +25,7 @@ if ($profile_user_id == $userdata['user_id'])
 	$template->assign_vars(array(
 		'EDIT_PROF'      => TRUE,
 		'L_EDIT_PROF'    => $lang['Edit_profile'],
-		'EDIT_PROF_HREF' => append_sid("profile.$phpEx?mode=editprofile")
+		'EDIT_PROF_HREF' => append_sid("profile.php?mode=editprofile")
 	));
 }
 else
@@ -66,7 +62,7 @@ $template->assign_vars(array(
 	'TOTAL_UPLOADED'   => humn_size($total_uploaded),
 	'TOTAL_DOWNLOADED' => humn_size($total_downloaded),
 	'TOTAL_BONUS'      => humn_size($total_bonus),
-	'WHAT_IS_BONUS' => '<a href="'.append_sid("viewtopic.$phpEx?t=147").'" class="genmed">'.$lang['Bt_What_Is_Bonus'].'</a>',	
+	'WHAT_IS_BONUS' => '<a href="'.append_sid("viewtopic.php?t=147").'" class="genmed">'.$lang['Bt_What_Is_Bonus'].'</a>',	
 	'UP_DOWN_RATIO'    => $up_down_ratio
 ));
 
@@ -174,8 +170,8 @@ if ($seeding_count = count($seed))
             'F_SPEED_UP'   => humn_size($seed[$i]['speed_up']).'/s',
             'FORUM_NAME'   => $seed[$i]['forum_name'],
             'TOPIC_TITLE'  => $seed[$i]['topic_title'],
-            'U_VIEW_FORUM' => "viewforum.$phpEx?". POST_FORUM_URL .'='. $seed[$i]['forum_id'],
-            'U_VIEW_TOPIC' => "viewtopic.$phpEx?". POST_TOPIC_URL .'='. $seed[$i]['topic_id'] .'&amp;spmode=full#seeders'
+            'U_VIEW_FORUM' => "viewforum.php?". POST_FORUM_URL .'='. $seed[$i]['forum_id'],
+            'U_VIEW_TOPIC' => "viewtopic.php?". POST_TOPIC_URL .'='. $seed[$i]['topic_id'] .'&amp;spmode=full#seeders'
         ));
     }
 }
@@ -197,8 +193,8 @@ if ($release_count = count($release))
             'F_SPEED_UP'   => humn_size($release[$i]['speed_up']).'/s',
             'FORUM_NAME'   => $release[$i]['forum_name'],
             'TOPIC_TITLE'  => $release[$i]['topic_title'],
-            'U_VIEW_FORUM' => "viewforum.$phpEx?". POST_FORUM_URL .'='. $release[$i]['forum_id'],
-            'U_VIEW_TOPIC' => "viewtopic.$phpEx?". POST_TOPIC_URL .'='. $release[$i]['topic_id'] .'&amp;spmode=full#seeders'
+            'U_VIEW_FORUM' => "viewforum.php?". POST_FORUM_URL .'='. $release[$i]['forum_id'],
+            'U_VIEW_TOPIC' => "viewtopic.php?". POST_TOPIC_URL .'='. $release[$i]['topic_id'] .'&amp;spmode=full#seeders'
         ));
     }
 }
@@ -220,8 +216,8 @@ if ($leeching_count = count($leech))
             'F_SPEED_DOWN'     => humn_size($leech[$i]['speed_down']).'/s',
             'FORUM_NAME'       => $leech[$i]['forum_name'],
             'TOPIC_TITLE'      => $leech[$i]['topic_title'],
-            'U_VIEW_FORUM'     => "viewforum.$phpEx?". POST_FORUM_URL .'='. $leech[$i]['forum_id'],
-            'U_VIEW_TOPIC'     => "viewtopic.$phpEx?". POST_TOPIC_URL .'='. $leech[$i]['topic_id'] .'&amp;spmode=full#leechers'
+            'U_VIEW_FORUM'     => "viewforum.php?". POST_FORUM_URL .'='. $leech[$i]['forum_id'],
+            'U_VIEW_TOPIC'     => "viewtopic.php?". POST_TOPIC_URL .'='. $leech[$i]['topic_id'] .'&amp;spmode=full#leechers'
         ));
     }
 }
@@ -247,7 +243,7 @@ $template->assign_vars(array(
 	'LEECH_ROWSPAN'    => ($leeching_count) ? 'rowspan="'. ($leeching_count + 1) .'"' : ''
 ));
 
-$s_link_start = "search.$phpEx?search_id=dl&amp;dl_status=";
+$s_link_start = "search.php?search_id=dl&amp;dl_status=";
 $s_link_end   = "&amp;dl_uid=$profile_user_id";
 
 $template->assign_vars(array(
@@ -264,9 +260,7 @@ $template->assign_vars(array(
 ));
 
 $template->assign_vars(array(
-	'U_TORRENT_PROFILE' => append_sid("profile.$phpEx?mode=viewprofile&amp;u=". $profiledata['user_id']) . '#torrent',
+	'U_TORRENT_PROFILE' => append_sid("profile.php?mode=viewprofile&amp;u=". $profiledata['user_id']) . '#torrent',
 	'L_TORRENT_PROFILE' => $lang['View_torrent_profile'],
-      'U_SEARCH_RELEASES' => "tracker.$phpEx?pid={$profiledata['user_id']}" 
+      'U_SEARCH_RELEASES' => "tracker.php?pid={$profiledata['user_id']}" 
 ));
-
-?>

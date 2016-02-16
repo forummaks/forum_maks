@@ -1,15 +1,13 @@
 <?php
 
-define('IN_PHPBB', true);
-$phpbb_root_path = './';
-include($phpbb_root_path .'extension.inc');
-include($phpbb_root_path .'common.'.$phpEx);
-include_once($phpbb_root_path .'includes/functions_torrent.'.$phpEx);
+define('FT_ROOT', './');
+require(FT_ROOT . 'common.php');
+require_once(FT_ROOT .'includes/functions_torrent.php');
 
-require_once($phpbb_root_path .'includes/functions.'.$phpEx);
-require_once($phpbb_root_path .'includes/function_sendpm.'.$phpEx);
-require_once($phpbb_root_path . 'includes/bbcode.'.$phpEx);
-require_once($phpbb_root_path . 'includes/functions_post.'.$phpEx);
+require_once(FT_ROOT .'includes/functions.php');
+require_once(FT_ROOT .'includes/function_sendpm.php');
+require_once(FT_ROOT . 'includes/bbcode.php');
+require_once(FT_ROOT . 'includes/functions_post.php');
 
 // Start session management
 $userdata = session_pagestart($user_ip, PAGE_INDEX);
@@ -28,7 +26,7 @@ $phpbb_root_url = $server_protocol.$server_name.$server_port.$script_path;
 // Check if user logged in
 if (!$userdata['session_logged_in'])
 {
-	redirect(append_sid("login.$phpEx?redirect=index.$phpEx", TRUE));
+	redirect(append_sid("login.php?redirect=index.php", TRUE));
 }
 
 $sid = (isset($_REQUEST['sid'])) ? $_REQUEST['sid'] : '';
@@ -69,7 +67,7 @@ if ( isset($HTTP_POST_VARS['i_edited']) && $userdata['user_id']==$tor_data['post
 	$user_to_id = $tor_data['topic_check_uid'];
 	$user_to_name=get_username($tor_data['topic_check_uid']);
 	$pm_subject='Уведомление об исправлении оформления релиза.';
-	$pm_message='Привет, '.$user_to_name .'. \n\n'. 'Я исправил недочеты оформления моего релиза: '.'[url='.$phpbb_root_url.'/viewtopic.'.$phpEx.'?t='.$tor_data['topic_id'].']'.$tor_data['topic_title'].'[/url]';
+	$pm_message='Привет, '.$user_to_name .'. \n\n'. 'Я исправил недочеты оформления моего релиза: '.'[url='. FT_ROOT .'/viewtopic.php?t='.$tor_data['topic_id'].']'.$tor_data['topic_title'].'[/url]';
 	send_pm($user_from_id, $user_to_id, $pm_subject, $pm_message);
 
 	$sql = "update ".BT_TORRENTS_TABLE." set topic_check_status=1, topic_check_date=$current_time
@@ -102,7 +100,7 @@ if ( isset($HTTP_POST_VARS['topic_check_status']) || isset($HTTP_GET_VARS['topic
 			case 2:
 				if ($tor_data['topic_check_first_fid']) 
 				{
-					require_once($phpbb_root_path . 'includes/function_topics_move.'.$phpEx);
+					require_once(FT_ROOT . 'includes/function_topics_move.php');
 					move($forum_id, $tor_data['topic_check_first_fid'], 2, null, $tor_data['topic_id']);
 					sync('forum', $tor_data['topic_check_first_fid']);
 					sync('forum', $forum_id);
@@ -114,13 +112,13 @@ if ( isset($HTTP_POST_VARS['topic_check_status']) || isset($HTTP_GET_VARS['topic
 				$user_to_id = $tor_data['poster_id'];
 				$pm_subject='Уведомление о недооформленном релизе.';
 				$willmove= ($tor_data['move_enable'])? ' в течение суток, иначе тема будет перенесена в форум неоформленных релизов':'';
-				$pm_message='Привет, '.$tor_data['poster_name'] .'. \n\n'. 'Ваша тема: '.'[url='.$phpbb_root_url.'/viewtopic.'.$phpEx.'?t='.$tor_data['topic_id'].']'.$tor_data['topic_title'].'[/url]'. ' создана с нарушением правил оформления релизов форума: '.'[url='.$phpbb_root_url.'/viewforum.'.$phpEx.'?f='.$tor_data['forum_id'].']'.$tor_data['forum_name'].'[/url]'. ' в связи с этим вам следует исправить недочеты и нажать кнопку "я исправил"'.$willmove.'. Если у вас возникнут вопросы, вы можете отправить мне личное сообщение.' ;
+				$pm_message='Привет, '.$tor_data['poster_name'] .'. \n\n'. 'Ваша тема: '.'[url='. FT_ROOT .'/viewtopic.php?t='.$tor_data['topic_id'].']'.$tor_data['topic_title'].'[/url]'. ' создана с нарушением правил оформления релизов форума: '.'[url='. FT_ROOT .'/viewforum.php?f='.$tor_data['forum_id'].']'.$tor_data['forum_name'].'[/url]'. ' в связи с этим вам следует исправить недочеты и нажать кнопку "я исправил"'.$willmove.'. Если у вас возникнут вопросы, вы можете отправить мне личное сообщение.' ;
 				send_pm($user_from_id, $user_to_id, $pm_subject, $pm_message);
 			break; 
 		        case 4:
 				if ($tor_data['move_enable'] && empty($tor_data['topic_check_first_fid']))
 				{
-					require_once($phpbb_root_path . 'includes/function_topics_move.'.$phpEx);
+					require_once(FT_ROOT . 'includes/function_topics_move.php');
 					topics_move($forum_id, 4, $tor_data['topic_id']);
 				}else{
 					$user_from_id=$user_id;
@@ -128,9 +126,9 @@ if ( isset($HTTP_POST_VARS['topic_check_status']) || isset($HTTP_GET_VARS['topic
 					$pm_subject='Уведомление о неоформленном релизе.';
 					if (!empty($tor_data['topic_check_first_fid']))
 					{
-						$pm_message='Привет, '.$tor_data['poster_name'] .'. \n\n'. 'Ваша тема: '.'[url='.$phpbb_root_url.'/viewtopic.'.$phpEx.'?t='.$tor_data['topic_id'].']'.$tor_data['topic_title'].'[/url]'. ' по прежнему не соответствует правилам оформления релизов. Чтобы вернуть тему обратно, вам следует устранить недостатки оформления и нажать кнопку "я исправил", после этого модератор снова ее проверит и если она будет соответствовать правилам и не будет являться (на тот момент) повтором, модератор перенес ее обратно о чем вы будете уведомлены.' ;
+						$pm_message='Привет, '.$tor_data['poster_name'] .'. \n\n'. 'Ваша тема: '.'[url='. FT_ROOT .'/viewtopic.php?t='.$tor_data['topic_id'].']'.$tor_data['topic_title'].'[/url]'. ' по прежнему не соответствует правилам оформления релизов. Чтобы вернуть тему обратно, вам следует устранить недостатки оформления и нажать кнопку "я исправил", после этого модератор снова ее проверит и если она будет соответствовать правилам и не будет являться (на тот момент) повтором, модератор перенес ее обратно о чем вы будете уведомлены.' ;
 					}else{
-						$pm_message='Привет, '.$tor_data['poster_name'] .'. \n\n'. 'Ваша тема: '.'[url='.$phpbb_root_url.'/viewtopic.'.$phpEx.'?t='.$tor_data['topic_id'].']'.$tor_data['topic_title'].'[/url]'. ' создана с нарушением правил оформления релизов форума: '.'[url='.$phpbb_root_url.'/viewforum.'.$phpEx.'?f='.$tor_data['forum_id'].']'.$tor_data['forum_name'].'[/url]'. ' в связи с этим вам следует исправить недочеты. Если у вас возникнут вопросы вы можете отправить мне личное собщение.' ;
+						$pm_message='Привет, '.$tor_data['poster_name'] .'. \n\n'. 'Ваша тема: '.'[url='. FT_ROOT .'/viewtopic.php?t='.$tor_data['topic_id'].']'.$tor_data['topic_title'].'[/url]'. ' создана с нарушением правил оформления релизов форума: '.'[url='. FT_ROOT .'/viewforum.php?f='.$tor_data['forum_id'].']'.$tor_data['forum_name'].'[/url]'. ' в связи с этим вам следует исправить недочеты. Если у вас возникнут вопросы вы можете отправить мне личное собщение.' ;
 
 					}
 					send_pm($user_from_id, $user_to_id, $pm_subject, $pm_message);
@@ -162,8 +160,8 @@ if ( isset($HTTP_POST_VARS['topic_check_status']) || isset($HTTP_GET_VARS['topic
 				$user_from_id=$user_id;
 				$user_to_id = $tor_data['poster_id'];
 				$pm_subject='Уведомление о создании темы-повтор.';
-				$pm_duble_topic_link= ($duble_tid)? '[url='.$phpbb_root_url.'/viewtopic.'.$phpEx.'?t='.$duble_tid.']этой темы[/url] ' :'';
-				$pm_message='Привет, '.$tor_data['poster_name'] .'. \n\n'. 'Ваша тема: '.'[url='.$phpbb_root_url.'/viewtopic.'.$phpEx.'?t='.$tor_data['topic_id'].']'.$tor_data['topic_title'].'[/url]'. ' является повтором '.$pm_duble_topic_link.'и поэтому будет перенесена в корзину';
+				$pm_duble_topic_link= ($duble_tid)? '[url='. FT_ROOT .'/viewtopic.php?t='.$duble_tid.']этой темы[/url] ' :'';
+				$pm_message='Привет, '.$tor_data['poster_name'] .'. \n\n'. 'Ваша тема: '.'[url='. FT_ROOT .'/viewtopic.php?t='.$tor_data['topic_id'].']'.$tor_data['topic_title'].'[/url]'. ' является повтором '.$pm_duble_topic_link.'и поэтому будет перенесена в корзину';
 				send_pm($user_from_id, $user_to_id, $pm_subject, $pm_message);
 	
 				break; 
@@ -174,5 +172,3 @@ if ( isset($HTTP_POST_VARS['topic_check_status']) || isset($HTTP_GET_VARS['topic
 }
 
 redirect(append_sid("viewtopic.$phpEx?t=".$tor_data['topic_id'], TRUE));
-
-?>

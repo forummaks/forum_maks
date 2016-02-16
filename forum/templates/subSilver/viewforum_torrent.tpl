@@ -1,12 +1,12 @@
 <table width="100%" border="0" cellpadding="4" cellspacing="1" class="forumline">
 	<tr>
-		<th class="thCornerL" align="center" colspan="2" nowrap="nowrap"> Темы </th>
+		<th class="thCornerL" align="center" colspan="2" nowrap="nowrap"> РўРµРјС‹ </th>
 
-  <th class="thTop" align="center" nowrap="nowrap" title="{L_SEEDERS} | {L_LEECHERS}"> Торрент </th>
-  <th class="thTop" align="center" nowrap="nowrap" title="{L_AUTHOR}"> Автор </th>
+  <th class="thTop" align="center" nowrap="nowrap" title="{L_SEEDERS} | {L_LEECHERS}"> РўРѕСЂСЂРµРЅС‚ </th>
+  <th class="thTop" align="center" nowrap="nowrap" title="{L_AUTHOR}"> РђРІС‚РѕСЂ </th>
 
-  <th class="thTop" align="center" nowrap="nowrap" title="{L_REPLIES} | {L_VIEWS}"> Отв. </th>
-		<th class="thCornerR" align="center" nowrap="nowrap"> Посл. сообщение </th>
+  <th class="thTop" align="center" nowrap="nowrap" title="{L_REPLIES} | {L_VIEWS}"> РћС‚РІ. </th>
+		<th class="thCornerR" align="center" nowrap="nowrap"> РџРѕСЃР». СЃРѕРѕР±С‰РµРЅРёРµ </th>
 	</tr>
 	<!-- BEGIN topicrow -->
 	<!-- IF topicrow.TOPICS_SEPARATOR -->

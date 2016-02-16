@@ -1,38 +1,7 @@
 <?php
-/***************************************************************************
- *                            usercp_confirm.php
- *                            -------------------
- *   begin                : Saturday, Jan 15, 2003
- *   copyright            : (C) 2001 The phpBB Group
- *   email                : support@phpbb.com
- *
- *   $Id: usercp_confirm.php,v 1.1.2.1 2004/11/18 17:49:45 acydburn Exp $
- *
- ***************************************************************************/
 
-/***************************************************************************
- *
- *   This program is free software; you can redistribute it and/or modify
- *   it under the terms of the GNU General Public License as published by
- *   the Free Software Foundation; either version 2 of the License, or
- *   (at your option) any later version.
- *
- ***************************************************************************/
+if (!defined('FT_ROOT')) die(basename(__FILE__));
 
-if ( !defined('IN_PHPBB') )
-{
-	die('Hacking attempt');
-	exit;
-}
-
-// Note to potential users of this code ...
-//
-// Remember this is released under the _GPL_ and is subject
-// to that licence. Do not incorporate this within software
-// released or distributed in any way under a licence other
-// than the GPL. We will be watching ... ;)
-
-// Do we have an id? No, then just exit
 if (empty($HTTP_GET_VARS['id']))
 {
 	exit;
@@ -431,5 +400,3 @@ function define_raw_pngs()
 
 	return $_png;
 }
-
-?>

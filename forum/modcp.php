@@ -1,10 +1,8 @@
 <?php
-define('IN_PHPBB', true);
-$phpbb_root_path = './';
-include($phpbb_root_path . 'extension.inc');
-include($phpbb_root_path . 'common.'.$phpEx);
-include($phpbb_root_path . 'includes/bbcode.'.$phpEx);
-include($phpbb_root_path . 'includes/functions_admin.'.$phpEx);
+define('FT_ROOT', './');
+require(FT_ROOT . 'common.php');
+require(FT_ROOT . 'includes/bbcode.php');
+require(FT_ROOT . 'includes/functions_admin.php');
 
 //
 // Obtain initial var settings
@@ -160,15 +158,15 @@ if ( isset($HTTP_POST_VARS['cancel']) )
 {
 	if ( $topic_id )
 	{
-		$redirect = "viewtopic.$phpEx?" . POST_TOPIC_URL . "=$topic_id";
+		$redirect = "viewtopic.php?" . POST_TOPIC_URL . "=$topic_id";
 	}
 	else if ( $forum_id )
 	{
-		$redirect = "viewforum.$phpEx?" . POST_FORUM_URL . "=$forum_id";
+		$redirect = "viewforum.php?" . POST_FORUM_URL . "=$forum_id";
 	}
 	else
 	{
-		$redirect = "index.$phpEx";
+		$redirect = "index.php";
 	}
 
 	redirect(append_sid($redirect, true));
@@ -210,11 +208,11 @@ switch( $mode )
 		}
 
 		$page_title = $lang['Mod_CP'];
-		include($phpbb_root_path . 'includes/page_header.'.$phpEx);
+		require(FT_ROOT . 'includes/page_header.php');
 
 		if ( $confirm )
 		{
-			include($phpbb_root_path . 'includes/functions_search.'.$phpEx);
+			require(FT_ROOT . 'includes/functions_search.php');
 
 			$topics = ( isset($HTTP_POST_VARS['topic_id_list']) ) ? $HTTP_POST_VARS['topic_id_list'] : array($topic_id);
 
@@ -382,12 +380,12 @@ switch( $mode )
 
 			if ( !empty($topic_id) )
 			{
-				$redirect_page = "viewforum.$phpEx?" . POST_FORUM_URL . "=$forum_id&amp;sid=" . $userdata['session_id'];
+				$redirect_page = "viewforum.php?" . POST_FORUM_URL . "=$forum_id&amp;sid=" . $userdata['session_id'];
 				$l_redirect = sprintf($lang['Click_return_forum'], '<a href="' . $redirect_page . '">', '</a>');
 			}
 			else
 			{
-				$redirect_page = "modcp.$phpEx?" . POST_FORUM_URL . "=$forum_id&amp;sid=" . $userdata['session_id'];
+				$redirect_page = "modcp.php?" . POST_FORUM_URL . "=$forum_id&amp;sid=" . $userdata['session_id'];
 				$l_redirect = sprintf($lang['Click_return_modcp'], '<a href="' . $redirect_page . '">', '</a>');
 			}
 
@@ -434,19 +432,19 @@ switch( $mode )
 				'L_YES' => $lang['Yes'],
 				'L_NO' => $lang['No'],
 
-				'S_CONFIRM_ACTION' => append_sid("modcp.$phpEx"),
+				'S_CONFIRM_ACTION' => append_sid("modcp.php"),
 				'S_HIDDEN_FIELDS' => $hidden_fields)
 			);
 
 			$template->pparse('confirm');
 
-			include($phpbb_root_path . 'includes/page_tail.'.$phpEx);
+			require(FT_ROOT . 'includes/page_tail.php');
 		}
 		break;
 
 	case 'move':
 		$page_title = $lang['Mod_CP'];
-		include($phpbb_root_path . 'includes/page_header.'.$phpEx);
+		require(FT_ROOT . 'includes/page_header.php');
 
 		if ( $confirm )
 		{
@@ -555,7 +553,7 @@ switch( $mode )
 					//bot
 					if (isset($_POST['insert_msg']) || !$is_auth['auth_mod'])
 					{
-						include_once($phpbb_root_path . 'includes/functions_post.'.$phpEx);
+						require_once(FT_ROOT . 'includes/functions_post.php');
 						insert_post('after_move', $topic_id, $new_forum_id, $old_forum_id);
 					}
 					//bot end
@@ -575,12 +573,12 @@ switch( $mode )
 
 			if ( !empty($topic_id) )
 			{
-				$redirect_page = "viewtopic.$phpEx?" . POST_TOPIC_URL . "=$topic_id&amp;sid=" . $userdata['session_id'];
+				$redirect_page = "viewtopic.php?" . POST_TOPIC_URL . "=$topic_id&amp;sid=" . $userdata['session_id'];
 				$message .= sprintf($lang['Click_return_topic'], '<a href="' . $redirect_page . '">', '</a>');
 			}
 			else
 			{
-				$redirect_page = "modcp.$phpEx?" . POST_FORUM_URL . "=$forum_id&amp;sid=" . $userdata['session_id'];
+				$redirect_page = "modcp.php?" . POST_FORUM_URL . "=$forum_id&amp;sid=" . $userdata['session_id'];
 				$message .= sprintf($lang['Click_return_modcp'], '<a href="' . $redirect_page . '">', '</a>');
 			}
 
@@ -648,13 +646,13 @@ switch( $mode )
 				'L_NO' => $lang['No'],
 
 				'S_FORUM_SELECT' => make_forum_select('new_forum', $forum_id),
-				'S_MODCP_ACTION' => append_sid("modcp.$phpEx"),
+				'S_MODCP_ACTION' => append_sid("modcp.php"),
 				'S_HIDDEN_FIELDS' => $hidden_fields)
 			);
 
 			$template->pparse('movetopic');
 
-			include($phpbb_root_path . 'includes/page_tail.'.$phpEx);
+			require(FT_ROOT . 'includes/page_tail.php');
 		}
 		break;
 
@@ -684,12 +682,12 @@ switch( $mode )
 
 		if ( !empty($topic_id) )
 		{
-			$redirect_page = "viewtopic.$phpEx?" . POST_TOPIC_URL . "=$topic_id&amp;sid=" . $userdata['session_id'];
+			$redirect_page = "viewtopic.php?" . POST_TOPIC_URL . "=$topic_id&amp;sid=" . $userdata['session_id'];
 			$message = sprintf($lang['Click_return_topic'], '<a href="' . $redirect_page . '">', '</a>');
 		}
 		else
 		{
-			$redirect_page = "modcp.$phpEx?" . POST_FORUM_URL . "=$forum_id&amp;sid=" . $userdata['session_id'];
+			$redirect_page = "modcp.php?" . POST_FORUM_URL . "=$forum_id&amp;sid=" . $userdata['session_id'];
 			$message = sprintf($lang['Click_return_modcp'], '<a href="' . $redirect_page . '">', '</a>');
 		}
 
@@ -729,12 +727,12 @@ switch( $mode )
 
 		if ( !empty($topic_id) )
 		{
-			$redirect_page = "viewtopic.$phpEx?" . POST_TOPIC_URL . "=$topic_id&amp;sid=" . $userdata['session_id'];
+			$redirect_page = "viewtopic.php?" . POST_TOPIC_URL . "=$topic_id&amp;sid=" . $userdata['session_id'];
 			$message = sprintf($lang['Click_return_topic'], '<a href="' . $redirect_page . '">', '</a>');
 		}
 		else
 		{
-			$redirect_page = "modcp.$phpEx?" . POST_FORUM_URL . "=$forum_id&amp;sid=" . $userdata['session_id'];
+			$redirect_page = "modcp.php?" . POST_FORUM_URL . "=$forum_id&amp;sid=" . $userdata['session_id'];
 			$message = sprintf($lang['Click_return_modcp'], '<a href="' . $redirect_page . '">', '</a>');
 		}
 
@@ -780,23 +778,23 @@ switch( $mode )
 
 		if ($mode == 'unset_download')
 		{
-			include_once($phpbb_root_path .'includes/functions_dl_list.'. $phpEx);
+			require_once(FT_ROOT .'includes/functions_dl_list.php');
 			clear_dl_list($topic_id);
 			update_topics_dl_status($topic_id, 'DL-List deleted');
 		}
 
 		if (!empty($topic_id))
 		{
-			$redirect_page = "viewtopic.$phpEx?". POST_TOPIC_URL ."=$topic_id&amp;sid=". $userdata['session_id'];
+			$redirect_page = "viewtopic.php?". POST_TOPIC_URL ."=$topic_id&amp;sid=". $userdata['session_id'];
 			$message = sprintf($lang['Click_return_topic'], '<a href="'. $redirect_page .'">', '</a>');
 		}
 		else
 		{
-			$redirect_page = "modcp.$phpEx?". POST_FORUM_URL ."=$forum_id&amp;sid=". $userdata['session_id'];
+			$redirect_page = "modcp.php?". POST_FORUM_URL ."=$forum_id&amp;sid=". $userdata['session_id'];
 			$message = sprintf($lang['Click_return_modcp'], '<a href="'. $redirect_page .'">', '</a>');
 		}
 
-		$message = $message .'<br \><br \>'. sprintf($lang['Click_return_forum'], '<a href="'."viewforum.$phpEx?". POST_FORUM_URL ."=$forum_id&amp;sid=". $userdata['session_id'] .'">', '</a>');
+		$message = $message .'<br \><br \>'. sprintf($lang['Click_return_forum'], '<a href="'."viewforum.php?". POST_FORUM_URL ."=$forum_id&amp;sid=". $userdata['session_id'] .'">', '</a>');
 
 		$template->assign_vars(array(
 			'META' => '<meta http-equiv="refresh" content="3;url='. $redirect_page .'">')
@@ -811,7 +809,7 @@ switch( $mode )
 
 	case 'split':
 		$page_title = $lang['Mod_CP'];
-		include($phpbb_root_path . 'includes/page_header.'.$phpEx);
+		require(FT_ROOT . 'includes/page_header.php');
 
 		//mpd
 		$delete_posts = (isset($_POST['delete_posts'])) ? TRUE : FALSE;
@@ -937,12 +935,12 @@ switch( $mode )
 				//bot
 				if (isset($_POST['after_split_to_old']))
 				{
-					include_once($phpbb_root_path . 'includes/functions_post.'.$phpEx);
+					require_once(FT_ROOT . 'includes/functions_post.php');
 					insert_post('after_split_to_old', $topic_id, $forum_id, '', $new_topic_id, str_replace("\'", "''", $post_subject));
 				}
 				if (isset($_POST['after_split_to_new']))
 				{
-					include_once($phpbb_root_path . 'includes/functions_post.'.$phpEx);
+					require_once(FT_ROOT . 'includes/functions_post.php');
 					insert_post('after_split_to_new', $new_topic_id, $new_forum_id, $forum_id, $new_topic_id, '', $topic_id);
 				}
 				//bot end
@@ -953,12 +951,12 @@ switch( $mode )
 				sync('forum', $forum_id);
 
 				$template->assign_vars(array(
-					'META' => '<meta http-equiv="refresh" content="3;url=' . "viewtopic.$phpEx?" . POST_TOPIC_URL . "=$topic_id&amp;sid=" . $userdata['session_id'] . '">')
+					'META' => '<meta http-equiv="refresh" content="3;url=' . "viewtopic.php?" . POST_TOPIC_URL . "=$topic_id&amp;sid=" . $userdata['session_id'] . '">')
 				);
 
 				//bot
-				$message = $lang['Topic_split'] .'<br /><br /><a href="' . "viewtopic.$phpEx?". POST_TOPIC_URL ."=$topic_id&amp;sid=". $userdata['session_id'] .'">'. $lang['Topic_split_old'] .'</a>';
-				$message .= ' &nbsp;::&nbsp; <a href="' . "viewtopic.$phpEx?". POST_TOPIC_URL ."=$new_topic_id&amp;sid=". $userdata['session_id'] .'">'. $lang['Topic_split_new'] .'</a>';
+				$message = $lang['Topic_split'] .'<br /><br /><a href="' . "viewtopic.php?". POST_TOPIC_URL ."=$topic_id&amp;sid=". $userdata['session_id'] .'">'. $lang['Topic_split_old'] .'</a>';
+				$message .= ' &nbsp;::&nbsp; <a href="' . "viewtopic.php?". POST_TOPIC_URL ."=$new_topic_id&amp;sid=". $userdata['session_id'] .'">'. $lang['Topic_split_new'] .'</a>';
 				//bot end
 				message_die(GENERAL_MESSAGE, $message);
 			}
@@ -970,7 +968,7 @@ switch( $mode )
 			{
 				message_die(GENERAL_MESSAGE, sprintf($lang['Sorry_auth_delete'], $is_auth['auth_delete_type']));
 			}
-			include($phpbb_root_path .'includes/functions_search.'. $phpEx);
+			require(FT_ROOT .'includes/functions_search.php');
 
 			$sql = 'SELECT poster_id, COUNT(post_id) AS posts
 				FROM '. POSTS_TABLE ."
@@ -1028,9 +1026,9 @@ switch( $mode )
 			sync('topic', $topic_id);
 			sync('forum', $forum_id);
 
-			$template->assign_vars(array('META' => '<meta http-equiv="refresh" content="10;url="viewtopic.'. $phpEx .'?'. POST_TOPIC_URL ."=$topic_id&amp;sid=". $userdata['session_id'] .'&amp;start='. $start .'">'));
+			$template->assign_vars(array('META' => '<meta http-equiv="refresh" content="10;url="viewtopic.php?'. POST_TOPIC_URL ."=$topic_id&amp;sid=". $userdata['session_id'] .'&amp;start='. $start .'">'));
 
-			$message = $lang['Delete_posts_succesfully'] .'<br /><br />'. sprintf($lang['Click_return_topic'], '<a href="viewtopic.'. $phpEx .'?'. POST_TOPIC_URL ."=$topic_id&amp;sid=". $userdata['session_id'] .'&amp;start='. $start .'">', '</a>');
+			$message = $lang['Delete_posts_succesfully'] .'<br /><br />'. sprintf($lang['Click_return_topic'], '<a href="viewtopic.php?'. POST_TOPIC_URL ."=$topic_id&amp;sid=". $userdata['session_id'] .'&amp;start='. $start .'">', '</a>');
 			message_die(GENERAL_MESSAGE, $message);
 		}
 		//mpd end
@@ -1083,14 +1081,14 @@ switch( $mode )
 
 					'FORUM_NAME' => $forum_name,
 
-					'U_VIEW_FORUM' => append_sid("viewforum.$phpEx?" . POST_FORUM_URL . "=$forum_id"),
+					'U_VIEW_FORUM' => append_sid("viewforum.php?" . POST_FORUM_URL . "=$forum_id"),
 
 					//bot
 					'L_AFTER_SPLIT_TO_OLD' => $lang['Bot_after_split_to_old'],
 					'L_AFTER_SPLIT_TO_NEW' => $lang['Bot_after_split_to_new'],
 					//bot end
 
-					'S_SPLIT_ACTION' => append_sid("modcp.$phpEx"),
+					'S_SPLIT_ACTION' => append_sid("modcp.php"),
 					'S_HIDDEN_FIELDS' => $s_hidden_fields,
 					'S_FORUM_SELECT' => make_forum_select("new_forum_id", false, $forum_id))
 				);
@@ -1179,7 +1177,7 @@ switch( $mode )
 
 	case 'ip':
 		$page_title = $lang['Mod_CP'];
-		include($phpbb_root_path . 'includes/page_header.'.$phpEx);
+		require(FT_ROOT . 'includes/page_header.php');
 
 		$rdns_ip_num = ( isset($HTTP_GET_VARS['rdns']) ) ? $HTTP_GET_VARS['rdns'] : "";
 
@@ -1227,7 +1225,7 @@ switch( $mode )
 
 			'IP' => $ip_this_post,
 
-			'U_LOOKUP_IP' => "modcp.$phpEx?mode=ip&amp;" . POST_POST_URL . "=$post_id&amp;" . POST_TOPIC_URL . "=$topic_id&amp;rdns=$ip_this_post&amp;sid=" . $userdata['session_id'])
+			'U_LOOKUP_IP' => "modcp.php?mode=ip&amp;" . POST_POST_URL . "=$post_id&amp;" . POST_TOPIC_URL . "=$topic_id&amp;rdns=$ip_this_post&amp;sid=" . $userdata['session_id'])
 		);
 
 		//
@@ -1268,7 +1266,7 @@ switch( $mode )
 					'IP' => $ip,
 					'POSTS' => $row['postings'] . ' ' . ( ( $row['postings'] == 1 ) ? $lang['Post'] : $lang['Posts'] ),
 
-					'U_LOOKUP_IP' => "modcp.$phpEx?mode=ip&amp;" . POST_POST_URL . "=$post_id&amp;" . POST_TOPIC_URL . "=$topic_id&amp;rdns=" . $row['poster_ip'] . "&amp;sid=" . $userdata['session_id'])
+					'U_LOOKUP_IP' => "modcp.php?mode=ip&amp;" . POST_POST_URL . "=$post_id&amp;" . POST_TOPIC_URL . "=$topic_id&amp;rdns=" . $row['poster_ip'] . "&amp;sid=" . $userdata['session_id'])
 				);
 
 				$i++;
@@ -1308,8 +1306,8 @@ switch( $mode )
 					'POSTS' => $row['postings'] . ' ' . ( ( $row['postings'] == 1 ) ? $lang['Post'] : $lang['Posts'] ),
 					'L_SEARCH_POSTS' => sprintf($lang['Search_user_posts'], $username),
 
-					'U_PROFILE' => ($id == ANONYMOUS) ? "modcp.$phpEx?mode=ip&amp;" . POST_POST_URL . "=" . $post_id . "&amp;" . POST_TOPIC_URL . "=" . $topic_id . "&amp;sid=" . $userdata['session_id'] : append_sid("profile.$phpEx?mode=viewprofile&amp;" . POST_USERS_URL . "=$id"),
-					'U_SEARCHPOSTS' => append_sid("search.$phpEx?search_author=" . urlencode($username) . "&amp;showresults=topics"))
+					'U_PROFILE' => ($id == ANONYMOUS) ? "modcp.php?mode=ip&amp;" . POST_POST_URL . "=" . $post_id . "&amp;" . POST_TOPIC_URL . "=" . $topic_id . "&amp;sid=" . $userdata['session_id'] : append_sid("profile.php?mode=viewprofile&amp;" . POST_USERS_URL . "=$id"),
+					'U_SEARCHPOSTS' => append_sid("search.php?search_author=" . urlencode($username) . "&amp;showresults=topics"))
 				);
 
 				$i++;
@@ -1323,7 +1321,7 @@ switch( $mode )
 
 	default:
 		$page_title = $lang['Mod_CP'];
-		include($phpbb_root_path . 'includes/page_header.'.$phpEx);
+		require(FT_ROOT . 'includes/page_header.php');
 
 		$template->assign_vars(array(
 			'FORUM_NAME' => $forum_name,
@@ -1340,15 +1338,15 @@ switch( $mode )
 			'L_LASTPOST' => $lang['Last_Post'],
 			'L_SELECT' => $lang['Select'],
 
-			'U_VIEW_FORUM' => append_sid("viewforum.$phpEx?" . POST_FORUM_URL . "=$forum_id"),
+			'U_VIEW_FORUM' => append_sid("viewforum.php?" . POST_FORUM_URL . "=$forum_id"),
 			'S_HIDDEN_FIELDS' => '<input type="hidden" name="sid" value="' . $userdata['session_id'] . '" /><input type="hidden" name="' . POST_FORUM_URL . '" value="' . $forum_id . '" />',
-			'S_MODCP_ACTION' => append_sid("modcp.$phpEx"))
-		);
+			'S_MODCP_ACTION' => append_sid("modcp.php"),
+		));
 
 		$template->set_filenames(array(
 			'body' => 'modcp_body.tpl')
 		);
-		make_jumpbox('modcp.'.$phpEx);
+		make_jumpbox('modcp.php');
 
 		//
 		// Define censored word matches
@@ -1436,7 +1434,7 @@ switch( $mode )
 				$topic_title = preg_replace($orig_word, $replacement_word, $topic_title);
 			}
 
-			$u_view_topic = "modcp.$phpEx?mode=split&amp;" . POST_TOPIC_URL . "=$topic_id&amp;sid=" . $userdata['session_id'];
+			$u_view_topic = "modcp.php?mode=split&amp;" . POST_TOPIC_URL . "=$topic_id&amp;sid=" . $userdata['session_id'];
 			$topic_replies = $row['topic_replies'];
 
 			$last_post_time = create_date($board_config['default_dateformat'], $row['post_time'], $board_config['board_timezone']);
@@ -1452,21 +1450,19 @@ switch( $mode )
 				'TOPIC_ID' => $topic_id,
 				'TOPIC_ATTACHMENT_IMG' => topic_attachment_image($row['topic_attachment']),
 
-				'L_TOPIC_FOLDER_ALT' => $folder_alt)
-			);
+				'L_TOPIC_FOLDER_ALT' => $folder_alt,
+			));
 		}
 
 		$template->assign_vars(array(
-			'PAGINATION' => generate_pagination("modcp.$phpEx?" . POST_FORUM_URL . "=$forum_id&amp;sid=" . $userdata['session_id'], $forum_topics, $board_config['topics_per_page'], $start),
+			'PAGINATION' => generate_pagination("modcp.php?" . POST_FORUM_URL . "=$forum_id&amp;sid=" . $userdata['session_id'], $forum_topics, $board_config['topics_per_page'], $start),
 			'PAGE_NUMBER' => sprintf($lang['Page_of'], ( floor( $start / $board_config['topics_per_page'] ) + 1 ), ceil( $forum_topics / $board_config['topics_per_page'] )),
-			'L_GOTO_PAGE' => $lang['Goto_page'])
-		);
+			'L_GOTO_PAGE' => $lang['Goto_page']
+		));
 
 		$template->pparse('body');
 
 		break;
 }
 
-include($phpbb_root_path . 'includes/page_tail.'.$phpEx);
-
-?>
+require(FT_ROOT . 'includes/page_tail.php');

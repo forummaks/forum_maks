@@ -1,31 +1,6 @@
 <?php
-/***************************************************************************
- *                           usercp_sendpasswd.php
- *                            -------------------
- *   begin                : Saturday, Feb 13, 2001
- *   copyright            : (C) 2001 The phpBB Group
- *   email                : support@phpbb.com
- *
- *   $Id: usercp_sendpasswd.php,v 1.6.2.12 2004/11/18 17:49:45 acydburn Exp $
- *
- *
- ***************************************************************************/
 
-/***************************************************************************
- *
- *   This program is free software; you can redistribute it and/or modify
- *   it under the terms of the GNU General Public License as published by
- *   the Free Software Foundation; either version 2 of the License, or
- *   (at your option) any later version.
- *
- *
- ***************************************************************************/
-
-if ( !defined('IN_PHPBB') )
-{
-	die('Hacking attempt');
-	exit;
-}
+if (!defined('FT_ROOT')) die(basename(__FILE__));
 
 if ( isset($HTTP_POST_VARS['submit']) )
 {
@@ -62,7 +37,7 @@ if ( isset($HTTP_POST_VARS['submit']) )
 				message_die(GENERAL_ERROR, 'Could not update new password information', '', __LINE__, __FILE__, $sql);
 			}
 
-			include($phpbb_root_path . 'includes/emailer.'.$phpEx);
+			include(FT_ROOT . 'includes/emailer.php');
 			$emailer = new emailer($board_config['smtp_delivery']);
 
 			$emailer->from($board_config['board_email']);
@@ -84,10 +59,10 @@ if ( isset($HTTP_POST_VARS['submit']) )
 			$emailer->reset();
 
 			$template->assign_vars(array(
-				'META' => '<meta http-equiv="refresh" content="15;url=' . append_sid("index.$phpEx") . '">')
+				'META' => '<meta http-equiv="refresh" content="15;url=' . append_sid("index.php") . '">')
 			);
 
-			$message = $lang['Password_updated'] . '<br /><br />' . sprintf($lang['Click_return_index'],  '<a href="' . append_sid("index.$phpEx") . '">', '</a>');
+			$message = $lang['Password_updated'] . '<br /><br />' . sprintf($lang['Click_return_index'],  '<a href="' . append_sid("index.php") . '">', '</a>');
 
 			message_die(GENERAL_MESSAGE, $message);
 		}
@@ -110,12 +85,12 @@ else
 //
 // Output basic page
 //
-include($phpbb_root_path . 'includes/page_header.'.$phpEx);
+include(FT_ROOT . 'includes/page_header.php');
 
 $template->set_filenames(array(
 	'body' => 'profile_send_pass.tpl')
 );
-make_jumpbox('viewforum.'.$phpEx);
+make_jumpbox('viewforum.php');
 
 $template->assign_vars(array(
 	'USERNAME' => $username,
@@ -128,11 +103,9 @@ $template->assign_vars(array(
 	'L_RESET' => $lang['Reset'],
 
 	'S_HIDDEN_FIELDS' => '',
-	'S_PROFILE_ACTION' => append_sid("profile.$phpEx?mode=sendpassword"))
+	'S_PROFILE_ACTION' => append_sid("profile.php?mode=sendpassword"))
 );
 
 $template->pparse('body');
 
-include($phpbb_root_path . 'includes/page_tail.'.$phpEx);
-
-?>
+include(FT_ROOT . 'includes/page_tail.php');

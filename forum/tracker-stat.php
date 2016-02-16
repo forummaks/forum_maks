@@ -1,23 +1,7 @@
 <?php
 
-//ob_start('ob_gzhandler');
-//set_time_limit(600);
-
-define('IN_PHPBB', true);
-$phpbb_root_path = './';
-$phpEx = 'php';
-
-//$tr_root_path = './../bt/';
-//include($phpbb_root_path . 'extension.inc');
-//include($phpbb_root_path . 'common.'.$phpEx);
-//$userdata = session_pagestart($user_ip, PAGE_PROFILE);
-//init_userprefs($userdata);
-
-include($phpbb_root_path .'config.'.$phpEx);
-include($phpbb_root_path .'includes/constants.'.$phpEx);
-include($phpbb_root_path .'includes/db.'.$phpEx);
-
-############################################################################
+define('FT_ROOT', './');
+require(FT_ROOT . 'common.php');
 
 echo '<br /><br /><br /><table border="1" cellspacing="0" cellpadding="6" align="center">';
 
@@ -90,5 +74,3 @@ echo '</table>';
 $db->sql_close();
 
 exit;
-
-?>

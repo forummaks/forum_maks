@@ -6,10 +6,9 @@
 $medal_num_recent = 10;
 
 
-define('IN_PHPBB', true);
-$phpbb_root_path = './';
-include($phpbb_root_path . 'extension.inc');
-include($phpbb_root_path . 'common.'.$phpEx);
+define('FT_ROOT', './');
+require(FT_ROOT . 'common.php');
+
 $current_time = (isset($_GET['time']) && $_GET['time'] == 'all') ? 0 : time();
 //
 // Start session management
@@ -23,11 +22,11 @@ init_userprefs($userdata);
 // Generate page
 //
 $page_title = 'Доска почета!';
-include($phpbb_root_path . 'includes/page_header.'.$phpEx);
+require(FT_ROOT . 'includes/page_header.php');
 $template->set_filenames(array(
         'body' => 'medal_body.tpl')
 );
-make_jumpbox('viewforum.'.$phpEx);
+make_jumpbox('viewforum.php');
 
 $sql = " SELECT DISTINCT u.username, u.user_id, u.user_regdate, tr.user_id, tr.u_up_total AS u_up_total, tr.u_bonus_total, tr.u_down_total, bl.ban_userid
         FROM ( " . USERS_TABLE . " u LEFT JOIN " . BT_USERS_TABLE . " tr ON u.user_id=tr.user_id)LEFT JOIN " . BANLIST_TABLE . " bl ON u.user_id=bl.ban_userid
@@ -63,7 +62,7 @@ if ( $row = $db->sql_fetchrow($result) )
                         'BONUS' => humn_size ($bonus),
                         'DOWN' => humn_size ($download),
                         'UP_DOWN_RATIO' => $ratio,
-                        'U_VIEWPROFILE' => append_sid("profile.$phpEx?mode=viewprofile&amp;" . POST_USERS_URL . "=$user_id"))
+                        'U_VIEWPROFILE' => append_sid("profile.php?mode=viewprofile&amp;" . POST_USERS_URL . "=$user_id"))
                 );
                 $i++;
         }
@@ -105,7 +104,7 @@ if ( $row = $db->sql_fetchrow($result) )
                         'BONUS' => humn_size ($bonus),
                         'DOWN' => humn_size ($download),
                         'UP_DOWN_RATIO' => $ratio,
-                        'U_VIEWPROFILE' => append_sid("profile.$phpEx?mode=viewprofile&amp;" . POST_USERS_URL . "=$user_id"))
+                        'U_VIEWPROFILE' => append_sid("profile.php?mode=viewprofile&amp;" . POST_USERS_URL . "=$user_id"))
                 );
                 $i++;
         }
@@ -149,7 +148,7 @@ if ( $row = $db->sql_fetchrow($result) )
                         'BONUS' => humn_size ($bonus),
                         'DOWN' => humn_size ($download),
                         'UP_DOWN_RATIO' => $ratio, 
-                        'U_VIEWPROFILE' => append_sid("profile.$phpEx?mode=viewprofile&amp;" . POST_USERS_URL . "=$user_id"))
+                        'U_VIEWPROFILE' => append_sid("profile.php?mode=viewprofile&amp;" . POST_USERS_URL . "=$user_id"))
                 );
                 $i++;
         }
@@ -201,8 +200,8 @@ if ( $row = $db->sql_fetchrow($result) )
                         'COMPLETE_COUNT' => $complete,
                         'REG_TIME' => $reg_time,
                         'TOPIC_TITLE' => $topic_title,
-                        'TOPIC_HREF'   => append_sid("viewtopic.$phpEx?t=". $row['topic_id']),
-                        'U_VIEWPROFILE' => append_sid("profile.$phpEx?mode=viewprofile&amp;" . POST_USERS_URL . "=$user_id"))
+                        'TOPIC_HREF'   => append_sid("viewtopic.php?t=". $row['topic_id']),
+                        'U_VIEWPROFILE' => append_sid("profile.php?mode=viewprofile&amp;" . POST_USERS_URL . "=$user_id"))
                 );
                 $i++;
         }
@@ -212,7 +211,4 @@ if ( $row = $db->sql_fetchrow($result) )
 }
 
 $template->pparse('body');
-include($phpbb_root_path . 'includes/page_tail.'.$phpEx);
-
-
-?>
+require(FT_ROOT . 'includes/page_tail.php');

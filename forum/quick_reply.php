@@ -1,9 +1,6 @@
 <?php
 
-if (!defined('IN_PHPBB'))
-{
-	die("Hacking attempt");
-}
+if (!defined('FT_ROOT')) die(basename(__FILE__));
 
 if ($is_auth['auth_reply'] && !(($forum_topic_data['forum_status'] == FORUM_LOCKED || $forum_topic_data['topic_status'] == TOPIC_LOCKED) && !$is_auth['auth_mod']))
 {
@@ -106,5 +103,3 @@ if ($is_auth['auth_reply'] && !(($forum_topic_data['forum_status'] == FORUM_LOCK
 		'QR_SID'          => $userdata['session_id']
 	));
 }
-
-?>

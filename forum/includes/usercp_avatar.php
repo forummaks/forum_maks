@@ -1,25 +1,6 @@
 <?php
-/***************************************************************************
- *                             usercp_avatar.php
- *                            -------------------
- *   begin                : Saturday, Feb 13, 2001
- *   copyright            : (C) 2001 The phpBB Group
- *   email                : support@phpbb.com
- *
- *   $Id: usercp_avatar.php,v 1.8.2.21 2005/07/19 20:01:16 acydburn Exp $
- *
- *
- ***************************************************************************/
 
-/***************************************************************************
- *
- *   This program is free software; you can redistribute it and/or modify
- *   it under the terms of the GNU General Public License as published by
- *   the Free Software Foundation; either version 2 of the License, or
- *   (at your option) any later version.
- *
- *
- ***************************************************************************/
+if (!defined('FT_ROOT')) die(basename(__FILE__));
 
 function check_image_type(&$type, &$error, &$error_msg)
 {
@@ -264,7 +245,6 @@ function user_avatar_upload($mode, $avatar_mode, &$current_avatar, &$current_typ
 function display_avatar_gallery($mode, &$category, &$user_id, &$email, &$current_email, &$coppa, &$username, &$email, &$new_password, &$cur_password, &$password_confirm, &$icq, &$aim, &$msn, &$yim, &$website, &$location, &$user_flag, &$occupation, &$interests, &$signature, &$viewemail, &$notifypm, &$popup_pm, &$notifyreply, &$attachsig, &$allowhtml, &$allowbbcode, &$allowsmilies, &$hideonline, &$style, &$language, &$timezone, &$dateformat, &$session_id)
 {
 	global $board_config, $db, $template, $lang, $images, $theme;
-	global $phpbb_root_path, $phpEx;
 
 	$dir = @opendir($board_config['avatar_gallery_path']);
 
@@ -354,11 +334,9 @@ function display_avatar_gallery($mode, &$category, &$user_id, &$email, &$current
 
 		'S_CATEGORY_SELECT' => $s_categories,
 		'S_COLSPAN' => $s_colspan,
-		'S_PROFILE_ACTION' => append_sid("profile.$phpEx?mode=$mode"),
+		'S_PROFILE_ACTION' => append_sid("profile.php?mode=$mode"),
 		'S_HIDDEN_FIELDS' => $s_hidden_vars)
 	);
 
 	return;
 }
-
-?>

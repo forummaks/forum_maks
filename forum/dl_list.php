@@ -1,10 +1,8 @@
 <?php
 
-define('IN_PHPBB', true);
-$phpbb_root_path = './';
-include($phpbb_root_path .'extension.inc');
-include($phpbb_root_path .'common.'.$phpEx);
-include($phpbb_root_path .'includes/functions_dl_list.'.$phpEx);
+define('FT_ROOT', './');
+require(FT_ROOT . 'common.php');
+require(FT_ROOT .'includes/functions_dl_list.php');
 
 $forum_id = (isset($_REQUEST[POST_FORUM_URL])) ? intval($_REQUEST[POST_FORUM_URL]) : '';
 $topic_id = (isset($_REQUEST[POST_TOPIC_URL])) ? intval($_REQUEST[POST_TOPIC_URL]) : '';
@@ -42,12 +40,12 @@ $confirm = (isset($_POST['confirm'])) ? TRUE : FALSE;
 $full_url = (@$_POST['full_url']) ? str_replace('&amp;', '&', htmlspecialchars($_POST['full_url'])) : '';
 if (@$_POST['redirect_type'] == 'search')
 {
-	$redirect_type = "search.$phpEx";
+	$redirect_type = "search.php";
 	$redirect = ($full_url) ? $full_url : '';
 }
 else
 {
-	$redirect_type = (!$topic_id) ? "viewforum.$phpEx" : "viewtopic.$phpEx";
+	$redirect_type = (!$topic_id) ? "viewforum.php" : "viewtopic.php";
 	$redirect = ($full_url) ? $full_url : ((!$topic_id) ? POST_FORUM_URL ."=$forum_id" : POST_TOPIC_URL ."=$topic_id");
 }
 
@@ -58,7 +56,7 @@ init_userprefs($userdata);
 // Check if user logged in
 if (!$userdata['session_logged_in'])
 {
-	redirect(append_sid("login.$phpEx?redirect=$redirect_type&$redirect", true));
+	redirect(append_sid("login.php?redirect=$redirect_type&$redirect", true));
 }
 
 $user_id = $userdata['user_id'];
@@ -106,7 +104,7 @@ if ($mode == 'dl_delete' && $topic_id)
 		$dl_hidden_fields .= '<input type="hidden" name="sid" value="'. $userdata['session_id'] .'" />';
 		$l_confirm = $lang['DL_List_Del_Confirm'];
 
-		include($phpbb_root_path .'includes/page_header.'.$phpEx);
+		require(FT_ROOT .'includes/page_header.php');
 
 		$template->set_filenames(array('confirm_body' => 'confirm_body.tpl'));
 
@@ -115,13 +113,13 @@ if ($mode == 'dl_delete' && $topic_id)
 			'MESSAGE_TEXT' => $l_confirm,
 			'L_YES' => $lang['Yes'],
 			'L_NO' => $lang['No'],
-			'S_CONFIRM_ACTION' => append_sid("dl_list.$phpEx"),
+			'S_CONFIRM_ACTION' => append_sid("dl_list.php"),
 			'S_HIDDEN_FIELDS' => $dl_hidden_fields
 		));
 
 		$template->pparse('confirm_body');
 
-		include($phpbb_root_path .'includes/page_tail.'.$phpEx);
+		require(FT_ROOT .'includes/page_tail.php');
 	}
 
 	clear_dl_list($topic_id);
@@ -198,6 +196,4 @@ if ($topics && ($mode == 'set_dl_status' || $mode == 'set_topics_dl_status'))
 	redirect(append_sid("$redirect_type?$redirect", true));
 }
 
-redirect(append_sid("index.$phpEx", true));
-
-?>
+redirect(append_sid("index.php", true));

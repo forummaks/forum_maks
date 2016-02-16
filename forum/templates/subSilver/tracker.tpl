@@ -21,7 +21,7 @@
 <table width="100%" class="forumline" cellspacing="1" cellpadding="4" border="0" align="center">
 	<tr>
 		<th class="catHead" align="center" style="letter-spacing: 1px; height: 26px">
-		<span class="genmed" style="color: #FFFFFF"><b>Поиск по раздачам</b></span></th>
+		<span class="genmed" style="color: #FFFFFF"><b>РџРѕРёСЃРє РїРѕ СЂР°Р·РґР°С‡Р°Рј</b></span></th>
 	</tr>
 	<tr>
 		<td class="row1" align="center">
@@ -149,20 +149,20 @@ jQuery(document).ready(function(){
 		<th class="{sorter: false}">&nbsp;</th>
 		<th class="{sorter: false}">&nbsp;</th>
 		<!-- IF SHOW_FORUM -->
-		<th class="{sorter: 'text'} header" title="{L_FORUM}" width="25%"><b class="tbs-text">Форум</b><span class="tbs-icon">&nbsp;&nbsp;</span></th>
+		<th class="{sorter: 'text'} header" title="{L_FORUM}" width="25%"><b class="tbs-text">Р¤РѕСЂСѓРј</b><span class="tbs-icon">&nbsp;&nbsp;</span></th>
 		<!-- ENDIF -->
-		<th class="{sorter: 'text'} header" title="{L_TOPIC}" width="75%"><b class="tbs-text">Тема</b><span class="tbs-icon">&nbsp;&nbsp;</span></th>
+		<th class="{sorter: 'text'} header" title="{L_TOPIC}" width="75%"><b class="tbs-text">РўРµРјР°</b><span class="tbs-icon">&nbsp;&nbsp;</span></th>
 		<!-- IF SHOW_AUTHOR -->
-		<th class="{sorter: 'text'} header" title="{L_AUTHOR}"><b class="tbs-text">Автор</b><span class="tbs-icon">&nbsp;&nbsp;</span></th>
+		<th class="{sorter: 'text'} header" title="{L_AUTHOR}"><b class="tbs-text">РђРІС‚РѕСЂ</b><span class="tbs-icon">&nbsp;&nbsp;</span></th>
 		<!-- ENDIF -->
-		<th class="{sorter: 'digit'} header" title="{L_SIZE}"><b class="tbs-text">Размер</b><span class="tbs-icon">&nbsp;&nbsp;</span></th>
+		<th class="{sorter: 'digit'} header" title="{L_SIZE}"><b class="tbs-text">Р Р°Р·РјРµСЂ</b><span class="tbs-icon">&nbsp;&nbsp;</span></th>
 		<th class="{sorter: 'digit'} header" title="{L_SEEDERS}"><b class="tbs-text">S</b><span class="tbs-icon">&nbsp;&nbsp;</span></th>
 		<th class="{sorter: 'digit'} header" title="{L_LEECHERS}"><b class="tbs-text">L</b><span class="tbs-icon">&nbsp;&nbsp;</span></th>
         <th class="{sorter: 'digit'} header" title="{L_COMPL}"><b class="tbs-text">C</b><span class="tbs-icon">&nbsp;&nbsp;</span></th>
 		<!-- IF SHOW_SPEED -->
 		<th class="{sorter: false}" title="{L_DL_SPEED}"> SP </th>
 		<!-- ENDIF -->
-		<th class="{sorter: 'digit'} header" title="{L_POSTED}"><b class="tbs-text">Добавлен</b><span class="tbs-icon">&nbsp;&nbsp;</span></th>
+		<th class="{sorter: 'digit'} header" title="{L_POSTED}"><b class="tbs-text">Р”РѕР±Р°РІР»РµРЅ</b><span class="tbs-icon">&nbsp;&nbsp;</span></th>
 	</tr>
 </thead>
 <tbody>	

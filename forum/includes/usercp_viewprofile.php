@@ -1,30 +1,7 @@
 <?php
-/***************************************************************************
- *                           usercp_viewprofile.php
- *                            -------------------
- *   begin                : Saturday, Feb 13, 2001
- *   copyright            : (C) 2001 The phpBB Group
- *   email                : support@phpbb.com
- *
- *   $Id: usercp_viewprofile.php,v 1.5.2.5 2005/07/19 20:01:16 acydburn Exp $
- *
- *
- ***************************************************************************/
 
-/***************************************************************************
- *
- *   This program is free software; you can redistribute it and/or modify
- *   it under the terms of the GNU General Public License as published by
- *   the Free Software Foundation; either version 2 of the License, or
- *   (at your option) any later version.
- *
- *
- ***************************************************************************/
-if ( !defined('IN_PHPBB') )
-{
-	die("Hacking attempt");
-	exit;
-}
+if (!defined('FT_ROOT')) die(basename(__FILE__));
+
 if ( empty($HTTP_GET_VARS[POST_USERS_URL]) || $HTTP_GET_VARS[POST_USERS_URL] == ANONYMOUS )
 {
 	message_die(GENERAL_MESSAGE, $lang['No_user_id_specified']);
@@ -55,7 +32,7 @@ $db->sql_freeresult($result);
 $template->set_filenames(array(
 	'body' => 'profile_view_body.tpl')
 );
-make_jumpbox('viewforum.'.$phpEx);
+make_jumpbox('viewforum.php');
 //
 // Calculate the number of days this user has been a member ($memberdays)
 // Then calculate their posts per day
@@ -117,7 +94,7 @@ else
 	}
 }
 
-$temp_url = append_sid("privmsg.$phpEx?mode=post&amp;" . POST_USERS_URL . "=" . $profiledata['user_id']);
+$temp_url = append_sid("privmsg.php?mode=post&amp;" . POST_USERS_URL . "=" . $profiledata['user_id']);
 $pm_img = '<a href="' . $temp_url . '"><img src="' . $images['icon_pm'] . '" alt="' . $lang['Send_private_message'] . '" title="' . $lang['Send_private_message'] . '" border="0" /></a>';
 
 // FLAGHACK-start
@@ -130,7 +107,7 @@ $pm = '<a href="' . $temp_url . '">' . $lang['Send_private_message'] . '</a>';
 
 if ( !empty($profiledata['user_viewemail']) || $userdata['user_level'] == ADMIN )
 {
-	$email_uri = ( $board_config['board_email_form'] ) ? append_sid("profile.$phpEx?mode=email&amp;" . POST_USERS_URL .'=' . $profiledata['user_id']) : 'mailto:' . $profiledata['user_email'];
+	$email_uri = ( $board_config['board_email_form'] ) ? append_sid("profile.php?mode=email&amp;" . POST_USERS_URL .'=' . $profiledata['user_id']) : 'mailto:' . $profiledata['user_email'];
 	$email_img = '<a href="' . $email_uri . '"><img src="' . $images['icon_email'] . '" alt="' . $lang['Send_email'] . '" title="' . $lang['Send_email'] . '" border="0" /></a>';
 	$email = '<a href="' . $email_uri . '">' . $lang['Send_email'] . '</a>';
 }
@@ -159,7 +136,7 @@ $msn_img = ( $profiledata['user_msnm'] ) ? $profiledata['user_msnm'] : '';
 $msn = $msn_img;
 $yim_img = ( $profiledata['user_yim'] ) ? '<a href="http://edit.yahoo.com/config/send_webmesg?.target=' . $profiledata['user_yim'] . '&amp;.src=pg"><img src="' . $images['icon_yim'] . '" alt="' . $lang['YIM'] . '" title="' . $lang['YIM'] . '" border="0" /></a>' : '';
 $yim = ( $profiledata['user_yim'] ) ? '<a href="http://edit.yahoo.com/config/send_webmesg?.target=' . $profiledata['user_yim'] . '&amp;.src=pg">' . $lang['YIM'] . '</a>' : '';
-$temp_url = append_sid("search.$phpEx?search_author=" . urlencode($profiledata['username']) . "&amp;showresults=posts");
+$temp_url = append_sid("search.php?search_author=" . urlencode($profiledata['username']) . "&amp;showresults=posts");
 $search_img = '<a href="' . $temp_url . '"><img src="' . $images['icon_search'] . '" alt="' . $lang['Search_user_posts'] . '" title="' . sprintf($lang['Search_user_posts'], $profiledata['username']) . '" border="0" /></a>';
 $search = '<a href="' . $temp_url . '">' . sprintf($lang['Search_user_posts'], $profiledata['username']) . '</a>';
 
@@ -167,7 +144,7 @@ $search = '<a href="' . $temp_url . '">' . sprintf($lang['Search_user_posts'], $
 // Generate page
 //
 $page_title = $lang['Viewing_profile'];
-include($phpbb_root_path . 'includes/page_header.'.$phpEx);
+require(FT_ROOT . 'includes/page_header.php');
 display_upload_attach_box_limits($profiledata['user_id']);
 
 if (function_exists('get_html_translation_table'))
@@ -235,19 +212,18 @@ $template->assign_vars(array(
 	'L_OCCUPATION' => $lang['Occupation'],
 	'L_INTERESTS' => $lang['Interests'],
 
-	'U_SEARCH_USER' => append_sid("search.$phpEx?search_author=" . $u_search_author),
+	'U_SEARCH_USER' => append_sid("search.php?search_author=" . $u_search_author),
 
-	'S_PROFILE_ACTION' => append_sid("profile.$phpEx"))
+	'S_PROFILE_ACTION' => append_sid("profile.php"))
 );
 
 //bt
 // Show users torrent-profile
-define('IN_VIEWPROFILE', TRUE);
-include($phpbb_root_path .'includes/torrent_userprofile.'. $phpEx);
+require(FT_ROOT .'includes/torrent_userprofile.php');
 //bt end
 
 $template->pparse('body');
 
-include($phpbb_root_path . 'includes/page_tail.'.$phpEx);
+require(FT_ROOT . 'includes/page_tail.php');
 
 ?>

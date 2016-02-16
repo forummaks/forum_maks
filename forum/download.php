@@ -1,14 +1,6 @@
 <?php
-if ( defined('IN_PHPBB') )
-{
-	die('Hacking attempt');
-	exit;
-}
-
-define('IN_PHPBB', true);
-$phpbb_root_path = './';
-include($phpbb_root_path . 'extension.inc');
-include($phpbb_root_path . 'common.'.$phpEx);
+define('FT_ROOT', './');
+require(FT_ROOT . 'common.php');
 
 //
 // Delete the / * to uncomment the block, and edit the values (read the comments) to
@@ -164,8 +156,7 @@ function send_file_to_browser($attachment, $upload_dir)
 	}
 
 	//bt
-	global $phpbb_root_path, $phpEx;
-	include_once($phpbb_root_path .'includes/functions_torrent.'. $phpEx);
+	require_once(FT_ROOT .'includes/functions_torrent.php');
 	send_torrent_with_passkey($filename);
 	//bt end
 
@@ -441,5 +432,3 @@ else
 		exit;
 	}
 }
-
-?>

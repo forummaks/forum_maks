@@ -1,7 +1,7 @@
 <?php
 
 define('FT_ROOT', './');
-include(FT_ROOT . 'common.php');
+require(FT_ROOT . 'common.php');
 
 define('LAST_TOPIC_MAX_LEN', 30);
 
@@ -249,7 +249,7 @@ if ($cat_forums)
 	//
 	define('SHOW_ONLINE', true);
 	$page_title = $lang['Index'];
-	include(FT_ROOT . 'includes/page_header.php');
+	require(FT_ROOT . 'includes/page_header.php');
 
 	$template->set_filenames(array('body' => 'index_body.tpl'));
 
@@ -636,6 +636,4 @@ while ( $row = $db->sql_fetchrow($result) )
 //
 $template->pparse('body');
 
-include(FT_ROOT . 'includes/page_tail.php');
-
-?>
+require(FT_ROOT . 'includes/page_tail.php');

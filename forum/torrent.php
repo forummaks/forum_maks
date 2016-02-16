@@ -1,10 +1,8 @@
 <?php
 
-define('IN_PHPBB', true);
-$phpbb_root_path = './';
-include($phpbb_root_path .'extension.inc');
-include($phpbb_root_path .'common.'.$phpEx);
-include_once($phpbb_root_path .'includes/functions_torrent.'.$phpEx);
+define('FT_ROOT', './');
+require(FT_ROOT . 'common.php');
+require_once(FT_ROOT .'includes/functions_torrent.php');
 
 // Start session management
 $userdata = session_pagestart($user_ip, PAGE_INDEX);
@@ -15,7 +13,7 @@ $user_id = $userdata['user_id'];
 // Check if user logged in
 if (!$userdata['session_logged_in'])
 {
-	redirect(append_sid("login.$phpEx?redirect=index.$phpEx", TRUE));
+	redirect(append_sid("login.php?redirect=index.php", TRUE));
 }
 
 $sid = (isset($_REQUEST['sid'])) ? $_REQUEST['sid'] : '';
@@ -61,7 +59,7 @@ if (($mode == 'reg' || $mode == 'unreg' || $mode == 'del' || $mode == 'del_move'
 // Show users torrent-profile
 if ($mode == 'userprofile')
 {
-	redirect(append_sid("profile.$phpEx?mode=viewprofile&u=$req_uid"), TRUE);
+	redirect(append_sid("profile.php?mode=viewprofile&u=$req_uid"), TRUE);
 }
 
 // check SID
@@ -88,7 +86,7 @@ if ($mode == 'unreg')
 if ($mode == 'del' && $confirm)
 {
 	delete_torrent($attach_id, 'request');
-	$redirect_url = append_sid("viewtopic.$phpEx?".POST_TOPIC_URL."=$topic_id");
+	$redirect_url = append_sid("viewtopic.php?".POST_TOPIC_URL."=$topic_id");
 	redirect($redirect_url);
 }
 
@@ -97,7 +95,7 @@ if ($mode == 'del_move' && $confirm)
 {
 	delete_torrent($attach_id, 'request');
 
-	$redirect_url = "modcp.$phpEx?".POST_TOPIC_URL."=$topic_id&mode=move&sid=". $userdata['session_id'];
+	$redirect_url = "modcp.php?".POST_TOPIC_URL."=$topic_id&mode=move&sid=". $userdata['session_id'];
 	redirect($redirect_url);
 }
 
@@ -122,5 +120,3 @@ if ($mode == 'gen_passkey')
 }
 
 message_die(GENERAL_ERROR, 'Not confirmed or invalid mode');
-
-?>

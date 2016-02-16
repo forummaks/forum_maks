@@ -1,31 +1,6 @@
 <?php
-/***************************************************************************
- *                            usercp_activate.php
- *                            -------------------
- *   begin                : Saturday, Feb 13, 2001
- *   copyright            : (C) 2001 The phpBB Group
- *   email                : support@phpbb.com
- *
- *   $Id: usercp_activate.php,v 1.6.2.8 2005/07/19 20:01:16 acydburn Exp $
- *
- *
- ***************************************************************************/
 
-/***************************************************************************
- *
- *   This program is free software; you can redistribute it and/or modify
- *   it under the terms of the GNU General Public License as published by
- *   the Free Software Foundation; either version 2 of the License, or
- *   (at your option) any later version.
- *
- *
- ***************************************************************************/
-
-if ( !defined('IN_PHPBB') )
-{
-	die('Hacking attempt');
-	exit;
-}
+if (!defined('FT_ROOT')) die(basename(__FILE__));
 
 $sql = "SELECT user_active, user_id, username, user_email, user_newpasswd, user_lang, user_actkey 
 	FROM " . USERS_TABLE . "
@@ -40,7 +15,7 @@ if ( $row = $db->sql_fetchrow($result) )
 	if ( $row['user_active'] && trim($row['user_actkey']) == '' )
 	{
 		$template->assign_vars(array(
-			'META' => '<meta http-equiv="refresh" content="10;url=' . append_sid("index.$phpEx") . '">')
+			'META' => '<meta http-equiv="refresh" content="10;url=' . append_sid("index.php") . '">')
 		);
 
 		message_die(GENERAL_MESSAGE, $lang['Already_activated']);
@@ -64,7 +39,7 @@ if ( $row = $db->sql_fetchrow($result) )
 
 		if ( intval($board_config['require_activation']) == USER_ACTIVATION_ADMIN && $sql_update_pass == '' )
 		{
-			include($phpbb_root_path . 'includes/emailer.'.$phpEx);
+			require(FT_ROOT . 'includes/emailer.php');
 			$emailer = new emailer($board_config['smtp_delivery']);
 
 			$emailer->from($board_config['board_email']);
@@ -84,7 +59,7 @@ if ( $row = $db->sql_fetchrow($result) )
 			$emailer->reset();
 
 			$template->assign_vars(array(
-				'META' => '<meta http-equiv="refresh" content="10;url=' . append_sid("index.$phpEx") . '">')
+				'META' => '<meta http-equiv="refresh" content="10;url=' . append_sid("index.php") . '">')
 			);
 
 			message_die(GENERAL_MESSAGE, $lang['Account_active_admin']);
@@ -92,7 +67,7 @@ if ( $row = $db->sql_fetchrow($result) )
 		else
 		{
 			$template->assign_vars(array(
-				'META' => '<meta http-equiv="refresh" content="10;url=' . append_sid("index.$phpEx") . '">')
+				'META' => '<meta http-equiv="refresh" content="10;url=' . append_sid("index.php") . '">')
 			);
 
 			$message = ( $sql_update_pass == '' ) ? $lang['Account_active'] : $lang['Password_activated']; 
@@ -108,5 +83,3 @@ else
 {
 	message_die(GENERAL_MESSAGE, $lang['No_such_user']);
 }
-
-?>

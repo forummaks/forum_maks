@@ -1,8 +1,6 @@
 <?php
-define('IN_PHPBB', true);
-$phpbb_root_path = './';
-include($phpbb_root_path . 'extension.inc');
-include($phpbb_root_path . 'common.'.$phpEx);
+define('FT_ROOT', './');
+require(FT_ROOT . 'common.php');
 
 //
 // Start session management
@@ -15,19 +13,19 @@ init_userprefs($userdata);
 
 if (!$userdata['session_logged_in'])
 {
-	redirect(append_sid("login.$phpEx?redirect=viewonline.$phpEx", true));
+	redirect(append_sid("login.php?redirect=viewonline.php", true));
 }
 
 //
 // Output page header and load viewonline template
 //
 $page_title = $lang['Who_is_Online'];
-include($phpbb_root_path . 'includes/page_header.'.$phpEx);
+require(FT_ROOT . 'includes/page_header.php');
 
 $template->set_filenames(array(
 	'body' => 'viewonline_body.tpl')
 );
-make_jumpbox('viewforum.'.$phpEx);
+make_jumpbox('viewforum.php');
 
 $template->assign_vars(array(
 	'L_WHOSONLINE' => $lang['Who_is_Online'],
@@ -145,55 +143,55 @@ while ( $row = $db->sql_fetchrow($result) )
 			{
 				case PAGE_INDEX:
 					$location = $lang['Forum_index'];
-					$location_url = "index.$phpEx";
+					$location_url = "index.php";
 					break;
 				case PAGE_POSTING:
 					$location = $lang['Posting_message'];
-					$location_url = "index.$phpEx";
+					$location_url = "index.php";
 					break;
 				case PAGE_LOGIN:
 					$location = $lang['Logging_on'];
-					$location_url = "index.$phpEx";
+					$location_url = "index.php";
 					break;
 				case PAGE_SEARCH:
 					$location = $lang['Searching_forums'];
-					$location_url = "search.$phpEx";
+					$location_url = "search.php";
 					break;
 				case PAGE_PROFILE:
 					$location = $lang['Viewing_profile'];
-					$location_url = "index.$phpEx";
+					$location_url = "index.php";
 					break;
 				case PAGE_VIEWONLINE:
 					$location = $lang['Viewing_online'];
-					$location_url = "viewonline.$phpEx";
+					$location_url = "viewonline.php";
 					break;
 				case PAGE_VIEWMEMBERS:
 					$location = $lang['Viewing_member_list'];
-					$location_url = "memberlist.$phpEx";
+					$location_url = "memberlist.php";
 					break;
 				case PAGE_PRIVMSGS:
 					$location = $lang['Viewing_priv_msgs'];
-					$location_url = "privmsg.$phpEx";
+					$location_url = "privmsg.php";
 					break;
 				case PAGE_FAQ:
 					$location = $lang['Viewing_FAQ'];
-					$location_url = "faq.$phpEx";
+					$location_url = "faq.php";
 					break;
 				//bt
 				case PAGE_TRACKER:
 					$location = $lang['Viewing_TRACKER'];
-					$location_url = "tracker.$phpEx";
+					$location_url = "tracker.php";
 					break;
 				//bt end
 
 				default:
 					$location = $lang['Forum_index'];
-					$location_url = "index.$phpEx";
+					$location_url = "index.php";
 			}
 		}
 		else
 		{
-			$location_url = append_sid("viewforum.$phpEx?" . POST_FORUM_URL . '=' . $row['session_page']);
+			$location_url = append_sid("viewforum.php?" . POST_FORUM_URL . '=' . $row['session_page']);
 			$location = $forum_data[$row['session_page']];
 		}
 
@@ -207,7 +205,7 @@ while ( $row = $db->sql_fetchrow($result) )
 			'LASTUPDATE' => create_date($board_config['default_dateformat'], $row['session_time'], $board_config['board_timezone']),
 			'FORUM_LOCATION' => $location,
 
-			'U_USER_PROFILE' => append_sid("profile.$phpEx?mode=viewprofile&amp;" . POST_USERS_URL . '=' . $user_id),
+			'U_USER_PROFILE' => append_sid("profile.php?mode=viewprofile&amp;" . POST_USERS_URL . '=' . $user_id),
 			'U_FORUM_LOCATION' => append_sid($location_url))
 		);
 
@@ -275,6 +273,4 @@ if ( $guest_users == 0 )
 
 $template->pparse('body');
 
-include($phpbb_root_path . 'includes/page_tail.'.$phpEx);
-
-?>
+require(FT_ROOT . 'includes/page_tail.php');

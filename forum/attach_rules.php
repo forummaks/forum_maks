@@ -1,14 +1,6 @@
 <?php
-if ( defined('IN_PHPBB') )
-{
-	die('Hacking attempt');
-	exit;
-}
-
-define('IN_PHPBB', TRUE);
-$phpbb_root_path = './';
-include($phpbb_root_path . 'extension.inc');
-include($phpbb_root_path . 'common.'.$phpEx);
+define('FT_ROOT', './');
+require(FT_ROOT . 'common.php');
 
 $forum_id = get_var('f', 0);
 $privmsg = (!$forum_id) ? true : false;
@@ -118,7 +110,7 @@ for ($i = 0; $i < $num_rows; $i++)
 
 $gen_simple_header = TRUE;
 $page_title = $lang['Attach_rules_title'];
-include($phpbb_root_path . 'includes/page_header.' . $phpEx);
+require(FT_ROOT . 'includes/page_header.php');
 
 $template->assign_vars(array(
 	'L_RULES_TITLE' => $lang['Attach_rules_title'],
@@ -132,5 +124,3 @@ if ($nothing)
 }
 
 $template->pparse('body');
-
-?>
