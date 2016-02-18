@@ -1,41 +1,10 @@
 <?php
-/***************************************************************************
- *                             admin_groups.php
- *                            -------------------
- *   begin                : Saturday, Feb 13, 2001
- *   copyright            : (C) 2001 The phpBB Group
- *   email                : support@phpbb.com
- *
- *   $Id: admin_groups.php,v 1.25.2.9 2004/03/25 15:57:20 acydburn Exp $
- *
- *
- ***************************************************************************/
-
-/***************************************************************************
- *
- *   This program is free software; you can redistribute it and/or modify
- *   it under the terms of the GNU General Public License as published by
- *   the Free Software Foundation; either version 2 of the License, or
- *   (at your option) any later version.
- *
- ***************************************************************************/
-
-@define('IN_PHPBB', 1);
-
-if ( !empty($setmodules) )
+if (!empty($setmodules))
 {
-	$filename = basename(__FILE__);
-	$module['Groups']['Manage'] = $filename;
-
+	$module['Groups']['Manage'] = basename(__FILE__);
 	return;
 }
-
-//
-// Load default header
-//
-$phpbb_root_path = './../';
-require($phpbb_root_path . 'extension.inc');
-require('./pagestart.' . $phpEx);
+require('./pagestart.php');
 
 if ( isset($HTTP_POST_VARS[POST_GROUPS_URL]) || isset($HTTP_GET_VARS[POST_GROUPS_URL]) )
 {
@@ -152,7 +121,7 @@ if ( isset($HTTP_POST_VARS['edit']) || isset($HTTP_POST_VARS['new']) )
 		'L_DELETE_MODERATOR_EXPLAIN' => $lang['delete_moderator_explain'],
 		'L_YES' => $lang['Yes'],
 
-		'U_SEARCH_USER' => append_sid("../search.$phpEx?mode=searchuser"),
+		'U_SEARCH_USER' => append_sid("../search.php?mode=searchuser"),
 
 		'S_GROUP_OPEN_TYPE' => GROUP_OPEN,
 		'S_GROUP_CLOSED_TYPE' => GROUP_CLOSED,
@@ -160,7 +129,7 @@ if ( isset($HTTP_POST_VARS['edit']) || isset($HTTP_POST_VARS['new']) )
 		'S_GROUP_OPEN_CHECKED' => $group_open,
 		'S_GROUP_CLOSED_CHECKED' => $group_closed,
 		'S_GROUP_HIDDEN_CHECKED' => $group_hidden,
-		'S_GROUP_ACTION' => append_sid("admin_groups.$phpEx"),
+		'S_GROUP_ACTION' => append_sid("admin_groups.php"),
 		'S_HIDDEN_FIELDS' => $s_hidden_fields)
 	);
 
@@ -245,7 +214,7 @@ else if ( isset($HTTP_POST_VARS['group_update']) )
 			message_die(GENERAL_ERROR, 'Could not update auth_access', '', __LINE__, __FILE__, $sql);
 		}
 
-		$message = $lang['Deleted_group'] . '<br /><br />' . sprintf($lang['Click_return_groupsadmin'], '<a href="' . append_sid("admin_groups.$phpEx") . '">', '</a>') . '<br /><br />' . sprintf($lang['Click_return_admin_index'], '<a href="' . append_sid("index.$phpEx?pane=right") . '">', '</a>');
+		$message = $lang['Deleted_group'] . '<br /><br />' . sprintf($lang['Click_return_groupsadmin'], '<a href="' . append_sid("admin_groups.php") . '">', '</a>') . '<br /><br />' . sprintf($lang['Click_return_admin_index'], '<a href="' . append_sid("index.php?pane=right") . '">', '</a>');
 
 		message_die(GENERAL_MESSAGE, $message);
 	}
@@ -331,7 +300,7 @@ else if ( isset($HTTP_POST_VARS['group_update']) )
 				message_die(GENERAL_ERROR, 'Could not update group', '', __LINE__, __FILE__, $sql);
 			}
 
-			$message = $lang['Updated_group'] . '<br /><br />' . sprintf($lang['Click_return_groupsadmin'], '<a href="' . append_sid("admin_groups.$phpEx") . '">', '</a>') . '<br /><br />' . sprintf($lang['Click_return_admin_index'], '<a href="' . append_sid("index.$phpEx?pane=right") . '">', '</a>');;
+			$message = $lang['Updated_group'] . '<br /><br />' . sprintf($lang['Click_return_groupsadmin'], '<a href="' . append_sid("admin_groups.php") . '">', '</a>') . '<br /><br />' . sprintf($lang['Click_return_admin_index'], '<a href="' . append_sid("index.php?pane=right") . '">', '</a>');
 
 			message_die(GENERAL_MESSAGE, $message);
 		}
@@ -352,7 +321,7 @@ else if ( isset($HTTP_POST_VARS['group_update']) )
 				message_die(GENERAL_ERROR, 'Could not insert new user-group info', '', __LINE__, __FILE__, $sql);
 			}
 
-			$message = $lang['Added_new_group'] . '<br /><br />' . sprintf($lang['Click_return_groupsadmin'], '<a href="' . append_sid("admin_groups.$phpEx") . '">', '</a>') . '<br /><br />' . sprintf($lang['Click_return_admin_index'], '<a href="' . append_sid("index.$phpEx?pane=right") . '">', '</a>');;
+			$message = $lang['Added_new_group'] . '<br /><br />' . sprintf($lang['Click_return_groupsadmin'], '<a href="' . append_sid("admin_groups.php") . '">', '</a>') . '<br /><br />' . sprintf($lang['Click_return_admin_index'], '<a href="' . append_sid("index.php?pane=right") . '">', '</a>');;
 
 			message_die(GENERAL_MESSAGE, $message);
 
@@ -397,7 +366,7 @@ else
 		'L_LOOK_UP' => $lang['Look_up_group'],
 		'L_CREATE_NEW_GROUP' => $lang['New_group'],
 
-		'S_GROUP_ACTION' => append_sid("admin_groups.$phpEx"),
+		'S_GROUP_ACTION' => append_sid("admin_groups.php"),
 		'S_GROUP_SELECT' => $select_list)
 	);
 
@@ -409,6 +378,4 @@ else
 	$template->pparse('body');
 }
 
-include('./page_footer_admin.'.$phpEx);
-
-?>
+require('./page_footer_admin.php');

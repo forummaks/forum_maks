@@ -2,8 +2,6 @@
 if(!defined("SQL_LAYER"))
 {
 
-define("SQL_LAYER", "mysql");
-
 class sql_db
 {
 

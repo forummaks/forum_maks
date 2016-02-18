@@ -3,6 +3,7 @@
 if (isset($_REQUEST['GLOBALS'])) die();
 
 ignore_user_abort(true);
+define('TIMESTART', utime());
 define('TIMENOW',   time());
 $starttime = array_sum(explode(' ', microtime()));
 
@@ -14,6 +15,21 @@ if (empty($_SERVER['SERVER_NAME']))     $_SERVER['SERVER_NAME'] = '';
 if (!defined('FT_ROOT')) define('FT_ROOT', './');
 
 header('X-Frame-Options: SAMEORIGIN');
+
+// Cloudflare
+if (isset($_SERVER['HTTP_CF_CONNECTING_IP']))
+{
+	$_SERVER['REMOTE_ADDR'] = $_SERVER['HTTP_CF_CONNECTING_IP'];
+}
+
+// Get initial config
+require(FT_ROOT . 'config.php');
+
+/*
+*  Функии временного использования со старой версии php4
+*  Начало старых функций
+*
+**/
 
 // PHP5 with register_long_arrays off?
 if (!isset($HTTP_POST_VARS) && isset($_POST))
@@ -85,7 +101,7 @@ else if (@ini_get('register_globals') == '1' || strtolower(@ini_get('register_gl
 	unset($input);
 }
 
-if( !get_magic_quotes_gpc() )
+if(!get_magic_quotes_gpc())
 {
 	if( is_array($HTTP_GET_VARS) )
 	{
@@ -148,31 +164,251 @@ if( !get_magic_quotes_gpc() )
 	}
 }
 
-require(FT_ROOT . 'config.php');
+/*
+*  Функии временного использования со старой версии php4
+*  Конец старых функций
+*
+**/
+
+$server_protocol = ($ft_cfg['cookie_secure']) ? 'https://' : 'http://';
+$server_port = (in_array($ft_cfg['server_port'], array(80, 443))) ? '' : ':' . $ft_cfg['server_port'];
+define('FORUM_PATH', $ft_cfg['script_path']);
+define('FULL_URL', $server_protocol . $ft_cfg['server_name'] . $server_port . $ft_cfg['script_path']);
+unset($server_protocol, $server_port);
+
+// Debug options
+define('DBG_USER', (isset($_COOKIE[COOKIE_DBG])));
+
+// Board/Tracker shared constants and functions
+define('BT_CONFIG_TABLE',      			'phpbb_bt_config');          // phpbb_bt_config
+define('BT_SEARCH_TABLE',      			'phpbb_bt_search_results');  // phpbb_bt_search_results
+define('BT_TOR_DL_STAT_TABLE', 			'phpbb_bt_tor_dl_stat');     // phpbb_bt_tor_dl_stat
+define('BT_TORRENTS_TABLE',    			'phpbb_bt_torrents');        // phpbb_bt_torrents
+define('BT_TRACKER_TABLE',     			'phpbb_bt_tracker');         // phpbb_bt_tracker
+define('BT_USERS_TABLE',       			'phpbb_bt_users');           // phpbb_bt_users
+define('BT_USR_DL_STAT_TABLE', 			'phpbb_bt_users_dl_status'); // phpbb_bt_users_dl_status
+
+define('BT_AUTH_KEY_LENGTH',   10);
+
+define('DL_STATUS_WILL',       0);
+define('DL_STATUS_DOWN',       1);
+define('DL_STATUS_COMPLETE',   2);
+define('DL_STATUS_CANCEL',     3);
+
+define('ANONYMOUS', -1);
+define('BOT_UID', -746);
+
+// Functions
+function utime ()
+{
+	return array_sum(explode(' ', microtime()));
+}
+
+function ft_log ($msg, $file_name)
+{
+	if (is_array($msg))
+	{
+		$msg = join(LOG_LF, $msg);
+	}
+	$file_name .= (LOG_EXT) ? '.'. LOG_EXT : '';
+	return file_write($msg, LOG_DIR . $file_name);
+}
+
+function file_write ($str, $file, $max_size = LOG_MAX_SIZE, $lock = true, $replace_content = false)
+{
+	$bytes_written = false;
+	
+	if ($max_size && @filesize($file) >= $max_size)
+	{
+		$old_name = $file; $ext = '';
+		if (preg_match('#^(.+)(\.[^\\/]+)$#', $file, $matches))
+		{
+			$old_name = $matches[1]; $ext = $matches[2];
+		}
+		$new_name = $old_name .'_[old]_'. date('Y-m-d_H-i-s_') . getmypid() . $ext;
+		clearstatcache();
+		if (@file_exists($file) && @filesize($file) >= $max_size && !@file_exists($new_name))
+		{
+			@rename($file, $new_name);
+		}
+	}
+	
+	if (!$fp = @fopen($file, 'ab'))
+	{
+		if ($dir_created = ft_mkdir(dirname($file)))
+		{
+			$fp = @fopen($file, 'ab');
+		}
+	}
+	if ($fp)
+	{
+		if ($lock)
+		{
+			@flock($fp, LOCK_EX);
+		}
+		if ($replace_content)
+		{
+			@ftruncate($fp, 0);
+			@fseek($fp, 0, SEEK_SET);
+		}
+		$bytes_written = @fwrite($fp, $str);
+		@fclose($fp);
+	}
+	
+	return $bytes_written;
+}
+
+function ft_mkdir ($path, $mode = 0777)
+{
+	$old_um = umask(0);
+	$dir = mkdir_rec($path, $mode);
+	umask($old_um);
+	return $dir;
+}
+
+function mkdir_rec ($path, $mode)
+{
+	if (is_dir($path))
+	{
+		return ($path !== '.' && $path !== '..') ? is_writable($path) : false;
+	}
+	else
+	{
+		return (mkdir_rec(dirname($path), $mode)) ? @mkdir($path, $mode) : false;
+	}
+}
+
+function verify_id ($id, $length)
+{
+	return (is_string($id) && preg_match('#^[a-zA-Z0-9]{'. $length .'}$#', $id));
+}
+
+function clean_filename ($fname)
+{
+	static $s = array('\\', '/', ':', '*', '?', '"', '<', '>', '|', ' ');
+	return str_replace($s, '_', str_compact($fname));
+}
+
+function encode_ip ($ip)
+{
+	$d = explode('.', $ip);
+	return sprintf('%02x%02x%02x%02x', $d[0], $d[1], $d[2], $d[3]);
+}
+
+function decode_ip ($ip)
+{
+	return long2ip("0x{$ip}");
+}
+
+function ip2int ($ip)
+{
+	return (float) sprintf('%u', ip2long($ip));  // для совместимости с 32 битными системами
+}
+
+// long2ip( mask_ip_int(ip2int('1.2.3.4'), 24) ) = '1.2.3.255'
+function mask_ip_int ($ip, $mask)
+{
+	$ip_int = is_numeric($ip) ? $ip : ip2int($ip);
+	$ip_masked = $ip_int | ((1 << (32 - $mask)) - 1);
+	return (float) sprintf('%u', $ip_masked);
+}
+
+function ft_crc32 ($str)
+{
+	return (float) sprintf('%u', crc32($str));
+}
+
+function hexhex ($value)
+{
+	return dechex(hexdec($value));
+}
+
+function verify_ip ($ip)
+{
+	return preg_match('#^(\d{1,3}\.){3}\d{1,3}$#', $ip);
+}
+
+function str_compact ($str)
+{
+	return preg_replace('#\s+#u', ' ', trim($str));
+}
+
+function make_rand_str ($len = 10)
+{
+	$str = '';
+	while (strlen($str) < $len)
+	{
+		$str .= str_shuffle(preg_replace('#[^0-9a-zA-Z]#', '', password_hash(uniqid(mt_rand(), true), PASSWORD_BCRYPT)));
+	}
+	return substr($str, 0, $len);
+}
+
+function array_deep (&$var, $fn, $one_dimensional = false, $array_only = false)
+{
+	if (is_array($var))
+	{
+		foreach ($var as $k => $v)
+		{
+			if (is_array($v))
+			{
+				if ($one_dimensional)
+				{
+					unset($var[$k]);
+				}
+				else if ($array_only)
+				{
+					$var[$k] = $fn($v);
+				}
+				else
+				{
+					array_deep($var[$k], $fn);
+				}
+			}
+			else if (!$array_only)
+			{
+				$var[$k] = $fn($v);
+			}
+		}
+	}
+	else if (!$array_only)
+	{
+		$var = $fn($var);
+	}
+}
+
+function hide_ft_path ($path)
+{
+	return ltrim(str_replace(FT_PATH, '', $path), '/\\');
+}
+
+function ver_compare ($version1, $operator, $version2)
+{
+	return version_compare($version1, $version2, $operator);
+}
+
+/*function dbg_log ($str, $file)
+{
+	$dir = LOG_DIR . (defined('IN_TRACKER') ? 'dbg_tr/' : 'dbg_bb/') . date('m-d_H') .'/';
+	return file_write($str, $dir . $file, false, false);
+}
+
+function log_get ($file = '', $prepend_str = false)
+{
+	log_request($file, $prepend_str, false);
+}
+
+function log_post ($file = '', $prepend_str = false)
+{
+	log_request($file, $prepend_str, true);
+}*/
 
 require(FT_ROOT . 'includes/constants.php');
-require(FT_ROOT . 'includes/template.php');
-require(FT_ROOT . 'includes/sessions.php');
-require(FT_ROOT . 'includes/auth.php');
-require(FT_ROOT . 'includes/functions.php');
-require(FT_ROOT . 'db/mysql.php');
 
 $db = new sql_db($dbhost, $dbuser, $dbpasswd, $dbname, false);
 if(!$db->db_connect_id)
 {
 	message_die(CRITICAL_ERROR, 'Could not connect to the database');
 }
-
-//
-// Obtain and encode users IP
-//
-// I'm removing HTTP_X_FORWARDED_FOR ... this may well cause other problems such as
-// private range IP's appearing instead of the guilty routable IP, tough, don't
-// even bother complaining ... go scream and shout at the idiots out there who feel
-// "clever" is doing harm rather than good ... karma is a great thing ... :)
-//
-$client_ip = ( !empty($HTTP_SERVER_VARS['REMOTE_ADDR']) ) ? $HTTP_SERVER_VARS['REMOTE_ADDR'] : ( ( !empty($HTTP_ENV_VARS['REMOTE_ADDR']) ) ? $HTTP_ENV_VARS['REMOTE_ADDR'] : getenv('REMOTE_ADDR') );
-$user_ip = encode_ip($client_ip);
 
 //
 // Setup forum wide options, if this fails
@@ -188,17 +424,17 @@ if( !($result = $db->sql_query($sql)) )
 
 while ( $row = $db->sql_fetchrow($result) )
 {
-	$board_config[$row['config_name']] = $row['config_value'];
+	$ft_cfg[$row['config_name']] = $row['config_value'];
 }
 //Allow multiple domain names
-$board_config['server_name'] = $_SERVER['SERVER_NAME'];
+$ft_cfg['server_name'] = $_SERVER['SERVER_NAME'];
 //End Allow multiple domain names
 
 require(FT_ROOT . 'attach_mod/attachment_mod.php');
 //
 // Show 'Board is disabled' message if needed.
 //
-if( $board_config['board_disable'] && !defined("IN_ADMIN") && !defined("IN_LOGIN") )
+if( $ft_cfg['board_disable'] && !defined("IN_ADMIN") && !defined("IN_LOGIN") )
 {
 	message_die(GENERAL_MESSAGE, 'Board_disable', 'Information');
 }

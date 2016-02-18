@@ -1,43 +1,4 @@
 <?php
-/***************************************************************************
- *                            lang_main.php [Russian]
- *                              -------------------
- *     begin                : Sat Dec 16 2000
- *     copyright            : (C) 2001 The phpBB Group
- *     email                : support@phpbb.com
- *
- *     $Id$
- *
- ****************************************************************************/
-
-/***************************************************************************
- *
- *   This program is free software; you can redistribute it and/or modify
- *   it under the terms of the GNU General Public License as published by
- *   the Free Software Foundation; either version 2 of the License, or
- *   (at your option) any later version.
- *
- ***************************************************************************/
-
-//
-// Translation performed by Alexey V. Borzov (borz_off)
-// borz_off@cs.msu.su
-//
-// Внимание! Мой e-mail указан здесь для того, чтобы можно было сообщать мне о проблемах в
-// переводе. За технической поддержкой обращайтесь, пожалуйста, на соответствующий
-// форум на http://www.phpbb.com/
-// Есть хороший шанс нарваться на грубый ответ или не получить никакого ответа, если
-// доставать меня по e-mail'у. Спасибо за понимание.
-//
-
-//    Краткая информация о проблемах с русским языком:
-//
-// 1) Если вместо русских букв вылезают символы &####;, то выкиньте из шаблона
-//    overall_header.tpl строку <meta http-equiv="Content-Type" content="text/html; charset={S_CONTENT_ENCODING}">
-// 2) Если не работает поиск по русскому тексту, то раскомментируйте следующую строку
-//    (может не сработать, если нет соответствующей локали: проконсультируйтесь у своего
-//    системного администратора):
-
 setlocale(LC_ALL, 'ru_RU.CP1251');
 $lang['ENCODING'] = 'windows-1251';
 $lang['DIRECTION'] = 'ltr';
@@ -46,6 +7,7 @@ $lang['RIGHT'] = 'right';
 $lang['DATE_FORMAT'] = 'd-m-Y'; //'d.m.Y'; // This should be changed to the default date format for your language, php date() format
 $lang['TRANSLATION_INFO'] = '';
 $lang['Mod_Mavrick'] = 'Modified by <a class="copyright" href="mailto:mavrickxxx@gmail.com">Mavrick</a> &copy; 2009';
+$lang['TERMS'] = 'Правила'; // Проверка на работу новой системы tamplates
 
 //
 // Common, these terms are used

@@ -1,42 +1,12 @@
 <?php
-
-/***************************************************************************
- *                            admin_user_search.php
- *                              -------------------
- *     begin                : Sat Apr 10, 2004
- *     copyright            : (C) 2004 Adam Alkins
- *     email                : phpbb at rasadam dot com
- *	   $Id: admin_user_search.php,v 1.10 2004/12/31 13:14:49 rasadam Exp $
- *
- *
- ****************************************************************************/
-
-/***************************************************************************
- *
- *   This program is free software; you can redistribute it and/or modify
- *   it under the terms of the GNU General Public License as published by
- *   the Free Software Foundation; either version 2 of the License, or
- *   (at your option) any later version.
- *
- ***************************************************************************/
-
-@define('IN_PHPBB', 1);
 if( !empty($setmodules) )
 {
-	$filename = basename(__FILE__);
-	$module['Users']['Search'] = $filename;
+	$module['Users']['Search'] = basename(__FILE__);
 	return;
 }
-
-//
-// Load default header
-//
-$phpbb_root_path = "../";
-require($phpbb_root_path . 'extension.inc');
-require('./pagestart.' . $phpEx);
-require($phpbb_root_path . 'includes/functions_selects.' . $phpEx);
-
-include($phpbb_root_path.'language/lang_' . $board_config['default_lang'] . '/lang_user_search.'.$phpEx);
+require('./pagestart.php');
+require(FT_ROOT . 'includes/functions_selects.php');
+require(FT_ROOT . 'language/lang_' . $ft_cfg['default_lang'] . '/lang_user_search.php');
 
 $page_title = $lang['Search_users_advanced'];
 
@@ -142,9 +112,6 @@ if(!isset($HTTP_POST_VARS['dosearch'])&&!isset($HTTP_GET_VARS['dosearch']))
 		'L_USERFIELD' => $lang['Userfield'],
 		'L_USERFIELD_EXPLAIN' => $lang['Search_users_userfield_explain'],
 		'L_ICQ' => $lang['ICQ'],
-		'L_AIM' => $lang['AIM'],
-		'L_YAHOO' => $lang['YIM'],
-		'L_MSN' => $lang['MSNM'],
 		'L_WEBSITE' => $lang['Website'],
 		'L_LOCATION' => $lang['Location'],
 		'L_INTERESTS' => $lang['Interests'],
@@ -173,7 +140,7 @@ if(!isset($HTTP_POST_VARS['dosearch'])&&!isset($HTTP_GET_VARS['dosearch']))
 		'STYLE_LIST' => $styles_list,
 		'LASTVISITED_LIST' => $lastvisited_list,
 
-		'S_SEARCH_ACTION' => append_sid("admin_user_search.$phpEx")
+		'S_SEARCH_ACTION' => append_sid("admin_user_search.php")
 	));
 }
 else
@@ -358,7 +325,7 @@ else
 			}
 	}
 
-	$base_url = "admin_user_search.$phpEx?dosearch=true";
+	$base_url = "admin_user_search.php?dosearch=true";
 
 	$select_sql = "SELECT u.user_id, u.username, u.user_email, u.user_posts, u.user_regdate, u.user_level, u.user_active, u.user_lastvisit
 						FROM ".USERS_TABLE." AS u";
@@ -850,18 +817,6 @@ else
 					$text = sprintf($lang['Search_for_userfield_icq'],$text);
 					$field = 'user_icq';
 					break;
-				case 'aim':
-					$text = sprintf($lang['Search_for_userfield_aim'],$text);
-					$field = 'user_aim';
-					break;
-				case 'msn':
-					$text = sprintf($lang['Search_for_userfield_msn'],$text);
-					$field = 'user_msnm';
-					break;
-				case 'yahoo':
-					$text = sprintf($lang['Search_for_userfield_yahoo'],$text);
-					$field = 'user_yahoo';
-					break;
 				case 'website':
 					$text = sprintf($lang['Search_for_userfield_website'],$text);
 					$field = 'user_website';
@@ -1187,10 +1142,10 @@ else
 	}
 	else
 	{
-		$offset = ( ($page - 1) * $board_config['topics_per_page']);
+		$offset = ( ($page - 1) * $ft_cfg['topics_per_page']);
 	}
 
-	$limit = "LIMIT $offset, ".$board_config['topics_per_page'];
+	$limit = "LIMIT $offset, ".$ft_cfg['topics_per_page'];
 
 	$select_sql .= " $limit";
 
@@ -1208,7 +1163,7 @@ else
 			message_die(GENERAL_MESSAGE, $lang['Search_no_results']);
 		}
 	}
-	$num_pages = ceil( ( $total_pages['total'] / $board_config['topics_per_page'] ) );
+	$num_pages = ceil( ( $total_pages['total'] / $ft_cfg['topics_per_page'] ) );
 
 	$pagination = '';
 
@@ -1245,7 +1200,7 @@ else
 
 		'PAGE_NUMBER' => sprintf($lang['Page_of'], $page, $num_pages),
 		'PAGINATION' => $pagination,
-		'NEW_SEARCH' => sprintf($lang['Search_users_new'],$text, $total_pages['total'],append_sid("admin_user_search.$phpEx")),
+		'NEW_SEARCH' => sprintf($lang['Search_users_new'],$text, $total_pages['total'],append_sid("admin_user_search.php")),
 
 		'U_USERNAME' => ( ( $sort == 'username' ) ? append_sid("$base_url&sort=$sort&order=$o_order") : append_sid("$base_url&sort=username&order=$order") ),
 		'U_EMAIL' => ( ( $sort == 'user_email' ) ? append_sid("$base_url&sort=$sort&order=$o_order") : append_sid("$base_url&sort=user_email&order=$order") ),
@@ -1296,16 +1251,16 @@ else
 			'ROW_CLASS' => $row_class,
 			'USERNAME' => $rowset[$i]['username'],
 			'EMAIL' => $rowset[$i]['user_email'],
-			'JOINDATE' => create_date($board_config['default_dateformat'], $rowset[$i]['user_regdate'], $board_config['board_timezone']),
-			'LASTVISIT' => create_date($board_config['default_dateformat'], $rowset[$i]['user_lastvisit'], $board_config['board_timezone']),
+			'JOINDATE' => create_date($ft_cfg['default_dateformat'], $rowset[$i]['user_regdate'], $ft_cfg['board_timezone']),
+			'LASTVISIT' => create_date($ft_cfg['default_dateformat'], $rowset[$i]['user_lastvisit'], $ft_cfg['board_timezone']),
 			'POSTS' => $rowset[$i]['user_posts'],
 			'BAN' => ( ( !isset($banned[$rowset[$i]['user_id']]) ) ? $lang['Not_banned'] : $lang['Banned'] ),
 			'ABLED' => ( ( $rowset[$i]['user_active'] ) ? $lang['Enabled'] : $lang['Disabled'] ),
 
-			'U_VIEWPROFILE' => append_sid("../profile.$phpEx?mode=viewprofile&".POST_USERS_URL."=".$rowset[$i]['user_id']),
-			'U_VIEWPOSTS' => append_sid("../search.$phpEx?search_author=".rawurlencode($rowset[$i]['username'])),
-			'U_MANAGE' => append_sid("admin_users.$phpEx?mode=edit&".POST_USERS_URL."=".$rowset[$i]['user_id']),
-			'U_PERMISSIONS' => append_sid("admin_ug_auth.$phpEx?mode=user&".POST_USERS_URL."=".$rowset[$i]['user_id']),
+			'U_VIEWPROFILE' => append_sid("../profile.php?mode=viewprofile&".POST_USERS_URL."=".$rowset[$i]['user_id']),
+			'U_VIEWPOSTS' => append_sid("../search.php?search_author=".rawurlencode($rowset[$i]['username'])),
+			'U_MANAGE' => append_sid("admin_users.php?mode=edit&".POST_USERS_URL."=".$rowset[$i]['user_id']),
+			'U_PERMISSIONS' => append_sid("admin_ug_auth.php?mode=user&".POST_USERS_URL."=".$rowset[$i]['user_id']),
 		));
 	}
 }
@@ -1313,6 +1268,4 @@ else
 // Spit out the page.
 $template->pparse("body");
 
-include('page_footer_admin.'.$phpEx);
-
-?>
+require('page_footer_admin.php');

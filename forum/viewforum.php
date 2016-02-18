@@ -112,8 +112,8 @@ if ( $mark_read == 'topics' )
 
 		if ( $row = $db->sql_fetchrow($result) )
 		{
-			$tracking_forums = ( isset($HTTP_COOKIE_VARS[$board_config['cookie_name'] . '_f']) ) ? unserialize($HTTP_COOKIE_VARS[$board_config['cookie_name'] . '_f']) : array();
-			$tracking_topics = ( isset($HTTP_COOKIE_VARS[$board_config['cookie_name'] . '_t']) ) ? unserialize($HTTP_COOKIE_VARS[$board_config['cookie_name'] . '_t']) : array();
+			$tracking_forums = ( isset($HTTP_COOKIE_VARS[$ft_cfg['cookie_name'] . '_f']) ) ? unserialize($HTTP_COOKIE_VARS[$ft_cfg['cookie_name'] . '_f']) : array();
+			$tracking_topics = ( isset($HTTP_COOKIE_VARS[$ft_cfg['cookie_name'] . '_t']) ) ? unserialize($HTTP_COOKIE_VARS[$ft_cfg['cookie_name'] . '_t']) : array();
 
 			if ( ( count($tracking_forums) + count($tracking_topics) ) >= 150 && empty($tracking_forums[$forum_id]) )
 			{
@@ -125,7 +125,7 @@ if ( $mark_read == 'topics' )
 			{
 				$tracking_forums[$forum_id] = time();
 
-				setcookie($board_config['cookie_name'] . '_f', serialize($tracking_forums), 0, $board_config['cookie_path'], $board_config['cookie_domain'], $board_config['cookie_secure']);
+				setcookie($ft_cfg['cookie_name'] . '_f', serialize($tracking_forums), 0, $ft_cfg['cookie_path'], $ft_cfg['cookie_domain'], $ft_cfg['cookie_secure']);
 			}
 		}
 
@@ -141,13 +141,13 @@ if ( $mark_read == 'topics' )
 // End handle marking posts
 //
 
-$tracking_topics = ( isset($HTTP_COOKIE_VARS[$board_config['cookie_name'] . '_t']) ) ? unserialize($HTTP_COOKIE_VARS[$board_config['cookie_name'] . '_t']) : '';
-$tracking_forums = ( isset($HTTP_COOKIE_VARS[$board_config['cookie_name'] . '_f']) ) ? unserialize($HTTP_COOKIE_VARS[$board_config['cookie_name'] . '_f']) : '';
+$tracking_topics = ( isset($HTTP_COOKIE_VARS[$ft_cfg['cookie_name'] . '_t']) ) ? unserialize($HTTP_COOKIE_VARS[$ft_cfg['cookie_name'] . '_t']) : '';
+$tracking_forums = ( isset($HTTP_COOKIE_VARS[$ft_cfg['cookie_name'] . '_f']) ) ? unserialize($HTTP_COOKIE_VARS[$ft_cfg['cookie_name'] . '_f']) : '';
 
 //
 // Do the forum Prune
 //
-if ( $is_auth['auth_mod'] && $board_config['prune_enable'] )
+if ( $is_auth['auth_mod'] && $ft_cfg['prune_enable'] )
 {
 	if ( $forum_row['prune_next'] < time() && $forum_row['prune_enable'] )
 	{
@@ -177,20 +177,6 @@ if ( $is_auth['auth_mod'] && $board_config['prune_enable'] )
 //
 // End of forum topics move
 //
-
-/*
-// disabled in version 0.3.5
-//bt
-// Synch topics DL-status if users DL-status expired
-$synch_interval = 7; // hours
-
-if ($forum_row['allow_dl_topic'] && $board_config['bt_dl_list_expire'] && ($forum_row['last_dl_topics_synch'] + $synch_interval*60*60) < time())
-{
-	require($phpbb_root_path .'includes/functions_dl_list.'. $phpEx);
-	synch_dl_topics($forum_id, 'expire');
-}
-//bt end
-*/
 
 //
 // Obtain list of moderators of each forum
@@ -365,7 +351,7 @@ $sql = "SELECT t.*, u.username, u.user_id, u2.username as user2, u2.user_id as i
 		AND u2.user_id = p2.poster_id
 		$limit_topics_time
 	ORDER BY t.topic_type DESC, $sort_method $order_method, t.topic_last_post_id DESC
-	LIMIT $start, ".$board_config['topics_per_page'];
+	LIMIT $start, ".$ft_cfg['topics_per_page'];
 if ( !($result = $db->sql_query($sql)) )
 {
    message_die(GENERAL_ERROR, 'Could not obtain topic information', '', __LINE__, __FILE__, $sql);
@@ -424,7 +410,7 @@ if ( $is_auth['auth_mod'] )
 //
 $nav_links['up'] = array(
 	'url' => append_sid('index.php'),
-	'title' => sprintf($lang['Forum_Index'], $board_config['sitename'])
+	'title' => sprintf($lang['Forum_Index'], $ft_cfg['sitename'])
 );
 
 //
@@ -640,7 +626,7 @@ if( $total_topics )
 			//bt
 			else if ($topic_rowset[$i]['topic_dl_type'] == TOPIC_DL_TYPE_DL)
 			{
-				if ($replies >= $board_config['hot_threshold'])
+				if ($replies >= $ft_cfg['hot_threshold'])
 				{
 					$folder = $images['folder_dl_hot'];
 					$folder_new = $images['folder_dl_hot_new'];
@@ -654,7 +640,7 @@ if( $total_topics )
 			//bt end
 			else
 			{
-				if($replies >= $board_config['hot_threshold'])
+				if($replies >= $ft_cfg['hot_threshold'])
 				{
 					$folder = $images['folder_hot'];
 					$folder_new = $images['folder_hot_new'];
@@ -671,7 +657,7 @@ if( $total_topics )
 			{
 				if( $topic_rowset[$i]['post_time'] > $userdata['user_lastvisit'] )
 				{
-					if( !empty($tracking_topics) || !empty($tracking_forums) || isset($HTTP_COOKIE_VARS[$board_config['cookie_name'] . '_f_all']) )
+					if( !empty($tracking_topics) || !empty($tracking_forums) || isset($HTTP_COOKIE_VARS[$ft_cfg['cookie_name'] . '_f_all']) )
 					{
 						$unread_topics = true;
 
@@ -691,9 +677,9 @@ if( $total_topics )
 							}
 						}
 
-						if( isset($HTTP_COOKIE_VARS[$board_config['cookie_name'] . '_f_all']) )
+						if( isset($HTTP_COOKIE_VARS[$ft_cfg['cookie_name'] . '_f_all']) )
 						{
-							if( $HTTP_COOKIE_VARS[$board_config['cookie_name'] . '_f_all'] >= $topic_rowset[$i]['post_time'] )
+							if( $HTTP_COOKIE_VARS[$ft_cfg['cookie_name'] . '_f_all'] >= $topic_rowset[$i]['post_time'] )
 							{
 								$unread_topics = false;
 							}
@@ -739,20 +725,20 @@ if( $total_topics )
 			}
 		}
 
-		if( ( $replies + 1 ) > $board_config['posts_per_page'] )
+		if( ( $replies + 1 ) > $ft_cfg['posts_per_page'] )
 		{
-			$total_pages = ceil( ( $replies + 1 ) / $board_config['posts_per_page'] );
+			$total_pages = ceil( ( $replies + 1 ) / $ft_cfg['posts_per_page'] );
 			$goto_page = ' [ <img src="' . $images['icon_gotopost'] . '" alt="' . $lang['Goto_page'] . '" title="' . $lang['Goto_page'] . '" />' . $lang['Goto_page'] . ': ';
 
 			$times = 1;
-			for($j = 0; $j < $replies + 1; $j += $board_config['posts_per_page'])
+			for($j = 0; $j < $replies + 1; $j += $ft_cfg['posts_per_page'])
 			{
 				$goto_page .= '<a href="' . append_sid("viewtopic.php?" . POST_TOPIC_URL . "=" . $topic_id . "&amp;start=$j") . '">' . $times . '</a>';
 				if( $times == 1 && $total_pages > 4 )
 				{
 					$goto_page .= ' ... ';
 					$times = $total_pages - 3;
-					$j += ( $total_pages - 4 ) * $board_config['posts_per_page'];
+					$j += ( $total_pages - 4 ) * $ft_cfg['posts_per_page'];
 				}
 				else if ( $times < $total_pages )
 				{
@@ -774,9 +760,9 @@ if( $total_topics )
 
 		$topic_author .= ( $topic_rowset[$i]['user_id'] != ANONYMOUS ) ? '</a>' : '';
 
-		$first_post_time = create_date($board_config['default_dateformat'], $topic_rowset[$i]['topic_time'], $board_config['board_timezone']);
+		$first_post_time = create_date($ft_cfg['default_dateformat'], $topic_rowset[$i]['topic_time'], $ft_cfg['board_timezone']);
 
-		$last_post_time = create_date($board_config['default_dateformat'], $topic_rowset[$i]['post_time'], $board_config['board_timezone']);
+		$last_post_time = create_date($ft_cfg['default_dateformat'], $topic_rowset[$i]['post_time'], $ft_cfg['board_timezone']);
 
 		$last_post_author = ( $topic_rowset[$i]['id2'] == ANONYMOUS ) ? ( ($topic_rowset[$i]['post_username2'] != '' ) ? $topic_rowset[$i]['post_username2'] . ' ' : $lang['Guest'] . ' ' ) : '<a href="' . append_sid("profile.php?mode=viewprofile&amp;" . POST_USERS_URL . '='  . $topic_rowset[$i]['id2']) . '">' . $topic_rowset[$i]['user2'] . '</a>';
 
@@ -810,18 +796,18 @@ if( $total_topics )
 		}
 		//ts end
 
-	      if (isset($topic_tor[$topic_id]))
-	      {
-		      switch ($topic_tor[$topic_id]['topic_check_status'])
-		      {
-		            case 1: $topic_check_status='<span style="color:indigo;">&#9674;</span>'; break; 
-		            case 2: $topic_check_status='<span style="color:green;">&radic;</span>'; break; 
-		            case 3: $topic_check_status='<span style="color:#E6C506;">&#8776;</span>'; break; 
-		            case 4: $topic_check_status='<span style="color:red;">&#8800;</span>'; break; 
-		            case 5: $topic_check_status='<span style="color:blue;">&#8734;</span>'; break; 
-		            default: $topic_check_status='<span style="color:red;">?</span>';
-		      }
-	      }
+	    if (isset($topic_tor[$topic_id]))
+	    {
+		    switch ($topic_tor[$topic_id]['topic_check_status'])
+		    {
+		        case 1: $topic_check_status='<span style="color:indigo;">&#9674;</span>'; break; 
+		        case 2: $topic_check_status='<span style="color:green;">&radic;</span>'; break; 
+		        case 3: $topic_check_status='<span style="color:#E6C506;">&#8776;</span>'; break; 
+		        case 4: $topic_check_status='<span style="color:red;">&#8800;</span>'; break; 
+		        case 5: $topic_check_status='<span style="color:blue;">&#8734;</span>'; break; 
+		        default: $topic_check_status='<span style="color:red;">?</span>';
+		    }
+	    }
 
 		$template->assign_block_vars('topicrow', array(
 			'ROW_COLOR' => $row_color,
@@ -864,7 +850,7 @@ if( $total_topics )
 
 			$template->assign_block_vars('topicrow.tor', array(
 				'SEEDERS'         => ($seeds) ? $seeds : 0,
-				'SEEDERS_TITLE'   => ($seeds) ? 'Seeders' : ( " Seeder last seen: \n " . (($s_last) ? create_date($board_config['default_dateformat'], $s_last, $board_config['board_timezone']) : 'Never') ),
+				'SEEDERS_TITLE'   => ($seeds) ? 'Seeders' : ( " Seeder last seen: \n " . (($s_last) ? create_date($ft_cfg['default_dateformat'], $s_last, $ft_cfg['board_timezone']) : 'Never') ),
 				'LEECHERS'        => ($leechs) ? $leechs : 0,
 				'TORRENT_SIZE'    => humn_size($size),
 				'DL_TORRENT_HREF' => append_sid("download.php?id=" . $att_id)
@@ -882,9 +868,9 @@ if( $total_topics )
 // here we added
 //	&amp;sort=$sort_value&amp;order=$order_value
 //-- modify
-		'PAGINATION' => generate_pagination("viewforum.php?" . POST_FORUM_URL . "=$forum_id&amp;topicdays=$topic_days&amp;sort=$sort_value&amp;order=$order_value", $topics_count, $board_config['topics_per_page'], $start),
+		'PAGINATION' => generate_pagination("viewforum.php?" . POST_FORUM_URL . "=$forum_id&amp;topicdays=$topic_days&amp;sort=$sort_value&amp;order=$order_value", $topics_count, $ft_cfg['topics_per_page'], $start),
 //-- fin mod : topic display order
-		'PAGE_NUMBER' => sprintf($lang['Page_of'], ( floor( $start / $board_config['topics_per_page'] ) + 1 ), ceil( $topics_count / $board_config['topics_per_page'] )),
+		'PAGE_NUMBER' => sprintf($lang['Page_of'], ( floor( $start / $ft_cfg['topics_per_page'] ) + 1 ), ceil( $topics_count / $ft_cfg['topics_per_page'] )),
 
 		'L_GOTO_PAGE' => $lang['Goto_page'])
 	);
@@ -974,9 +960,9 @@ if (!$forum_row['forum_parent'] && isset($forums_ary[$forum_id]['subforums']))
 							}
 						}
 
-						if (isset($HTTP_COOKIE_VARS[$board_config['cookie_name'] . '_f_all']))
+						if (isset($HTTP_COOKIE_VARS[$ft_cfg['cookie_name'] . '_f_all']))
 						{
-							if ($HTTP_COOKIE_VARS[$board_config['cookie_name'] . '_f_all'] > $forum_last_post_time)
+							if ($HTTP_COOKIE_VARS[$ft_cfg['cookie_name'] . '_f_all'] > $forum_last_post_time)
 							{
 								$unread_topics = false;
 							}
@@ -993,7 +979,7 @@ if (!$forum_row['forum_parent'] && isset($forums_ary[$forum_id]['subforums']))
 
 			if ($forum_data['forum_last_post_id'])
 			{
-				$last_post_time = create_date($board_config['default_dateformat'], $forum_data['post_time'], $board_config['board_timezone']);
+				$last_post_time = create_date($ft_cfg['default_dateformat'], $forum_data['post_time'], $ft_cfg['board_timezone']);
 
 				$last_post = $last_post_time . '<br />';
 
@@ -1044,7 +1030,7 @@ if (!$forum_row['forum_parent'] && isset($forums_ary[$forum_id]['subforums']))
 					'LAST_TOPIC_TIP'      => $forum_data['last_topic_title'],
 					'LAST_TOPIC_TITLE'    => short_str($forum_data['last_topic_title'], LAST_TOPIC_MAX_LEN),
 
-					'LAST_POST_TIME'      => create_date(LAST_POST_DATE_FORMAT, $forum_data['post_time'], $board_config['board_timezone']),
+					'LAST_POST_TIME'      => create_date(LAST_POST_DATE_FORMAT, $forum_data['post_time'], $ft_cfg['board_timezone']),
 					'LAST_POST_HREF'      => append_sid("viewtopic.php?". POST_POST_URL .'='. $forum_data['forum_last_post_id']) .'#'. $forum_data['forum_last_post_id'],
 					'LAST_POST_USER_NAME' => $last_post_uname,
 					'LAST_POST_USER_HREF' => ($forum_data['user_id'] != ANONYMOUS) ? append_sid("profile.php?mode=viewprofile&amp;". POST_USERS_URL .'='. $forum_data['user_id']) : '',

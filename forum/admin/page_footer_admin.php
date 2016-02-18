@@ -1,30 +1,4 @@
 <?php
-/***************************************************************************
- *                           page_footer_admin.php
- *                            -------------------
- *   begin                : Saturday, Jul 14, 2001
- *   copyright            : (C) 2001 The phpBB Group
- *   email                : support@phpbb.com
- *
- *   $Id: page_footer_admin.php,v 1.9.2.3 2005/04/15 20:15:47 acydburn Exp $
- *
- *
- ***************************************************************************/
-
-/***************************************************************************
- *
- *   This program is free software; you can redistribute it and/or modify
- *   it under the terms of the GNU General Public License as published by
- *   the Free Software Foundation; either version 2 of the License, or
- *   (at your option) any later version.
- *
- ***************************************************************************/
-
-if ( !defined('IN_PHPBB') )
-{
-	die("Hacking attempt");
-}
-
 //
 // Show the overall footer.
 //
@@ -33,7 +7,7 @@ $template->set_filenames(array(
 );
 
 $template->assign_vars(array(
-	'PHPBB_VERSION' => ($userdata['user_level'] == ADMIN && $userdata['user_id'] != ANONYMOUS) ? '2' . $board_config['version'] : '',
+	'PHPBB_VERSION' => ($userdata['user_level'] == ADMIN && $userdata['user_id'] != ANONYMOUS) ? '2' . $ft_cfg['version'] : '',
 	'TRANSLATION_INFO' => @$lang['TRANSLATION_INFO'])
 );
 
@@ -69,5 +43,3 @@ if( @$do_gzip_compress )
 }
 
 exit;
-
-?>

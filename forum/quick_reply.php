@@ -9,9 +9,9 @@ if ($is_auth['auth_reply'] && !(($forum_topic_data['forum_status'] == FORUM_LOCK
 	$sl = ' selected="selected" ';
 	$ch = ' checked="checked" ';
 	$ds = ' disabled="disabled" ';
-	$cfg_allow_html = $board_config['allow_html'];
-	$cfg_allow_bbcode = $board_config['allow_bbcode'];
-	$cfg_allow_smilies = $board_config['allow_smilies'];
+	$cfg_allow_html = $ft_cfg['allow_html'];
+	$cfg_allow_bbcode = $ft_cfg['allow_bbcode'];
+	$cfg_allow_smilies = $ft_cfg['allow_smilies'];
 
 	if (!$guest)
 	{
@@ -55,7 +55,7 @@ if ($is_auth['auth_reply'] && !(($forum_topic_data['forum_status'] == FORUM_LOCK
 		}
 
 		// Signature
-		if ($userdata['user_sig'] && $board_config['allow_sig'])
+		if ($userdata['user_sig'] && $ft_cfg['allow_sig'])
 		{
 			$template->assign_vars(array('QR_SIGNAT_CH' => ($userdata['user_attachsig']) ? $ch : ''));
 		}

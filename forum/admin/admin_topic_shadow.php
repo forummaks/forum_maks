@@ -1,54 +1,16 @@
 <?php
-/***************************************************************************
-*                            $RCSfile: admin_topic_shadow.php,v $
-*                            -------------------
-*   copyright            : (C) 2002-2003 Nivisec.com
-*   email                : support@nivisec.com
-*
-*   $Id: admin_topic_shadow.php,v 1.6 2003/06/30 16:34:28 nivisec Exp $
-*
-*
-***************************************************************************/
-
-/***************************************************************************
-*
-*   This program is free software; you can redistribute it and/or modify
-*   it under the terms of the GNU General Public License as published by
-*   the Free Software Foundation; either version 2 of the License, or
-*   (at your option) any later version.
-*
-***************************************************************************/
-@define('IN_PHPBB', TRUE);
-/* If for some reason preference cookie saving needs to be disabled, you
-can do so by setting this to true */
 define('DISABLE_PREFERENCE_SAVING', TRUE);
-/* If for some reason you need to disable the version check in THIS HACK ONLY,
-change the blow to TRUE instead of FALSE.  No other hacks will be affected
-by this change.
-*/
 define('DISABLE_VERSION_CHECK', TRUE);
-/* Changing these will produce false results on your
-template, mess up any saved cookie preferences, and produce odd results
-for the version checker.  So, DO NOT change them unless necessary!
-*/
 define('MOD_VERSION', '2.13');
 define('MOD_CODE', 2);
 define('MOD_COOKIE_PREF_NAME', 'nivisec_phpbb2_mod_preferences');
 
-$phpbb_root_path = '../';
 if( !empty($setmodules) )
 {
-	include_once($phpbb_root_path . 'language/lang_' . $board_config['default_lang'] . '/lang_admin_topic_shadow.' . $phpEx);
-	$filename = basename(__FILE__);
-	$module['Forums']['Topic_Shadow'] = $filename;
-
+	require_once(FT_ROOT . 'language/lang_' . $ft_cfg['default_lang'] . '/lang_admin_topic_shadow.php');
+	$module['Forums']['Topic_Shadow'] = basename(__FILE__);
 	return;
 }
-
-/*******************************************************************************************
-/** Get parameters.  'var_name' => 'default_value'
-/** Also get any saved cookie preferences.
-/******************************************************************************************/
 $preference_cookie = (isset($HTTP_COOKIE_VARS[MOD_COOKIE_PREF_NAME])) ? unserialize(stripslashes($HTTP_COOKIE_VARS[MOD_COOKIE_PREF_NAME])) : array();
 $preference_cookie['test'] = true;
 $params = array('start' => 0, 'order' => 'DESC', 'mode' => 'topic_time', 'delete_all_before_date' => 0,
@@ -64,22 +26,12 @@ foreach($params as $var => $default)
 		$$var = $preference_cookie[MOD_CODE."_$var"];
 	}
 }
-/****************************************************************************
-/** Includes and cookie settings (with output buffering)
-/***************************************************************************/
-/* Make a new output buffer for this page in order to not screw up cookie
-setting.  If this is disabled, settings will NEVER be saved */
-if(!DISABLE_PREFERENCE_SAVING && !$board_config['gzip_compress']) ob_start();
+if(!DISABLE_PREFERENCE_SAVING && !$ft_cfg['gzip_compress']) ob_start();
 
-require($phpbb_root_path . 'extension.inc');
-(file_exists('pagestart.' . $phpEx)) ? require('pagestart.' . $phpEx) : require('pagestart.inc');
-require($phpbb_root_path . 'includes/functions_admin.' . $phpEx);
-include_once($phpbb_root_path . 'language/lang_' . $board_config['default_lang'] . '/lang_admin_topic_shadow.' . $phpEx);
-//@setcookie(MOD_COOKIE_PREF_NAME, serialize($preference_cookie), time() + 31536000, $board_config['cookie_path'], $board_config['cookie_domain'], $board_config['cookie_secure']);
-
-/* Flush the output buffer to display the page header, if the ob_start() is
-removed, this one must be removed as well or strange things will happen */
-if(!DISABLE_PREFERENCE_SAVING && !$board_config['gzip_compress']) ob_end_flush();
+require('pagestart.php');
+require(FT_ROOT . 'includes/functions_admin.php');
+require_once(FT_ROOT . 'language/lang_' . $ft_cfg['default_lang'] . '/lang_admin_topic_shadow.php');
+if(!DISABLE_PREFERENCE_SAVING && !$ft_cfg['gzip_compress']) ob_end_flush();
 
 /****************************************************************************
 /** Constants and Main Vars.
@@ -337,26 +289,17 @@ else
 		'MOVED_TO' => ts_id_2_name($messages['topic_moved_id'], 'forum'),
 		'MOVED_FROM' => ts_id_2_name($messages['topic_id'], 'forum'),
 		'POSTER' => ts_id_2_name($messages['topic_poster']),
-		'TIME' => create_date($lang['DATE_FORMAT'], $messages['topic_time'], $board_config['board_timezone']),
+		'TIME' => create_date($lang['DATE_FORMAT'], $messages['topic_time'], $ft_cfg['board_timezone']),
 		'TOPIC_ID' => $messages['topic_id'])
 		);
 		$i++;
 	}
 }
-
-/************************************************************************
-** Begin The Version Check Feature
-************************************************************************/
-if (file_exists($phpbb_root_path.'nivisec_version_check.'.$phpEx) && !DISABLE_VERSION_CHECK)
+if (file_exists(FT_ROOT . 'nivisec_version_check.php') && !DISABLE_VERSION_CHECK)
 {
-	include($phpbb_root_path.'nivisec_version_check.'.$phpEx);
+	require(FT_ROOT . 'nivisec_version_check.php');
 }
-/************************************************************************
-** End The Version Check Feature
-************************************************************************/
 
 $template->pparse('body');
 copyright_nivisec($page_title, '2001-2003');
-include('page_footer_admin.'.$phpEx);
-
-?>
+require('page_footer_admin.php');

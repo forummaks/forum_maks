@@ -1,38 +1,9 @@
 <?php
-/***************************************************************************
- *                           page_header_admin.php
- *                            -------------------
- *   begin                : Saturday, Feb 13, 2001
- *   copyright            : (C) 2001 The phpBB Group
- *   email                : support@phpbb.com
- *
- *   $Id: page_header_admin.php,v 1.12.2.6 2005/03/26 14:15:59 acydburn Exp $
- *
- *
- ***************************************************************************/
-
-/***************************************************************************
- *
- *   This program is free software; you can redistribute it and/or modify
- *   it under the terms of the GNU General Public License as published by
- *   the Free Software Foundation; either version 2 of the License, or
- *   (at your option) any later version.
- *
- ***************************************************************************/
-
-if ( !defined('IN_PHPBB') )
-{
-	die("Hacking attempt");
-}
-
 define('HEADER_INC', true);
 $page_title = '';
 
-//
-// gzip_compression
-//
-$do_gzip_compress = FALSE;
-if ( $board_config['gzip_compress'] )
+$do_gzip_compress = false;
+if ( $ft_cfg['gzip_compress'] )
 {
 	$phpver = phpversion();
 
@@ -66,8 +37,8 @@ $template->set_filenames(array(
 );
 
 // Format Timezone. We are unable to use array_pop here, because of PHP3 compatibility
-$l_timezone = explode('.', $board_config['board_timezone']);
-$l_timezone = (count($l_timezone) > 1 && $l_timezone[count($l_timezone)-1] != 0) ? $lang[sprintf('%.1f', $board_config['board_timezone'])] : $lang[number_format($board_config['board_timezone'])];
+$l_timezone = explode('.', $ft_cfg['board_timezone']);
+$l_timezone = (count($l_timezone) > 1 && $l_timezone[count($l_timezone)-1] != 0) ? $lang[sprintf('%.1f', $ft_cfg['board_timezone'])] : $lang[number_format($ft_cfg['board_timezone'])];
 
 //
 // The following assigns all _common_ variables that may be used at any point
@@ -75,19 +46,19 @@ $l_timezone = (count($l_timezone) > 1 && $l_timezone[count($l_timezone)-1] != 0)
 // should all S_x_ACTIONS for forms.
 //
 $template->assign_vars(array(
-	'SITENAME' => $board_config['sitename'],
+	'SITENAME' => $ft_cfg['sitename'],
 	'PAGE_TITLE' => $page_title,
 
 	'L_ADMIN' => $lang['Admin'],
-	'L_INDEX' => sprintf($lang['Forum_Index'], $board_config['sitename']),
+	'L_INDEX' => sprintf($lang['Forum_Index'], $ft_cfg['sitename']),
 	'L_FAQ' => $lang['FAQ'],
 
-	'U_INDEX' => append_sid('../index.'.$phpEx),
+	'U_INDEX' => append_sid('../index.php'),
 
 	'S_TIMEZONE' => sprintf($lang['All_times'], $l_timezone),
-	'S_LOGIN_ACTION' => append_sid('../login.'.$phpEx),
-	'S_JUMPBOX_ACTION' => append_sid('../viewforum.'.$phpEx),
-	'S_CURRENT_TIME' => sprintf($lang['Current_time'], create_date($board_config['default_dateformat'], time(), $board_config['board_timezone'])),
+	'S_LOGIN_ACTION' => append_sid('../login.php'),
+	'S_JUMPBOX_ACTION' => append_sid('../viewforum.php'),
+	'S_CURRENT_TIME' => sprintf($lang['Current_time'], create_date($ft_cfg['default_dateformat'], time(), $ft_cfg['board_timezone'])),
 	'S_CONTENT_DIRECTION' => $lang['DIRECTION'],
 	'S_CONTENT_ENCODING' => $lang['ENCODING'],
 	'S_CONTENT_DIR_LEFT' => $lang['LEFT'],
@@ -133,7 +104,4 @@ $template->assign_vars(array(
 	'T_SPAN_CLASS3' => $theme['span_class3'])
 );
 
-
 $template->pparse('header');
-
-?>

@@ -1107,7 +1107,7 @@ switch( $mode )
 					$poster_id = $postrow[$i]['poster_id'];
 					$poster = $postrow[$i]['username'];
 
-					$post_date = create_date($board_config['default_dateformat'], $postrow[$i]['post_time'], $board_config['board_timezone']);
+					$post_date = create_date($ft_cfg['default_dateformat'], $postrow[$i]['post_time'], $ft_cfg['board_timezone']);
 
 					$bbcode_uid = $postrow[$i]['bbcode_uid'];
 					$message = $postrow[$i]['post_text'];
@@ -1118,7 +1118,7 @@ switch( $mode )
 					// on then we process it, else leave it alone
 					//
 					//bot
-					if (!$board_config['allow_html'] && $poster_id != BOT_UID)
+					if (!$ft_cfg['allow_html'] && $poster_id != BOT_UID)
 					//bot end
 					{
 						if ( $postrow[$i]['enable_html'] )
@@ -1129,7 +1129,7 @@ switch( $mode )
 
 					if ( $bbcode_uid != '' )
 					{
-						$message = ( $board_config['allow_bbcode'] ) ? bbencode_second_pass($message, $bbcode_uid) : preg_replace('/\:[0-9a-z\:]+\]/si', ']', $message);
+						$message = ( $ft_cfg['allow_bbcode'] ) ? bbencode_second_pass($message, $bbcode_uid) : preg_replace('/\:[0-9a-z\:]+\]/si', ']', $message);
 					}
 
 					if ( count($orig_word) )
@@ -1140,7 +1140,7 @@ switch( $mode )
 
 					$message = make_clickable($message);
 
-					if ( $board_config['allow_smilies'] && $postrow[$i]['enable_smilies'] )
+					if ( $ft_cfg['allow_smilies'] && $postrow[$i]['enable_smilies'] )
 					{
 						$message = smilies_pass($message);
 					}
@@ -1361,7 +1361,7 @@ switch( $mode )
 				AND t.topic_poster = u.user_id
 				AND p.post_id = t.topic_last_post_id
 			ORDER BY t.topic_type DESC, p.post_time DESC
-			LIMIT $start, " . $board_config['topics_per_page'];
+			LIMIT $start, " . $ft_cfg['topics_per_page'];
 		if ( !($result = $db->sql_query($sql)) )
 		{
 	   		message_die(GENERAL_ERROR, 'Could not obtain topic information', '', __LINE__, __FILE__, $sql);
@@ -1437,7 +1437,7 @@ switch( $mode )
 			$u_view_topic = "modcp.php?mode=split&amp;" . POST_TOPIC_URL . "=$topic_id&amp;sid=" . $userdata['session_id'];
 			$topic_replies = $row['topic_replies'];
 
-			$last_post_time = create_date($board_config['default_dateformat'], $row['post_time'], $board_config['board_timezone']);
+			$last_post_time = create_date($ft_cfg['default_dateformat'], $row['post_time'], $ft_cfg['board_timezone']);
 
 			$template->assign_block_vars('topicrow', array(
 				'U_VIEW_TOPIC' => $u_view_topic,
@@ -1455,8 +1455,8 @@ switch( $mode )
 		}
 
 		$template->assign_vars(array(
-			'PAGINATION' => generate_pagination("modcp.php?" . POST_FORUM_URL . "=$forum_id&amp;sid=" . $userdata['session_id'], $forum_topics, $board_config['topics_per_page'], $start),
-			'PAGE_NUMBER' => sprintf($lang['Page_of'], ( floor( $start / $board_config['topics_per_page'] ) + 1 ), ceil( $forum_topics / $board_config['topics_per_page'] )),
+			'PAGINATION' => generate_pagination("modcp.php?" . POST_FORUM_URL . "=$forum_id&amp;sid=" . $userdata['session_id'], $forum_topics, $ft_cfg['topics_per_page'], $start),
+			'PAGE_NUMBER' => sprintf($lang['Page_of'], ( floor( $start / $ft_cfg['topics_per_page'] ) + 1 ), ceil( $forum_topics / $ft_cfg['topics_per_page'] )),
 			'L_GOTO_PAGE' => $lang['Goto_page']
 		));
 

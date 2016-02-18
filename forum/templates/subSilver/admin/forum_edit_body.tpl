@@ -72,26 +72,26 @@ function toggle_cat_list (val)
 		</table></td>
 	</tr>
 	<tr> 
-	  <td class="row1">Автоперенос тем.</td>
+	  <td class="row1">РђРІС‚РѕРїРµСЂРµРЅРѕСЃ С‚РµРј.</td>
 	  <td class="row2">
-		Включено <input type="checkbox" name="move_enable" value="1" {S_MOVE_ENABLED} /><br>
+		Р’РєР»СЋС‡РµРЅРѕ <input type="checkbox" name="move_enable" value="1" {S_MOVE_ENABLED} /><br>
 		<fieldset class="fieldset" style="margin: 2px;">
-			<legend>Автоперенос недооформленных тем.</legend>
+			<legend>РђРІС‚РѕРїРµСЂРµРЅРѕСЃ РЅРµРґРѕРѕС„РѕСЂРјР»РµРЅРЅС‹С… С‚РµРј.</legend>
 			<div style="padding: 4px">
 				<div class="gen" style="padding-bottom: 2px">
-					Перенести недооформленные темы, если они не были исправлены в течении:<input type="text" name="waits_days" value="{WAITS_DAYS}" size="5" class="post" />&nbsp;{L_DAYS}<br> 
-					Проверять срок исправления недооформленных тем каждыe: <input type="text" name="check_freq" value="{CHECK_FREQ}" size="5" class="post" />&nbsp;{L_DAYS}<br>
-					Айди форума для неоформленных тем: <input type="text" name="move_fid" value="{MOVE_FID}" size="3" class="post" />&nbsp;id
+					РџРµСЂРµРЅРµСЃС‚Рё РЅРµРґРѕРѕС„РѕСЂРјР»РµРЅРЅС‹Рµ С‚РµРјС‹, РµСЃР»Рё РѕРЅРё РЅРµ Р±С‹Р»Рё РёСЃРїСЂР°РІР»РµРЅС‹ РІ С‚РµС‡РµРЅРёРё:<input type="text" name="waits_days" value="{WAITS_DAYS}" size="5" class="post" />&nbsp;{L_DAYS}<br> 
+					РџСЂРѕРІРµСЂСЏС‚СЊ СЃСЂРѕРє РёСЃРїСЂР°РІР»РµРЅРёСЏ РЅРµРґРѕРѕС„РѕСЂРјР»РµРЅРЅС‹С… С‚РµРј РєР°Р¶РґС‹e: <input type="text" name="check_freq" value="{CHECK_FREQ}" size="5" class="post" />&nbsp;{L_DAYS}<br>
+					РђР№РґРё С„РѕСЂСѓРјР° РґР»СЏ РЅРµРѕС„РѕСЂРјР»РµРЅРЅС‹С… С‚РµРј: <input type="text" name="move_fid" value="{MOVE_FID}" size="3" class="post" />&nbsp;id
 				</div>
 			</div>
 		</fieldset>
 		<fieldset class="fieldset" style="margin: 2px;">
-			<legend>Автоперенос тем-повторов в "корзину".</legend>
+			<legend>РђРІС‚РѕРїРµСЂРµРЅРѕСЃ С‚РµРј-РїРѕРІС‚РѕСЂРѕРІ РІ "РєРѕСЂР·РёРЅСѓ".</legend>
 			<div style="padding: 4px">
 				<div class="gen" style="padding-bottom: 2px">
-					Переносить темы-повторы, которым: <input type="text" name="recycle_waits_days" value="{RECYCLE_WAITS_DAYS}" size="5" class="post" />&nbsp;{L_DAYS}<br> 
-					Проверять возраст тем-повторов каждыe: <input type="text" name="recycle_check_freq" value="{RECYCLE_CHECK_FREQ}" size="5" class="post" />&nbsp;{L_DAYS}<br>
-					Айди форума для тем-повторов: <input type="text" name="recycle_move_fid" value="{RECYCLE_MOVE_FID}" size="3" class="post" />&nbsp;id
+					РџРµСЂРµРЅРѕСЃРёС‚СЊ С‚РµРјС‹-РїРѕРІС‚РѕСЂС‹, РєРѕС‚РѕСЂС‹Рј: <input type="text" name="recycle_waits_days" value="{RECYCLE_WAITS_DAYS}" size="5" class="post" />&nbsp;{L_DAYS}<br> 
+					РџСЂРѕРІРµСЂСЏС‚СЊ РІРѕР·СЂР°СЃС‚ С‚РµРј-РїРѕРІС‚РѕСЂРѕРІ РєР°Р¶РґС‹e: <input type="text" name="recycle_check_freq" value="{RECYCLE_CHECK_FREQ}" size="5" class="post" />&nbsp;{L_DAYS}<br>
+					РђР№РґРё С„РѕСЂСѓРјР° РґР»СЏ С‚РµРј-РїРѕРІС‚РѕСЂРѕРІ: <input type="text" name="recycle_move_fid" value="{RECYCLE_MOVE_FID}" size="3" class="post" />&nbsp;id
 				</div>
 			</div>
 		</fieldset>

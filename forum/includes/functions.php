@@ -105,11 +105,11 @@ function humn_size ($size, $rounder = '', $min = '', $space = '&nbsp;')
 
 function bt_show_ip ($ip, $port = '')
 {
-	global $is_auth, $board_config;
+	global $is_auth, $ft_cfg;
 
 	if (!$is_auth['auth_mod'])
 	{
-		if ($board_config['bt_show_ip_only_moder'])
+		if ($ft_cfg['bt_show_ip_only_moder'])
 		{
 			return '';
 		}
@@ -128,9 +128,9 @@ function bt_show_ip ($ip, $port = '')
 
 function bt_show_port ($port)
 {
-	global $is_auth, $board_config;
+	global $is_auth, $ft_cfg;
 
-	if (!$is_auth['auth_mod'] && $board_config['bt_show_port_only_moder'])
+	if (!$is_auth['auth_mod'] && $ft_cfg['bt_show_port_only_moder'])
 	{
 		return NULL;
 	}
@@ -387,29 +387,6 @@ function bt_sql_esc ($x)
 {
 	return mysql_real_escape_string($x); // Временное решение проблеммы
 }
-
-function make_url ($url)
-{
-	global $board_config;
-
-	$server_protocol = ($board_config['cookie_secure']) ? 'https://' : 'http://';
-	$server_name = preg_replace('#^\/?(.*?)\/?$#', '\1', trim($board_config['server_name']));
-	$server_port = ($board_config['server_port'] <> 80) ? ':' . trim($board_config['server_port']) : '';
-	$script_name = preg_replace('#^\/?(.*?)\/?$#', '\1', trim($board_config['script_path']));
-	$script_name = ($script_name == '') ? $script_name : '/' . $script_name;
-	$url = preg_replace('#^\/?(.*?)\/?$#', '/\1', trim($url));
-
-	return $server_protocol . $server_name . $server_port . $script_name . $url;
-}
-
-function clean_filename ($filename)
-{
-	$s = array('\\', '/', ':', '*', '?', '"', '<', '>', '|');
-	$r = array('_',  '_', '_', '_', '_', '_', '_', '_', '_');
-
-	return str_replace($s, $r, $filename);
-}
-
 //bt end
 
 function get_db_stat($mode)
@@ -664,7 +641,7 @@ function make_jumpbox($action, $match_forum_id = 0, $return_forums_ary = FALSE)
 // Initialise user settings on page load
 function init_userprefs($userdata)
 {
-	global $board_config, $theme, $images;
+	global $ft_cfg, $theme, $images;
 	global $template, $lang;
 	global $nav_links;
 
@@ -672,42 +649,42 @@ function init_userprefs($userdata)
 	{
 		if ( !empty($userdata['user_lang']))
 		{
-			$board_config['default_lang'] = $userdata['user_lang'];
+			$ft_cfg['default_lang'] = $userdata['user_lang'];
 		}
 
 		if ( !empty($userdata['user_dateformat']) )
 		{
-			$board_config['default_dateformat'] = $userdata['user_dateformat'];
+			$ft_cfg['default_dateformat'] = $userdata['user_dateformat'];
 		}
 
 		if ( isset($userdata['user_timezone']) )
 		{
-			$board_config['board_timezone'] = $userdata['user_timezone'];
+			$ft_cfg['board_timezone'] = $userdata['user_timezone'];
 		}
 	}
 
-	if ( !file_exists(@phpbb_realpath(FT_ROOT . 'language/lang_' . $board_config['default_lang'] . '/lang_main.php')) )
+	if ( !file_exists(@phpbb_realpath(FT_ROOT . 'language/lang_' . $ft_cfg['default_lang'] . '/lang_main.php')) )
 	{
-		$board_config['default_lang'] = 'english';
+		$ft_cfg['default_lang'] = 'english';
 	}
 
-	require(FT_ROOT . 'language/lang_' . $board_config['default_lang'] . '/lang_main.php');
+	require(FT_ROOT . 'language/lang_' . $ft_cfg['default_lang'] . '/lang_main.php');
 
 	if ( defined('IN_ADMIN') )
 	{
-		if( !file_exists(@phpbb_realpath(FT_ROOT . 'language/lang_' . $board_config['default_lang'] . '/lang_admin.php')) )
+		if( !file_exists(@phpbb_realpath(FT_ROOT . 'language/lang_' . $ft_cfg['default_lang'] . '/lang_admin.php')) )
 		{
-			$board_config['default_lang'] = 'english';
+			$ft_cfg['default_lang'] = 'english';
 		}
 
-		require(FT_ROOT . 'language/lang_' . $board_config['default_lang'] . '/lang_admin.php');
+		require(FT_ROOT . 'language/lang_' . $ft_cfg['default_lang'] . '/lang_admin.php');
 	}
 
 	include_attach_lang();
 	//
 	// Set up style
 	//
-	if ( !$board_config['override_user_style'] )
+	if ( !$ft_cfg['override_user_style'] )
 	{
 		if ( $userdata['user_id'] != ANONYMOUS && $userdata['user_style'] > 0 )
 		{
@@ -718,7 +695,7 @@ function init_userprefs($userdata)
 		}
 	}
 
-	$theme = setup_style($board_config['default_style']);
+	$theme = setup_style($ft_cfg['default_style']);
 
 	//
 	// Mozilla navigation bar
@@ -728,7 +705,7 @@ function init_userprefs($userdata)
 	//
 	$nav_links['top'] = array (
 		'url' => append_sid(FT_ROOT . 'index.php'),
-		'title' => sprintf($lang['Forum_Index'], $board_config['sitename'])
+		'title' => sprintf($lang['Forum_Index'], $ft_cfg['sitename'])
 	);
 	$nav_links['search'] = array (
 		'url' => append_sid(FT_ROOT . 'search.php'),
@@ -748,7 +725,7 @@ function init_userprefs($userdata)
 
 function setup_style($style)
 {
-	global $db, $board_config, $template, $images;
+	global $db, $ft_cfg, $template, $images;
 
 	$sql = "SELECT *
 		FROM " . THEMES_TABLE . "
@@ -778,7 +755,7 @@ function setup_style($style)
 			message_die(CRITICAL_ERROR, "Could not open $template_name template config file", '', __LINE__, __FILE__);
 		}
 
-		$img_lang = ( file_exists(@phpbb_realpath(FT_ROOT . $current_template_path . '/images/lang_' . $board_config['default_lang'])) ) ? $board_config['default_lang'] : 'english';
+		$img_lang = ( file_exists(@phpbb_realpath(FT_ROOT . $current_template_path . '/images/lang_' . $ft_cfg['default_lang'])) ) ? $ft_cfg['default_lang'] : 'english';
 
 		while( list($key, $value) = @each($images) )
 		{
@@ -792,27 +769,15 @@ function setup_style($style)
 	return $row;
 }
 
-function encode_ip($dotquad_ip)
-{
-	$ip_sep = explode('.', $dotquad_ip);
-	return sprintf('%02x%02x%02x%02x', $ip_sep[0], $ip_sep[1], $ip_sep[2], $ip_sep[3]);
-}
-
-function decode_ip($int_ip)
-{
-	$hexipbang = explode('.', chunk_split($int_ip, 2, '.'));
-	return hexdec($hexipbang[0]). '.' . hexdec($hexipbang[1]) . '.' . hexdec($hexipbang[2]) . '.' . hexdec($hexipbang[3]);
-}
-
 //
 // Create date/time from format and timezone
 //
 function create_date($format, $gmepoch, $tz)
 {
-	global $board_config, $lang;
+	global $ft_cfg, $lang;
 	static $translate;
 
-	if ( empty($translate) && $board_config['default_lang'] != 'english' )
+	if ( empty($translate) && $ft_cfg['default_lang'] != 'english' )
 	{
 		@reset($lang['datetime']);
 		while ( list($match, $replace) = @each($lang['datetime']) )
@@ -989,7 +954,7 @@ function obtain_word_list(&$orig_word, &$replacement_word)
 
 function message_die($msg_code, $msg_text = '', $msg_title = '', $err_line = '', $err_file = '', $sql = '')
 {
-	global $db, $template, $board_config, $theme, $lang, $nav_links, $gen_simple_header, $images;
+	global $db, $template, $ft_cfg, $theme, $lang, $nav_links, $gen_simple_header, $images;
 	global $userdata, $user_ip, $session_length;
 	global $starttime;
 
@@ -1042,9 +1007,9 @@ function message_die($msg_code, $msg_text = '', $msg_title = '', $err_line = '',
 	{
 		if ( empty($lang) )
 		{
-			if ( !empty($board_config['default_lang']) )
+			if ( !empty($ft_cfg['default_lang']) )
 			{
-				require(FT_ROOT . 'language/lang_' . $board_config['default_lang'] . '/lang_main.php');
+				require(FT_ROOT . 'language/lang_' . $ft_cfg['default_lang'] . '/lang_main.php');
 			}
 			else
 			{
@@ -1054,11 +1019,11 @@ function message_die($msg_code, $msg_text = '', $msg_title = '', $err_line = '',
 
 		if ( empty($template) )
 		{
-			$template = new Template(FT_ROOT . 'templates/' . $board_config['board_template']);
+			$template = new Template(FT_ROOT . 'templates/' . $ft_cfg['board_template']);
 		}
 		if ( empty($theme) )
 		{
-			$theme = setup_style($board_config['default_style']);
+			$theme = setup_style($ft_cfg['default_style']);
 		}
 
 		//
@@ -1184,7 +1149,7 @@ function phpbb_realpath($path)
 
 function redirect($url)
 {
-	global $db, $board_config;
+	global $db, $ft_cfg;
 
 	if (!empty($db))
 	{
@@ -1196,10 +1161,10 @@ function redirect($url)
 		message_die(GENERAL_ERROR, 'Tried to redirect to potentially insecure url.');
 	}
 
-	$server_protocol = ($board_config['cookie_secure']) ? 'https://' : 'http://';
-	$server_name = preg_replace('#^\/?(.*?)\/?$#', '\1', trim($board_config['server_name']));
-	$server_port = ($board_config['server_port'] <> 80) ? ':' . trim($board_config['server_port']) : '';
-	$script_name = preg_replace('#^\/?(.*?)\/?$#', '\1', trim($board_config['script_path']));
+	$server_protocol = ($ft_cfg['cookie_secure']) ? 'https://' : 'http://';
+	$server_name = preg_replace('#^\/?(.*?)\/?$#', '\1', trim($ft_cfg['server_name']));
+	$server_port = ($ft_cfg['server_port'] <> 80) ? ':' . trim($ft_cfg['server_port']) : '';
+	$script_name = preg_replace('#^\/?(.*?)\/?$#', '\1', trim($ft_cfg['script_path']));
 	$script_name = ($script_name == '') ? $script_name : '/' . $script_name;
 	$url = preg_replace('#^\/?(.*?)\/?$#', '/\1', trim($url));
 

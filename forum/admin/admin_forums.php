@@ -1,46 +1,18 @@
 <?php
-/***************************************************************************
- *                             admin_forums.php
- *                            -------------------
- *   begin                : Thursday, Jul 12, 2001
- *   copyright            : (C) 2001 The phpBB Group
- *   email                : support@phpbb.com
- *
- *   $Id: admin_forums.php,v 1.40.2.12 2005/05/06 22:58:19 acydburn Exp $
- *
- ***************************************************************************/
+if(!empty($setmodules))
+{
+	$module['Forums']['Manage'] = basename(__FILE__);
+	return;
+}
 
-/***************************************************************************
- *
- *   This program is free software; you can redistribute it and/or modify
- *   it under the terms of the GNU General Public License as published by
- *   the Free Software Foundation; either version 2 of the License, or
- *   (at your option) any later version.
- *
- ***************************************************************************/
-
-@define('IN_PHPBB', 1);
-$page_title = 'Manage Forums';
 $show_index = FALSE;
 $s = '';
 $sl = ' selected="selected" ';
 $ch = ' checked="checked" ';
 $ds = ' disabled="disabled" ';
 
-if( !empty($setmodules) )
-{
-	$file = basename(__FILE__);
-	$module['Forums']['Manage'] = $file;
-	return;
-}
-
-//
-// Load default header
-//
-$phpbb_root_path = "./../";
-require($phpbb_root_path . 'extension.inc');
-require('./pagestart.' . $phpEx);
-include($phpbb_root_path . 'includes/functions_admin.'.$phpEx);
+require('./pagestart.php');
+require(FT_ROOT . 'includes/functions_admin.php');
 
 $forum_auth_ary = array(
 	"auth_view" => AUTH_ALL,
@@ -355,7 +327,7 @@ function get_orphan_sf ()
 
 function fix_orphan_sf ($orphan_sf_sql = '', $show_mess = FALSE)
 {
-	global $db, $lang, $phpEx;
+	global $db, $lang;
 
 	$done_mess = '';
 
@@ -382,7 +354,7 @@ function fix_orphan_sf ($orphan_sf_sql = '', $show_mess = FALSE)
 
 		if ($show_mess)
 		{
-			$message = $done_mess . "<br /><br />" . sprintf($lang['Click_return_forumadmin'], "<a href=\"" . append_sid("admin_forums.$phpEx") . "\">", "</a>") . "<br /><br />" . sprintf($lang['Click_return_admin_index'], "<a href=\"" . append_sid("index.$phpEx?pane=right") . "\">", "</a>");
+			$message = $done_mess . "<br /><br />" . sprintf($lang['Click_return_forumadmin'], "<a href=\"" . append_sid("admin_forums.php") . "\">", "</a>") . "<br /><br />" . sprintf($lang['Click_return_admin_index'], "<a href=\"" . append_sid("index.php?pane=right") . "\">", "</a>");
 			message_die(GENERAL_MESSAGE, $message);
 		}
 	}
@@ -620,7 +592,7 @@ if( !empty($mode) )
 				'S_FORUM_DISPLAY_SORT_LIST'		=> $forum_display_sort_list,
 				'S_FORUM_DISPLAY_ORDER_LIST'	=> $forum_display_order_list,
 //-- fin mod : topic display order -----------------------------------------------------------------
-				'S_FORUM_ACTION' => append_sid("admin_forums.$phpEx"),
+				'S_FORUM_ACTION' => append_sid("admin_forums.php"),
 				'S_HIDDEN_FIELDS' => $s_hidden_fields,
 				'S_SUBMIT_VALUE' => $buttonvalue,
 				'S_CAT_LIST' => $catlist,
@@ -782,7 +754,7 @@ if( !empty($mode) )
 
 			renumber_order('forum', $cat_id);
 
-			$message = $lang['Forums_updated'] . "<br /><br />" . sprintf($lang['Click_return_forumadmin'], "<a href=\"" . append_sid("admin_forums.$phpEx") . "\">", "</a>") . "<br /><br />" . sprintf($lang['Click_return_admin_index'], "<a href=\"" . append_sid("index.$phpEx?pane=right") . "\">", "</a>");
+			$message = $lang['Forums_updated'] . "<br /><br />" . sprintf($lang['Click_return_forumadmin'], "<a href=\"" . append_sid("admin_forums.php") . "\">", "</a>") . "<br /><br />" . sprintf($lang['Click_return_admin_index'], "<a href=\"" . append_sid("index.php?pane=right") . "\">", "</a>");
 			message_die(GENERAL_MESSAGE, $message);
 
 			break;
@@ -949,7 +921,7 @@ if( !empty($mode) )
 
 			$message = $lang['Forums_updated'] . "<br /><br />";
 			$message .= ($fix) ? "$fix<br /><br />" : '';
-			$message .= sprintf($lang['Click_return_forumadmin'], "<a href=\"" . append_sid("admin_forums.$phpEx") . "\">", "</a>") . "<br /><br />" . sprintf($lang['Click_return_admin_index'], "<a href=\"" . append_sid("index.$phpEx?pane=right") . "\">", "</a>");
+			$message .= sprintf($lang['Click_return_forumadmin'], "<a href=\"" . append_sid("admin_forums.php") . "\">", "</a>") . "<br /><br />" . sprintf($lang['Click_return_admin_index'], "<a href=\"" . append_sid("index.php?pane=right") . "\">", "</a>");
 			message_die(GENERAL_MESSAGE, $message);
 
 			break;
@@ -982,7 +954,7 @@ if( !empty($mode) )
 				message_die(GENERAL_ERROR, "Couldn't insert row in categories table", "", __LINE__, __FILE__, $sql);
 			}
 
-			$message = $lang['Forums_updated'] . "<br /><br />" . sprintf($lang['Click_return_forumadmin'], "<a href=\"" . append_sid("admin_forums.$phpEx") . "\">", "</a>") . "<br /><br />" . sprintf($lang['Click_return_admin_index'], "<a href=\"" . append_sid("index.$phpEx?pane=right") . "\">", "</a>");
+			$message = $lang['Forums_updated'] . "<br /><br />" . sprintf($lang['Click_return_forumadmin'], "<a href=\"" . append_sid("admin_forums.php") . "\">", "</a>") . "<br /><br />" . sprintf($lang['Click_return_admin_index'], "<a href=\"" . append_sid("index.php?pane=right") . "\">", "</a>");
 
 			message_die(GENERAL_MESSAGE, $message);
 
@@ -1015,7 +987,7 @@ if( !empty($mode) )
 
 				'S_HIDDEN_FIELDS' => $s_hidden_fields,
 				'S_SUBMIT_VALUE' => $buttonvalue,
-				'S_FORUM_ACTION' => append_sid("admin_forums.$phpEx"))
+				'S_FORUM_ACTION' => append_sid("admin_forums.php"))
 			);
 
 			$template->pparse("body");
@@ -1031,7 +1003,7 @@ if( !empty($mode) )
 				message_die(GENERAL_ERROR, "Couldn't update forum information", "", __LINE__, __FILE__, $sql);
 			}
 
-			$message = $lang['Forums_updated'] . "<br /><br />" . sprintf($lang['Click_return_forumadmin'], "<a href=\"" . append_sid("admin_forums.$phpEx") . "\">", "</a>") . "<br /><br />" . sprintf($lang['Click_return_admin_index'], "<a href=\"" . append_sid("index.$phpEx?pane=right") . "\">", "</a>");
+			$message = $lang['Forums_updated'] . "<br /><br />" . sprintf($lang['Click_return_forumadmin'], "<a href=\"" . append_sid("admin_forums.php") . "\">", "</a>") . "<br /><br />" . sprintf($lang['Click_return_admin_index'], "<a href=\"" . append_sid("index.php?pane=right") . "\">", "</a>");
 
 			message_die(GENERAL_MESSAGE, $message);
 
@@ -1068,7 +1040,7 @@ if( !empty($mode) )
 				'L_FORUM_NAME' => $lang['Forum_name'],
 
 				'S_HIDDEN_FIELDS' => $s_hidden_fields,
-				'S_FORUM_ACTION' => append_sid("admin_forums.$phpEx"),
+				'S_FORUM_ACTION' => append_sid("admin_forums.php"),
 				'S_SELECT_TO' => $select_to,
 				'S_SUBMIT_VALUE' => $buttonvalue)
 			);
@@ -1120,7 +1092,7 @@ if( !empty($mode) )
 				}
 				$db->sql_freeresult($result);
 
-				include($phpbb_root_path . "includes/prune.$phpEx");
+				require(FT_ROOT . "includes/prune.php");
 				prune($from_id, 0, true); // Delete everything from forum
 			}
 			else
@@ -1235,7 +1207,7 @@ if( !empty($mode) )
 
 			fix_orphan_sf();
 
-			$message = $lang['Forums_updated'] . "<br /><br />" . sprintf($lang['Click_return_forumadmin'], "<a href=\"" . append_sid("admin_forums.$phpEx") . "\">", "</a>") . "<br /><br />" . sprintf($lang['Click_return_admin_index'], "<a href=\"" . append_sid("index.$phpEx?pane=right") . "\">", "</a>");
+			$message = $lang['Forums_updated'] . "<br /><br />" . sprintf($lang['Click_return_forumadmin'], "<a href=\"" . append_sid("admin_forums.php") . "\">", "</a>") . "<br /><br />" . sprintf($lang['Click_return_admin_index'], "<a href=\"" . append_sid("index.php?pane=right") . "\">", "</a>");
 
 			message_die(GENERAL_MESSAGE, $message);
 
@@ -1294,7 +1266,7 @@ if( !empty($mode) )
 				'L_FORUM_NAME' => $lang['Forum_name'],
 
 				'S_HIDDEN_FIELDS' => $s_hidden_fields,
-				'S_FORUM_ACTION' => append_sid("admin_forums.$phpEx"),
+				'S_FORUM_ACTION' => append_sid("admin_forums.php"),
 				'S_SELECT_TO' => $select_to,
 				'S_SUBMIT_VALUE' => $buttonvalue)
 			);
@@ -1349,7 +1321,7 @@ if( !empty($mode) )
 
 			$message = $lang['Forums_updated'] . "<br /><br />";
 			$message .= ($fix) ? "$fix<br /><br />" : '';
-			$message .= sprintf($lang['Click_return_forumadmin'], "<a href=\"" . append_sid("admin_forums.$phpEx") . "\">", "</a>") . "<br /><br />" . sprintf($lang['Click_return_admin_index'], "<a href=\"" . append_sid("index.$phpEx?pane=right") . "\">", "</a>");
+			$message .= sprintf($lang['Click_return_forumadmin'], "<a href=\"" . append_sid("admin_forums.php") . "\">", "</a>") . "<br /><br />" . sprintf($lang['Click_return_admin_index'], "<a href=\"" . append_sid("index.php?pane=right") . "\">", "</a>");
 			message_die(GENERAL_MESSAGE, $message);
 
 			break;
@@ -1479,7 +1451,7 @@ if( !empty($mode) )
 
 	if ($show_index != TRUE)
 	{
-		include('./page_footer_admin.'.$phpEx);
+		require('./page_footer_admin.php');
 		exit;
 	}
 }
@@ -1492,7 +1464,7 @@ $template->set_filenames(array(
 );
 
 $template->assign_vars(array(
-	'S_FORUM_ACTION' => append_sid("admin_forums.$phpEx"),
+	'S_FORUM_ACTION' => append_sid("admin_forums.php"),
 	'L_FORUM_TITLE' => $lang['Forum_admin'],
 	'L_FORUM_EXPLAIN' => $lang['Forum_admin_explain'],
 	'L_CREATE_FORUM' => $lang['Create_forum'],
@@ -1549,11 +1521,11 @@ if( $total_categories = $db->sql_numrows($q_categories) )
 			'CAT_ID' => $cat_id,
 			'CAT_DESC' => $category_rows[$i]['cat_title'],
 
-			'U_CAT_EDIT' => append_sid("admin_forums.$phpEx?mode=editcat&amp;" . POST_CAT_URL . "=$cat_id"),
-			'U_CAT_DELETE' => append_sid("admin_forums.$phpEx?mode=deletecat&amp;" . POST_CAT_URL . "=$cat_id"),
-			'U_CAT_MOVE_UP' => append_sid("admin_forums.$phpEx?mode=cat_order&amp;move=-15&amp;" . POST_CAT_URL . "=$cat_id"),
-			'U_CAT_MOVE_DOWN' => append_sid("admin_forums.$phpEx?mode=cat_order&amp;move=15&amp;" . POST_CAT_URL . "=$cat_id"),
-			'U_VIEWCAT' => append_sid($phpbb_root_path."index.$phpEx?" . POST_CAT_URL . "=$cat_id"))
+			'U_CAT_EDIT' => append_sid("admin_forums.php?mode=editcat&amp;" . POST_CAT_URL . "=$cat_id"),
+			'U_CAT_DELETE' => append_sid("admin_forums.php?mode=deletecat&amp;" . POST_CAT_URL . "=$cat_id"),
+			'U_CAT_MOVE_UP' => append_sid("admin_forums.php?mode=cat_order&amp;move=-15&amp;" . POST_CAT_URL . "=$cat_id"),
+			'U_CAT_MOVE_DOWN' => append_sid("admin_forums.php?mode=cat_order&amp;move=15&amp;" . POST_CAT_URL . "=$cat_id"),
+			'U_VIEWCAT' => append_sid($phpbb_root_path."index.php?" . POST_CAT_URL . "=$cat_id"))
 		);
 
 		for($j = 0; $j < $total_forums; $j++)
@@ -1578,14 +1550,14 @@ if( $total_categories = $db->sql_numrows($q_categories) )
 					'SF_PAD' => ($forum_rows[$j]['forum_parent']) ? ' style="padding-left: 20px;" ' : '',
 					'FORUM_NAME_CLASS' => ($forum_rows[$j]['forum_parent']) ? 'genmed' : 'gen',
 					'ROW_BGR' => $row_bgr,
-					'ADD_SUB_HREF' => append_sid("admin_forums.$phpEx?mode=addforum&amp;forum_parent={$forum_rows[$j]['forum_id']}"),
+					'ADD_SUB_HREF' => append_sid("admin_forums.php?mode=addforum&amp;forum_parent={$forum_rows[$j]['forum_id']}"),
 
-					'U_VIEWFORUM' => append_sid($phpbb_root_path."viewforum.$phpEx?" . POST_FORUM_URL . "=$forum_id"),
-					'U_FORUM_EDIT' => append_sid("admin_forums.$phpEx?mode=editforum&amp;" . POST_FORUM_URL . "=$forum_id"),
-					'U_FORUM_DELETE' => append_sid("admin_forums.$phpEx?mode=deleteforum&amp;" . POST_FORUM_URL . "=$forum_id"),
-					'U_FORUM_MOVE_UP' => append_sid("admin_forums.$phpEx?mode=forum_order&amp;move=-15&amp;" . POST_FORUM_URL . "=$forum_id"),
-					'U_FORUM_MOVE_DOWN' => append_sid("admin_forums.$phpEx?mode=forum_order&amp;move=15&amp;" . POST_FORUM_URL . "=$forum_id"),
-					'U_FORUM_RESYNC' => append_sid("admin_forums.$phpEx?mode=forum_sync&amp;" . POST_FORUM_URL . "=$forum_id"))
+					'U_VIEWFORUM' => append_sid(FT_ROOT."viewforum.php?" . POST_FORUM_URL . "=$forum_id"),
+					'U_FORUM_EDIT' => append_sid("admin_forums.php?mode=editforum&amp;" . POST_FORUM_URL . "=$forum_id"),
+					'U_FORUM_DELETE' => append_sid("admin_forums.php?mode=deleteforum&amp;" . POST_FORUM_URL . "=$forum_id"),
+					'U_FORUM_MOVE_UP' => append_sid("admin_forums.php?mode=forum_order&amp;move=-15&amp;" . POST_FORUM_URL . "=$forum_id"),
+					'U_FORUM_MOVE_DOWN' => append_sid("admin_forums.php?mode=forum_order&amp;move=15&amp;" . POST_FORUM_URL . "=$forum_id"),
+					'U_FORUM_RESYNC' => append_sid("admin_forums.php?mode=forum_sync&amp;" . POST_FORUM_URL . "=$forum_id"))
 				);
 
 			}// if ... forumid == catid
@@ -1598,6 +1570,4 @@ if( $total_categories = $db->sql_numrows($q_categories) )
 
 $template->pparse("body");
 
-include('./page_footer_admin.'.$phpEx);
-
-?>
+require('./page_footer_admin.php');

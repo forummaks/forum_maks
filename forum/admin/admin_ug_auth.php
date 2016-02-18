@@ -1,48 +1,17 @@
 <?php
-/***************************************************************************
- *                            admin_ug_auth.php
- *                            -------------------
- *   begin                : Saturday, Feb 13, 2001
- *   copyright            : (C) 2001 The phpBB Group
- *   email                : support@phpbb.com
- *
- *   $Id: admin_ug_auth.php,v 1.13.2.9 2005/07/19 20:01:05 acydburn Exp $
- *
- *
- ***************************************************************************/
-
-/***************************************************************************
- *
- *   This program is free software; you can redistribute it and/or modify
- *   it under the terms of the GNU General Public License as published by
- *   the Free Software Foundation; either version 2 of the License, or
- *   (at your option) any later version.
- *
- ***************************************************************************/
-
-@define('IN_PHPBB', 1);
-
-if( !empty($setmodules) )
+if(!empty($setmodules))
 {
-	$filename = basename(__FILE__);
-	$module['Users']['Permissions'] = $filename . "?mode=user";
-	$module['Groups']['Permissions'] = $filename . "?mode=group";
-
+	$module['Users']['Permissions'] = basename(__FILE__) . "?mode=user";
+	$module['Groups']['Permissions'] = basename(__FILE__) . "?mode=group";
 	return;
 }
 
 $bgr_class_1    = 'prow1';
 $bgr_class_2    = 'prow2';
 $bgr_class_over = 'prow3';
+//$no_page_header = TRUE;
 
-//
-// Load default header
-//
-$no_page_header = TRUE;
-
-$phpbb_root_path = "./../";
-require($phpbb_root_path . 'extension.inc');
-require('./pagestart.' . $phpEx);
+require('./pagestart.php');
 
 $params = array('mode' => 'mode', 'user_id' => POST_USERS_URL, 'group_id' => POST_GROUPS_URL, 'adv' => 'adv');
 
@@ -199,7 +168,7 @@ if ( isset($HTTP_POST_VARS['submit']) && ( ( $mode == 'user' && $user_id ) || ( 
 			}
 		}
 
-		$message = $lang['Auth_updated'] . '<br /><br />' . sprintf($lang['Click_return_userauth'], '<a href="' . append_sid("admin_ug_auth.$phpEx?mode=$mode") . '">', '</a>') . '<br /><br />' . sprintf($lang['Click_return_admin_index'], '<a href="' . append_sid("index.$phpEx?pane=right") . '">', '</a>');
+		$message = $lang['Auth_updated'] . '<br /><br />' . sprintf($lang['Click_return_userauth'], '<a href="' . append_sid("admin_ug_auth.php?mode=$mode") . '">', '</a>') . '<br /><br />' . sprintf($lang['Click_return_admin_index'], '<a href="' . append_sid("index.php?pane=right") . '">', '</a>');
 		message_die(GENERAL_MESSAGE, $message);
 	}
 	else
@@ -232,7 +201,7 @@ if ( isset($HTTP_POST_VARS['submit']) && ( ( $mode == 'user' && $user_id ) || ( 
 				}
 			}
 
-			$message = $lang['Auth_updated'] . '<br /><br />' . sprintf($lang['Click_return_userauth'], '<a href="' . append_sid("admin_ug_auth.$phpEx?mode=$mode") . '">', '</a>') . '<br /><br />' . sprintf($lang['Click_return_admin_index'], '<a href="' . append_sid("index.$phpEx?pane=right") . '">', '</a>');
+			$message = $lang['Auth_updated'] . '<br /><br />' . sprintf($lang['Click_return_userauth'], '<a href="' . append_sid("admin_ug_auth.php?mode=$mode") . '">', '</a>') . '<br /><br />' . sprintf($lang['Click_return_admin_index'], '<a href="' . append_sid("index.php?pane=right") . '">', '</a>');
 		}
 		else
 		{
@@ -411,7 +380,7 @@ if ( isset($HTTP_POST_VARS['submit']) && ( ( $mode == 'user' && $user_id ) || ( 
 			}
 
 			$l_auth_return = ( $mode == 'user' ) ? $lang['Click_return_userauth'] : $lang['Click_return_groupauth'];
-			$message = $lang['Auth_updated'] . '<br /><br />' . sprintf($l_auth_return, '<a href="' . append_sid("admin_ug_auth.$phpEx?mode=$mode") . '">', '</a>') . '<br /><br />' . sprintf($lang['Click_return_admin_index'], '<a href="' . append_sid("index.$phpEx?pane=right") . '">', '</a>');
+			$message = $lang['Auth_updated'] . '<br /><br />' . sprintf($l_auth_return, '<a href="' . append_sid("admin_ug_auth.php?mode=$mode") . '">', '</a>') . '<br /><br />' . sprintf($lang['Click_return_admin_index'], '<a href="' . append_sid("index.php?pane=right") . '">', '</a>');
 		}
 
 		//
@@ -799,7 +768,7 @@ else if ( ( $mode == 'user' && ( isset($HTTP_POST_VARS['username']) || $user_id 
 			//sf
 			'FORUM_NAME' => (($forum_access[$i]['forum_parent']) ? SF_SEL_SPACER : '') . $forum_access[$i]['forum_name'],
 
-			'U_FORUM_AUTH' => append_sid("admin_forumauth.$phpEx?f=" . $forum_access[$i]['forum_id']),
+			'U_FORUM_AUTH' => append_sid("admin_forumauth.php?f=" . $forum_access[$i]['forum_id']),
 
 			'S_MOD_SELECT' => $optionlist_mod)
 		);
@@ -854,11 +823,11 @@ else if ( ( $mode == 'user' && ( isset($HTTP_POST_VARS['username']) || $user_id 
 
 			if (!$ug_info[$i]['user_pending'])
 			{
-			$t_usergroup_list .= ( ( $t_usergroup_list != '' ) ? ', ' : '' ) . '<a href="' . append_sid("admin_ug_auth.$phpEx?mode=$ug=" . @$id[$i]) . '">' . @$name[$i] . '</a>';
+			$t_usergroup_list .= ( ( $t_usergroup_list != '' ) ? ', ' : '' ) . '<a href="' . append_sid("admin_ug_auth.php?mode=$ug=" . @$id[$i]) . '">' . @$name[$i] . '</a>';
 			}
 			else
 			{
-				$t_pending_list .= ( ( $t_pending_list != '' ) ? ', ' : '' ) . '<a href="' . append_sid("admin_ug_auth.$phpEx?mode=$ug=" . $id[$i]) . '">' . $name[$i] . '</a>';
+				$t_pending_list .= ( ( $t_pending_list != '' ) ? ', ' : '' ) . '<a href="' . append_sid("admin_ug_auth.php?mode=$ug=" . $id[$i]) . '">' . $name[$i] . '</a>';
 			}
 		}
 	}
@@ -891,7 +860,7 @@ else if ( ( $mode == 'user' && ( isset($HTTP_POST_VARS['username']) || $user_id 
 	//
 	// Dump in the page header ...
 	//
-	include('./page_header_admin.'.$phpEx);
+	require('./page_header_admin.php');
 
 	$template->set_filenames(array(
 		"body" => 'admin/auth_ug_body.tpl')
@@ -899,7 +868,7 @@ else if ( ( $mode == 'user' && ( isset($HTTP_POST_VARS['username']) || $user_id 
 
 	$adv_switch = ( empty($adv) ) ? 1 : 0;
 	$u_ug_switch = ( $mode == 'user' ) ? POST_USERS_URL . "=" . $user_id : POST_GROUPS_URL . "=" . $group_id;
-	$switch_mode = append_sid("admin_ug_auth.$phpEx?mode=$mode&amp;" . $u_ug_switch . "&amp;adv=$adv_switch");
+	$switch_mode = append_sid("admin_ug_auth.php?mode=$mode&amp;" . $u_ug_switch . "&amp;adv=$adv_switch");
 	$switch_mode_text = ( empty($adv) ) ? $lang['Advanced_mode'] : $lang['Simple_mode'];
 	$u_switch_mode = '<a href="' . $switch_mode . '">' . $switch_mode_text . '</a>';
 
@@ -937,11 +906,11 @@ else if ( ( $mode == 'user' && ( isset($HTTP_POST_VARS['username']) || $user_id 
 		'L_RESET' => $lang['Reset'],
 		'L_FORUM' => $lang['Forum'],
 
-		'U_USER_OR_GROUP' => append_sid("admin_ug_auth.$phpEx"),
+		'U_USER_OR_GROUP' => append_sid("admin_ug_auth.php"),
 		'U_SWITCH_MODE' => $u_switch_mode,
 
 		'S_COLUMN_SPAN' => $s_column_span,
-		'S_AUTH_ACTION' => append_sid("admin_ug_auth.$phpEx"),
+		'S_AUTH_ACTION' => append_sid("admin_ug_auth.php"),
 		'S_HIDDEN_FIELDS' => $s_hidden_fields)
 	);
 }
@@ -950,7 +919,7 @@ else
 	//
 	// Select a user/group
 	//
-	include('./page_header_admin.'.$phpEx);
+	require('./page_header_admin.php');
 
 	$template->set_filenames(array(
 		'body' => ( $mode == 'user' ) ? 'admin/user_select_body.tpl' : 'admin/auth_select_body.tpl')
@@ -961,7 +930,7 @@ else
 		$template->assign_vars(array(
 			'L_FIND_USERNAME' => $lang['Find_username'],
 
-			'U_SEARCH_USER' => append_sid("../search.$phpEx?mode=searchuser"))
+			'U_SEARCH_USER' => append_sid("../search.php?mode=searchuser"))
 		);
 	}
 	else
@@ -1001,13 +970,11 @@ else
 		'L_LOOK_UP' => ( $mode == 'user' ) ? $lang['Look_up_User'] : $lang['Look_up_Group'],
 
 		'S_HIDDEN_FIELDS' => $s_hidden_fields,
-		'S_' . $l_type . '_ACTION' => append_sid("admin_ug_auth.$phpEx"))
+		'S_' . $l_type . '_ACTION' => append_sid("admin_ug_auth.php"))
 	);
 
 }
 
 $template->pparse('body');
 
-include('./page_footer_admin.'.$phpEx);
-
-?>
+require('./page_footer_admin.php');

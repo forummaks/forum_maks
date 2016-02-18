@@ -252,10 +252,10 @@ if (!$thumbnail)
 //
 if ($download_mode == PHYSICAL_LINK)
 {
-	$server_protocol = ($board_config['cookie_secure']) ? 'https://' : 'http://';
-	$server_name = preg_replace('/^\/?(.*?)\/?$/', '\1', trim($board_config['server_name']));
-	$server_port = ($board_config['server_port'] <> 80) ? ':' . trim($board_config['server_port']) : '';
-	$script_name = preg_replace('/^\/?(.*?)\/?$/', '/\1', trim($board_config['script_path']));
+	$server_protocol = ($ft_cfg['cookie_secure']) ? 'https://' : 'http://';
+	$server_name = preg_replace('/^\/?(.*?)\/?$/', '\1', trim($ft_cfg['server_name']));
+	$server_port = ($ft_cfg['server_port'] <> 80) ? ':' . trim($ft_cfg['server_port']) : '';
+	$script_name = preg_replace('/^\/?(.*?)\/?$/', '/\1', trim($ft_cfg['script_path']));
 
 	if ($script_name[strlen($script_name)] != '/')
 	{

@@ -10,13 +10,13 @@ $dl_users_overflow_div_height = '120px';
 $dl_users_div_style_normal    = 'padding: 0px;';
 $dl_users_div_style_overflow  = "padding: 6px; height: $dl_users_overflow_div_height; overflow: auto; border: 1px inset;";
 
-$count_mode = ($board_config['bt_dl_list_only_count'] && !(isset($_GET['dl']) && $_GET['dl'] == 'names')) ? TRUE : FALSE;
+$count_mode = ($ft_cfg['bt_dl_list_only_count'] && !(isset($_GET['dl']) && $_GET['dl'] == 'names')) ? TRUE : FALSE;
 $peers_full_mode = (@$_GET['spmode'] == 'full') ? TRUE : FALSE;
 
 $template->assign_vars(array('DL_BUTTONS' => FALSE));
 
-$show_dl_list = ($forum_topic_data['topic_dl_type'] == TOPIC_DL_TYPE_DL && $board_config['bt_show_dl_list']) ? TRUE : FALSE;
-if ($show_dl_list && ($board_config['bt_dl_list_only_1st_page'] && $start))
+$show_dl_list = ($forum_topic_data['topic_dl_type'] == TOPIC_DL_TYPE_DL && $ft_cfg['bt_show_dl_list']) ? TRUE : FALSE;
+if ($show_dl_list && ($ft_cfg['bt_dl_list_only_1st_page'] && $start))
 {
 	$show_dl_list = FALSE;
 }
@@ -47,9 +47,9 @@ if ($show_dl_list)
 		$dl_count[$i] = 0;
 	}
 
-	$dl_count_only = ($count_mode && (!$board_config['bt_dl_list_expire'] || $peers_full_mode)) ? TRUE : FALSE;
+	$dl_count_only = ($count_mode && (!$ft_cfg['bt_dl_list_expire'] || $peers_full_mode)) ? TRUE : FALSE;
 	$expired_users  = array();
-	$dl_expire_time = time() - ($board_config['bt_dl_list_expire'] * 60*60*24);
+	$dl_expire_time = time() - ($ft_cfg['bt_dl_list_expire'] * 60*60*24);
 
 	if ($dl_count_only)
 	{
@@ -90,7 +90,7 @@ if ($show_dl_list)
 		{
 			$exp_time = '';
 
-			if (!$dl_count_only && $board_config['bt_dl_list_expire'] && ($user['user_status'] == DL_STATUS_WILL || $user['user_status'] == DL_STATUS_DOWN))
+			if (!$dl_count_only && $ft_cfg['bt_dl_list_expire'] && ($user['user_status'] == DL_STATUS_WILL || $user['user_status'] == DL_STATUS_DOWN))
 			{
 				if ($user['update_time'] < $dl_expire_time)
 				{
@@ -98,7 +98,7 @@ if ($show_dl_list)
 					continue;
 				}
 
-				$exp_time = create_date($title_date_format, ($user['update_time'] + ($board_config['bt_dl_list_expire'] * 60*60*24)), $board_config['board_timezone']);
+				$exp_time = create_date($title_date_format, ($user['update_time'] + ($ft_cfg['bt_dl_list_expire'] * 60*60*24)), $ft_cfg['board_timezone']);
 			}
 
 			$upd_time = $upd_time_title = $u_prof_href = '';
@@ -111,7 +111,7 @@ if ($show_dl_list)
 			}
 			else
 			{
-				$upd_time = create_date($title_date_format, $user['update_time'], $board_config['board_timezone']);
+				$upd_time = create_date($title_date_format, $user['update_time'], $ft_cfg['board_timezone']);
 				$upd_time_title = ($exp_time) ? " upd: $upd_time \n exp: $exp_time " : " $upd_time ";
 				$u_prof_href = ($user['user_id'] == ANONYMOUS) ? '#' : append_sid("profile.php?mode=viewprofile&amp;u=". $user['user_id']) .'#torrent';
 				$dl_cat[$user['user_status']] .= '<nobr><a class="'. $u_link_class .'" href="'. $u_prof_href .'" title="'. $upd_time_title .'">'. $user['username'] .'</a></nobr>, ';
@@ -137,7 +137,7 @@ if ($show_dl_list)
 
 		foreach ($dl_status_val as $i => $desc)
 		{
-			if ($dl_cat[$i] && $count_mode && !$board_config['bt_dl_list_expire'])
+			if ($dl_cat[$i] && $count_mode && !$ft_cfg['bt_dl_list_expire'])
 			{
 				if ($i == DL_STATUS_CANCEL && !$show_canceled_in_count_mode && !$peers_full_mode)
 				{
@@ -176,14 +176,14 @@ if ($show_dl_list)
 		$template->assign_block_vars('dl_list_none', array());
 	}
 
-	if ($board_config['bt_show_dl_list_buttons'] && $forum_topic_data['show_dl_buttons'] /* && $userdata['session_logged_in'] */)
+	if ($ft_cfg['bt_show_dl_list_buttons'] && $forum_topic_data['show_dl_buttons'] /* && $userdata['session_logged_in'] */)
 	{
 		$template->assign_vars(array(
 			'DL_BUTTONS'    => TRUE,
-			'DL_BUT_WILL'   => ($board_config['bt_show_dl_but_will']) ? TRUE : FALSE,
-			'DL_BUT_DOWN'   => ($board_config['bt_show_dl_but_down']) ? TRUE : FALSE,
-			'DL_BUT_COMPL'  => ($board_config['bt_show_dl_but_compl']) ? TRUE : FALSE,
-			'DL_BUT_CANCEL' => ($board_config['bt_show_dl_but_cancel']) ? TRUE : FALSE
+			'DL_BUT_WILL'   => ($ft_cfg['bt_show_dl_but_will']) ? TRUE : FALSE,
+			'DL_BUT_DOWN'   => ($ft_cfg['bt_show_dl_but_down']) ? TRUE : FALSE,
+			'DL_BUT_COMPL'  => ($ft_cfg['bt_show_dl_but_compl']) ? TRUE : FALSE,
+			'DL_BUT_CANCEL' => ($ft_cfg['bt_show_dl_but_cancel']) ? TRUE : FALSE
 		));
 	}
 

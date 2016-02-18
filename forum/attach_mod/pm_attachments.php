@@ -140,7 +140,7 @@ class attach_pm extends attach_parent
 	// 
 	function display_attach_box_limits()
 	{
-		global $folder, $attach_config, $board_config, $template, $lang, $userdata, $db;
+		global $folder, $attach_config, $ft_cfg, $template, $lang, $userdata, $db;
 
 		if (!$attach_config['allow_pm_attach'] && $userdata['user_level'] != ADMIN)
 		{
@@ -154,10 +154,10 @@ class attach_pm extends attach_parent
 		$pm_filesize_total = get_total_attach_pm_filesize('to_user', $userdata['user_id']);
 
 		$attach_limit_pct = ( $pm_filesize_limit > 0 ) ? round(( $pm_filesize_total / $pm_filesize_limit ) * 100) : 0;
-		$attach_limit_img_length = ( $pm_filesize_limit > 0 ) ? round(( $pm_filesize_total / $pm_filesize_limit ) * $board_config['privmsg_graphic_length']) : 0;
+		$attach_limit_img_length = ( $pm_filesize_limit > 0 ) ? round(( $pm_filesize_total / $pm_filesize_limit ) * $ft_cfg['privmsg_graphic_length']) : 0;
 		if ($attach_limit_pct > 100)
 		{
-			$attach_limit_img_length = $board_config['privmsg_graphic_length'];
+			$attach_limit_img_length = $ft_cfg['privmsg_graphic_length'];
 		}
 		$attach_limit_remain = ( $pm_filesize_limit > 0 ) ? $pm_filesize_limit - $pm_filesize_total : 100;
 

@@ -1,41 +1,11 @@
 <?php
-/***************************************************************************
-*                             admin_mass_email.php
-*                              -------------------
-*     begin                : Thu May 31, 2001
-*     copyright            : (C) 2001 The phpBB Group
-*     email                : support@phpbb.com
-*
-*     $Id: admin_mass_email.php,v 1.15.2.7 2003/05/03 23:24:01 acydburn Exp $
-*
-****************************************************************************/
-
-/***************************************************************************
- *
- *   This program is free software; you can redistribute it and/or modify
- *   it under the terms of the GNU General Public License as published by
- *   the Free Software Foundation; either version 2 of the License, or
- *   (at your option) any later version.
- *
- ***************************************************************************/
-
-@define('IN_PHPBB', 1);
-
 if( !empty($setmodules) )
 {
-	$filename = basename(__FILE__);
-	$module['General']['Mass_Email'] = $filename;
-
+	$module['General']['Mass_Email'] = basename(__FILE__);
 	return;
 }
-
-//
-// Load default header
-//
-$no_page_header = TRUE;
-$phpbb_root_path = './../';
-require($phpbb_root_path . 'extension.inc');
-require('./pagestart.' . $phpEx);
+//$no_page_header = true;
+require('./pagestart.php');
 
 //
 // Increase maximum execution time in case of a lot of users, but don't complain about it if it isn't
@@ -98,51 +68,51 @@ if ( isset($HTTP_POST_VARS['submit']) )
 
 	if ( !$error )
 	{
-		include($phpbb_root_path . 'includes/emailer.'.$phpEx);
+		require(FT_ROOT . 'includes/emailer.php');
 
 		//
 		// Let's do some checking to make sure that mass mail functions
 		// are working in win32 versions of php.
 		//
-		if ( preg_match('/[c-z]:\\\.*/i', getenv('PATH')) && !$board_config['smtp_delivery'])
+		if ( preg_match('/[c-z]:\\\.*/i', getenv('PATH')) && !$ft_cfg['smtp_delivery'])
 		{
 			$ini_val = ( @phpversion() >= '4.0.0' ) ? 'ini_get' : 'get_cfg_var';
 
 			// We are running on windows, force delivery to use our smtp functions
 			// since php's are broken by default
-			$board_config['smtp_delivery'] = 1;
-			$board_config['smtp_host'] = @$ini_val('SMTP');
+			$ft_cfg['smtp_delivery'] = 1;
+			$ft_cfg['smtp_host'] = @$ini_val('SMTP');
 		}
 
-		$emailer = new emailer($board_config['smtp_delivery']);
+		$emailer = new emailer($ft_cfg['smtp_delivery']);
 
-		$emailer->from($board_config['board_email']);
-		$emailer->replyto($board_config['board_email']);
+		$emailer->from($ft_cfg['board_email']);
+		$emailer->replyto($ft_cfg['board_email']);
 
 		for ($i = 0; $i < count($bcc_list); $i++)
 		{
 			$emailer->bcc($bcc_list[$i]);
 		}
 
-		$email_headers = 'X-AntiAbuse: Board servername - ' . $board_config['server_name'] . "\n";
+		$email_headers = 'X-AntiAbuse: Board servername - ' . $ft_cfg['server_name'] . "\n";
 		$email_headers .= 'X-AntiAbuse: User_id - ' . $userdata['user_id'] . "\n";
 		$email_headers .= 'X-AntiAbuse: Username - ' . $userdata['username'] . "\n";
 		$email_headers .= 'X-AntiAbuse: User IP - ' . decode_ip($user_ip) . "\n";
 
 		$emailer->use_template('admin_send_email');
-		$emailer->email_address($board_config['board_email']);
+		$emailer->email_address($ft_cfg['board_email']);
 		$emailer->set_subject($subject);
 		$emailer->extra_headers($email_headers);
 
 		$emailer->assign_vars(array(
-			'SITENAME' => $board_config['sitename'],
-			'BOARD_EMAIL' => $board_config['board_email'],
+			'SITENAME' => $ft_cfg['sitename'],
+			'BOARD_EMAIL' => $ft_cfg['board_email'],
 			'MESSAGE' => $message)
 		);
 		$emailer->send();
 		$emailer->reset();
 
-		message_die(GENERAL_MESSAGE, $lang['Email_sent'] . '<br /><br />' . sprintf($lang['Click_return_admin_index'],  '<a href="' . append_sid("index.$phpEx?pane=right") . '">', '</a>'));
+		message_die(GENERAL_MESSAGE, $lang['Email_sent'] . '<br /><br />' . sprintf($lang['Click_return_admin_index'],  '<a href="' . append_sid("index.php?pane=right") . '">', '</a>'));
 	}
 }
 
@@ -183,7 +153,7 @@ $select_list .= '</select>';
 //
 // Generate page
 //
-include('./page_header_admin.'.$phpEx);
+require('./page_header_admin.php');
 
 $template->set_filenames(array(
 	'body' => 'admin/user_email_body.tpl')
@@ -202,12 +172,10 @@ $template->assign_vars(array(
 	'L_EMAIL' => $lang['Email'],
 	'L_NOTICE' => $notice,
 
-	'S_USER_ACTION' => append_sid('admin_mass_email.'.$phpEx),
+	'S_USER_ACTION' => append_sid('admin_mass_email.php'),
 	'S_GROUP_SELECT' => $select_list)
 );
 
 $template->pparse('body');
 
-include('./page_footer_admin.'.$phpEx);
-
-?>
+require('./page_footer_admin.php');

@@ -60,7 +60,7 @@ function torrent_auth_check ($forum_id, $poster_id)
 
 function tracker_unregister ($attach_id, $mode = '')
 {
-	global $db, $lang, $board_config;
+	global $db, $lang, $ft_cfg;
 
 	$attach_id = intval($attach_id);
 	$torrent = array();
@@ -90,7 +90,7 @@ function tracker_unregister ($attach_id, $mode = '')
 	}
 
 	// Unset DL-Type for topic
-	if ($board_config['bt_unset_dltype_on_tor_unreg'])
+	if ($ft_cfg['bt_unset_dltype_on_tor_unreg'])
 	{
 		if (!$topic_id)
 		{
@@ -186,7 +186,7 @@ function delete_torrent ($attach_id, $mode = '')
 
 function tracker_register ($attach_id, $mode = '')
 {
-	global $db, $template, $attach_config, $board_config, $lang, $return_message;
+	global $db, $template, $attach_config, $ft_cfg, $lang, $return_message;
 	global $reg_mode;
 
 	$template->assign_vars(array('META' => ''));
@@ -252,12 +252,12 @@ function tracker_register ($attach_id, $mode = '')
 		torrent_error_exit('This is not a bencoded file');
 	}
 
-	if ($board_config['bt_check_announce_url'])
+	if ($ft_cfg['bt_check_announce_url'])
 	{
 		require_once(FT_ROOT .'includes/torrent_announce_urls.php');
 
 		$ann = (@$tor['announce']) ? $tor['announce'] : '';
-		$announce_urls['main_url'] = $board_config['bt_announce_url'];
+		$announce_urls['main_url'] = $ft_cfg['bt_announce_url'];
 
 		if (!$ann || !in_array($ann, $announce_urls))
 		{
@@ -345,7 +345,7 @@ function tracker_register ($attach_id, $mode = '')
 	}
 
 	// set DL-Type for topic
-	if ($board_config['bt_set_dltype_on_tor_reg'])
+	if ($ft_cfg['bt_set_dltype_on_tor_reg'])
 	{
 		$sql = 'UPDATE '. TOPICS_TABLE .' SET
 				topic_dl_type = '. TOPIC_DL_TYPE_DL ."
@@ -369,9 +369,9 @@ function tracker_register ($attach_id, $mode = '')
 
 function send_torrent_with_passkey ($filename)
 {
-	global $attachment, $auth_pages, $db, $userdata, $board_config, $lang;
+	global $attachment, $auth_pages, $db, $userdata, $ft_cfg, $lang;
 
-	if (!$board_config['bt_add_auth_key'] || $attachment['extension'] !== TORRENT_EXT || !$size = @filesize($filename))
+	if (!$ft_cfg['bt_add_auth_key'] || $attachment['extension'] !== TORRENT_EXT || !$size = @filesize($filename))
 	{
 		return;
 	}
@@ -412,7 +412,7 @@ function send_torrent_with_passkey ($filename)
 	}
 
 	// Redirect guests to login page
-	if (!$userdata['session_logged_in'] && (!$tr_cfg['allow_guest_dl'] || $board_config['bt_force_passkey']))
+	if (!$userdata['session_logged_in'] && (!$tr_cfg['allow_guest_dl'] || $ft_cfg['bt_force_passkey']))
 	{
 		if ($post_id)
 		{
@@ -452,7 +452,7 @@ function send_torrent_with_passkey ($filename)
 
 	if (!$auth_key && $userdata['session_logged_in'])
 	{
-		if ($board_config['bt_gen_passkey_on_reg'])
+		if ($ft_cfg['bt_gen_passkey_on_reg'])
 		{
 			$auth_key = generate_passkey($user_id, TRUE);
 
@@ -468,7 +468,7 @@ function send_torrent_with_passkey ($filename)
 		}
 	}
 
-	$ann_url = $board_config['bt_announce_url'];
+	$ann_url = $ft_cfg['bt_announce_url'];
 
 	if (!$tor = bdecode_file($filename))
 	{
@@ -478,19 +478,19 @@ function send_torrent_with_passkey ($filename)
 	$passkey = (!$userdata['session_logged_in'] || isset($_GET['no_passkey'])) ? '' : "?$auth_key_name=$auth_key&";
 
 	// replace original announce url with tracker default
-	if ($board_config['bt_replace_ann_url'] || !@$tor['announce'])
+	if ($ft_cfg['bt_replace_ann_url'] || !@$tor['announce'])
 	{
 		$tor['announce'] = strval($ann_url . $passkey);
 	}
 
 	// delete all additional urls
-	if ($board_config['bt_del_addit_ann_urls'])
+	if ($ft_cfg['bt_del_addit_ann_urls'])
 	{
   	unset($tor['announce-list']);
 	}
 
 	// add publisher & topic url
-	$publisher = $board_config['bt_add_publisher'];
+	$publisher = $ft_cfg['bt_add_publisher'];
 	$publisher_url = ($post_id) ? make_url("viewtopic.php?". POST_POST_URL ."=$post_id") : '';
 
 	if ($publisher)
@@ -510,9 +510,9 @@ function send_torrent_with_passkey ($filename)
 
 	$orig_com = (@$tor['comment']) ? $tor['comment'] : '';
 
-	if ($board_config['bt_add_comment'])
+	if ($ft_cfg['bt_add_comment'])
 	{
-		$comment = $board_config['bt_add_comment'];
+		$comment = $ft_cfg['bt_add_comment'];
 	}
 	else
 	{
@@ -526,9 +526,9 @@ function send_torrent_with_passkey ($filename)
 	}
 
 	// DHT
-	$board_config['bt_disable_dht'] = 1;
+	$ft_cfg['bt_disable_dht'] = 1;
 
-	if ($board_config['bt_disable_dht'])
+	if ($ft_cfg['bt_disable_dht'])
 	{
 		$tor['private'] = intval(1);
 		unset($tor['nodes']);
@@ -699,17 +699,6 @@ function torrent_error_exit ($message)
 
 	$msg .= $message;
 	message_die($err_code, $msg);
-}
-
-// based on function from PHPBuddy.com
-function make_rand_str ($len = 10)
-{
-	$rnd = crypt(uniqid(rand(), 1));
-	$rnd = strip_tags(stripslashes($rnd));
-	$rnd = str_replace('.', '', $rnd);
-	$rnd = strrev(str_replace('/', '', $rnd));
-	$rnd = substr($rnd, 0, $len);
-	return $rnd;
 }
 
 // bdecode/bencode (based on functions from OpenTracker - http://whitsoftdev.com/opentracker/)

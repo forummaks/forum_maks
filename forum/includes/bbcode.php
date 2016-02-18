@@ -816,7 +816,7 @@ function smilies_pass($message)
 
 	if (!isset($orig))
 	{
-		global $db, $board_config;
+		global $db, $ft_cfg;
 		$orig = $repl = array();
 
 		$sql = 'SELECT * FROM ' . SMILIES_TABLE;
@@ -834,7 +834,7 @@ function smilies_pass($message)
 		for ($i = 0; $i < count($smilies); $i++)
 		{
 			$orig[] = "/(?<=.\W|\W.|^\W)" . phpbb_preg_quote($smilies[$i]['code'], "/") . "(?=.\W|\W.|\W$)/";
-			$repl[] = '<img src="'. $board_config['smilies_path'] . '/' . $smilies[$i]['smile_url'] . '" alt="' . $smilies[$i]['emoticon'] . '" border="0" />';
+			$repl[] = '<img src="'. $ft_cfg['smilies_path'] . '/' . $smilies[$i]['smile_url'] . '" alt="' . $smilies[$i]['emoticon'] . '" border="0" />';
 		}
 	}
 

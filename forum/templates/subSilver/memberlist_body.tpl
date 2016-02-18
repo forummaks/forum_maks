@@ -24,7 +24,7 @@
 	  <td class="{memberrow.ROW_CLASS}" align="center">&nbsp;{memberrow.PM_IMG}&nbsp;</td>
 	  <td class="{memberrow.ROW_CLASS}" align="center"><span class="gen"><a href="{memberrow.U_VIEWPROFILE}" class="gen">{memberrow.USERNAME}</a></span></td>
 	  <td class="{memberrow.ROW_CLASS}" align="center" valign="middle">&nbsp;{memberrow.EMAIL_IMG}&nbsp;</td>
-	  <td class="{memberrow.ROW_CLASS}" align="center" valign="middle"><span class="gen"><table class="gen"><tr><td align=center width="100%">{memberrow.FROM}</td><td align=right>{memberrow.FLAG}</td></tr></table></span></td>
+	  <td class="{memberrow.ROW_CLASS}" align="center" valign="middle"><span class="gen"><table class="gen"><tr><td align=center width="100%">{memberrow.FROM}</td></tr></table></span></td>
 	  <td class="{memberrow.ROW_CLASS}" align="center" valign="middle"><span class="gensmall">{memberrow.JOINED}</span></td>
 	  <td class="{memberrow.ROW_CLASS}" align="center" valign="middle"><span class="gen">{memberrow.POSTS}</span></td>
 	  <td class="{memberrow.ROW_CLASS}" align="center">&nbsp;{memberrow.WWW_IMG}&nbsp;</td>

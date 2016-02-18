@@ -1,14 +1,3 @@
-<script src="templates/subSilver/kb.js" language="javascript"></script>
-<style type="text/css">
-<!--
-/*  Mail.ru Keyboard buttons styles */
-.b30 { width: 22px; background-color : {T_TD_COLOR1}; }
-.b80 { width: 60px; background-color : {T_TD_COLOR1}; }
-.b100 { width: 80px; background-color : {T_TD_COLOR1}; }
-.b300 { width: 170px; background-color : {T_TD_COLOR1}; }
-span.a { color:{T_BODY_LINK};cursor:pointer;text-decoration:underline }
--->
-</style>
 <!-- BEGIN privmsg_extensions -->
 <table border="0" cellspacing="0" cellpadding="0" align="center" width="100%">
   <tr>
@@ -175,7 +164,6 @@ span.a { color:{T_BODY_LINK};cursor:pointer;text-decoration:underline }
 						<input class="button" type="button" value="&#8212;" name="codeHR" title="Horizontal line (Ctrl+8)" style="font-weight: bold; width: 26px" />
 						<input class="button" type="button" value="&para;" name="codeBR" title="New line" style="width: 26px;" />&nbsp;
 						<input class="button" type="button" value="QS" name="quoteselected" title="{L_QUOTE_SEL}" style="width: 30px" onmouseout="bbcode && bbcode.refreshSelection(false)" onmouseover="bbcode && bbcode.refreshSelection(true)" onclick="bbcode && bbcode.onclickQuoteSel(); return false" />&nbsp;
-						<input class="button" type="button" value="Translit" name="Translit" title="Перевести выделение из транслита на русский" style="width: 60px" onclick="javascript:translit();" />
 					</span>
 					</td>
 				</tr>
@@ -188,7 +176,6 @@ span.a { color:{T_BODY_LINK};cursor:pointer;text-decoration:underline }
 			</table>
 </td>
 	</tr>
-	<!-- INCLUDE kb.tpl -->
 	<tr>
 	  <td class="row1" valign="top"><span class="gen"><b>{L_OPTIONS}</b></span><br /><span class="gensmall">{HTML_STATUS}<br />{BBCODE_STATUS}<br />{SMILIES_STATUS}</span></td>
 		<td class="row2" width="100%">
@@ -263,7 +250,6 @@ span.a { color:{T_BODY_LINK};cursor:pointer;text-decoration:underline }
 </form>
 
 <script language=JavaScript>
-<!--
 var bbcode = new BBCode(document.post.message);
 var ctrl = "ctrl";
 
@@ -291,8 +277,6 @@ bbcode.addTag("fontFace", function(e) { var v=e.value; e.selectedIndex=0; return
 bbcode.addTag("codeColor", function(e) { var v=e.value; e.selectedIndex=0; return "color="+v }, "/color");
 bbcode.addTag("codeSize", function(e) { var v=e.value; e.selectedIndex=0; return "size="+v }, "/size");
 bbcode.addTag("codeAlign", function(e) { var v=e.value; e.selectedIndex=0; return "align="+v }, "/align");
-//bbcode.addTag("codeLang", function(e) { var v=e.value; e.selectedIndex=0; return "lang=\""+v+"\"" }, "/lang");
-//-->
 </script>
 
 <table width="100%" cellspacing="2" border="0" align="center">

@@ -336,8 +336,8 @@ else if ( $search_keywords != '' || $search_author != '' || $search_id )
 		}
 		else if ( $search_keywords != '' )
 		{
-			$stopword_array = @file(FT_ROOT . 'language/lang_' . $board_config['default_lang'] . '/search_stopwords.txt');
-			$synonym_array = @file(FT_ROOT . 'language/lang_' . $board_config['default_lang'] . '/search_synonyms.txt');
+			$stopword_array = @file(FT_ROOT . 'language/lang_' . $ft_cfg['default_lang'] . '/search_stopwords.txt');
+			$synonym_array = @file(FT_ROOT . 'language/lang_' . $ft_cfg['default_lang'] . '/search_synonyms.txt');
 
 			$split_search = array();
 			$split_search = ( !strstr($multibyte_charset, $lang['ENCODING']) ) ?  split_words(clean_words('search', stripslashes($search_keywords), $stopword_array, $synonym_array), 'search') : split(' ', $search_keywords);
@@ -707,7 +707,7 @@ else if ( $search_keywords != '' || $search_author != '' || $search_id )
 			if ($total_match_count <= $start) // No results for the selected page
 			{
 				$start = $total_match_count - 1;
-				$start = intval($start / $board_config['topics_per_page']) * $board_config['topics_per_page'];
+				$start = intval($start / $ft_cfg['topics_per_page']) * $ft_cfg['topics_per_page'];
 			}
 
 			$sort_by = 2;
@@ -789,7 +789,7 @@ else if ( $search_keywords != '' || $search_author != '' || $search_id )
 		// Store new result data
 		//
 		$search_results = implode(', ', $search_ids);
-		$per_page = ( $show_results == 'posts' ) ? $board_config['posts_per_page'] : $board_config['topics_per_page'];
+		$per_page = ( $show_results == 'posts' ) ? $ft_cfg['posts_per_page'] : $ft_cfg['topics_per_page'];
 
 		//
 		// Combine both results and search data (apart from original query)
@@ -887,7 +887,7 @@ else if ( $search_keywords != '' || $search_author != '' || $search_id )
 					AND u2.user_id = p2.poster_id";
 		}
 
-		$per_page = ( $show_results == 'posts' ) ? $board_config['posts_per_page'] : $board_config['topics_per_page'];
+		$per_page = ( $show_results == 'posts' ) ? $ft_cfg['posts_per_page'] : $ft_cfg['topics_per_page'];
 
 		$sql .= " ORDER BY ";
 		switch ( $sort_by )
@@ -956,7 +956,7 @@ else if ( $search_keywords != '' || $search_author != '' || $search_id )
 					'S_DL_TOPICS_ACTION' => append_sid("dl_list.php")
 				));
 
-				if ($dl_uid == $userdata['user_id'] && $board_config['bt_show_dl_list_buttons'])
+				if ($dl_uid == $userdata['user_id'] && $ft_cfg['bt_show_dl_list_buttons'])
 				{
 					$template->assign_block_vars('dl_status_controls', array());
 				}
@@ -1012,8 +1012,8 @@ else if ( $search_keywords != '' || $search_author != '' || $search_id )
 
 		$highlight_active = urlencode(trim($highlight_active));
 
-		$tracking_topics = ( isset($HTTP_COOKIE_VARS[$board_config['cookie_name'] . '_t']) ) ? unserialize($HTTP_COOKIE_VARS[$board_config['cookie_name'] . '_t']) : array();
-		$tracking_forums = ( isset($HTTP_COOKIE_VARS[$board_config['cookie_name'] . '_f']) ) ? unserialize($HTTP_COOKIE_VARS[$board_config['cookie_name'] . '_f']) : array();
+		$tracking_topics = ( isset($HTTP_COOKIE_VARS[$ft_cfg['cookie_name'] . '_t']) ) ? unserialize($HTTP_COOKIE_VARS[$ft_cfg['cookie_name'] . '_t']) : array();
+		$tracking_forums = ( isset($HTTP_COOKIE_VARS[$ft_cfg['cookie_name'] . '_f']) ) ? unserialize($HTTP_COOKIE_VARS[$ft_cfg['cookie_name'] . '_f']) : array();
 
 		for($i = 0; $i < count($searchset); $i++)
 		{
@@ -1021,7 +1021,7 @@ else if ( $search_keywords != '' || $search_author != '' || $search_id )
 			$topic_url = append_sid("viewtopic.php?" . POST_TOPIC_URL . '=' . $searchset[$i]['topic_id'] /* . "&amp;highlight=$highlight_active" */);
 			$post_url = (isset($searchset[$i]['post_id'])) ? append_sid("viewtopic.php?" . POST_POST_URL . '=' . $searchset[$i]['post_id'] /* . "&amp;highlight=$highlight_active" */) . '#' . $searchset[$i]['post_id'] : '';
 
-			$post_date = create_date($board_config['default_dateformat'], $searchset[$i]['post_time'], $board_config['board_timezone']);
+			$post_date = create_date($ft_cfg['default_dateformat'], $searchset[$i]['post_time'], $ft_cfg['board_timezone']);
 
 			$message = (isset($searchset[$i]['post_text'])) ? $searchset[$i]['post_text'] : '';
 			$topic_title = $searchset[$i]['topic_title'];
@@ -1048,7 +1048,7 @@ else if ( $search_keywords != '' || $search_author != '' || $search_id )
 					}
 					else
 					{
-						if ( !$board_config['allow_html'] )
+						if ( !$ft_cfg['allow_html'] )
 						{
 							if ( $postrow[$i]['enable_html'] )
 							{
@@ -1058,7 +1058,7 @@ else if ( $search_keywords != '' || $search_author != '' || $search_id )
 
 						if ( $bbcode_uid != '' )
 						{
-							$message = ( $board_config['allow_bbcode'] ) ? bbencode_second_pass($message, $bbcode_uid) : preg_replace('/\:[0-9a-z\:]+\]/si', ']', $message);
+							$message = ( $ft_cfg['allow_bbcode'] ) ? bbencode_second_pass($message, $bbcode_uid) : preg_replace('/\:[0-9a-z\:]+\]/si', ']', $message);
 						}
 
 						$message = make_clickable($message);
@@ -1151,7 +1151,7 @@ else if ( $search_keywords != '' || $search_author != '' || $search_id )
 						$post_subject = ( $searchset[$i]['post_subject'] != '' ) ? $searchset[$i]['post_subject'] : $topic_title;
 					}
 
-					if ($board_config['allow_smilies'] && $searchset[$i]['enable_smilies'])
+					if ($ft_cfg['allow_smilies'] && $searchset[$i]['enable_smilies'])
 					{
 						$message = smilies_pass($message);
 					}
@@ -1243,7 +1243,7 @@ else if ( $search_keywords != '' || $search_author != '' || $search_id )
 
 				if ($dl_search)
 				{
-					$disabled = ($dl_uid != $userdata['user_id'] || !$board_config['bt_show_dl_list_buttons']) ? 'disabled="disabled"' : '';
+					$disabled = ($dl_uid != $userdata['user_id'] || !$ft_cfg['bt_show_dl_list_buttons']) ? 'disabled="disabled"' : '';
 					$dl_checkbox = "<input class='text' type=checkbox name='dl_topics_id_list[]' value=$topic_id $disabled/>";
 				}
 				//bt end
@@ -1256,20 +1256,20 @@ else if ( $search_keywords != '' || $search_author != '' || $search_id )
 				$views = $searchset[$i]['topic_views'];
 				$replies = $searchset[$i]['topic_replies'];
 
-				if ( ( $replies + 1 ) > $board_config['posts_per_page'] )
+				if ( ( $replies + 1 ) > $ft_cfg['posts_per_page'] )
 				{
-					$total_pages = ceil( ( $replies + 1 ) / $board_config['posts_per_page'] );
+					$total_pages = ceil( ( $replies + 1 ) / $ft_cfg['posts_per_page'] );
 					$goto_page = ' [ ' . $lang['Goto_page'] . ': ';
 
 					$times = 1;
-					for($j = 0; $j < $replies + 1; $j += $board_config['posts_per_page'])
+					for($j = 0; $j < $replies + 1; $j += $ft_cfg['posts_per_page'])
 					{
 						$goto_page .= '<a href="' . append_sid("viewtopic.php?" . POST_TOPIC_URL . "=" . $topic_id . "&amp;start=$j") . '">' . $times . '</a>';
 						if ( $times == 1 && $total_pages > 4 )
 						{
 							$goto_page .= ' ... ';
 							$times = $total_pages - 3;
-							$j += ( $total_pages - 4 ) * $board_config['posts_per_page'];
+							$j += ( $total_pages - 4 ) * $ft_cfg['posts_per_page'];
 						}
 						else if ( $times < $total_pages )
 						{
@@ -1312,7 +1312,7 @@ else if ( $search_keywords != '' || $search_author != '' || $search_id )
 					//bt
 					else if ( $searchset[$i]['topic_dl_type'] == TOPIC_DL_TYPE_DL )
 					{
-						if($replies >= $board_config['hot_threshold'])
+						if($replies >= $ft_cfg['hot_threshold'])
 						{
 							$folder = $images['folder_dl_hot'];
 							$folder_new = $images['folder_dl_hot_new'];
@@ -1326,7 +1326,7 @@ else if ( $search_keywords != '' || $search_author != '' || $search_id )
 					//bt end
 					else
 					{
-						if ( $replies >= $board_config['hot_threshold'] )
+						if ( $replies >= $ft_cfg['hot_threshold'] )
 						{
 							$folder = $images['folder_hot'];
 							$folder_new = $images['folder_hot_new'];
@@ -1342,7 +1342,7 @@ else if ( $search_keywords != '' || $search_author != '' || $search_id )
 					{
 						if ( $searchset[$i]['post_time'] > $userdata['user_lastvisit'] )
 						{
-							if ( !empty($tracking_topics) || !empty($tracking_forums) || isset($HTTP_COOKIE_VARS[$board_config['cookie_name'] . '_f_all']) )
+							if ( !empty($tracking_topics) || !empty($tracking_forums) || isset($HTTP_COOKIE_VARS[$ft_cfg['cookie_name'] . '_f_all']) )
 							{
 
 								$unread_topics = true;
@@ -1363,9 +1363,9 @@ else if ( $search_keywords != '' || $search_author != '' || $search_id )
 									}
 								}
 
-								if ( isset($HTTP_COOKIE_VARS[$board_config['cookie_name'] . '_f_all']) )
+								if ( isset($HTTP_COOKIE_VARS[$ft_cfg['cookie_name'] . '_f_all']) )
 								{
-									if ( $HTTP_COOKIE_VARS[$board_config['cookie_name'] . '_f_all'] > $searchset[$i]['post_time'] )
+									if ( $HTTP_COOKIE_VARS[$ft_cfg['cookie_name'] . '_f_all'] > $searchset[$i]['post_time'] )
 									{
 										$unread_topics = false;
 									}
@@ -1423,9 +1423,9 @@ else if ( $search_keywords != '' || $search_author != '' || $search_id )
 
 				$topic_author .= ( $searchset[$i]['user_id'] != ANONYMOUS ) ? '</a>' : '';
 
-				$first_post_time = create_date($board_config['default_dateformat'], $searchset[$i]['topic_time'], $board_config['board_timezone']);
+				$first_post_time = create_date($ft_cfg['default_dateformat'], $searchset[$i]['topic_time'], $ft_cfg['board_timezone']);
 
-				$last_post_time = create_date($board_config['default_dateformat'], $searchset[$i]['post_time'], $board_config['board_timezone']);
+				$last_post_time = create_date($ft_cfg['default_dateformat'], $searchset[$i]['post_time'], $ft_cfg['board_timezone']);
 
 				$last_post_author = ( $searchset[$i]['id2'] == ANONYMOUS ) ? ( ($searchset[$i]['post_username2'] != '' ) ? $searchset[$i]['post_username2'] . ' ' : $lang['Guest'] . ' ' ) : '<a href="' . append_sid("profile.$phpEx?mode=viewprofile&amp;" . POST_USERS_URL . '='  . $searchset[$i]['id2']) . '">' . $searchset[$i]['user2'] . '</a>';
 

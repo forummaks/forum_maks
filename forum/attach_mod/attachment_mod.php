@@ -9,12 +9,12 @@ require(FT_ROOT . 'attach_mod/includes/functions_filetypes.php');
 
 function include_attach_lang()
 {
-	global $lang, $board_config, $attach_config;
+	global $lang, $ft_cfg, $attach_config;
 
 	//
 	// require Language
 	//
-	$language = $board_config['default_lang'];
+	$language = $ft_cfg['default_lang'];
 
 	if (!file_exists(FT_ROOT . 'language/lang_' . $language . '/lang_main_attach.php'))
 	{
@@ -37,7 +37,7 @@ function include_attach_lang()
 
 function get_config()
 {
-	global $db, $board_config;
+	global $db, $ft_cfg;
 
 	$attach_config = array();
 
@@ -54,7 +54,7 @@ function get_config()
 		$attach_config[$row['config_name']] = trim($row['config_value']);
 	}
 
-	$attach_config['board_lang'] = trim($board_config['default_lang']);
+	$attach_config['board_lang'] = trim($ft_cfg['default_lang']);
 
 	return $attach_config;
 }

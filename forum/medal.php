@@ -44,7 +44,7 @@ if ( $row = $db->sql_fetchrow($result) )
         {
                 $username = $row['username'];
                 $user_id = $row['user_id'];
-                $joined = create_date($lang['DATE_FORMAT'], $row['user_regdate'], $board_config['board_timezone']);
+                $joined = create_date($lang['DATE_FORMAT'], $row['user_regdate'], $ft_cfg['board_timezone']);
                 $upload = $row['u_up_total'];
                 $bonus = $row['u_bonus_total'];
                 $download = $row['u_down_total'];
@@ -86,7 +86,7 @@ if ( $row = $db->sql_fetchrow($result) )
         {
                 $username = $row['username'];
                 $user_id = $row['user_id'];
-                $joined = create_date($lang['DATE_FORMAT'], $row['user_regdate'], $board_config['board_timezone']);
+                $joined = create_date($lang['DATE_FORMAT'], $row['user_regdate'], $ft_cfg['board_timezone']);
                 $upload = $row['u_up_total'];
                 $bonus = $row['u_bonus_total']; 
                 $download = $row['u_down_total'];
@@ -130,7 +130,7 @@ if ( $row = $db->sql_fetchrow($result) )
         {
                 $username = $row['username'];
                 $user_id = $row['user_id'];
-                $joined = create_date($lang['DATE_FORMAT'], $row['user_regdate'], $board_config['board_timezone']);
+                $joined = create_date($lang['DATE_FORMAT'], $row['user_regdate'], $ft_cfg['board_timezone']);
                 $upload = $row['u_up_total'];
                 $bonus = $row['u_bonus_total'];
                 $download = $row['u_down_total'];
@@ -185,7 +185,7 @@ if ( $row = $db->sql_fetchrow($result) )
                 $complete = $row['complete'];
                 $topic_title = $row['topic_title'];
                 $topic_id = $row['topic_id'];
-                $reg_time = create_date($lang['DATE_FORMAT'], $row['reg_time'], $board_config['board_timezone']);
+                $reg_time = create_date($lang['DATE_FORMAT'], $row['reg_time'], $ft_cfg['board_timezone']);
 
                 $row_color = ( !($i % 2) ) ? $theme['td_color1'] : $theme['td_color2'];
                 $row_class = ( !($i % 2) ) ? $theme['td_class1'] : $theme['td_class2'];

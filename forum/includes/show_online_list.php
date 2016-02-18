@@ -81,10 +81,10 @@ $online_userlist = ( ( isset($forum_id) ) ? $lang['Browsing_forum'] : $lang['Reg
 
 $total_online_users = $logged_visible_online + $logged_hidden_online + $guests_online;
 
-if ( $total_online_users > $board_config['record_online_users'])
+if ( $total_online_users > $ft_cfg['record_online_users'])
 {
-	$board_config['record_online_users'] = $total_online_users;
-	$board_config['record_online_date'] = time();
+	$ft_cfg['record_online_users'] = $total_online_users;
+	$ft_cfg['record_online_date'] = time();
 
 	$sql = "UPDATE " . CONFIG_TABLE . "
 		SET config_value = '$total_online_users'
@@ -95,7 +95,7 @@ if ( $total_online_users > $board_config['record_online_users'])
 	}
 
 	$sql = "UPDATE " . CONFIG_TABLE . "
-		SET config_value = '" . $board_config['record_online_date'] . "'
+		SET config_value = '" . $ft_cfg['record_online_date'] . "'
 		WHERE config_name = 'record_online_date'";
 	if ( !$db->sql_query($sql) )
 	{

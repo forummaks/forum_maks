@@ -32,7 +32,7 @@ if( $mark_read == 'forums' )
 {
 	if( $userdata['session_logged_in'] )
 	{
-		setcookie($board_config['cookie_name'] . '_f_all', time(), 0, $board_config['cookie_path'], $board_config['cookie_domain'], $board_config['cookie_secure']);
+		setcookie($ft_cfg['cookie_name'] . '_f_all', time(), 0, $ft_cfg['cookie_path'], $ft_cfg['cookie_domain'], $ft_cfg['cookie_secure']);
 	}
 
 	//mr ["mark all forums read" fix]
@@ -66,8 +66,8 @@ if( $mark_read == 'forums' )
 		}
 	}
 
-	setcookie($board_config['cookie_name'] .'_t', '', 0, $board_config['cookie_path'], $board_config['cookie_domain'], $board_config['cookie_secure']);
-	setcookie($board_config['cookie_name'] .'_f', '', 0, $board_config['cookie_path'], $board_config['cookie_domain'], $board_config['cookie_secure']);
+	setcookie($ft_cfg['cookie_name'] .'_t', '', 0, $ft_cfg['cookie_path'], $ft_cfg['cookie_domain'], $ft_cfg['cookie_secure']);
+	setcookie($ft_cfg['cookie_name'] .'_f', '', 0, $ft_cfg['cookie_path'], $ft_cfg['cookie_domain'], $ft_cfg['cookie_secure']);
 	//mr end
 
 	$template->assign_vars(array(
@@ -82,8 +82,8 @@ if( $mark_read == 'forums' )
 // End handle marking posts
 //
 
-$tracking_topics = ( isset($HTTP_COOKIE_VARS[$board_config['cookie_name'] . '_t']) ) ? unserialize($HTTP_COOKIE_VARS[$board_config['cookie_name'] . "_t"]) : array();
-$tracking_forums = ( isset($HTTP_COOKIE_VARS[$board_config['cookie_name'] . '_f']) ) ? unserialize($HTTP_COOKIE_VARS[$board_config['cookie_name'] . "_f"]) : array();
+$tracking_topics = ( isset($HTTP_COOKIE_VARS[$ft_cfg['cookie_name'] . '_t']) ) ? unserialize($HTTP_COOKIE_VARS[$ft_cfg['cookie_name'] . "_t"]) : array();
+$tracking_forums = ( isset($HTTP_COOKIE_VARS[$ft_cfg['cookie_name'] . '_f']) ) ? unserialize($HTTP_COOKIE_VARS[$ft_cfg['cookie_name'] . "_f"]) : array();
 
 //
 // If you don't use these stats on your index you may want to consider
@@ -356,9 +356,9 @@ if ($cat_forums)
 							}
 						}
 
-						if (isset($HTTP_COOKIE_VARS[$board_config['cookie_name'] . '_f_all']))
+						if (isset($HTTP_COOKIE_VARS[$ft_cfg['cookie_name'] . '_f_all']))
 						{
-							if ($HTTP_COOKIE_VARS[$board_config['cookie_name'] . '_f_all'] > $forum_last_post_time)
+							if ($HTTP_COOKIE_VARS[$ft_cfg['cookie_name'] . '_f_all'] > $forum_last_post_time)
 							{
 								$unread_topics = false;
 							}
@@ -400,7 +400,7 @@ if ($cat_forums)
 
 			if ($forum_data['forum_last_post_id'])
 			{
-				$last_post_time = create_date($board_config['default_dateformat'], $forum_data['post_time'], $board_config['board_timezone']);
+				$last_post_time = create_date($ft_cfg['default_dateformat'], $forum_data['post_time'], $ft_cfg['board_timezone']);
 
 				$last_post = $last_post_time . '<br />';
 
@@ -457,7 +457,7 @@ if ($cat_forums)
 					'LAST_TOPIC_TIP'      => $forum_data['last_topic_title'],
 					'LAST_TOPIC_TITLE'    => short_str($forum_data['last_topic_title'], LAST_TOPIC_MAX_LEN),
 
-					'LAST_POST_TIME'      => create_date(LAST_POST_DATE_FORMAT, $forum_data['post_time'], $board_config['board_timezone']),
+					'LAST_POST_TIME'      => create_date(LAST_POST_DATE_FORMAT, $forum_data['post_time'], $ft_cfg['board_timezone']),
 					'LAST_POST_HREF'      => append_sid("viewtopic.php?". POST_POST_URL .'='. $forum_data['forum_last_post_id']) .'#'. $forum_data['forum_last_post_id'],
 					'LAST_POST_USER_NAME' => $last_post_uname,
 					'LAST_POST_USER_HREF' => ($forum_data['user_id'] != ANONYMOUS) ? append_sid("profile.php?mode=viewprofile&amp;". POST_USERS_URL .'='. $forum_data['user_id']) : '',
@@ -520,7 +520,7 @@ if ($ft_cfg['show_latest_news'] AND $news_forum_ids = $ft_cfg['latest_news_forum
 while ( $row = $db->sql_fetchrow($result) )
 	{	
 	$template->assign_block_vars('news', array(
-		'NEWS_TIME'       => create_date('d-M', $row['post_time'], $board_config['board_timezone']),
+		'NEWS_TIME'       => create_date('d-M', $row['post_time'], $ft_cfg['board_timezone']),
 		'NEWS_TOPIC_ID'   => $row['topic_id'],
 		'NEWS_TOPIC_NAME' => str_replace("'", "\'", $row['topic_title']),
 		'NEWS_IS_NEW'     => $row['post_time'] > $userdata['user_lastvisit']	

@@ -14,7 +14,7 @@ $unhtml_specialchars_replace = array('>', '<', '"', '&');
 //
 function prepare_message($message, $html_on, $bbcode_on, $smile_on, $bbcode_uid = 0)
 {
-	global $board_config, $html_entities_match, $html_entities_replace;
+	global $ft_cfg, $html_entities_match, $html_entities_replace;
 
 	//
 	// Clean up the message
@@ -26,7 +26,7 @@ function prepare_message($message, $html_on, $bbcode_on, $smile_on, $bbcode_uid 
 
 	if ($html_on)
 	{
-		$allowed_html_tags = split(',', $board_config['allow_html_tags']);
+		$allowed_html_tags = split(',', $ft_cfg['allow_html_tags']);
 
 		$end_html = 0;
 		$start_html = 1;
@@ -103,7 +103,7 @@ function unprepare_message($message)
 //
 function prepare_post(&$mode, &$post_data, &$bbcode_on, &$html_on, &$smilies_on, &$error_msg, &$username, &$bbcode_uid, &$subject, &$message, &$poll_title, &$poll_options, &$poll_length)
 {
-	global $board_config, $userdata, $lang;
+	global $ft_cfg, $userdata, $lang;
 
 	// Check username
 	if (!empty($username))
@@ -176,7 +176,7 @@ function prepare_post(&$mode, &$post_data, &$bbcode_on, &$html_on, &$smilies_on,
 			{
 				$error_msg .= (!empty($error_msg)) ? '<br />' . $lang['To_few_poll_options'] : $lang['To_few_poll_options'];
 			}
-			else if (count($poll_options) > $board_config['max_poll_options'])
+			else if (count($poll_options) > $ft_cfg['max_poll_options'])
 			{
 				$error_msg .= (!empty($error_msg)) ? '<br />' . $lang['To_many_poll_options'] : $lang['To_many_poll_options'];
 			}
@@ -197,7 +197,7 @@ function prepare_post(&$mode, &$post_data, &$bbcode_on, &$html_on, &$smilies_on,
 function submit_post($mode, &$post_data, &$message, &$meta, &$forum_id, &$topic_id, &$post_id, &$poll_id, &$topic_type, &$bbcode_on, &$html_on, &$smilies_on, &$attach_sig, &$bbcode_uid, &$post_username, &$post_subject, &$post_message, &$poll_title, &$poll_options, &$poll_length, $update_post_time)
 //upt end
 {
-	global $board_config, $lang, $db;
+	global $ft_cfg, $lang, $db;
 	global $userdata, $user_ip;
 	global $is_auth;
 
@@ -219,8 +219,8 @@ function submit_post($mode, &$post_data, &$message, &$meta, &$forum_id, &$topic_
 		{
 			if ($row = $db->sql_fetchrow($result))
 			{
-//			if (intval($row['last_post_time']) > 0 && ($current_time - intval($row['last_post_time'])) < intval($board_config['flood_interval']))
-				if (!$is_auth['auth_mod'] && ($row['last_post_time'] > 0 && ($current_time - $row['last_post_time']) < $board_config['flood_interval']))
+//			if (intval($row['last_post_time']) > 0 && ($current_time - intval($row['last_post_time'])) < intval($ft_cfg['flood_interval']))
+				if (!$is_auth['auth_mod'] && ($row['last_post_time'] > 0 && ($current_time - $row['last_post_time']) < $ft_cfg['flood_interval']))
 				{
 					message_die(GENERAL_MESSAGE, $lang['Flood_Error']);
 				}
@@ -504,7 +504,7 @@ function update_post_stats(&$mode, &$post_data, &$forum_id, &$topic_id, &$post_i
 //
 function delete_post($mode, &$post_data, &$message, &$meta, &$forum_id, &$topic_id, &$post_id, &$poll_id)
 {
-	global $board_config, $lang, $db;
+	global $ft_cfg, $lang, $db;
 	global $userdata, $user_ip;
 
 	if ($mode != 'poll_delete')
@@ -606,7 +606,7 @@ function delete_post($mode, &$post_data, &$message, &$meta, &$forum_id, &$topic_
 //
 function user_notification($mode, &$post_data, &$topic_title, &$forum_id, &$topic_id, &$post_id, &$notify_user)
 {
-	global $board_config, $lang, $db;
+	global $ft_cfg, $lang, $db;
 	global $userdata, $user_ip;
 
 	$current_time = time();
@@ -673,35 +673,35 @@ function user_notification($mode, &$post_data, &$topic_title, &$forum_id, &$topi
 				// Let's do some checking to make sure that mass mail functions
 				// are working in win32 versions of php.
 				//
-				if (preg_match('/[c-z]:\\\.*/i', getenv('PATH')) && !$board_config['smtp_delivery'])
+				if (preg_match('/[c-z]:\\\.*/i', getenv('PATH')) && !$ft_cfg['smtp_delivery'])
 				{
 					$ini_val = (@phpversion() >= '4.0.0') ? 'ini_get' : 'get_cfg_var';
 
 					// We are running on windows, force delivery to use our smtp functions
 					// since php's are broken by default
 					if (!@$ini_val('sendmail_path')) {
-					$board_config['smtp_delivery'] = 1;
-					$board_config['smtp_host'] = @$ini_val('SMTP');
+					$ft_cfg['smtp_delivery'] = 1;
+					$ft_cfg['smtp_host'] = @$ini_val('SMTP');
 					}
 				}
 
 				if (sizeof($bcc_list_ary))
 				{
 					require(FT_ROOT . 'includes/emailer.php');
-					$emailer = new emailer($board_config['smtp_delivery']);
+					$emailer = new emailer($ft_cfg['smtp_delivery']);
 
-					$script_name = preg_replace('/^\/?(.*?)\/?$/', '\1', trim($board_config['script_path']));
+					$script_name = preg_replace('/^\/?(.*?)\/?$/', '\1', trim($ft_cfg['script_path']));
 					$script_name = ($script_name != '') ? $script_name . '/viewtopic.php' : 'viewtopic.php';
-					$server_name = trim($board_config['server_name']);
-					$server_protocol = ($board_config['cookie_secure']) ? 'https://' : 'http://';
-					$server_port = ($board_config['server_port'] <> 80) ? ':' . trim($board_config['server_port']) . '/' : '/';
+					$server_name = trim($ft_cfg['server_name']);
+					$server_protocol = ($ft_cfg['cookie_secure']) ? 'https://' : 'http://';
+					$server_port = ($ft_cfg['server_port'] <> 80) ? ':' . trim($ft_cfg['server_port']) . '/' : '/';
 
 					$orig_word = array();
 					$replacement_word = array();
 					obtain_word_list($orig_word, $replacement_word);
 
-					$emailer->from($board_config['board_email']);
-					$emailer->replyto($board_config['board_email']);
+					$emailer->from($ft_cfg['board_email']);
+					$emailer->replyto($ft_cfg['board_email']);
 
 					$topic_title = (count($orig_word)) ? preg_replace($orig_word, $replacement_word, unprepare_message($topic_title)) : unprepare_message($topic_title);
 
@@ -725,8 +725,8 @@ function user_notification($mode, &$post_data, &$topic_title, &$forum_id, &$topi
 						$emailer->msg = preg_replace('#[ ]?{USERNAME}#', '', $emailer->msg);
 
 						$emailer->assign_vars(array(
-							'EMAIL_SIG' => (!empty($board_config['board_email_sig'])) ? str_replace('<br />', "\n", "-- \n" . $board_config['board_email_sig']) : '',
-							'SITENAME' => $board_config['sitename'],
+							'EMAIL_SIG' => (!empty($ft_cfg['board_email_sig'])) ? str_replace('<br />', "\n", "-- \n" . $ft_cfg['board_email_sig']) : '',
+							'SITENAME' => $ft_cfg['sitename'],
 							'TOPIC_TITLE' => $topic_title,
 
 							'U_TOPIC' => $server_protocol . $server_name . $server_port . $script_name . '?' . POST_POST_URL . "=$post_id#$post_id",
@@ -789,7 +789,7 @@ function user_notification($mode, &$post_data, &$topic_title, &$forum_id, &$topi
 //
 function generate_smilies($mode, $page_id)
 {
-	global $db, $board_config, $template, $lang, $images, $theme;
+	global $db, $ft_cfg, $template, $lang, $images, $theme;
 	global $user_ip, $session_length, $starttime;
 	global $userdata;
 
@@ -847,7 +847,7 @@ function generate_smilies($mode, $page_id)
 
 				$template->assign_block_vars('smilies_row.smilies_col', array(
 					'SMILEY_CODE' => $data['code'],
-					'SMILEY_IMG' => $board_config['smilies_path'] . '/' . $smile_url,
+					'SMILEY_IMG' => $ft_cfg['smilies_path'] . '/' . $smile_url,
 					'SMILEY_DESC' => $data['emoticon'])
 				);
 
@@ -897,7 +897,7 @@ function generate_smilies($mode, $page_id)
 //bot
 function insert_post ($mode, $topic_id, $forum_id = '', $old_forum_id = '', $new_topic_id = '', $new_topic_title = '', $old_topic_id = '', $message = '', $poster_id = '')
 {
-	global $board_config, $lang, $db;
+	global $ft_cfg, $lang, $db;
 	global $userdata, $user_ip, $is_auth;
 
 	if (!$topic_id)

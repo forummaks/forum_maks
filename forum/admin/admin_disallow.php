@@ -1,45 +1,14 @@
 <?php
-/***************************************************************************
- *                            admin_disallow.php
- *                            -------------------
- *   begin                : Tuesday, Oct 05, 2001
- *   copyright            : (C) 2001 The phpBB Group
- *   email                : support@phpbb.com
- *
- *   $Id: admin_disallow.php,v 1.9.2.2 2002/11/26 11:42:11 psotfx Exp $
- *
- *
- ***************************************************************************/
-
-/***************************************************************************
- *
- *   This program is free software; you can redistribute it and/or modify
- *   it under the terms of the GNU General Public License as published by
- *   the Free Software Foundation; either version 2 of the License, or
- *   (at your option) any later version.
- *
- ***************************************************************************/
-
-@define('IN_PHPBB', 1);
-
-if( !empty($setmodules) )
+if(!empty($setmodules))
 {
-	$filename = basename(__FILE__);
-	$module['Users']['Disallow'] = append_sid($filename);
-
+	$module['Users']['Disallow'] = basename(__FILE__);
 	return;
 }
-
-//
-// Include required files, get $phpEx and check permissions
-//
-$phpbb_root_path = "./../";
-require($phpbb_root_path . 'extension.inc');
-require('./pagestart.' . $phpEx);
+require('./pagestart.php');
 
 if( isset($HTTP_POST_VARS['add_name']) )
 {
-	include($phpbb_root_path . 'includes/functions_validate.'.$phpEx);
+	require(FT_ROOT . 'includes/functions_validate.php');
 
 	$disallowed_user = ( isset($HTTP_POST_VARS['disallowed_user']) ) ? trim($HTTP_POST_VARS['disallowed_user']) : trim($HTTP_GET_VARS['disallowed_user']);
 
@@ -63,7 +32,7 @@ if( isset($HTTP_POST_VARS['add_name']) )
 		$message = $lang['Disallow_successful'];
 	}
 
-	$message .= "<br /><br />" . sprintf($lang['Click_return_disallowadmin'], "<a href=\"" . append_sid("admin_disallow.$phpEx") . "\">", "</a>") . "<br /><br />" . sprintf($lang['Click_return_admin_index'], "<a href=\"" . append_sid("index.$phpEx?pane=right") . "\">", "</a>");
+	$message .= "<br /><br />" . sprintf($lang['Click_return_disallowadmin'], "<a href=\"" . append_sid("admin_disallow.php") . "\">", "</a>") . "<br /><br />" . sprintf($lang['Click_return_admin_index'], "<a href=\"" . append_sid("index.php?pane=right") . "\">", "</a>");
 
 	message_die(GENERAL_MESSAGE, $message);
 }
@@ -79,7 +48,7 @@ else if( isset($HTTP_POST_VARS['delete_name']) )
 		message_die(GENERAL_ERROR, "Couldn't removed disallowed user.", "",__LINE__, __FILE__, $sql);
 	}
 
-	$message .= $lang['Disallowed_deleted'] . "<br /><br />" . sprintf($lang['Click_return_disallowadmin'], "<a href=\"" . append_sid("admin_disallow.$phpEx") . "\">", "</a>") . "<br /><br />" . sprintf($lang['Click_return_admin_index'], "<a href=\"" . append_sid("index.$phpEx?pane=right") . "\">", "</a>");
+	$message .= $lang['Disallowed_deleted'] . "<br /><br />" . sprintf($lang['Click_return_disallowadmin'], "<a href=\"" . append_sid("admin_disallow.php") . "\">", "</a>") . "<br /><br />" . sprintf($lang['Click_return_admin_index'], "<a href=\"" . append_sid("index.php?pane=right") . "\">", "</a>");
 
 	message_die(GENERAL_MESSAGE, $message);
 
@@ -125,7 +94,7 @@ $template->set_filenames(array(
 
 $template->assign_vars(array(
 	"S_DISALLOW_SELECT" => $disallow_select,
-	"S_FORM_ACTION" => append_sid("admin_disallow.$phpEx"),
+	"S_FORM_ACTION" => append_sid("admin_disallow.php"),
 
 //"L_INFO" => $output_info,
 	"L_DISALLOW_TITLE" => $lang['Disallow_control'],
@@ -141,6 +110,4 @@ $template->assign_vars(array(
 
 $template->pparse("body");
 
-include('./page_footer_admin.'.$phpEx);
-
-?>
+require('./page_footer_admin.php');

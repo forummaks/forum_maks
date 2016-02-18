@@ -1,36 +1,12 @@
 <?php
-/***************************************************************************
- *                              admin_board.php
- *                            -------------------
- *   begin                : Thursday, Jul 12, 2001
- *   copyright            : (C) 2001 The phpBB Group
- *   email                : support@phpbb.com
- *
- *   $Id: admin_board.php,v 1.51.2.9 2004/11/18 17:49:33 acydburn Exp $
- *
- *
- ***************************************************************************/
-
-@define('IN_PHPBB', 1);
-
-if( !empty($setmodules) )
+if(!empty($setmodules))
 {
-	$file = basename(__FILE__);
-	$module['General']['Configuration'] = "$file";
+	$module['General']['Configuration'] = basename(__FILE__);
 	return;
 }
+require('./pagestart.php');
+require(FT_ROOT . 'includes/functions_selects.php');
 
-//
-// Let's set the root dir for phpBB
-//
-$phpbb_root_path = "./../";
-require($phpbb_root_path . 'extension.inc');
-require('./pagestart.' . $phpEx);
-include($phpbb_root_path . 'includes/functions_selects.'.$phpEx);
-
-//
-// Pull all config data
-//
 $sql = "SELECT *
 	FROM " . CONFIG_TABLE;
 if(!$result = $db->sql_query($sql))
@@ -66,7 +42,7 @@ else
 
 	if( isset($HTTP_POST_VARS['submit']) )
 	{
-		$message = $lang['Config_updated'] . "<br /><br />" . sprintf($lang['Click_return_config'], "<a href=\"" . append_sid("admin_board.$phpEx") . "\">", "</a>") . "<br /><br />" . sprintf($lang['Click_return_admin_index'], "<a href=\"" . append_sid("index.$phpEx?pane=right") . "\">", "</a>");
+		$message = $lang['Config_updated'] . "<br /><br />" . sprintf($lang['Click_return_config'], "<a href=\"" . append_sid("admin_board.php") . "\">", "</a>") . "<br /><br />" . sprintf($lang['Click_return_admin_index'], "<a href=\"" . append_sid("index.php?pane=right") . "\">", "</a>");
 
 		message_die(GENERAL_MESSAGE, $message);
 	}
@@ -142,7 +118,7 @@ $template->set_filenames(array(
 $new['site_desc'] = str_replace('"', '&quot;', $new['site_desc']);
 $new['sitename'] = str_replace('"', '&quot;', strip_tags($new['sitename']));
 $template->assign_vars(array(
-	"S_CONFIG_ACTION" => append_sid("admin_board.$phpEx"),
+	"S_CONFIG_ACTION" => append_sid("admin_board.php"),
 
 	"L_YES" => $lang['Yes'],
 	"L_NO" => $lang['No'],
@@ -324,6 +300,4 @@ $template->assign_vars(array(
 
 $template->pparse("body");
 
-include('./page_footer_admin.'.$phpEx);
-
-?>
+require('./page_footer_admin.php');

@@ -39,7 +39,7 @@ if( isset($HTTP_POST_VARS['login']) || isset($HTTP_GET_VARS['login']) || isset($
 
 		if( $row = $db->sql_fetchrow($result) )
 		{
-			if( $row['user_level'] != ADMIN && $board_config['board_disable'] )
+			if( $row['user_level'] != ADMIN && $ft_cfg['board_disable'] )
 			{
 				redirect(append_sid("index.php", true));
 			}

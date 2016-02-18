@@ -34,7 +34,7 @@ if ($profiledata['user_id'] != $userdata['user_id'] && $userdata['user_level'] !
 $page_title = $lang['User_acp_title'];
 include(FT_ROOT . 'includes/page_header.php');
 
-$language = $board_config['default_lang'];
+$language = $ft_cfg['default_lang'];
 
 if (!file_exists(FT_ROOT . 'language/lang_' . $language . '/lang_admin_attach.php'))
 {
@@ -82,27 +82,27 @@ $order_by = '';
 switch ($mode)
 {
 	case 'filename':
-		$order_by = 'ORDER BY a.real_filename ' . $sort_order . ' LIMIT ' . $start . ', ' . $board_config['topics_per_page'];
+		$order_by = 'ORDER BY a.real_filename ' . $sort_order . ' LIMIT ' . $start . ', ' . $ft_cfg['topics_per_page'];
 		break;
 	case 'comment':
-		$order_by = 'ORDER BY a.comment ' . $sort_order . ' LIMIT ' . $start . ', ' . $board_config['topics_per_page'];
+		$order_by = 'ORDER BY a.comment ' . $sort_order . ' LIMIT ' . $start . ', ' . $ft_cfg['topics_per_page'];
 		break;
 	case 'extension':
-		$order_by = 'ORDER BY a.extension ' . $sort_order . ' LIMIT ' . $start . ', ' . $board_config['topics_per_page'];
+		$order_by = 'ORDER BY a.extension ' . $sort_order . ' LIMIT ' . $start . ', ' . $ft_cfg['topics_per_page'];
 		break;
 	case 'filesize':
-		$order_by = 'ORDER BY a.filesize ' . $sort_order . ' LIMIT ' . $start . ', ' . $board_config['topics_per_page'];
+		$order_by = 'ORDER BY a.filesize ' . $sort_order . ' LIMIT ' . $start . ', ' . $ft_cfg['topics_per_page'];
 		break;
 	case 'downloads':
-		$order_by = 'ORDER BY a.download_count ' . $sort_order . ' LIMIT ' . $start . ', ' . $board_config['topics_per_page'];
+		$order_by = 'ORDER BY a.download_count ' . $sort_order . ' LIMIT ' . $start . ', ' . $ft_cfg['topics_per_page'];
 		break;
 	case 'post_time':
-		$order_by = 'ORDER BY a.filetime ' . $sort_order . ' LIMIT ' . $start . ', ' . $board_config['topics_per_page'];
+		$order_by = 'ORDER BY a.filetime ' . $sort_order . ' LIMIT ' . $start . ', ' . $ft_cfg['topics_per_page'];
 		break;
 	default:
 		$mode = 'a.real_filename';
 		$sort_order = 'ASC';
-		$order_by = 'ORDER BY a.real_filename ' . $sort_order . ' LIMIT ' . $start . ', ' . $board_config['topics_per_page'];
+		$order_by = 'ORDER BY a.real_filename ' . $sort_order . ' LIMIT ' . $start . ', ' . $ft_cfg['topics_per_page'];
 		break;
 }
 
@@ -423,7 +423,7 @@ if (count($attachments) > 0)
 				'EXTENSION' => $attachments[$i]['extension'],
 				'SIZE' => round(($attachments[$i]['filesize'] / MEGABYTE), 2),
 				'DOWNLOAD_COUNT' => $attachments[$i]['download_count'],
-				'POST_TIME' => create_date($board_config['default_dateformat'], $attachments[$i]['filetime'], $board_config['board_timezone']),
+				'POST_TIME' => create_date($ft_cfg['default_dateformat'], $attachments[$i]['filetime'], $ft_cfg['board_timezone']),
 				'POST_TITLE' => $post_titles,
 
 				'S_DELETE_BOX' => $delete_box,
@@ -438,13 +438,13 @@ if (count($attachments) > 0)
 //
 // Generate Pagination
 //
-if ( ($do_pagination) && ($total_rows > $board_config['topics_per_page']) )
+if ( ($do_pagination) && ($total_rows > $ft_cfg['topics_per_page']) )
 {
-	$pagination = generate_pagination($phpbb_root_path . 'uacp.php?mode=' . $mode . '&amp;order=' . $sort_order . '&amp;' . POST_USERS_URL . '=' . $profiledata['user_id'] . '&amp;sid=' . $userdata['session_id'], $total_rows, $board_config['topics_per_page'], $start).'&nbsp;';
+	$pagination = generate_pagination($phpbb_root_path . 'uacp.php?mode=' . $mode . '&amp;order=' . $sort_order . '&amp;' . POST_USERS_URL . '=' . $profiledata['user_id'] . '&amp;sid=' . $userdata['session_id'], $total_rows, $ft_cfg['topics_per_page'], $start).'&nbsp;';
 
 	$template->assign_vars(array(
 		'PAGINATION' => $pagination,
-		'PAGE_NUMBER' => sprintf($lang['Page_of'], ( floor( $start / $board_config['topics_per_page'] ) + 1 ), ceil( $total_rows / $board_config['topics_per_page'] )), 
+		'PAGE_NUMBER' => sprintf($lang['Page_of'], ( floor( $start / $ft_cfg['topics_per_page'] ) + 1 ), ceil( $total_rows / $ft_cfg['topics_per_page'] )), 
 
 		'L_GOTO_PAGE' => $lang['Goto_page'])
 	);

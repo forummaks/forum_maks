@@ -1,42 +1,16 @@
 <?php
-/***************************************************************************
-*                             admin_forum_prune.php
-*                              -------------------
-*     begin                : Mon Jul 31, 2001
-*     copyright            : (C) 2001 The phpBB Group
-*     email                : support@phpbb.com
-*
-*     $Id: admin_forum_prune.php,v 1.22.2.3 2002/12/18 14:14:07 psotfx Exp $
-*
-****************************************************************************/
-
-/***************************************************************************
- *
- *   This program is free software; you can redistribute it and/or modify
- *   it under the terms of the GNU General Public License as published by
- *   the Free Software Foundation; either version 2 of the License, or
- *   (at your option) any later version.
- *
- ***************************************************************************/
-
-@define('IN_PHPBB', true);
-
-if ( !empty($setmodules) )
+if (!empty($setmodules))
 {
-	$filename = basename(__FILE__);
-	$module['Forums']['Prune'] = $filename;
-
+	$module['Forums']['Prune'] = basename(__FILE__);
 	return;
 }
 
 //
 // Load default header
 //
-$phpbb_root_path = "./../";
-require($phpbb_root_path . 'extension.inc');
-require('./pagestart.' . $phpEx);
-require($phpbb_root_path . 'includes/prune.'.$phpEx);
-require($phpbb_root_path . 'includes/functions_admin.'.$phpEx);
+require('./pagestart.php');
+require(FT_ROOT . 'includes/prune.php');
+require(FT_ROOT . 'includes/functions_admin.php');
 
 //
 // Get the forum ID for pruning
@@ -150,7 +124,7 @@ else
 			'L_SELECT_FORUM' => $lang['Select_a_Forum'],
 			'L_LOOK_UP' => $lang['Look_up_Forum'],
 
-			'S_FORUMPRUNE_ACTION' => append_sid("admin_forum_prune.$phpEx"),
+			'S_FORUMPRUNE_ACTION' => append_sid("admin_forum_prune.php"),
 			'S_FORUMS_SELECT' => $select_list)
 		);
 	}
@@ -183,17 +157,13 @@ else
 			'L_FORUM_PRUNE_EXPLAIN' => $lang['Forum_Prune_explain'],
 			'L_DO_PRUNE' => $lang['Do_Prune'],
 
-			'S_FORUMPRUNE_ACTION' => append_sid("admin_forum_prune.$phpEx"),
+			'S_FORUMPRUNE_ACTION' => append_sid("admin_forum_prune.php"),
 			'S_PRUNE_DATA' => $prune_data,
 			'S_HIDDEN_VARS' => $hidden_input)
 		);
 	}
 }
-//
-// Actually output the page here.
-//
+
 $template->pparse('body');
 
-include('./page_footer_admin.'.$phpEx);
-
-?>
+require('./page_footer_admin.php');

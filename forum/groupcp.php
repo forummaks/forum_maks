@@ -7,10 +7,10 @@ require(FT_ROOT . 'common.php');
 //
 function generate_user_info(&$row, $date_format, $group_mod, &$from, &$posts, &$joined, &$poster_avatar, &$profile_img, &$profile, &$search_img, &$search, &$pm_img, &$pm, &$email_img, &$email, &$www_img, &$www, &$icq_status_img, &$icq_img, &$icq, &$aim_img, &$aim, &$msn_img, &$msn, &$yim_img, &$yim)
 {
-	global $lang, $images, $board_config, $phpEx;
+	global $lang, $images, $ft_cfg, $phpEx;
 
 	$from = ( !empty($row['user_from']) ) ? $row['user_from'] : '&nbsp;';
-	$joined = create_date($date_format, $row['user_regdate'], $board_config['board_timezone']);
+	$joined = create_date($date_format, $row['user_regdate'], $ft_cfg['board_timezone']);
 	$posts = ( $row['user_posts'] ) ? $row['user_posts'] : 0;
 
 	$poster_avatar = '';
@@ -19,20 +19,20 @@ function generate_user_info(&$row, $date_format, $group_mod, &$from, &$posts, &$
 		switch( $row['user_avatar_type'] )
 		{
 			case USER_AVATAR_UPLOAD:
-				$poster_avatar = ( $board_config['allow_avatar_upload'] ) ? '<img src="' . $board_config['avatar_path'] . '/' . $row['user_avatar'] . '" alt="" border="0" />' : '';
+				$poster_avatar = ( $ft_cfg['allow_avatar_upload'] ) ? '<img src="' . $ft_cfg['avatar_path'] . '/' . $row['user_avatar'] . '" alt="" border="0" />' : '';
 				break;
 			case USER_AVATAR_REMOTE:
-				$poster_avatar = ( $board_config['allow_avatar_remote'] ) ? '<img src="' . $row['user_avatar'] . '" alt="" border="0" />' : '';
+				$poster_avatar = ( $ft_cfg['allow_avatar_remote'] ) ? '<img src="' . $row['user_avatar'] . '" alt="" border="0" />' : '';
 				break;
 			case USER_AVATAR_GALLERY:
-				$poster_avatar = ( $board_config['allow_avatar_local'] ) ? '<img src="' . $board_config['avatar_gallery_path'] . '/' . $row['user_avatar'] . '" alt="" border="0" />' : '';
+				$poster_avatar = ( $ft_cfg['allow_avatar_local'] ) ? '<img src="' . $ft_cfg['avatar_gallery_path'] . '/' . $row['user_avatar'] . '" alt="" border="0" />' : '';
 				break;
 		}
 	}
 
 	if ( !empty($row['user_viewemail']) || $group_mod )
 	{
-		$email_uri = ( $board_config['board_email_form'] ) ? append_sid("profile.php?mode=email&amp;" . POST_USERS_URL .'=' . $row['user_id']) : 'mailto:' . $row['user_email'];
+		$email_uri = ( $ft_cfg['board_email_form'] ) ? append_sid("profile.php?mode=email&amp;" . POST_USERS_URL .'=' . $row['user_id']) : 'mailto:' . $row['user_email'];
 
 		$email_img = '<a href="' . $email_uri . '"><img src="' . $images['icon_email'] . '" alt="' . $lang['Send_email'] . '" title="' . $lang['Send_email'] . '" border="0" /></a>';
 		$email = '<a href="' . $email_uri . '">' . $lang['Send_email'] . '</a>';
@@ -100,11 +100,11 @@ if (!$userdata['session_logged_in'])
 	redirect(append_sid("login.php?redirect=groupcp.php", true));
 }
 
-$script_name = preg_replace('/^\/?(.*?)\/?$/', "\\1", trim($board_config['script_path']));
+$script_name = preg_replace('/^\/?(.*?)\/?$/', "\\1", trim($ft_cfg['script_path']));
 $script_name = ( $script_name != '' ) ? $script_name . '/groupcp.php' : 'groupcp.php';
-$server_name = trim($board_config['server_name']);
-$server_protocol = ( $board_config['cookie_secure'] ) ? 'https://' : 'http://';
-$server_port = ( $board_config['server_port'] <> 80 ) ? ':' . trim($board_config['server_port']) . '/' : '/';
+$server_name = trim($ft_cfg['server_name']);
+$server_protocol = ( $ft_cfg['cookie_secure'] ) ? 'https://' : 'http://';
+$server_port = ( $ft_cfg['server_port'] <> 80 ) ? ':' . trim($ft_cfg['server_port']) . '/' : '/';
 
 $server_url = $server_protocol . $server_name . $server_port . $script_name;
 
@@ -256,19 +256,19 @@ else if ( isset($HTTP_POST_VARS['joingroup']) && $group_id )
 	$moderator = $db->sql_fetchrow($result);
 
 	require(FT_ROOT . 'includes/emailer.php');
-	$emailer = new emailer($board_config['smtp_delivery']);
+	$emailer = new emailer($ft_cfg['smtp_delivery']);
 
-	$emailer->from($board_config['board_email']);
-	$emailer->replyto($board_config['board_email']);
+	$emailer->from($ft_cfg['board_email']);
+	$emailer->replyto($ft_cfg['board_email']);
 
 	$emailer->use_template('group_request', $moderator['user_lang']);
 	$emailer->email_address($moderator['user_email']);
 	$emailer->set_subject($lang['Group_request']);
 
 	$emailer->assign_vars(array(
-		'SITENAME' => $board_config['sitename'],
+		'SITENAME' => $ft_cfg['sitename'],
 		'GROUP_MODERATOR' => $moderator['username'],
-		'EMAIL_SIG' => (!empty($board_config['board_email_sig'])) ? str_replace('<br />', "\n", "-- \n" . $board_config['board_email_sig']) : '',
+		'EMAIL_SIG' => (!empty($ft_cfg['board_email_sig'])) ? str_replace('<br />', "\n", "-- \n" . $ft_cfg['board_email_sig']) : '',
 
 		'U_GROUPCP' => $server_url . '?' . POST_GROUPS_URL . "=$group_id&validate=true")
 	);
@@ -534,19 +534,19 @@ else if ( $group_id )
 					$group_name = $group_name_row['group_name'];
 
 					require(FT_ROOT . 'includes/emailer.');
-					$emailer = new emailer($board_config['smtp_delivery']);
+					$emailer = new emailer($ft_cfg['smtp_delivery']);
 
-					$emailer->from($board_config['board_email']);
-					$emailer->replyto($board_config['board_email']);
+					$emailer->from($ft_cfg['board_email']);
+					$emailer->replyto($ft_cfg['board_email']);
 
 					$emailer->use_template('group_added', $row['user_lang']);
 					$emailer->email_address($row['user_email']);
 					$emailer->set_subject($lang['Group_added']);
 
 					$emailer->assign_vars(array(
-						'SITENAME' => $board_config['sitename'],
+						'SITENAME' => $ft_cfg['sitename'],
 						'GROUP_NAME' => $group_name,
-						'EMAIL_SIG' => (!empty($board_config['board_email_sig'])) ? str_replace('<br />', "\n", "-- \n" . $board_config['board_email_sig']) : '',
+						'EMAIL_SIG' => (!empty($ft_cfg['board_email_sig'])) ? str_replace('<br />', "\n", "-- \n" . $ft_cfg['board_email_sig']) : '',
 
 						'U_GROUPCP' => $server_url . '?' . POST_GROUPS_URL . "=$group_id")
 					);
@@ -689,10 +689,10 @@ else if ( $group_id )
 						$group_name = $group_name_row['group_name'];
 
 						require(FT_ROOT . 'includes/emailer.');
-						$emailer = new emailer($board_config['smtp_delivery']);
+						$emailer = new emailer($ft_cfg['smtp_delivery']);
 
-						$emailer->from($board_config['board_email']);
-						$emailer->replyto($board_config['board_email']);
+						$emailer->from($ft_cfg['board_email']);
+						$emailer->replyto($ft_cfg['board_email']);
 
 						for ($i = 0; $i < count($bcc_list); $i++)
 						{
@@ -703,9 +703,9 @@ else if ( $group_id )
 						$emailer->set_subject($lang['Group_approved']);
 
 						$emailer->assign_vars(array(
-							'SITENAME' => $board_config['sitename'],
+							'SITENAME' => $ft_cfg['sitename'],
 							'GROUP_NAME' => $group_name,
-							'EMAIL_SIG' => (!empty($board_config['board_email_sig'])) ? str_replace('<br />', "\n", "-- \n" . $board_config['board_email_sig']) : '',
+							'EMAIL_SIG' => (!empty($ft_cfg['board_email_sig'])) ? str_replace('<br />', "\n", "-- \n" . $ft_cfg['board_email_sig']) : '',
 
 							'U_GROUPCP' => $server_url . '?' . POST_GROUPS_URL . "=$group_id")
 						);
@@ -878,7 +878,7 @@ else if ( $group_id )
 	$username = $group_moderator['username'];
 	$user_id = $group_moderator['user_id'];
 
-	generate_user_info($group_moderator, $board_config['default_dateformat'], $is_moderator, $from, $posts, $joined, $poster_avatar, $profile_img, $profile, $search_img, $search, $pm_img, $pm, $email_img, $email, $www_img, $www, $icq_status_img, $icq_img, $icq, $aim_img, $aim, $msn_img, $msn, $yim_img, $yim);
+	generate_user_info($group_moderator, $ft_cfg['default_dateformat'], $is_moderator, $from, $posts, $joined, $poster_avatar, $profile_img, $profile, $search_img, $search, $pm_img, $pm, $email_img, $email, $www_img, $www, $icq_status_img, $icq_img, $icq, $aim_img, $aim, $msn_img, $msn, $yim_img, $yim);
 
 	$s_hidden_fields .= '';
 
@@ -965,12 +965,12 @@ else if ( $group_id )
 	//
 	// Dump out the remaining users
 	//
-	for($i = $start; $i < min($board_config['topics_per_page'] + $start, $members_count); $i++)
+	for($i = $start; $i < min($ft_cfg['topics_per_page'] + $start, $members_count); $i++)
 	{
 		$username = $group_members[$i]['username'];
 		$user_id = $group_members[$i]['user_id'];
 
-		generate_user_info($group_members[$i], $board_config['default_dateformat'], $is_moderator, $from, $posts, $joined, $poster_avatar, $profile_img, $profile, $search_img, $search, $pm_img, $pm, $email_img, $email, $www_img, $www, $icq_status_img, $icq_img, $icq, $aim_img, $aim, $msn_img, $msn, $yim_img, $yim);
+		generate_user_info($group_members[$i], $ft_cfg['default_dateformat'], $is_moderator, $from, $posts, $joined, $poster_avatar, $profile_img, $profile, $search_img, $search, $pm_img, $pm, $email_img, $email, $www_img, $www, $icq_status_img, $icq_img, $icq, $aim_img, $aim, $msn_img, $msn, $yim_img, $yim);
 
 		if ( $group_info['group_type'] != GROUP_HIDDEN || $is_group_member || $is_moderator )
 		{
@@ -1027,11 +1027,11 @@ else if ( $group_id )
 		);
 	}
 
-	$current_page = ( !$members_count ) ? 1 : ceil( $members_count / $board_config['topics_per_page'] );
+	$current_page = ( !$members_count ) ? 1 : ceil( $members_count / $ft_cfg['topics_per_page'] );
 
 	$template->assign_vars(array(
-		'PAGINATION' => generate_pagination("groupcp.php?" . POST_GROUPS_URL . "=$group_id", $members_count, $board_config['topics_per_page'], $start),
-		'PAGE_NUMBER' => sprintf($lang['Page_of'], ( floor( $start / $board_config['topics_per_page'] ) + 1 ), $current_page ),
+		'PAGINATION' => generate_pagination("groupcp.php?" . POST_GROUPS_URL . "=$group_id", $members_count, $ft_cfg['topics_per_page'], $start),
+		'PAGE_NUMBER' => sprintf($lang['Page_of'], ( floor( $start / $ft_cfg['topics_per_page'] ) + 1 ), $current_page ),
 
 		'L_GOTO_PAGE' => $lang['Goto_page'])
 	);
@@ -1063,7 +1063,7 @@ else if ( $group_id )
 				$username = $modgroup_pending_list[$i]['username'];
 				$user_id = $modgroup_pending_list[$i]['user_id'];
 
-				generate_user_info($modgroup_pending_list[$i], $board_config['default_dateformat'], $is_moderator, $from, $posts, $joined, $poster_avatar, $profile_img, $profile, $search_img, $search, $pm_img, $pm, $email_img, $email, $www_img, $www, $icq_status_img, $icq_img, $icq, $aim_img, $aim, $msn_img, $msn, $yim_img, $yim);
+				generate_user_info($modgroup_pending_list[$i], $ft_cfg['default_dateformat'], $is_moderator, $from, $posts, $joined, $poster_avatar, $profile_img, $profile, $search_img, $search, $pm_img, $pm, $email_img, $email, $www_img, $www, $icq_status_img, $icq_img, $icq, $aim_img, $aim, $msn_img, $msn, $yim_img, $yim);
 
 				$row_color = ( !($i % 2) ) ? $theme['td_color1'] : $theme['td_color2'];
 				$row_class = ( !($i % 2) ) ? $theme['td_class1'] : $theme['td_class2'];

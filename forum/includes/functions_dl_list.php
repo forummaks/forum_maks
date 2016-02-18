@@ -202,7 +202,7 @@ function synch_dl_topics ($forum_id, $synch_type)
 	// disabled in version 0.3.5
 	return;
 
-	global $db, $board_config;
+	global $db, $ft_cfg;
 
 	if (!$forum_id)
 	{
@@ -214,7 +214,7 @@ function synch_dl_topics ($forum_id, $synch_type)
 	if ($synch_type == 'expire')
 	{
 		$dl_topics_limit = 80;
-		$dl_expire_time = time() - ($board_config['bt_dl_list_expire'] * 60*60*24);
+		$dl_expire_time = time() - ($ft_cfg['bt_dl_list_expire'] * 60*60*24);
 
 		$sql = 'SELECT DISTINCT t.topic_id
 			FROM '. TOPICS_TABLE .' t, '. BT_USR_DL_STAT_TABLE ." d

@@ -2,7 +2,7 @@
 
 if (!defined('FT_ROOT')) die(basename(__FILE__));
 
-global $board_config, $bb_cfg, $forum_topic_data, $poster_id, $is_auth;
+global $ft_cfg, $bb_cfg, $forum_topic_data, $poster_id, $is_auth;
 
 $change_peers_bgr_over = TRUE;
 $bgr_class_1    = 'prow1';
@@ -27,11 +27,11 @@ $template->assign_vars(array(
 ));
 // time=all - for debug (this will show peers from all time, i.e. including all dead peers)
 $current_time = (isset($_GET['time']) && $_GET['time'] == 'all') ? 0 : time();
-$cfg_s_mode = $s_mode = $board_config['bt_show_peers_mode'];
+$cfg_s_mode = $s_mode = $ft_cfg['bt_show_peers_mode'];
 $get_s_mode = (isset($_GET['spmode'])) ? $_GET['spmode'] : '';
 
 // Define show peers mode (count only || user names with complete % || full details)
-if ($board_config['bt_allow_spmode_change'])
+if ($ft_cfg['bt_allow_spmode_change'])
 {
 	if ($get_s_mode == 'count')
 	{
@@ -84,10 +84,10 @@ $attach_id      = $attachments['_'. $post_id][$i]['attach_id'];
 $tracker_status = $attachments['_'. $post_id][$i]['tracker_status'];
 $download_count = $attachments['_'. $post_id][$i]['download_count'];
 $tor_file_size  = humn_size($attachments['_'. $post_id][$i]['filesize']);
-$tor_file_time  = create_date($board_config['default_dateformat'], $attachments['_'. $post_id][$i]['filetime'], $board_config['board_timezone']);
+$tor_file_time  = create_date($ft_cfg['default_dateformat'], $attachments['_'. $post_id][$i]['filetime'], $ft_cfg['board_timezone']);
 
 $tor_reged = ($tracker_status) ? TRUE : FALSE;
-$show_peers = ($board_config['bt_show_peers']) ? TRUE : FALSE;
+$show_peers = ($ft_cfg['bt_show_peers']) ? TRUE : FALSE;
 
 $locked = ($forum_topic_data['forum_status'] == FORUM_LOCKED || $forum_topic_data['topic_status'] == TOPIC_LOCKED) ? TRUE : FALSE;
 $tor_auth = ($userdata['user_id'] != ANONYMOUS && (($userdata['user_id'] == $poster_id && !$locked) || $is_auth['auth_mod'])) ? TRUE : FALSE;
@@ -178,7 +178,7 @@ else
 
 		'L_DOWNLOADED_VIEWED' => $lang['Downloaded'],
 		'L_DOWNLOAD_COUNT'    => sprintf($lang['Download_number'], $download_count),
-		'REGED_TIME'          => create_date($board_config['default_dateformat'], $tor_row['reg_time'], $board_config['board_timezone']),
+		'REGED_TIME'          => create_date($ft_cfg['default_dateformat'], $tor_row['reg_time'], $ft_cfg['board_timezone']),
 
 		'TORRENT_SIZE'        => humn_size($tor_size),
 		'PIECE_LENGTH'        => humn_size($tor_row['piece_length']),
@@ -230,7 +230,7 @@ else
             'SHOW_DL_LIST_TOR_INFO' => true,
 
             'TOR_SIZE'      => humn_size($tor_size),
-            'TOR_LONGEVITY' => create_date("d-M-y", $tor_row['reg_time'], $board_config['board_timezone']),
+            'TOR_LONGEVITY' => create_date("d-M-y", $tor_row['reg_time'], $ft_cfg['board_timezone']),
             'TOR_COMPLETED' => sprintf($lang['Download_number'], $tor_row['complete_count']),
          ));
       }
@@ -463,11 +463,11 @@ else
 								'SEEDERS_UP_TOT' => humn_size($sp_up_tot[$x], 0, 'KB') .'/s'
 							));
 
-							if ($is_auth['auth_mod'] || !$board_config['bt_show_ip_only_moder'])
+							if ($is_auth['auth_mod'] || !$ft_cfg['bt_show_ip_only_moder'])
 							{
 								$template->assign_block_vars("$x_full.iphead", array());
 							}
-							if ($is_auth['auth_mod'] || !$board_config['bt_show_port_only_moder'])
+							if ($is_auth['auth_mod'] || !$ft_cfg['bt_show_port_only_moder'])
 							{
 								$template->assign_block_vars("$x_full.porthead", array());
 							}
@@ -493,11 +493,11 @@ else
 								'LEECHERS_DOWN_TOT' => humn_size($sp_down_tot[$x], 0, 'KB') .'/s'
 							));
 
-							if ($is_auth['auth_mod'] || !$board_config['bt_show_ip_only_moder'])
+							if ($is_auth['auth_mod'] || !$ft_cfg['bt_show_ip_only_moder'])
 							{
 								$template->assign_block_vars("$x_full.iphead", array());
 							}
-							if ($is_auth['auth_mod'] || !$board_config['bt_show_port_only_moder'])
+							if ($is_auth['auth_mod'] || !$ft_cfg['bt_show_port_only_moder'])
 							{
 								$template->assign_block_vars("$x_full.porthead", array());
 							}
@@ -516,8 +516,8 @@ else
 					$up_ratio = ($p_max_down) ? round(($p_max_up / $p_max_down), 2) : '';
 					$sp_up    = ($peer['speed_up'])   ? humn_size($peer['speed_up'],   0, 'KB') .'/s' : '-';
 					$sp_down  = ($peer['speed_down']) ? humn_size($peer['speed_down'], 0, 'KB') .'/s' : '-';
-					$upd_time = create_date('H:i', $peer['update_time'], $board_config['board_timezone']);
-					$exp_time = create_date('H:i', $peer['expire_time'], $board_config['board_timezone']);
+					$upd_time = create_date('H:i', $peer['update_time'], $ft_cfg['board_timezone']);
+					$exp_time = create_date('H:i', $peer['expire_time'], $ft_cfg['board_timezone']);
 
 					$bgr_class = (!($tr[$x] % 2)) ? $bgr_class_1 : $bgr_class_2;
 					$row_bgr   = ($change_peers_bgr_over) ? " class=\"$bgr_class\" onmouseover=\"this.className='$bgr_class_over';\" onmouseout=\"this.className='$bgr_class';\"" : '';
@@ -610,7 +610,7 @@ else
 		if (($s_mode == 'count' && !$seed_count) || (!$seeders && !defined('SEEDER_EXIST')))
 		{
 			$last_seeder_name = '';
-			$last_seen_time = ($tor_row['seeder_last_seen']) ? create_date($s_last_seed_date_format, $tor_row['seeder_last_seen'], $board_config['board_timezone']) : 'Никогда';
+			$last_seen_time = ($tor_row['seeder_last_seen']) ? create_date($s_last_seed_date_format, $tor_row['seeder_last_seen'], $ft_cfg['board_timezone']) : 'Никогда';
 
 			if ($last_seeder_uid = $tor_row['last_seeder_uid'])
 			{
@@ -637,7 +637,7 @@ else
 	}
 }
 
-if ($board_config['bt_allow_spmode_change'] && $s_mode != 'full')
+if ($ft_cfg['bt_allow_spmode_change'] && $s_mode != 'full')
 {
 	$template->assign_vars(array(
 		'PEERS_FULL_LINK'  => TRUE,

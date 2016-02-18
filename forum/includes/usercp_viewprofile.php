@@ -41,7 +41,7 @@ $regdate = $profiledata['user_regdate'];
 $memberdays = max(1, round( ( time() - $regdate ) / 86400 ));
 $posts_per_day = $profiledata['user_posts'] / $memberdays;
 
-$last_visit_time = ($profiledata['user_lastvisit']) ? create_date($board_config['default_dateformat'], $profiledata['user_lastvisit'], $board_config['board_timezone']) : $lang['Never'];
+$last_visit_time = ($profiledata['user_lastvisit']) ? create_date($ft_cfg['default_dateformat'], $profiledata['user_lastvisit'], $ft_cfg['board_timezone']) : $lang['Never'];
 
 // Get the users percentage of total posts
 if ( $profiledata['user_posts'] != 0  )
@@ -59,13 +59,13 @@ if ( $profiledata['user_avatar_type'] && $profiledata['user_allowavatar'] )
 	switch( $profiledata['user_avatar_type'] )
 	{
 		case USER_AVATAR_UPLOAD:
-			$avatar_img = ( $board_config['allow_avatar_upload'] ) ? '<img src="' . $board_config['avatar_path'] . '/' . $profiledata['user_avatar'] . '" alt="" border="0" />' : '';
+			$avatar_img = ( $ft_cfg['allow_avatar_upload'] ) ? '<img src="' . $ft_cfg['avatar_path'] . '/' . $profiledata['user_avatar'] . '" alt="" border="0" />' : '';
 			break;
 		case USER_AVATAR_REMOTE:
-			$avatar_img = ( $board_config['allow_avatar_remote'] ) ? '<img src="' . $profiledata['user_avatar'] . '" alt="" border="0" />' : '';
+			$avatar_img = ( $ft_cfg['allow_avatar_remote'] ) ? '<img src="' . $profiledata['user_avatar'] . '" alt="" border="0" />' : '';
 			break;
 		case USER_AVATAR_GALLERY:
-			$avatar_img = ( $board_config['allow_avatar_local'] ) ? '<img src="' . $board_config['avatar_gallery_path'] . '/' . $profiledata['user_avatar'] . '" alt="" border="0" />' : '';
+			$avatar_img = ( $ft_cfg['allow_avatar_local'] ) ? '<img src="' . $ft_cfg['avatar_gallery_path'] . '/' . $profiledata['user_avatar'] . '" alt="" border="0" />' : '';
 			break;
 	}
 }
@@ -97,17 +97,11 @@ else
 $temp_url = append_sid("privmsg.php?mode=post&amp;" . POST_USERS_URL . "=" . $profiledata['user_id']);
 $pm_img = '<a href="' . $temp_url . '"><img src="' . $images['icon_pm'] . '" alt="' . $lang['Send_private_message'] . '" title="' . $lang['Send_private_message'] . '" border="0" /></a>';
 
-// FLAGHACK-start
-$location = ($profiledata['user_from']) ? $profiledata['user_from'] : '';
-$location .= ($profiledata['user_from_flag'] && $profiledata['user_from_flag'] != 'blank.gif') ? '&nbsp;<img src="images/flags/'. $profiledata['user_from_flag'] .'" alt="'. $profiledata['user_from_flag'] . '">' : '';
-// FLAGHACK-end
-
-
 $pm = '<a href="' . $temp_url . '">' . $lang['Send_private_message'] . '</a>';
 
 if ( !empty($profiledata['user_viewemail']) || $userdata['user_level'] == ADMIN )
 {
-	$email_uri = ( $board_config['board_email_form'] ) ? append_sid("profile.php?mode=email&amp;" . POST_USERS_URL .'=' . $profiledata['user_id']) : 'mailto:' . $profiledata['user_email'];
+	$email_uri = ( $ft_cfg['board_email_form'] ) ? append_sid("profile.php?mode=email&amp;" . POST_USERS_URL .'=' . $profiledata['user_id']) : 'mailto:' . $profiledata['user_email'];
 	$email_img = '<a href="' . $email_uri . '"><img src="' . $images['icon_email'] . '" alt="' . $lang['Send_email'] . '" title="' . $lang['Send_email'] . '" border="0" /></a>';
 	$email = '<a href="' . $email_uri . '">' . $lang['Send_email'] . '</a>';
 }
@@ -130,12 +124,6 @@ else
 	$icq_img = '';
 	$icq = '';
 }
-$aim_img = ( $profiledata['user_aim'] ) ? '<a href="aim:goim?screenname=' . $profiledata['user_aim'] . '&amp;message=Hello+Are+you+there?"><img src="' . $images['icon_aim'] . '" alt="' . $lang['AIM'] . '" title="' . $lang['AIM'] . '" border="0" /></a>' : '';
-$aim = ( $profiledata['user_aim'] ) ? '<a href="aim:goim?screenname=' . $profiledata['user_aim'] . '&amp;message=Hello+Are+you+there?">' . $lang['AIM'] . '</a>' : '';
-$msn_img = ( $profiledata['user_msnm'] ) ? $profiledata['user_msnm'] : '';
-$msn = $msn_img;
-$yim_img = ( $profiledata['user_yim'] ) ? '<a href="http://edit.yahoo.com/config/send_webmesg?.target=' . $profiledata['user_yim'] . '&amp;.src=pg"><img src="' . $images['icon_yim'] . '" alt="' . $lang['YIM'] . '" title="' . $lang['YIM'] . '" border="0" /></a>' : '';
-$yim = ( $profiledata['user_yim'] ) ? '<a href="http://edit.yahoo.com/config/send_webmesg?.target=' . $profiledata['user_yim'] . '&amp;.src=pg">' . $lang['YIM'] . '</a>' : '';
 $temp_url = append_sid("search.php?search_author=" . urlencode($profiledata['username']) . "&amp;showresults=posts");
 $search_img = '<a href="' . $temp_url . '"><img src="' . $images['icon_search'] . '" alt="' . $lang['Search_user_posts'] . '" title="' . sprintf($lang['Search_user_posts'], $profiledata['username']) . '" border="0" /></a>';
 $search = '<a href="' . $temp_url . '">' . sprintf($lang['Search_user_posts'], $profiledata['username']) . '</a>';
@@ -157,7 +145,7 @@ else
 }
 $template->assign_vars(array(
 	'USERNAME' => $profiledata['username'],
-	'JOINED' => create_date($lang['DATE_FORMAT'], $profiledata['user_regdate'], $board_config['board_timezone']),
+	'JOINED' => create_date($lang['DATE_FORMAT'], $profiledata['user_regdate'], $ft_cfg['board_timezone']),
 	'POSTER_RANK' => $poster_rank,
 	'RANK_IMAGE' => $rank_image,
 	'POSTS_PER_DAY' => $posts_per_day,
@@ -176,16 +164,7 @@ $template->assign_vars(array(
 	'ICQ_STATUS_IMG' => $icq_status_img,
 	'ICQ_IMG' => $icq_img,
 	'ICQ' => $icq,
-	'AIM_IMG' => $aim_img,
-	'AIM' => $aim,
-	'MSN_IMG' => $msn_img,
-	'MSN' => $msn,
-	'YIM_IMG' => $yim_img,
-	'YIM' => $yim,
 	'LAST_VISIT_TIME' => $last_visit_time,
-// FLAGHACK-start
-	'LOCATION' => $location,
-// FLAGHACK-end
 
 	'OCCUPATION' => ( $profiledata['user_occ'] ) ? $profiledata['user_occ'] : '',
 	'INTERESTS' => ( $profiledata['user_interests'] ) ? $profiledata['user_interests'] : '',
@@ -204,11 +183,7 @@ $template->assign_vars(array(
 	'L_EMAIL' => $lang['Email'],
 	'L_PM' => $lang['Private_Message'],
 	'L_ICQ_NUMBER' => $lang['ICQ'],
-	'L_YAHOO' => $lang['YIM'],
-	'L_AIM' => $lang['AIM'],
-	'L_MESSENGER' => $lang['MSNM'],
 	'L_WEBSITE' => $lang['Website'],
-	'L_LOCATION' => $lang['Location'],
 	'L_OCCUPATION' => $lang['Occupation'],
 	'L_INTERESTS' => $lang['Interests'],
 
@@ -225,5 +200,3 @@ require(FT_ROOT .'includes/torrent_userprofile.php');
 $template->pparse('body');
 
 require(FT_ROOT . 'includes/page_tail.php');
-
-?>

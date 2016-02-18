@@ -1,31 +1,23 @@
 <?php
+if (!empty($setmodules))
+{
+	$module['TorrentPier']['Forum_Config'] = basename(__FILE__);
+	return;
+}
+
+require('./pagestart.php');
+require(FT_ROOT .'includes/functions_admin_torrent.php');
 
 $max_forum_name_len = 25;
 $max_forum_rows     = 35;
 
-@define('IN_PHPBB', TRUE);
-$page_title = 'Forum Config';
-
-if (!empty($setmodules))
+if (file_exists(@phpbb_realpath(FT_ROOT .'language/lang_'. $ft_cfg['default_lang'] .'/lang_admin_bt.php')))
 {
-	$file = basename(__FILE__);
-	$module['TorrentPier']['Forum_Config'] = "$file";
-	return;
-}
-
-// Load default header
-$phpbb_root_path = './../';
-require($phpbb_root_path .'extension.inc');
-require('./pagestart.'. $phpEx);
-include($phpbb_root_path .'includes/functions_admin_torrent.'. $phpEx);
-
-if (file_exists(@phpbb_realpath($phpbb_root_path .'language/lang_'. $board_config['default_lang'] .'/lang_admin_bt.'. $phpEx)))
-{
-	include($phpbb_root_path .'language/lang_'. $board_config['default_lang'] .'/lang_admin_bt.'. $phpEx);
+	require(FT_ROOT .'language/lang_'. $ft_cfg['default_lang'] .'/lang_admin_bt.php');
 }
 else
 {
-	include($phpbb_root_path .'language/lang_english/lang_admin_bt.'. $phpEx);
+	require(FT_ROOT .'language/lang_english/lang_admin_bt.php');
 }
 
 $submit  = (isset($_POST['submit'])) ? TRUE : FALSE;
@@ -98,7 +90,7 @@ if ($submit && $confirm)
 	update_config_table(CONFIG_TABLE, $default_cfg_bool, $cfg, 'bool');
 	update_config_table(CONFIG_TABLE, $default_cfg_num,  $cfg, 'num');
 
-	$message = $lang['config_upd'] .'<br /><br />'. sprintf($lang['return_config'], '<a href="'. append_sid("admin_bt_forum_cfg.$phpEx") .'">', '</a>') .'<br /><br />'. sprintf($lang['Click_return_admin_index'], '<a href="'. append_sid("index.$phpEx?pane=right") .'">', '</a>');
+	$message = $lang['config_upd'] .'<br /><br />'. sprintf($lang['return_config'], '<a href="'. append_sid("admin_bt_forum_cfg.php") .'">', '</a>') .'<br /><br />'. sprintf($lang['Click_return_admin_index'], '<a href="'. append_sid("index.php?pane=right") .'">', '</a>');
 	message_die(GENERAL_MESSAGE, $message);
 }
 
@@ -176,7 +168,7 @@ $template->assign_vars(array(
 	'BT_SHOW_PEERS_MODE_FULL_SEL'  => ($cfg['bt_show_peers_mode'] == SHOW_PEERS_FULL) ? $ch : '',
 
 	'S_HIDDEN_FIELDS' => '',
-	'S_CONFIG_ACTION' => append_sid("admin_bt_forum_cfg.$phpEx"),
+	'S_CONFIG_ACTION' => append_sid("admin_bt_forum_cfg.php"),
 
 	'L_CONFIRM'   => $lang['Confirm'],
 	'L_SUBMIT'    => $lang['Submit'],
@@ -186,6 +178,4 @@ $template->assign_vars(array(
 
 $template->pparse('body');
 
-include('./page_footer_admin.'.$phpEx);
-
-?>
+require('./page_footer_admin.php');

@@ -1,40 +1,10 @@
 <?php
-/***************************************************************************
- *                              admin_words.php
- *                            -------------------
- *   begin                : Thursday, Jul 12, 2001
- *   copyright            : (C) 2001 The phpBB Group
- *   email                : support@phpbb.com
- *
- *   $Id: admin_words.php,v 1.10.2.3 2004/03/25 15:57:20 acydburn Exp $
- *
- *
- ***************************************************************************/
-
-/***************************************************************************
- *
- *   This program is free software; you can redistribute it and/or modify
- *   it under the terms of the GNU General Public License as published by
- *   the Free Software Foundation; either version 2 of the License, or
- *   (at your option) any later version.
- *
- ***************************************************************************/
-
-@define('IN_PHPBB', 1);
-
 if( !empty($setmodules) )
 {
-	$file = basename(__FILE__);
-	$module['General']['Word_Censor'] = "$file";
+	$module['General']['Word_Censor'] = basename(__FILE__);
 	return;
 }
-
-//
-// Load default header
-//
-$phpbb_root_path = "./../";
-require($phpbb_root_path . 'extension.inc');
-require('./pagestart.' . $phpEx);
+require('./pagestart.php');
 
 if( isset($HTTP_GET_VARS['mode']) || isset($HTTP_POST_VARS['mode']) )
 {
@@ -104,13 +74,13 @@ if( $mode != "" )
 			"L_REPLACEMENT" => $lang['Replacement'],
 			"L_SUBMIT" => $lang['Submit'],
 
-			"S_WORDS_ACTION" => append_sid("admin_words.$phpEx"),
+			"S_WORDS_ACTION" => append_sid("admin_words.php"),
 			"S_HIDDEN_FIELDS" => $s_hidden_fields)
 		);
 
 		$template->pparse("body");
 
-		include('./page_footer_admin.'.$phpEx);
+		require('./page_footer_admin.'.$phpEx);
 	}
 	else if( $mode == "save" )
 	{
@@ -142,7 +112,7 @@ if( $mode != "" )
 			message_die(GENERAL_ERROR, "Could not insert data into words table", $lang['Error'], __LINE__, __FILE__, $sql);
 		}
 
-		$message .= "<br /><br />" . sprintf($lang['Click_return_wordadmin'], "<a href=\"" . append_sid("admin_words.$phpEx") . "\">", "</a>") . "<br /><br />" . sprintf($lang['Click_return_admin_index'], "<a href=\"" . append_sid("index.$phpEx?pane=right") . "\">", "</a>");
+		$message .= "<br /><br />" . sprintf($lang['Click_return_wordadmin'], "<a href=\"" . append_sid("admin_words.php") . "\">", "</a>") . "<br /><br />" . sprintf($lang['Click_return_admin_index'], "<a href=\"" . append_sid("index.php?pane=right") . "\">", "</a>");
 
 		message_die(GENERAL_MESSAGE, $message);
 	}
@@ -168,7 +138,7 @@ if( $mode != "" )
 				message_die(GENERAL_ERROR, "Could not remove data from words table", $lang['Error'], __LINE__, __FILE__, $sql);
 			}
 
-			$message = $lang['Word_removed'] . "<br /><br />" . sprintf($lang['Click_return_wordadmin'], "<a href=\"" . append_sid("admin_words.$phpEx") . "\">", "</a>") . "<br /><br />" . sprintf($lang['Click_return_admin_index'], "<a href=\"" . append_sid("index.$phpEx?pane=right") . "\">", "</a>");
+			$message = $lang['Word_removed'] . "<br /><br />" . sprintf($lang['Click_return_wordadmin'], "<a href=\"" . append_sid("admin_words.php") . "\">", "</a>") . "<br /><br />" . sprintf($lang['Click_return_admin_index'], "<a href=\"" . append_sid("index.php?pane=right") . "\">", "</a>");
 
 			message_die(GENERAL_MESSAGE, $message);
 		}
@@ -205,7 +175,7 @@ else
 		"L_ADD_WORD" => $lang['Add_new_word'],
 		"L_ACTION" => $lang['Action'],
 
-		"S_WORDS_ACTION" => append_sid("admin_words.$phpEx"),
+		"S_WORDS_ACTION" => append_sid("admin_words.php"),
 		"S_HIDDEN_FIELDS" => '')
 	);
 
@@ -224,14 +194,12 @@ else
 			"WORD" => $word,
 			"REPLACEMENT" => $replacement,
 
-			"U_WORD_EDIT" => append_sid("admin_words.$phpEx?mode=edit&amp;id=$word_id"),
-			"U_WORD_DELETE" => append_sid("admin_words.$phpEx?mode=delete&amp;id=$word_id"))
+			"U_WORD_EDIT" => append_sid("admin_words.php?mode=edit&amp;id=$word_id"),
+			"U_WORD_DELETE" => append_sid("admin_words.php?mode=delete&amp;id=$word_id"))
 		);
 	}
 }
 
 $template->pparse("body");
 
-include('./page_footer_admin.'.$phpEx);
-
-?>
+require('./page_footer_admin.php');

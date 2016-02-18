@@ -14,7 +14,7 @@ $poster_name_max_len = 25;
 $clean_search_interv = 3;    // clean phpbb_bt_search_results table interval (in hours)
 $tor_colspan         = 11;   // colspan with all columns
 
-$tor_per_page        = $board_config['topics_per_page'];
+$tor_per_page        = $ft_cfg['topics_per_page'];
 $tracker_basename    = "tracker.php";
 
 $current_time = (isset($_GET['time']) && $_GET['time'] == 'all') ? 0 : time();
@@ -29,7 +29,7 @@ $start = (isset($_REQUEST['start'])) ? abs(round(intval($_REQUEST['start']))) : 
 $end   = $start + $tor_per_page;
 $guest = (!$userdata['session_logged_in']) ? TRUE : FALSE;
 
-if ($board_config['bt_tor_browse_only_reg'] && $guest)
+if ($ft_cfg['bt_tor_browse_only_reg'] && $guest)
 {
 	redirect(append_sid("login.php?redirect=$tracker_basename", TRUE));
 }
@@ -530,7 +530,7 @@ if ($forum_val && $allowed_forums_sql)
 		$s_seen_exl  = ($s_not_seen_val == $never) ? '' : 'AND tor.seeder_last_seen != 0';
 
 		$poster_id_sql    = intval($poster_id_val);
-		$search_bool_mode = ($board_config['bt_search_bool_mode']) ? ' IN BOOLEAN MODE' : '';
+		$search_bool_mode = ($ft_cfg['bt_search_bool_mode']) ? ' IN BOOLEAN MODE' : '';
 
 		// SELECT
 		$select_sql = 'SELECT tor.torrent_id';
@@ -651,7 +651,7 @@ if ($forum_val && $allowed_forums_sql)
 				// Delete old search results
 				$clean_exp_time = $current_time - 60*60*$clean_search_interv;
 
-				if ($board_config['bt_search_tbl_last_clean'] < $clean_exp_time)
+				if ($ft_cfg['bt_search_tbl_last_clean'] < $clean_exp_time)
 				{
 					$sql = 'DELETE FROM '. BT_SEARCH_TABLE ."
 						WHERE added < $clean_exp_time";
@@ -923,12 +923,12 @@ if ($forum_val && $allowed_forums_sql)
 					'UL_SPEED'     => $ul_sp,
 					'DL_SPEED'     => $dl_sp,
 					'SEEDS'        => ($seeds) ? $seeds : 0,
-					'SEEDS_TITLE'  => ($seeds) ? 'Seeders' : (" Last seen: \n ". (($s_last) ? create_date($date_format, $s_last, $board_config['board_timezone']) : 'Never')),
+					'SEEDS_TITLE'  => ($seeds) ? 'Seeders' : (" Last seen: \n ". (($s_last) ? create_date($date_format, $s_last, $ft_cfg['board_timezone']) : 'Never')),
 					'LEECHS'       => ($leechs) ? $leechs : 0,
 					'COMPLETED'    => ($compl) ? $compl : 0,
 					'ADDED_RAW'    => $tor_row['reg_time'],
-					'ADDED_TIME'   => create_date($time_format, $tor_row['reg_time'], $board_config['board_timezone']),
-					'ADDED_DATE'   => create_date($date_format, $tor_row['reg_time'], $board_config['board_timezone'])
+					'ADDED_TIME'   => create_date($time_format, $tor_row['reg_time'], $ft_cfg['board_timezone']),
+					'ADDED_DATE'   => create_date($date_format, $tor_row['reg_time'], $ft_cfg['board_timezone'])
 				));
 			}
 		}

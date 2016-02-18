@@ -3,7 +3,7 @@ SET SQL_MODE = "";
 -- --------------------------------------------------------
 
 --
--- РЎС‚СЂСѓРєС‚СѓСЂР° С‚Р°Р±Р»РёС†С‹ `phpbb_attachments`
+-- Структура таблицы `phpbb_attachments`
 --
 
 CREATE TABLE IF NOT EXISTS `phpbb_attachments` (
@@ -19,7 +19,7 @@ CREATE TABLE IF NOT EXISTS `phpbb_attachments` (
 ) ENGINE=MyISAM DEFAULT CHARSET=utf8;
 
 --
--- Р”Р°РјРї РґР°РЅРЅС‹С… С‚Р°Р±Р»РёС†С‹ `phpbb_attachments`
+-- Дамп данных таблицы `phpbb_attachments`
 --
 
 INSERT INTO `phpbb_attachments` (`attach_id`, `post_id`, `privmsgs_id`, `user_id_1`, `user_id_2`) VALUES
@@ -28,7 +28,7 @@ INSERT INTO `phpbb_attachments` (`attach_id`, `post_id`, `privmsgs_id`, `user_id
 -- --------------------------------------------------------
 
 --
--- РЎС‚СЂСѓРєС‚СѓСЂР° С‚Р°Р±Р»РёС†С‹ `phpbb_attachments_config`
+-- Структура таблицы `phpbb_attachments_config`
 --
 
 CREATE TABLE IF NOT EXISTS `phpbb_attachments_config` (
@@ -38,7 +38,7 @@ CREATE TABLE IF NOT EXISTS `phpbb_attachments_config` (
 ) ENGINE=MyISAM DEFAULT CHARSET=utf8;
 
 --
--- Р”Р°РјРї РґР°РЅРЅС‹С… С‚Р°Р±Р»РёС†С‹ `phpbb_attachments_config`
+-- Дамп данных таблицы `phpbb_attachments_config`
 --
 
 INSERT INTO `phpbb_attachments_config` (`config_name`, `config_value`) VALUES
@@ -80,7 +80,7 @@ INSERT INTO `phpbb_attachments_config` (`config_name`, `config_value`) VALUES
 -- --------------------------------------------------------
 
 --
--- РЎС‚СЂСѓРєС‚СѓСЂР° С‚Р°Р±Р»РёС†С‹ `phpbb_attachments_desc`
+-- Структура таблицы `phpbb_attachments_desc`
 --
 
 CREATE TABLE IF NOT EXISTS `phpbb_attachments_desc` (
@@ -102,16 +102,16 @@ CREATE TABLE IF NOT EXISTS `phpbb_attachments_desc` (
 ) ENGINE=MyISAM  DEFAULT CHARSET=utf8 AUTO_INCREMENT=2 ;
 
 --
--- Р”Р°РјРї РґР°РЅРЅС‹С… С‚Р°Р±Р»РёС†С‹ `phpbb_attachments_desc`
+-- Дамп данных таблицы `phpbb_attachments_desc`
 --
 
 INSERT INTO `phpbb_attachments_desc` (`attach_id`, `physical_filename`, `real_filename`, `download_count`, `comment`, `extension`, `mimetype`, `filesize`, `filetime`, `thumbnail`, `tracker_status`) VALUES
-(1, 'test_167.torrent', 'test.torrent', 1, 'File Comment', 'torrent', 'application/x-bittorrent', 251, 1117378177, 0, 1);
+(1, 'test_167.torrent', 'test.torrent', 8, 'File Comment', 'torrent', 'application/x-bittorrent', 251, 1117378177, 0, 1);
 
 -- --------------------------------------------------------
 
 --
--- РЎС‚СЂСѓРєС‚СѓСЂР° С‚Р°Р±Р»РёС†С‹ `phpbb_attach_quota`
+-- Структура таблицы `phpbb_attach_quota`
 --
 
 CREATE TABLE IF NOT EXISTS `phpbb_attach_quota` (
@@ -125,7 +125,7 @@ CREATE TABLE IF NOT EXISTS `phpbb_attach_quota` (
 -- --------------------------------------------------------
 
 --
--- РЎС‚СЂСѓРєС‚СѓСЂР° С‚Р°Р±Р»РёС†С‹ `phpbb_auth_access`
+-- Структура таблицы `phpbb_auth_access`
 --
 
 CREATE TABLE IF NOT EXISTS `phpbb_auth_access` (
@@ -151,7 +151,7 @@ CREATE TABLE IF NOT EXISTS `phpbb_auth_access` (
 -- --------------------------------------------------------
 
 --
--- РЎС‚СЂСѓРєС‚СѓСЂР° С‚Р°Р±Р»РёС†С‹ `phpbb_banlist`
+-- Структура таблицы `phpbb_banlist`
 --
 
 CREATE TABLE IF NOT EXISTS `phpbb_banlist` (
@@ -166,7 +166,7 @@ CREATE TABLE IF NOT EXISTS `phpbb_banlist` (
 -- --------------------------------------------------------
 
 --
--- РЎС‚СЂСѓРєС‚СѓСЂР° С‚Р°Р±Р»РёС†С‹ `phpbb_bt_config`
+-- Структура таблицы `phpbb_bt_config`
 --
 
 CREATE TABLE IF NOT EXISTS `phpbb_bt_config` (
@@ -176,7 +176,7 @@ CREATE TABLE IF NOT EXISTS `phpbb_bt_config` (
 ) ENGINE=MyISAM DEFAULT CHARSET=utf8;
 
 --
--- Р”Р°РјРї РґР°РЅРЅС‹С… С‚Р°Р±Р»РёС†С‹ `phpbb_bt_config`
+-- Дамп данных таблицы `phpbb_bt_config`
 --
 
 INSERT INTO `phpbb_bt_config` (`config_name`, `config_value`) VALUES
@@ -219,7 +219,7 @@ INSERT INTO `phpbb_bt_config` (`config_name`, `config_value`) VALUES
 -- --------------------------------------------------------
 
 --
--- РЎС‚СЂСѓРєС‚СѓСЂР° С‚Р°Р±Р»РёС†С‹ `phpbb_bt_search_results`
+-- Структура таблицы `phpbb_bt_search_results`
 --
 
 CREATE TABLE IF NOT EXISTS `phpbb_bt_search_results` (
@@ -234,7 +234,7 @@ CREATE TABLE IF NOT EXISTS `phpbb_bt_search_results` (
 -- --------------------------------------------------------
 
 --
--- РЎС‚СЂСѓРєС‚СѓСЂР° С‚Р°Р±Р»РёС†С‹ `phpbb_bt_torrents`
+-- Структура таблицы `phpbb_bt_torrents`
 --
 
 CREATE TABLE IF NOT EXISTS `phpbb_bt_torrents` (
@@ -264,16 +264,16 @@ CREATE TABLE IF NOT EXISTS `phpbb_bt_torrents` (
 ) ENGINE=MyISAM  DEFAULT CHARSET=utf8 AUTO_INCREMENT=2 ;
 
 --
--- Р”Р°РјРї РґР°РЅРЅС‹С… С‚Р°Р±Р»РёС†С‹ `phpbb_bt_torrents`
+-- Дамп данных таблицы `phpbb_bt_torrents`
 --
 
 INSERT INTO `phpbb_bt_torrents` (`torrent_id`, `info_hash`, `post_id`, `poster_id`, `topic_id`, `attach_id`, `size`, `piece_length`, `reg_time`, `complete_count`, `seeder_last_seen`, `last_seeder_uid`, `topic_check_status`, `topic_check_uid`, `topic_check_date`, `topic_check_first_fid`, `topic_check_duble_tid`) VALUES
-(1, 'х\Zm“шФuэЃoF? ЕsOЁ', 4, 4, 3, 1, 16748964, 4194304, 1117378225, 0, 0, 0, 0, 0, 0, 0, 0);
+(1, '�\Zm���u��oF? �sO�', 4, 4, 3, 1, 16748964, 4194304, 1117378225, 0, 0, 0, 3, 2, 1455662105, 0, 0);
 
 -- --------------------------------------------------------
 
 --
--- РЎС‚СЂСѓРєС‚СѓСЂР° С‚Р°Р±Р»РёС†С‹ `phpbb_bt_tor_dl_stat`
+-- Структура таблицы `phpbb_bt_tor_dl_stat`
 --
 
 CREATE TABLE IF NOT EXISTS `phpbb_bt_tor_dl_stat` (
@@ -288,7 +288,7 @@ CREATE TABLE IF NOT EXISTS `phpbb_bt_tor_dl_stat` (
 -- --------------------------------------------------------
 
 --
--- РЎС‚СЂСѓРєС‚СѓСЂР° С‚Р°Р±Р»РёС†С‹ `phpbb_bt_tracker`
+-- Структура таблицы `phpbb_bt_tracker`
 --
 
 CREATE TABLE IF NOT EXISTS `phpbb_bt_tracker` (
@@ -316,7 +316,7 @@ CREATE TABLE IF NOT EXISTS `phpbb_bt_tracker` (
 -- --------------------------------------------------------
 
 --
--- РЎС‚СЂСѓРєС‚СѓСЂР° С‚Р°Р±Р»РёС†С‹ `phpbb_bt_users`
+-- Структура таблицы `phpbb_bt_users`
 --
 
 CREATE TABLE IF NOT EXISTS `phpbb_bt_users` (
@@ -330,16 +330,17 @@ CREATE TABLE IF NOT EXISTS `phpbb_bt_users` (
 ) ENGINE=MyISAM DEFAULT CHARSET=utf8;
 
 --
--- Р”Р°РјРї РґР°РЅРЅС‹С… С‚Р°Р±Р»РёС†С‹ `phpbb_bt_users`
+-- Дамп данных таблицы `phpbb_bt_users`
 --
 
 INSERT INTO `phpbb_bt_users` (`user_id`, `auth_key`, `u_up_total`, `u_bonus_total`, `u_down_total`) VALUES
-(-1, '\0\0\0\0\0\0\0\0\0\0', 0, 0, 0);
+(-1, '\0\0\0\0\0\0\0\0\0\0', 0, 0, 0),
+(2, 'U1ToCwJKBl', 0, 0, 0);
 
 -- --------------------------------------------------------
 
 --
--- РЎС‚СЂСѓРєС‚СѓСЂР° С‚Р°Р±Р»РёС†С‹ `phpbb_bt_users_dl_status`
+-- Структура таблицы `phpbb_bt_users_dl_status`
 --
 
 CREATE TABLE IF NOT EXISTS `phpbb_bt_users_dl_status` (
@@ -355,7 +356,7 @@ CREATE TABLE IF NOT EXISTS `phpbb_bt_users_dl_status` (
 -- --------------------------------------------------------
 
 --
--- РЎС‚СЂСѓРєС‚СѓСЂР° С‚Р°Р±Р»РёС†С‹ `phpbb_categories`
+-- Структура таблицы `phpbb_categories`
 --
 
 CREATE TABLE IF NOT EXISTS `phpbb_categories` (
@@ -367,7 +368,7 @@ CREATE TABLE IF NOT EXISTS `phpbb_categories` (
 ) ENGINE=MyISAM  DEFAULT CHARSET=utf8 AUTO_INCREMENT=2 ;
 
 --
--- Р”Р°РјРї РґР°РЅРЅС‹С… С‚Р°Р±Р»РёС†С‹ `phpbb_categories`
+-- Дамп данных таблицы `phpbb_categories`
 --
 
 INSERT INTO `phpbb_categories` (`cat_id`, `cat_title`, `cat_order`) VALUES
@@ -376,7 +377,7 @@ INSERT INTO `phpbb_categories` (`cat_id`, `cat_title`, `cat_order`) VALUES
 -- --------------------------------------------------------
 
 --
--- РЎС‚СЂСѓРєС‚СѓСЂР° С‚Р°Р±Р»РёС†С‹ `phpbb_config`
+-- Структура таблицы `phpbb_config`
 --
 
 CREATE TABLE IF NOT EXISTS `phpbb_config` (
@@ -386,7 +387,7 @@ CREATE TABLE IF NOT EXISTS `phpbb_config` (
 ) ENGINE=MyISAM DEFAULT CHARSET=utf8;
 
 --
--- Р”Р°РјРї РґР°РЅРЅС‹С… С‚Р°Р±Р»РёС†С‹ `phpbb_config`
+-- Дамп данных таблицы `phpbb_config`
 --
 
 INSERT INTO `phpbb_config` (`config_name`, `config_value`) VALUES
@@ -409,7 +410,6 @@ INSERT INTO `phpbb_config` (`config_name`, `config_value`) VALUES
 ('allow_avatar_local', '0'),
 ('allow_avatar_remote', '0'),
 ('allow_avatar_upload', '1'),
-('enable_confirm', '1'),
 ('override_user_style', '0'),
 ('posts_per_page', '15'),
 ('topics_per_page', '50'),
@@ -479,17 +479,6 @@ INSERT INTO `phpbb_config` (`config_name`, `config_value`) VALUES
 ('bt_unset_dltype_on_tor_unreg', '0'),
 ('bt_add_comment', ''),
 ('bt_add_publisher', 'YourSiteName'),
-('dbmtnc_rebuild_end', '0'),
-('dbmtnc_rebuild_pos', '-1'),
-('dbmtnc_rebuildcfg_maxmemory', '500'),
-('dbmtnc_rebuildcfg_minposts', '3'),
-('dbmtnc_rebuildcfg_php3only', '0'),
-('dbmtnc_rebuildcfg_php3pps', '1'),
-('dbmtnc_rebuildcfg_php4pps', '8'),
-('dbmtnc_rebuildcfg_timelimit', '240'),
-('dbmtnc_rebuildcfg_timeoverwrite', '0'),
-('dbmtnc_disallow_postcounter', '0'),
-('dbmtnc_disallow_rebuild', '0'),
 ('board_startdate', '1455565573'),
 ('default_lang', 'russian'),
 ('xs_auto_compile', '1'),
@@ -506,26 +495,13 @@ INSERT INTO `phpbb_config` (`config_name`, `config_value`) VALUES
 ('xs_downloads_count', '0'),
 ('xs_downloads_default', '0'),
 ('xs_shownav', '17'),
-('xs_template_time', '0'),
-('xs_version', '7');
+('xs_template_time', '1455741544'),
+('xs_version', '');
 
 -- --------------------------------------------------------
 
 --
--- РЎС‚СЂСѓРєС‚СѓСЂР° С‚Р°Р±Р»РёС†С‹ `phpbb_confirm`
---
-
-CREATE TABLE IF NOT EXISTS `phpbb_confirm` (
-  `confirm_id` char(32) NOT NULL DEFAULT '',
-  `session_id` char(32) NOT NULL DEFAULT '',
-  `code` char(6) NOT NULL DEFAULT '',
-  PRIMARY KEY (`session_id`,`confirm_id`)
-) ENGINE=MyISAM DEFAULT CHARSET=utf8;
-
--- --------------------------------------------------------
-
---
--- РЎС‚СЂСѓРєС‚СѓСЂР° С‚Р°Р±Р»РёС†С‹ `phpbb_disallow`
+-- Структура таблицы `phpbb_disallow`
 --
 
 CREATE TABLE IF NOT EXISTS `phpbb_disallow` (
@@ -537,7 +513,7 @@ CREATE TABLE IF NOT EXISTS `phpbb_disallow` (
 -- --------------------------------------------------------
 
 --
--- РЎС‚СЂСѓРєС‚СѓСЂР° С‚Р°Р±Р»РёС†С‹ `phpbb_extensions`
+-- Структура таблицы `phpbb_extensions`
 --
 
 CREATE TABLE IF NOT EXISTS `phpbb_extensions` (
@@ -549,7 +525,7 @@ CREATE TABLE IF NOT EXISTS `phpbb_extensions` (
 ) ENGINE=MyISAM  DEFAULT CHARSET=utf8 AUTO_INCREMENT=30 ;
 
 --
--- Р”Р°РјРї РґР°РЅРЅС‹С… С‚Р°Р±Р»РёС†С‹ `phpbb_extensions`
+-- Дамп данных таблицы `phpbb_extensions`
 --
 
 INSERT INTO `phpbb_extensions` (`ext_id`, `group_id`, `extension`, `comment`) VALUES
@@ -586,7 +562,7 @@ INSERT INTO `phpbb_extensions` (`ext_id`, `group_id`, `extension`, `comment`) VA
 -- --------------------------------------------------------
 
 --
--- РЎС‚СЂСѓРєС‚СѓСЂР° С‚Р°Р±Р»РёС†С‹ `phpbb_extension_groups`
+-- Структура таблицы `phpbb_extension_groups`
 --
 
 CREATE TABLE IF NOT EXISTS `phpbb_extension_groups` (
@@ -602,7 +578,7 @@ CREATE TABLE IF NOT EXISTS `phpbb_extension_groups` (
 ) ENGINE=MyISAM  DEFAULT CHARSET=utf8 AUTO_INCREMENT=9 ;
 
 --
--- Р”Р°РјРї РґР°РЅРЅС‹С… С‚Р°Р±Р»РёС†С‹ `phpbb_extension_groups`
+-- Дамп данных таблицы `phpbb_extension_groups`
 --
 
 INSERT INTO `phpbb_extension_groups` (`group_id`, `group_name`, `cat_id`, `allow_group`, `download_mode`, `upload_icon`, `max_filesize`, `forum_permissions`) VALUES
@@ -618,218 +594,7 @@ INSERT INTO `phpbb_extension_groups` (`group_id`, `group_name`, `cat_id`, `allow
 -- --------------------------------------------------------
 
 --
--- РЎС‚СЂСѓРєС‚СѓСЂР° С‚Р°Р±Р»РёС†С‹ `phpbb_flags`
---
-
-CREATE TABLE IF NOT EXISTS `phpbb_flags` (
-  `flag_id` int(10) NOT NULL AUTO_INCREMENT,
-  `flag_name` varchar(25) DEFAULT '',
-  `flag_image` varchar(25) DEFAULT '',
-  PRIMARY KEY (`flag_id`)
-) ENGINE=MyISAM  DEFAULT CHARSET=utf8 AUTO_INCREMENT=193 ;
-
---
--- Р”Р°РјРї РґР°РЅРЅС‹С… С‚Р°Р±Р»РёС†С‹ `phpbb_flags`
---
-
-INSERT INTO `phpbb_flags` (`flag_id`, `flag_name`, `flag_image`) VALUES
-(1, 'usa', 'usa.gif'),
-(2, 'afghanistan', 'afghanistan.gif'),
-(3, 'albania', 'albania.gif'),
-(4, 'algeria', 'algeria.gif'),
-(5, 'andorra', 'andorra.gif'),
-(6, 'angola', 'angola.gif'),
-(7, 'antigua and barbuda', 'antiguabarbuda.gif'),
-(8, 'argentina', 'argentina.gif'),
-(9, 'armenia', 'armenia.gif'),
-(10, 'australia', 'australia.gif'),
-(11, 'austria', 'austria.gif'),
-(12, 'azerbaijan', 'azerbaijan.gif'),
-(13, 'bahamas', 'bahamas.gif'),
-(14, 'bahrain', 'bahrain.gif'),
-(15, 'bangladesh', 'bangladesh.gif'),
-(16, 'barbados', 'barbados.gif'),
-(17, 'belarus', 'belarus.gif'),
-(18, 'belgium', 'belgium.gif'),
-(19, 'belize', 'belize.gif'),
-(20, 'benin', 'benin.gif'),
-(21, 'bhutan', 'bhutan.gif'),
-(22, 'bolivia', 'bolivia.gif'),
-(23, 'bosnia herzegovina', 'bosnia_herzegovina.gif'),
-(24, 'botswana', 'botswana.gif'),
-(25, 'brazil', 'brazil.gif'),
-(26, 'brunei', 'brunei.gif'),
-(27, 'bulgaria', 'bulgaria.gif'),
-(28, 'burkinafaso', 'burkinafaso.gif'),
-(29, 'burma', 'burma.gif'),
-(30, 'burundi', 'burundi.gif'),
-(31, 'cambodia', 'cambodia.gif'),
-(32, 'cameroon', 'cameroon.gif'),
-(33, 'canada', 'canada.gif'),
-(34, 'central african rep', 'centralafricanrep.gif'),
-(35, 'chad', 'chad.gif'),
-(36, 'chile', 'chile.gif'),
-(37, 'china', 'china.gif'),
-(38, 'columbia', 'columbia.gif'),
-(39, 'comoros', 'comoros.gif'),
-(40, 'congo', 'congo.gif'),
-(41, 'costarica', 'costarica.gif'),
-(42, 'croatia', 'croatia.gif'),
-(43, 'cuba', 'cuba.gif'),
-(44, 'cyprus', 'cyprus.gif'),
-(45, 'czech republic', 'czechrepublic.gif'),
-(46, 'demrepcongo', 'demrepcongo.gif'),
-(47, 'denmark', 'denmark.gif'),
-(48, 'djibouti', 'djibouti.gif'),
-(49, 'dominica', 'dominica.gif'),
-(50, 'dominican rep', 'dominicanrep.gif'),
-(51, 'ecuador', 'ecuador.gif'),
-(52, 'egypt', 'egypt.gif'),
-(53, 'elsalvador', 'elsalvador.gif'),
-(54, 'eq guinea', 'eq_guinea.gif'),
-(55, 'eritrea', 'eritrea.gif'),
-(56, 'estonia', 'estonia.gif'),
-(57, 'ethiopia', 'ethiopia.gif'),
-(58, 'fiji', 'fiji.gif'),
-(59, 'finland', 'finland.gif'),
-(60, 'france', 'france.gif'),
-(61, 'gabon', 'gabon.gif'),
-(62, 'gambia', 'gambia.gif'),
-(63, 'georgia', 'georgia.gif'),
-(64, 'germany', 'germany.gif'),
-(65, 'ghana', 'ghana.gif'),
-(66, 'greece', 'greece.gif'),
-(67, 'grenada', 'grenada.gif'),
-(68, 'grenadines', 'grenadines.gif'),
-(69, 'guatemala', 'guatemala.gif'),
-(70, 'guinea', 'guinea.gif'),
-(71, 'guineabissau', 'guineabissau.gif'),
-(72, 'guyana', 'guyana.gif'),
-(73, 'haiti', 'haiti.gif'),
-(74, 'honduras', 'honduras.gif'),
-(75, 'hong kong', 'hong_kong.gif'),
-(76, 'hungary', 'hungary.gif'),
-(77, 'iceland', 'iceland.gif'),
-(78, 'india', 'india.gif'),
-(79, 'indonesia', 'indonesia.gif'),
-(80, 'iran', 'iran.gif'),
-(81, 'iraq', 'iraq.gif'),
-(82, 'ireland', 'ireland.gif'),
-(83, 'israel', 'israel.gif'),
-(84, 'italy', 'italy.gif'),
-(85, 'ivory coast', 'ivorycoast.gif'),
-(86, 'jamaica', 'jamaica.gif'),
-(87, 'japan', 'japan.gif'),
-(88, 'jordan', 'jordan.gif'),
-(89, 'kazakhstan', 'kazakhstan.gif'),
-(90, 'kenya', 'kenya.gif'),
-(91, 'kiribati', 'kiribati.gif'),
-(92, 'kuwait', 'kuwait.gif'),
-(93, 'kyrgyzstan', 'kyrgyzstan.gif'),
-(94, 'laos', 'laos.gif'),
-(95, 'latvia', 'latvia.gif'),
-(96, 'lebanon', 'lebanon.gif'),
-(97, 'liberia', 'liberia.gif'),
-(98, 'libya', 'libya.gif'),
-(99, 'liechtenstein', 'liechtenstein.gif'),
-(100, 'lithuania', 'lithuania.gif'),
-(101, 'luxembourg', 'luxembourg.gif'),
-(102, 'macadonia', 'macadonia.gif'),
-(103, 'macau', 'macau.gif'),
-(104, 'madagascar', 'madagascar.gif'),
-(105, 'malawi', 'malawi.gif'),
-(106, 'malaysia', 'malaysia.gif'),
-(107, 'maldives', 'maldives.gif'),
-(108, 'mali', 'mali.gif'),
-(109, 'malta', 'malta.gif'),
-(110, 'mauritania', 'mauritania.gif'),
-(111, 'mauritius', 'mauritius.gif'),
-(112, 'mexico', 'mexico.gif'),
-(113, 'micronesia', 'micronesia.gif'),
-(114, 'moldova', 'moldova.gif'),
-(115, 'monaco', 'monaco.gif'),
-(116, 'mongolia', 'mongolia.gif'),
-(117, 'morocco', 'morocco.gif'),
-(118, 'mozambique', 'mozambique.gif'),
-(119, 'namibia', 'namibia.gif'),
-(120, 'nauru', 'nauru.gif'),
-(121, 'nepal', 'nepal.gif'),
-(122, 'neth antilles', 'neth_antilles.gif'),
-(123, 'netherlands', 'netherlands.gif'),
-(124, 'new zealand', 'newzealand.gif'),
-(125, 'nicaragua', 'nicaragua.gif'),
-(126, 'niger', 'niger.gif'),
-(127, 'nigeria', 'nigeria.gif'),
-(128, 'north korea', 'north_korea.gif'),
-(129, 'norway', 'norway.gif'),
-(130, 'oman', 'oman.gif'),
-(131, 'pakistan', 'pakistan.gif'),
-(132, 'panama', 'panama.gif'),
-(133, 'papua newguinea', 'papuanewguinea.gif'),
-(134, 'paraguay', 'paraguay.gif'),
-(135, 'peru', 'peru.gif'),
-(136, 'philippines', 'philippines.gif'),
-(137, 'poland', 'poland.gif'),
-(138, 'portugal', 'portugal.gif'),
-(139, 'puertorico', 'puertorico.gif'),
-(140, 'qatar', 'qatar.gif'),
-(141, 'rawanda', 'rawanda.gif'),
-(142, 'romania', 'romania.gif'),
-(143, 'russia', 'russia.gif'),
-(144, 'sao tome', 'sao_tome.gif'),
-(145, 'saudiarabia', 'saudiarabia.gif'),
-(146, 'senegal', 'senegal.gif'),
-(147, 'serbia', 'serbia.gif'),
-(148, 'seychelles', 'seychelles.gif'),
-(149, 'sierraleone', 'sierraleone.gif'),
-(150, 'singapore', 'singapore.gif'),
-(151, 'slovakia', 'slovakia.gif'),
-(152, 'slovenia', 'slovenia.gif'),
-(153, 'solomon islands', 'solomon_islands.gif'),
-(154, 'somalia', 'somalia.gif'),
-(155, 'south_korea', 'south_korea.gif'),
-(156, 'south africa', 'southafrica.gif'),
-(157, 'spain', 'spain.gif'),
-(158, 'srilanka', 'srilanka.gif'),
-(159, 'stkitts nevis', 'stkitts_nevis.gif'),
-(160, 'stlucia', 'stlucia.gif'),
-(161, 'sudan', 'sudan.gif'),
-(162, 'suriname', 'suriname.gif'),
-(163, 'sweden', 'sweden.gif'),
-(164, 'switzerland', 'switzerland.gif'),
-(165, 'syria', 'syria.gif'),
-(166, 'taiwan', 'taiwan.gif'),
-(167, 'tajikistan', 'tajikistan.gif'),
-(168, 'tanzania', 'tanzania.gif'),
-(169, 'thailand', 'thailand.gif'),
-(170, 'togo', 'togo.gif'),
-(171, 'tonga', 'tonga.gif'),
-(172, 'trinidad and tobago', 'trinidadandtobago.gif'),
-(173, 'tunisia', 'tunisia.gif'),
-(174, 'turkey', 'turkey.gif'),
-(175, 'turkmenistan', 'turkmenistan.gif'),
-(176, 'tuvala', 'tuvala.gif'),
-(177, 'uae', 'uae.gif'),
-(178, 'uganda', 'uganda.gif'),
-(179, 'uk', 'uk.gif'),
-(180, 'ukraine', 'ukraine.gif'),
-(181, 'uruguay', 'uruguay.gif'),
-(182, 'ussr', 'ussr.gif'),
-(183, 'uzbekistan', 'uzbekistan.gif'),
-(184, 'vanuatu', 'vanuatu.gif'),
-(185, 'venezuela', 'venezuela.gif'),
-(186, 'vietnam', 'vietnam.gif'),
-(187, 'western samoa', 'western_samoa.gif'),
-(188, 'yemen', 'yemen.gif'),
-(189, 'yugoslavia', 'yugoslavia.gif'),
-(190, 'zaire', 'zaire.gif'),
-(191, 'zambia', 'zambia.gif'),
-(192, 'zimbabwe', 'zimbabwe.gif');
-
--- --------------------------------------------------------
-
---
--- РЎС‚СЂСѓРєС‚СѓСЂР° С‚Р°Р±Р»РёС†С‹ `phpbb_forbidden_extensions`
+-- Структура таблицы `phpbb_forbidden_extensions`
 --
 
 CREATE TABLE IF NOT EXISTS `phpbb_forbidden_extensions` (
@@ -839,7 +604,7 @@ CREATE TABLE IF NOT EXISTS `phpbb_forbidden_extensions` (
 ) ENGINE=MyISAM  DEFAULT CHARSET=utf8 AUTO_INCREMENT=8 ;
 
 --
--- Р”Р°РјРї РґР°РЅРЅС‹С… С‚Р°Р±Р»РёС†С‹ `phpbb_forbidden_extensions`
+-- Дамп данных таблицы `phpbb_forbidden_extensions`
 --
 
 INSERT INTO `phpbb_forbidden_extensions` (`ext_id`, `extension`) VALUES
@@ -854,7 +619,7 @@ INSERT INTO `phpbb_forbidden_extensions` (`ext_id`, `extension`) VALUES
 -- --------------------------------------------------------
 
 --
--- РЎС‚СЂСѓРєС‚СѓСЂР° С‚Р°Р±Р»РёС†С‹ `phpbb_forums`
+-- Структура таблицы `phpbb_forums`
 --
 
 CREATE TABLE IF NOT EXISTS `phpbb_forums` (
@@ -901,18 +666,18 @@ CREATE TABLE IF NOT EXISTS `phpbb_forums` (
 ) ENGINE=MyISAM DEFAULT CHARSET=utf8;
 
 --
--- Р”Р°РјРї РґР°РЅРЅС‹С… С‚Р°Р±Р»РёС†С‹ `phpbb_forums`
+-- Дамп данных таблицы `phpbb_forums`
 --
 
 INSERT INTO `phpbb_forums` (`forum_id`, `cat_id`, `forum_name`, `forum_desc`, `forum_status`, `forum_order`, `forum_posts`, `forum_topics`, `forum_last_post_id`, `prune_next`, `prune_enable`, `auth_view`, `auth_read`, `auth_post`, `auth_reply`, `auth_edit`, `auth_delete`, `auth_sticky`, `auth_announce`, `auth_vote`, `auth_pollcreate`, `auth_attachments`, `auth_download`, `allow_reg_tracker`, `allow_dl_topic`, `dl_type_default`, `self_moderated`, `last_dl_topics_synch`, `show_dl_buttons`, `forum_parent`, `show_on_index`, `forum_display_sort`, `forum_display_order`, `move_next`, `recycle_move_next`, `move_enable`) VALUES
 (1, 1, 'Test Forum 1', 'This is just a test forum.', 0, 10, 1, 1, 1, NULL, 0, 0, 0, 0, 0, 1, 1, 3, 3, 1, 1, 3, 0, 1, 0, 0, 0, 0, 1, 0, 1, 0, 0, 0, 0, 0),
-(2, 1, 'subforum 1', 'subforum 1 description', 0, 20, 2, 1, 3, NULL, 0, 0, 0, 1, 1, 1, 1, 3, 3, 1, 1, 1, 1, 0, 1, 0, 1, 1117359869, 1, 1, 1, 0, 0, 0, 0, 0),
+(2, 1, 'subforum 1', 'subforum 1 description', 0, 20, 0, 0, 0, NULL, 0, 0, 0, 1, 1, 1, 1, 3, 3, 1, 1, 1, 1, 0, 1, 0, 1, 1117359869, 1, 1, 1, 0, 0, 0, 0, 0),
 (3, 1, 'Download Forum 1', '', 0, 30, 1, 1, 4, NULL, 0, 0, 0, 1, 1, 1, 1, 3, 3, 1, 1, 1, 1, 1, 0, 0, 0, 0, 1, 0, 1, 0, 0, 0, 0, 0);
 
 -- --------------------------------------------------------
 
 --
--- РЎС‚СЂСѓРєС‚СѓСЂР° С‚Р°Р±Р»РёС†С‹ `phpbb_forum_prune`
+-- Структура таблицы `phpbb_forum_prune`
 --
 
 CREATE TABLE IF NOT EXISTS `phpbb_forum_prune` (
@@ -927,7 +692,7 @@ CREATE TABLE IF NOT EXISTS `phpbb_forum_prune` (
 -- --------------------------------------------------------
 
 --
--- РЎС‚СЂСѓРєС‚СѓСЂР° С‚Р°Р±Р»РёС†С‹ `phpbb_groups`
+-- Структура таблицы `phpbb_groups`
 --
 
 CREATE TABLE IF NOT EXISTS `phpbb_groups` (
@@ -942,7 +707,7 @@ CREATE TABLE IF NOT EXISTS `phpbb_groups` (
 ) ENGINE=MyISAM  DEFAULT CHARSET=utf8 AUTO_INCREMENT=6 ;
 
 --
--- Р”Р°РјРї РґР°РЅРЅС‹С… С‚Р°Р±Р»РёС†С‹ `phpbb_groups`
+-- Дамп данных таблицы `phpbb_groups`
 --
 
 INSERT INTO `phpbb_groups` (`group_id`, `group_type`, `group_name`, `group_description`, `group_moderator`, `group_single_user`) VALUES
@@ -955,7 +720,7 @@ INSERT INTO `phpbb_groups` (`group_id`, `group_type`, `group_name`, `group_descr
 -- --------------------------------------------------------
 
 --
--- РЎС‚СЂСѓРєС‚СѓСЂР° С‚Р°Р±Р»РёС†С‹ `phpbb_posts`
+-- Структура таблицы `phpbb_posts`
 --
 
 CREATE TABLE IF NOT EXISTS `phpbb_posts` (
@@ -981,19 +746,17 @@ CREATE TABLE IF NOT EXISTS `phpbb_posts` (
 ) ENGINE=MyISAM  DEFAULT CHARSET=utf8 AUTO_INCREMENT=5 ;
 
 --
--- Р”Р°РјРї РґР°РЅРЅС‹С… С‚Р°Р±Р»РёС†С‹ `phpbb_posts`
+-- Дамп данных таблицы `phpbb_posts`
 --
 
 INSERT INTO `phpbb_posts` (`post_id`, `topic_id`, `forum_id`, `poster_id`, `post_time`, `poster_ip`, `post_username`, `enable_bbcode`, `enable_html`, `enable_smilies`, `enable_sig`, `post_edit_time`, `post_edit_count`, `post_attachment`) VALUES
 (1, 1, 1, 2, 972086460, '7F000001', NULL, 1, 0, 1, 1, NULL, 0, 0),
-(2, 2, 2, 2, 1117115113, '7f000001', '', 1, 0, 1, 0, NULL, 0, 0),
-(3, 2, 2, -746, 1117115440, '7f000001', '', 0, 1, 0, 1, NULL, 0, 0),
 (4, 3, 3, 4, 1117362875, '7f000001', '', 1, 0, 1, 0, NULL, 0, 1);
 
 -- --------------------------------------------------------
 
 --
--- РЎС‚СЂСѓРєС‚СѓСЂР° С‚Р°Р±Р»РёС†С‹ `phpbb_posts_text`
+-- Структура таблицы `phpbb_posts_text`
 --
 
 CREATE TABLE IF NOT EXISTS `phpbb_posts_text` (
@@ -1005,19 +768,17 @@ CREATE TABLE IF NOT EXISTS `phpbb_posts_text` (
 ) ENGINE=MyISAM DEFAULT CHARSET=utf8;
 
 --
--- Р”Р°РјРї РґР°РЅРЅС‹С… С‚Р°Р±Р»РёС†С‹ `phpbb_posts_text`
+-- Дамп данных таблицы `phpbb_posts_text`
 --
 
 INSERT INTO `phpbb_posts_text` (`post_id`, `bbcode_uid`, `post_subject`, `post_text`) VALUES
 (1, '', NULL, 'This is an example post in your phpBB 2 installation. You may delete this post, this topic and even this forum if you like since everything seems to be working!'),
-(2, '48df346ad5', 'Bot test 1', 'test'),
-(3, '', '', 'Topic has been moved from forum <b><a class="postLink" href="viewforum.php?f=1">Test Forum 1</a></b> to forum <b><a class="postLink" href="viewforum.php?f=2">subforum 1</a></b></b>.\n\nAdmin.'),
 (4, '833b835389', 'Download Topic 1', 'test');
 
 -- --------------------------------------------------------
 
 --
--- РЎС‚СЂСѓРєС‚СѓСЂР° С‚Р°Р±Р»РёС†С‹ `phpbb_privmsgs`
+-- Структура таблицы `phpbb_privmsgs`
 --
 
 CREATE TABLE IF NOT EXISTS `phpbb_privmsgs` (
@@ -1036,12 +797,22 @@ CREATE TABLE IF NOT EXISTS `phpbb_privmsgs` (
   PRIMARY KEY (`privmsgs_id`),
   KEY `privmsgs_from_userid` (`privmsgs_from_userid`),
   KEY `privmsgs_to_userid` (`privmsgs_to_userid`)
-) ENGINE=MyISAM DEFAULT CHARSET=utf8 AUTO_INCREMENT=1 ;
+) ENGINE=MyISAM  DEFAULT CHARSET=utf8 AUTO_INCREMENT=5 ;
+
+--
+-- Дамп данных таблицы `phpbb_privmsgs`
+--
+
+INSERT INTO `phpbb_privmsgs` (`privmsgs_id`, `privmsgs_type`, `privmsgs_subject`, `privmsgs_from_userid`, `privmsgs_to_userid`, `privmsgs_date`, `privmsgs_ip`, `privmsgs_enable_bbcode`, `privmsgs_enable_html`, `privmsgs_enable_smilies`, `privmsgs_attach_sig`, `privmsgs_attachment`) VALUES
+(1, 0, 'dfgdfgdfg', 2, 2, 1455629540, '7f000001', 1, 0, 1, 0, 0),
+(2, 2, 'dfgdfgdfg', 2, 2, 1455629540, '7f000001', 1, 0, 1, 0, 0),
+(3, 1, '', 2, 4, 1455660266, '', 1, 0, 1, 1, 0),
+(4, 1, '', 2, 4, 1455662105, '', 1, 0, 1, 1, 0);
 
 -- --------------------------------------------------------
 
 --
--- РЎС‚СЂСѓРєС‚СѓСЂР° С‚Р°Р±Р»РёС†С‹ `phpbb_privmsgs_text`
+-- Структура таблицы `phpbb_privmsgs_text`
 --
 
 CREATE TABLE IF NOT EXISTS `phpbb_privmsgs_text` (
@@ -1051,10 +822,20 @@ CREATE TABLE IF NOT EXISTS `phpbb_privmsgs_text` (
   PRIMARY KEY (`privmsgs_text_id`)
 ) ENGINE=MyISAM DEFAULT CHARSET=utf8;
 
+--
+-- Дамп данных таблицы `phpbb_privmsgs_text`
+--
+
+INSERT INTO `phpbb_privmsgs_text` (`privmsgs_text_id`, `privmsgs_bbcode_uid`, `privmsgs_text`) VALUES
+(1, '5f0b123485', 'dfgdfgdgfdgdf'),
+(2, '5f0b123485', 'dfgdfgdgfdgdf'),
+(3, 'd768f1977b', ''),
+(4, '36f3473bc8', '');
+
 -- --------------------------------------------------------
 
 --
--- РЎС‚СЂСѓРєС‚СѓСЂР° С‚Р°Р±Р»РёС†С‹ `phpbb_quota_limits`
+-- Структура таблицы `phpbb_quota_limits`
 --
 
 CREATE TABLE IF NOT EXISTS `phpbb_quota_limits` (
@@ -1065,7 +846,7 @@ CREATE TABLE IF NOT EXISTS `phpbb_quota_limits` (
 ) ENGINE=MyISAM  DEFAULT CHARSET=utf8 AUTO_INCREMENT=4 ;
 
 --
--- Р”Р°РјРї РґР°РЅРЅС‹С… С‚Р°Р±Р»РёС†С‹ `phpbb_quota_limits`
+-- Дамп данных таблицы `phpbb_quota_limits`
 --
 
 INSERT INTO `phpbb_quota_limits` (`quota_limit_id`, `quota_desc`, `quota_limit`) VALUES
@@ -1076,7 +857,7 @@ INSERT INTO `phpbb_quota_limits` (`quota_limit_id`, `quota_desc`, `quota_limit`)
 -- --------------------------------------------------------
 
 --
--- РЎС‚СЂСѓРєС‚СѓСЂР° С‚Р°Р±Р»РёС†С‹ `phpbb_ranks`
+-- Структура таблицы `phpbb_ranks`
 --
 
 CREATE TABLE IF NOT EXISTS `phpbb_ranks` (
@@ -1089,7 +870,7 @@ CREATE TABLE IF NOT EXISTS `phpbb_ranks` (
 ) ENGINE=MyISAM  DEFAULT CHARSET=utf8 AUTO_INCREMENT=2 ;
 
 --
--- Р”Р°РјРї РґР°РЅРЅС‹С… С‚Р°Р±Р»РёС†С‹ `phpbb_ranks`
+-- Дамп данных таблицы `phpbb_ranks`
 --
 
 INSERT INTO `phpbb_ranks` (`rank_id`, `rank_title`, `rank_min`, `rank_special`, `rank_image`) VALUES
@@ -1098,7 +879,7 @@ INSERT INTO `phpbb_ranks` (`rank_id`, `rank_title`, `rank_min`, `rank_special`, 
 -- --------------------------------------------------------
 
 --
--- РЎС‚СЂСѓРєС‚СѓСЂР° С‚Р°Р±Р»РёС†С‹ `phpbb_search_results`
+-- Структура таблицы `phpbb_search_results`
 --
 
 CREATE TABLE IF NOT EXISTS `phpbb_search_results` (
@@ -1112,7 +893,7 @@ CREATE TABLE IF NOT EXISTS `phpbb_search_results` (
 -- --------------------------------------------------------
 
 --
--- РЎС‚СЂСѓРєС‚СѓСЂР° С‚Р°Р±Р»РёС†С‹ `phpbb_search_wordlist`
+-- Структура таблицы `phpbb_search_wordlist`
 --
 
 CREATE TABLE IF NOT EXISTS `phpbb_search_wordlist` (
@@ -1126,7 +907,7 @@ CREATE TABLE IF NOT EXISTS `phpbb_search_wordlist` (
 -- --------------------------------------------------------
 
 --
--- РЎС‚СЂСѓРєС‚СѓСЂР° С‚Р°Р±Р»РёС†С‹ `phpbb_search_wordmatch`
+-- Структура таблицы `phpbb_search_wordmatch`
 --
 
 CREATE TABLE IF NOT EXISTS `phpbb_search_wordmatch` (
@@ -1140,7 +921,7 @@ CREATE TABLE IF NOT EXISTS `phpbb_search_wordmatch` (
 -- --------------------------------------------------------
 
 --
--- РЎС‚СЂСѓРєС‚СѓСЂР° С‚Р°Р±Р»РёС†С‹ `phpbb_sessions`
+-- Структура таблицы `phpbb_sessions`
 --
 
 CREATE TABLE IF NOT EXISTS `phpbb_sessions` (
@@ -1158,16 +939,16 @@ CREATE TABLE IF NOT EXISTS `phpbb_sessions` (
 ) ENGINE=MyISAM DEFAULT CHARSET=utf8;
 
 --
--- Р”Р°РјРї РґР°РЅРЅС‹С… С‚Р°Р±Р»РёС†С‹ `phpbb_sessions`
+-- Дамп данных таблицы `phpbb_sessions`
 --
 
 INSERT INTO `phpbb_sessions` (`session_id`, `session_user_id`, `session_start`, `session_time`, `session_ip`, `session_page`, `session_logged_in`, `session_admin`) VALUES
-('7a32ebd46bc05c394fdfdad51eaa606e', 2, 1455567848, 1455568328, '7f000001', 0, 1, 0);
+('5535a81c8f98d2cdc7e24a7ed87e9e2f', 2, 1455830956, 1455831201, '7f000001', 1, 1, 1);
 
 -- --------------------------------------------------------
 
 --
--- РЎС‚СЂСѓРєС‚СѓСЂР° С‚Р°Р±Р»РёС†С‹ `phpbb_smilies`
+-- Структура таблицы `phpbb_smilies`
 --
 
 CREATE TABLE IF NOT EXISTS `phpbb_smilies` (
@@ -1179,7 +960,7 @@ CREATE TABLE IF NOT EXISTS `phpbb_smilies` (
 ) ENGINE=MyISAM  DEFAULT CHARSET=utf8 AUTO_INCREMENT=50 ;
 
 --
--- Р”Р°РјРї РґР°РЅРЅС‹С… С‚Р°Р±Р»РёС†С‹ `phpbb_smilies`
+-- Дамп данных таблицы `phpbb_smilies`
 --
 
 INSERT INTO `phpbb_smilies` (`smilies_id`, `code`, `smile_url`, `emoticon`) VALUES
@@ -1236,7 +1017,7 @@ INSERT INTO `phpbb_smilies` (`smilies_id`, `code`, `smile_url`, `emoticon`) VALU
 -- --------------------------------------------------------
 
 --
--- РЎС‚СЂСѓРєС‚СѓСЂР° С‚Р°Р±Р»РёС†С‹ `phpbb_themes`
+-- Структура таблицы `phpbb_themes`
 --
 
 CREATE TABLE IF NOT EXISTS `phpbb_themes` (
@@ -1287,7 +1068,7 @@ CREATE TABLE IF NOT EXISTS `phpbb_themes` (
 ) ENGINE=MyISAM  DEFAULT CHARSET=utf8 AUTO_INCREMENT=2 ;
 
 --
--- Р”Р°РјРї РґР°РЅРЅС‹С… С‚Р°Р±Р»РёС†С‹ `phpbb_themes`
+-- Дамп данных таблицы `phpbb_themes`
 --
 
 INSERT INTO `phpbb_themes` (`themes_id`, `template_name`, `style_name`, `head_stylesheet`, `body_background`, `body_bgcolor`, `body_text`, `body_link`, `body_vlink`, `body_alink`, `body_hlink`, `tr_color1`, `tr_color2`, `tr_color3`, `tr_class1`, `tr_class2`, `tr_class3`, `th_color1`, `th_color2`, `th_color3`, `th_class1`, `th_class2`, `th_class3`, `td_color1`, `td_color2`, `td_color3`, `td_class1`, `td_class2`, `td_class3`, `fontface1`, `fontface2`, `fontface3`, `fontsize1`, `fontsize2`, `fontsize3`, `fontcolor1`, `fontcolor2`, `fontcolor3`, `span_class1`, `span_class2`, `span_class3`, `img_size_poll`, `img_size_privmsg`) VALUES
@@ -1296,7 +1077,7 @@ INSERT INTO `phpbb_themes` (`themes_id`, `template_name`, `style_name`, `head_st
 -- --------------------------------------------------------
 
 --
--- РЎС‚СЂСѓРєС‚СѓСЂР° С‚Р°Р±Р»РёС†С‹ `phpbb_themes_name`
+-- Структура таблицы `phpbb_themes_name`
 --
 
 CREATE TABLE IF NOT EXISTS `phpbb_themes_name` (
@@ -1335,7 +1116,7 @@ CREATE TABLE IF NOT EXISTS `phpbb_themes_name` (
 ) ENGINE=MyISAM DEFAULT CHARSET=utf8;
 
 --
--- Р”Р°РјРї РґР°РЅРЅС‹С… С‚Р°Р±Р»РёС†С‹ `phpbb_themes_name`
+-- Дамп данных таблицы `phpbb_themes_name`
 --
 
 INSERT INTO `phpbb_themes_name` (`themes_id`, `tr_color1_name`, `tr_color2_name`, `tr_color3_name`, `tr_class1_name`, `tr_class2_name`, `tr_class3_name`, `th_color1_name`, `th_color2_name`, `th_color3_name`, `th_class1_name`, `th_class2_name`, `th_class3_name`, `td_color1_name`, `td_color2_name`, `td_color3_name`, `td_class1_name`, `td_class2_name`, `td_class3_name`, `fontface1_name`, `fontface2_name`, `fontface3_name`, `fontsize1_name`, `fontsize2_name`, `fontsize3_name`, `fontcolor1_name`, `fontcolor2_name`, `fontcolor3_name`, `span_class1_name`, `span_class2_name`, `span_class3_name`) VALUES
@@ -1344,7 +1125,7 @@ INSERT INTO `phpbb_themes_name` (`themes_id`, `tr_color1_name`, `tr_color2_name`
 -- --------------------------------------------------------
 
 --
--- РЎС‚СЂСѓРєС‚СѓСЂР° С‚Р°Р±Р»РёС†С‹ `phpbb_topics`
+-- Структура таблицы `phpbb_topics`
 --
 
 CREATE TABLE IF NOT EXISTS `phpbb_topics` (
@@ -1373,18 +1154,17 @@ CREATE TABLE IF NOT EXISTS `phpbb_topics` (
 ) ENGINE=MyISAM  DEFAULT CHARSET=utf8 AUTO_INCREMENT=4 ;
 
 --
--- Р”Р°РјРї РґР°РЅРЅС‹С… С‚Р°Р±Р»РёС†С‹ `phpbb_topics`
+-- Дамп данных таблицы `phpbb_topics`
 --
 
 INSERT INTO `phpbb_topics` (`topic_id`, `forum_id`, `topic_title`, `topic_poster`, `topic_time`, `topic_views`, `topic_replies`, `topic_status`, `topic_vote`, `topic_type`, `topic_first_post_id`, `topic_last_post_id`, `topic_moved_id`, `topic_attachment`, `topic_dl_type`, `topic_dl_status`) VALUES
-(1, 1, 'Welcome to phpBB 2', 2, 972086460, 0, 0, 0, 0, 0, 1, 1, 0, 0, 0, 0),
-(2, 2, 'Bot test 1', 2, 1117115113, 12, 1, 0, 0, 0, 2, 3, 0, 0, 0, 0),
-(3, 3, 'Download Topic 1', 4, 1117362875, 22, 0, 0, 0, 0, 4, 4, 0, 1, 1, 1);
+(1, 1, 'Welcome to phpBB 2', 2, 972086460, 6, 0, 0, 0, 0, 1, 1, 0, 0, 0, 0),
+(3, 3, 'Download Topic 1', 4, 1117362875, 98, 0, 0, 0, 0, 4, 4, 0, 1, 1, 1);
 
 -- --------------------------------------------------------
 
 --
--- РЎС‚СЂСѓРєС‚СѓСЂР° С‚Р°Р±Р»РёС†С‹ `phpbb_topics_move`
+-- Структура таблицы `phpbb_topics_move`
 --
 
 CREATE TABLE IF NOT EXISTS `phpbb_topics_move` (
@@ -1403,7 +1183,7 @@ CREATE TABLE IF NOT EXISTS `phpbb_topics_move` (
 -- --------------------------------------------------------
 
 --
--- РЎС‚СЂСѓРєС‚СѓСЂР° С‚Р°Р±Р»РёС†С‹ `phpbb_topics_watch`
+-- Структура таблицы `phpbb_topics_watch`
 --
 
 CREATE TABLE IF NOT EXISTS `phpbb_topics_watch` (
@@ -1418,7 +1198,7 @@ CREATE TABLE IF NOT EXISTS `phpbb_topics_watch` (
 -- --------------------------------------------------------
 
 --
--- РЎС‚СЂСѓРєС‚СѓСЂР° С‚Р°Р±Р»РёС†С‹ `phpbb_users`
+-- Структура таблицы `phpbb_users`
 --
 
 CREATE TABLE IF NOT EXISTS `phpbb_users` (
@@ -1460,35 +1240,31 @@ CREATE TABLE IF NOT EXISTS `phpbb_users` (
   `user_from` varchar(100) DEFAULT NULL,
   `user_sig` text,
   `user_sig_bbcode_uid` varchar(10) DEFAULT NULL,
-  `user_aim` varchar(255) DEFAULT NULL,
-  `user_yim` varchar(255) DEFAULT NULL,
-  `user_msnm` varchar(255) DEFAULT NULL,
   `user_occ` varchar(100) DEFAULT NULL,
   `user_interests` varchar(255) DEFAULT NULL,
   `user_actkey` varchar(32) DEFAULT NULL,
   `user_newpasswd` varchar(32) DEFAULT NULL,
   `user_allow_passkey` tinyint(1) NOT NULL DEFAULT '1',
   `bt_tor_browse_set` text,
-  `user_from_flag` varchar(25) DEFAULT NULL,
   PRIMARY KEY (`user_id`),
   KEY `user_session_time` (`user_session_time`)
 ) ENGINE=MyISAM DEFAULT CHARSET=utf8;
 
 --
--- Р”Р°РјРї РґР°РЅРЅС‹С… С‚Р°Р±Р»РёС†С‹ `phpbb_users`
+-- Дамп данных таблицы `phpbb_users`
 --
 
-INSERT INTO `phpbb_users` (`user_id`, `user_active`, `username`, `user_password`, `user_session_time`, `user_session_page`, `user_lastvisit`, `user_regdate`, `user_level`, `user_posts`, `user_timezone`, `user_style`, `user_lang`, `user_dateformat`, `user_new_privmsg`, `user_unread_privmsg`, `user_last_privmsg`, `user_emailtime`, `user_viewemail`, `user_attachsig`, `user_allowhtml`, `user_allowbbcode`, `user_allowsmile`, `user_allowavatar`, `user_allow_pm`, `user_allow_viewonline`, `user_notify`, `user_notify_pm`, `user_popup_pm`, `user_rank`, `user_avatar`, `user_avatar_type`, `user_email`, `user_icq`, `user_website`, `user_from`, `user_sig`, `user_sig_bbcode_uid`, `user_aim`, `user_yim`, `user_msnm`, `user_occ`, `user_interests`, `user_actkey`, `user_newpasswd`, `user_allow_passkey`, `bt_tor_browse_set`, `user_from_flag`) VALUES
-(-1, 0, 'Anonymous', '', 0, 0, 0, 1455565573, 0, 0, '0.00', NULL, '', '', 0, 0, 0, NULL, 0, 0, 1, 1, 1, 1, 0, 1, 0, 1, 0, NULL, '', 0, '', '', '', '', '', NULL, '', '', '', '', '', '', '', 1, '', NULL),
-(2, 1, 'admin', '21232f297a57a5a743894a0e4a801fc3', 1455568328, 0, 1117435921, 1455565573, 1, 2, '0.00', 1, 'russian', 'Y-m-d H:i', 0, 0, 1455567848, NULL, 1, 0, 0, 1, 1, 1, 1, 1, 0, 1, 1, 1, '', 0, 'admin@admin.com', '', '', '', '', '', '', '', '', '', '', '', '', 1, 'a:15:{s:3:"sid";s:32:"7a32ebd46bc05c394fdfdad51eaa606e";s:1:"n";i:0;s:2:"sd";i:0;s:1:"a";i:1;s:2:"my";i:0;s:1:"f";i:-1;s:3:"pid";i:0;s:2:"pn";s:0:"";s:3:"sns";i:-1;s:1:"o";i:1;s:1:"s";i:2;s:2:"tm";i:30;s:3:"shf";i:1;s:3:"sha";i:1;s:3:"shs";i:0;}', 'blank.gif'),
-(-746, 0, 'bot', '', 1117115716, 2, 1117115634, 1455565573, 0, 1, '0.00', 1, 'english', 'Y-m-d H:i', 0, 0, 0, NULL, 0, 0, 1, 0, 1, 1, 1, 1, 0, 0, 0, 0, 'bot.gif', 1, 'bot@bot.bot', '', '', '', '', '', '', '', '', '', '', '', NULL, 1, '', 'blank.gif'),
-(4, 1, 'user1', 'c4ca4238a0b923820dcc509a6f75849b', 1117378293, -1, 1117362875, 1455565573, 0, 1, '0.00', 1, 'english', 'Y-m-d H:i', 0, 0, 0, NULL, 0, 1, 0, 1, 1, 1, 1, 1, 0, 1, 1, 0, '', 0, '1@11.com', '', '', '', '', '', '', '', '', '', '', '', NULL, 1, '', 'blank.gif'),
-(5, 1, 'user2', 'c4ca4238a0b923820dcc509a6f75849b', 1117378592, 3, 1117378303, 1455565573, 0, 0, '0.00', 1, 'english', 'Y-m-d H:i', 0, 0, 0, NULL, 0, 1, 0, 1, 1, 1, 1, 1, 0, 1, 1, 0, '', 0, '2@2.com', '', '', '', '', '', '', '', '', '', '', '', NULL, 1, '', 'blank.gif');
+INSERT INTO `phpbb_users` (`user_id`, `user_active`, `username`, `user_password`, `user_session_time`, `user_session_page`, `user_lastvisit`, `user_regdate`, `user_level`, `user_posts`, `user_timezone`, `user_style`, `user_lang`, `user_dateformat`, `user_new_privmsg`, `user_unread_privmsg`, `user_last_privmsg`, `user_emailtime`, `user_viewemail`, `user_attachsig`, `user_allowhtml`, `user_allowbbcode`, `user_allowsmile`, `user_allowavatar`, `user_allow_pm`, `user_allow_viewonline`, `user_notify`, `user_notify_pm`, `user_popup_pm`, `user_rank`, `user_avatar`, `user_avatar_type`, `user_email`, `user_icq`, `user_website`, `user_from`, `user_sig`, `user_sig_bbcode_uid`, `user_occ`, `user_interests`, `user_actkey`, `user_newpasswd`, `user_allow_passkey`, `bt_tor_browse_set`) VALUES
+(-1, 0, 'Anonymous', '', 0, 0, 0, 1455565573, 0, 0, '0.00', NULL, '', '', 0, 0, 0, NULL, 0, 0, 1, 1, 1, 1, 0, 1, 0, 1, 0, NULL, '', 0, '', '', '', '', '', NULL, '', '', '', '', 1, ''),
+(2, 1, 'admin', '21232f297a57a5a743894a0e4a801fc3', 1455831201, 1, 1455830617, 1455565573, 1, 1, '0.00', 1, 'russian', 'Y-m-d H:i', 0, 0, 1455830651, NULL, 1, 0, 0, 1, 1, 1, 1, 1, 0, 1, 1, 1, '', 0, 'admin@admin.com', '', '', '', '', '', '', '', '', '', 1, 'a:15:{s:3:"sid";s:32:"5535a81c8f98d2cdc7e24a7ed87e9e2f";s:1:"n";i:0;s:2:"sd";i:0;s:1:"a";i:1;s:2:"my";i:0;s:1:"f";i:-1;s:3:"pid";i:0;s:2:"pn";s:0:"";s:3:"sns";i:-1;s:1:"o";i:1;s:1:"s";i:2;s:2:"tm";i:30;s:3:"shf";i:1;s:3:"sha";i:1;s:3:"shs";i:0;}'),
+(-746, 0, 'bot', '', 1117115716, 2, 1117115634, 1455565573, 0, 0, '0.00', 1, 'english', 'Y-m-d H:i', 0, 0, 0, NULL, 0, 0, 1, 0, 1, 1, 1, 1, 0, 0, 0, 0, 'bot.gif', 1, 'bot@bot.bot', '', '', '', '', '', '', '', '', NULL, 1, ''),
+(4, 1, 'user1', 'c4ca4238a0b923820dcc509a6f75849b', 1117378293, -1, 1117362875, 1455565573, 0, 1, '0.00', 1, 'english', 'Y-m-d H:i', 2, 0, 1455662105, NULL, 0, 1, 0, 1, 1, 1, 1, 1, 0, 1, 1, 0, '', 0, '1@11.com', '', '', '', '', '', '', '', '', NULL, 1, ''),
+(5, 1, 'user2', 'c4ca4238a0b923820dcc509a6f75849b', 1117378592, 3, 1117378303, 1455565573, 0, 0, '0.00', 1, 'english', 'Y-m-d H:i', 0, 0, 0, NULL, 0, 1, 0, 1, 1, 1, 1, 1, 0, 1, 1, 0, '', 0, '2@2.com', '', '', '', '', '', '', '', '', NULL, 1, '');
 
 -- --------------------------------------------------------
 
 --
--- РЎС‚СЂСѓРєС‚СѓСЂР° С‚Р°Р±Р»РёС†С‹ `phpbb_user_group`
+-- Структура таблицы `phpbb_user_group`
 --
 
 CREATE TABLE IF NOT EXISTS `phpbb_user_group` (
@@ -1500,7 +1276,7 @@ CREATE TABLE IF NOT EXISTS `phpbb_user_group` (
 ) ENGINE=MyISAM DEFAULT CHARSET=utf8;
 
 --
--- Р”Р°РјРї РґР°РЅРЅС‹С… С‚Р°Р±Р»РёС†С‹ `phpbb_user_group`
+-- Дамп данных таблицы `phpbb_user_group`
 --
 
 INSERT INTO `phpbb_user_group` (`group_id`, `user_id`, `user_pending`) VALUES
@@ -1513,7 +1289,7 @@ INSERT INTO `phpbb_user_group` (`group_id`, `user_id`, `user_pending`) VALUES
 -- --------------------------------------------------------
 
 --
--- РЎС‚СЂСѓРєС‚СѓСЂР° С‚Р°Р±Р»РёС†С‹ `phpbb_vote_desc`
+-- Структура таблицы `phpbb_vote_desc`
 --
 
 CREATE TABLE IF NOT EXISTS `phpbb_vote_desc` (
@@ -1529,7 +1305,7 @@ CREATE TABLE IF NOT EXISTS `phpbb_vote_desc` (
 -- --------------------------------------------------------
 
 --
--- РЎС‚СЂСѓРєС‚СѓСЂР° С‚Р°Р±Р»РёС†С‹ `phpbb_vote_results`
+-- Структура таблицы `phpbb_vote_results`
 --
 
 CREATE TABLE IF NOT EXISTS `phpbb_vote_results` (
@@ -1544,7 +1320,7 @@ CREATE TABLE IF NOT EXISTS `phpbb_vote_results` (
 -- --------------------------------------------------------
 
 --
--- РЎС‚СЂСѓРєС‚СѓСЂР° С‚Р°Р±Р»РёС†С‹ `phpbb_vote_voters`
+-- Структура таблицы `phpbb_vote_voters`
 --
 
 CREATE TABLE IF NOT EXISTS `phpbb_vote_voters` (
@@ -1559,7 +1335,7 @@ CREATE TABLE IF NOT EXISTS `phpbb_vote_voters` (
 -- --------------------------------------------------------
 
 --
--- РЎС‚СЂСѓРєС‚СѓСЂР° С‚Р°Р±Р»РёС†С‹ `phpbb_words`
+-- Структура таблицы `phpbb_words`
 --
 
 CREATE TABLE IF NOT EXISTS `phpbb_words` (

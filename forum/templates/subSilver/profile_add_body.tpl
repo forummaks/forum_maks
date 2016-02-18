@@ -52,16 +52,6 @@
 		<input type="password" class="post" style="width: 200px" name="password_confirm" size="25" maxlength="32" value="{PASSWORD_CONFIRM}" />
 	  </td>
 	</tr>
-	<!-- Visual Confirmation -->
-	<!-- BEGIN switch_confirm -->
-	<tr>
-		<td class="row1" colspan="2" align="center"><span class="gensmall">{L_CONFIRM_CODE_IMPAIRED}</span><br /><br />{CONFIRM_IMG}<br /><br /></td>
-	</tr>
-	<tr>
-	  <td class="row1"><span class="gen">{L_CONFIRM_CODE}: * </span><br /><span class="gensmall">{L_CONFIRM_CODE_EXPLAIN}</span></td>
-	  <td class="row2"><input type="text" class="post" style="width: 200px" name="confirm_code" size="6" maxlength="6" value="" /></td>
-	</tr>
-	<!-- END switch_confirm -->
 	<tr>
 	  <td class="catSides" colspan="2" height="28">&nbsp;</td>
 	</tr>
@@ -96,24 +86,6 @@
 	  </td>
 	</tr>
 	<tr>
-	  <td class="row1"><span class="gen">{L_AIM}:</span></td>
-	  <td class="row2">
-		<input type="text" class="post"style="width: 150px"  name="aim" size="20" maxlength="255" value="{AIM}" />
-	  </td>
-	</tr>
-	<tr>
-	  <td class="row1"><span class="gen">{L_MESSENGER}:</span></td>
-	  <td class="row2">
-		<input type="text" class="post"style="width: 150px"  name="msn" size="20" maxlength="255" value="{MSN}" />
-	  </td>
-	</tr>
-	<tr>
-	  <td class="row1"><span class="gen">{L_YAHOO}:</span></td>
-	  <td class="row2">
-		<input type="text" class="post"style="width: 150px"  name="yim" size="20" maxlength="255" value="{YIM}" />
-	  </td>
-	</tr>
-	<tr>
 	  <td class="row1"><span class="gen">{L_WEBSITE}:</span></td>
 	  <td class="row2">
 		<input type="text" class="post"style="width: 200px"  name="website" size="25" maxlength="255" value="{WEBSITE}" />
@@ -125,17 +97,6 @@
 		<input type="text" class="post"style="width: 200px"  name="location" size="25" maxlength="100" value="{LOCATION}" />
 	  </td>
 	</tr>
-<!-- FLAGHACK-start -->
-	<tr>
-	  <td class="row1"><span class="gen">{L_FLAG}:</span></td>
-	  <td class="row2"><span class="gensmall">
-		<table><tr>
-			<td>{FLAG_SELECT}&nbsp;&nbsp;&nbsp;&nbsp;</td>
-	  		<td><img src="images/flags/{FLAG_START}" width="32" height="20" name="user_flag" /></td>
-		</tr></table>
-	  </span></td>
-	</tr>
-<!-- FLAGHACK-end -->
 	<tr>
 	  <td class="row1"><span class="gen">{L_OCCUPATION}:</span></td>
 	  <td class="row2">

@@ -23,11 +23,11 @@ if ( isset($HTTP_POST_VARS['submit']) )
 			$username = $row['username'];
 			$user_id = $row['user_id'];
 
-			$user_actkey = gen_rand_string(true);
+			$user_actkey = make_rand_str(true);
 			$key_len = 54 - strlen($server_url);
 			$key_len = ( $str_len > 6 ) ? $key_len : 6;
 			$user_actkey = substr($user_actkey, 0, $key_len);
-			$user_password = gen_rand_string(false);
+			$user_password = make_rand_str(false);
 
 			$sql = "UPDATE " . USERS_TABLE . "
 				SET user_newpasswd = '" . md5($user_password) . "', user_actkey = '$user_actkey'
@@ -38,20 +38,20 @@ if ( isset($HTTP_POST_VARS['submit']) )
 			}
 
 			require(FT_ROOT . 'includes/emailer.php');
-			$emailer = new emailer($board_config['smtp_delivery']);
+			$emailer = new emailer($ft_cfg['smtp_delivery']);
 
-			$emailer->from($board_config['board_email']);
-			$emailer->replyto($board_config['board_email']);
+			$emailer->from($ft_cfg['board_email']);
+			$emailer->replyto($ft_cfg['board_email']);
 
 			$emailer->use_template('user_activate_passwd', $row['user_lang']);
 			$emailer->email_address($row['user_email']);
 			$emailer->set_subject($lang['New_password_activation']);
 
 			$emailer->assign_vars(array(
-				'SITENAME' => $board_config['sitename'],
+				'SITENAME' => $ft_cfg['sitename'],
 				'USERNAME' => $username,
 				'PASSWORD' => $user_password,
-				'EMAIL_SIG' => (!empty($board_config['board_email_sig'])) ? str_replace('<br />', "\n", "-- \n" . $board_config['board_email_sig']) : '',
+				'EMAIL_SIG' => (!empty($ft_cfg['board_email_sig'])) ? str_replace('<br />', "\n", "-- \n" . $ft_cfg['board_email_sig']) : '',
 
 				'U_ACTIVATE' => $server_url . '?mode=activate&' . POST_USERS_URL . '=' . $user_id . '&act_key=' . $user_actkey)
 			);

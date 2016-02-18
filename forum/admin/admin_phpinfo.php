@@ -1,21 +1,12 @@
 <?php
-
-@define('IN_PHPBB', 1);
-
 if (!empty($setmodules))
 {
-	$filename = basename(__FILE__);
-	$module['General']['PHP Info'] = $filename;
+	$module['General']['PHP Info'] = basename(__FILE__);
 	return;
 }
 
-// Load default header
-$phpbb_root_path = '../';
-require($phpbb_root_path .'extension.inc');
-require('pagestart.'. $phpEx);
+require('./pagestart.php');
 
 phpinfo();
 
-include('./page_footer_admin.'. $phpEx);
-
-?>
+include('./page_footer_admin.php');

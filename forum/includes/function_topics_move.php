@@ -10,7 +10,7 @@ require_once(FT_ROOT . 'includes/functions_admin.php');
 
 function move($forum_id, $move_fid, $mode, $waits_days=0, $topic_id=0)
 {
-	global $db, $lang, $board_config;
+	global $db, $lang, $ft_cfg;
 
 	// Before moving, lets try to clean up the invalid topic entries
 	$sql = 'SELECT topic_id FROM ' . TOPICS_TABLE . '
@@ -119,10 +119,10 @@ function move($forum_id, $move_fid, $mode, $waits_days=0, $topic_id=0)
 					break;
 				}
 	
-				$script_path = preg_replace('/^\/?(.*?)\/?$/', "\\1", trim($board_config['script_path']));
-				$server_name = trim($board_config['server_name']);
-				$server_protocol = ( $board_config['cookie_secure'] ) ? 'https://' : 'http://';
-				$server_port = ( $board_config['server_port'] <> 80 ) ? ':' . trim($board_config['server_port']) . '/' : '/';
+				$script_path = preg_replace('/^\/?(.*?)\/?$/', "\\1", trim($ft_cfg['script_path']));
+				$server_name = trim($ft_cfg['server_name']);
+				$server_protocol = ( $ft_cfg['cookie_secure'] ) ? 'https://' : 'http://';
+				$server_port = ( $ft_cfg['server_port'] <> 80 ) ? ':' . trim($ft_cfg['server_port']) . '/' : '/';
 				$i=0;
 				while( $i < count($send_pm_data) )
 				{

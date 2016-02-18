@@ -64,7 +64,7 @@ class emailer
 
 	function use_template($template_file, $template_lang = '')
 	{
-		global $board_config;
+		global $ft_cfg;
 
 		if (trim($template_file) == '')
 		{
@@ -73,7 +73,7 @@ class emailer
 
 		if (trim($template_lang) == '')
 		{
-			$template_lang = $board_config['default_lang'];
+			$template_lang = $ft_cfg['default_lang'];
 		}
 
 		if (empty($this->tpl_msg[$template_lang . $template_file]))
@@ -82,7 +82,7 @@ class emailer
 
 			if (!@file_exists(@phpbb_realpath($tpl_file)))
 			{
-				$tpl_file = FT_ROOT . 'language/lang_' . $board_config['default_lang'] . '/email/' . $template_file . '.tpl';
+				$tpl_file = FT_ROOT . 'language/lang_' . $ft_cfg['default_lang'] . '/email/' . $template_file . '.tpl';
 
 				if (!@file_exists(@phpbb_realpath($tpl_file)))
 				{
@@ -113,7 +113,7 @@ class emailer
 	// Send the mail out to the recipients set previously in var $this->address
 	function send()
 	{
-		global $board_config, $lang, $db;
+		global $ft_cfg, $lang, $db;
 
     	// Escape all quotes, else the eval will fail.
 		$this->msg = str_replace ("'", "\'", $this->msg);
@@ -170,7 +170,7 @@ class emailer
 		$bcc = (@count($this->addresses['bcc'])) ? implode(', ', $this->addresses['bcc']) : '';
 
 		// Build header
-		$this->extra_headers = (($this->reply_to != '') ? "Reply-to: $this->reply_to\n" : '') . (($this->from != '') ? "From: $this->from\n" : "From: " . $board_config['board_email'] . "\n") . "Return-Path: " . $board_config['board_email'] . "\nMessage-ID: <" . md5(uniqid(time())) . "@" . $board_config['server_name'] . ">\nMIME-Version: 1.0\nContent-type: text/plain; charset=" . $this->encoding . "\nContent-transfer-encoding: 8bit\nDate: " . date('r', time()) . "\nX-Priority: 3\nX-MSMail-Priority: Normal\nX-Mailer: PHP\nX-MimeOLE: Produced By phpBB2\n" . $this->extra_headers . (($cc != '') ? "Cc: $cc\n" : '')  . (($bcc != '') ? "Bcc: $bcc\n" : '');
+		$this->extra_headers = (($this->reply_to != '') ? "Reply-to: $this->reply_to\n" : '') . (($this->from != '') ? "From: $this->from\n" : "From: " . $ft_cfg['board_email'] . "\n") . "Return-Path: " . $ft_cfg['board_email'] . "\nMessage-ID: <" . md5(uniqid(time())) . "@" . $ft_cfg['server_name'] . ">\nMIME-Version: 1.0\nContent-type: text/plain; charset=" . $this->encoding . "\nContent-transfer-encoding: 8bit\nDate: " . date('r', time()) . "\nX-Priority: 3\nX-MSMail-Priority: Normal\nX-Mailer: PHP\nX-MimeOLE: Produced By phpBB2\n" . $this->extra_headers . (($cc != '') ? "Cc: $cc\n" : '')  . (($bcc != '') ? "Bcc: $bcc\n" : '');
 
 		// Send message ... removed $this->encode() from subject for time being
 		if ( $this->use_smtp )
@@ -185,11 +185,11 @@ class emailer
 		else
 		{
 			$empty_to_header = ($to == '') ? TRUE : FALSE;
-			$to = ($to == '') ? (($board_config['sendmail_fix']) ? ' ' : 'Undisclosed-recipients:;') : $to;
+			$to = ($to == '') ? (($ft_cfg['sendmail_fix']) ? ' ' : 'Undisclosed-recipients:;') : $to;
 
 			$result = @mail($to, $this->subject, preg_replace("#(?<!\r)\n#s", "\n", $this->msg), $this->extra_headers);
 
-			if (!$result && !$board_config['sendmail_fix'] && $empty_to_header)
+			if (!$result && !$ft_cfg['sendmail_fix'] && $empty_to_header)
 			{
 				$to = ' ';
 
@@ -201,7 +201,7 @@ class emailer
 					message_die(GENERAL_ERROR, 'Unable to update config table', '', __LINE__, __FILE__, $sql);
 				}
 
-				$board_config['sendmail_fix'] = 1;
+				$ft_cfg['sendmail_fix'] = 1;
 				$result = @mail($to, $this->subject, preg_replace("#(?<!\r)\n#s", "\n", $this->msg), $this->extra_headers);
 			}
 		}

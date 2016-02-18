@@ -1,45 +1,12 @@
 <?php
-
-/***************************************************************************
- * Filename:          admin_forumauth_list.php
- * Description:       Summary listing of the advanced permissions of all forums
- *                    with integrated editing
- * Author:            Graham Eames (phpbb@grahameames.co.uk)
- * Last Modified:     26-Mar-2004
- * File Version:      1.2
- *
- * Acknowlegments:    This file uses some features adapted from those
- *                    provided in admin_forumauth.php from the base distribution.
- *
- ***************************************************************************/
-
-/***************************************************************************
- *
- *   This program is free software; you can redistribute it and/or modify
- *   it under the terms of the GNU General Public License as published by
- *   the Free Software Foundation; either version 2 of the License, or
- *   (at your option) any later version.
- *
- ***************************************************************************/
-
-@define('IN_PHPBB', 1);
-$page_title = 'Permissions List';
-
-if( !empty($setmodules) )
+if(!empty($setmodules))
 {
-	$filename = basename(__FILE__);
-	$module['Forums']['Permissions_List'] = $filename;
-
+	$module['Forums']['Permissions_List'] = basename(__FILE__);
 	return;
 }
 
-//
-// Load default header
-//
-$no_page_header = TRUE;
-$phpbb_root_path = './../';
-require($phpbb_root_path . 'extension.inc');
-require('./pagestart.' . $phpEx);
+//$no_page_header = TRUE;
+require('./pagestart.php');
 
 //
 // Start program - define vars
@@ -192,18 +159,13 @@ if( isset($HTTP_POST_VARS['submit']) )
 	}
 
 	$template->assign_vars(array(
-		'META' => '<meta http-equiv="refresh" content="3;url=' . append_sid("admin_forumauth_list.$phpEx") . '">')
+		'META' => '<meta http-equiv="refresh" content="3;url=' . append_sid("admin_forumauth_list.php") . '">')
 	);
-	$message = $lang['Forum_auth_updated'] . '<br /><br />' . sprintf($lang['Click_return_forumauth'],  '<a href="' . append_sid("admin_forumauth_list.$phpEx") . '">', "</a>");
+	$message = $lang['Forum_auth_updated'] . '<br /><br />' . sprintf($lang['Click_return_forumauth'],  '<a href="' . append_sid("admin_forumauth_list.php") . '">', "</a>");
 	message_die(GENERAL_MESSAGE, $message);
 
-} // End of submit
+}
 
-//
-// Get required information, either all forums if
-// no id was specified or just the requsted forum
-// or category if it was
-//
 $sql = "SELECT f.*
 	FROM " . FORUMS_TABLE . " f, " . CATEGORIES_TABLE . " c
 	WHERE c.cat_id = f.cat_id
@@ -219,10 +181,7 @@ $db->sql_freeresult($result);
 
 if( empty($forum_id) && empty($cat_id) )
 {
-	//
-	// Output the summary list if no forum id was
-	// specified
-	//
+
 	$template->set_filenames(array(
 		'body' => 'admin/auth_forum_list_body.tpl')
 	);
@@ -241,7 +200,6 @@ if( empty($forum_id) && empty($cat_id) )
 		);
 	}
 
-	// Obtain the category list
 	$sql = "SELECT c.cat_id, c.cat_title, c.cat_order
 		FROM " . CATEGORIES_TABLE . " c
 		ORDER BY c.cat_order";
@@ -259,7 +217,7 @@ if( empty($forum_id) && empty($cat_id) )
 
 		$template->assign_block_vars('cat_row', array(
 			'CAT_NAME' => $category_rows[$i]['cat_title'],
-			'CAT_URL' => append_sid('admin_forumauth_list.'.$phpEx.'?'.POST_CAT_URL.'='.$category_rows[$i]['cat_id']))
+			'CAT_URL' => append_sid('admin_forumauth_list.php?'.POST_CAT_URL.'='.$category_rows[$i]['cat_id']))
 		);
 
 		for ($j=0; $j<count($forum_rows); $j++)
@@ -268,7 +226,7 @@ if( empty($forum_id) && empty($cat_id) )
 			{
 				$template->assign_block_vars('cat_row.forum_row', array(
 					'ROW_CLASS' => ( !($j % 2) ) ? 'row1' : 'row2',
-					'FORUM_NAME' => '<a class="'.(($forum_rows[$j]['forum_parent']) ? 'genmed' : 'gen').'" href="'.append_sid('admin_forumauth_list.'.$phpEx.'?'.POST_FORUM_URL.'='.$forum_rows[$j]['forum_id']).'">'.$forum_rows[$j]['forum_name'].'</a>',
+					'FORUM_NAME' => '<a class="'.(($forum_rows[$j]['forum_parent']) ? 'genmed' : 'gen').'" href="'.append_sid('admin_forumauth_list.php?'.POST_FORUM_URL.'='.$forum_rows[$j]['forum_id']).'">'.$forum_rows[$j]['forum_name'].'</a>',
 					'SUBF_PAD' => ($forum_rows[$j]['forum_parent']) ? ' style="padding-left: 20px" ' : ''
 				));
 
@@ -294,10 +252,6 @@ if( empty($forum_id) && empty($cat_id) )
 }
 elseif ( !empty($forum_id) )
 {
-	//
-	// Output the authorisation details if an forum id was
-	// specified
-	//
 	$template->set_filenames(array(
 		'body' => 'admin/auth_forum_body.tpl')
 	);
@@ -324,10 +278,6 @@ elseif ( !empty($forum_id) )
 		}
 	}
 
-	//
-	// If we didn't get a match above then we
-	// automatically switch into 'advanced' mode
-	//
 	if ( !isset($adv) && !$matched )
 	{
 		$adv = 1;
@@ -387,7 +337,7 @@ elseif ( !empty($forum_id) )
 	}
 
 	$adv_mode = ( empty($adv) ) ? '1' : '0';
-	$switch_mode = append_sid("admin_forumauth_list.$phpEx?" . POST_FORUM_URL . "=" . $forum_id . "&adv=". $adv_mode);
+	$switch_mode = append_sid("admin_forumauth_list.php?" . POST_FORUM_URL . "=" . $forum_id . "&adv=". $adv_mode);
 	$switch_mode_text = ( empty($adv) ) ? $lang['Advanced_mode'] : $lang['Simple_mode'];
 	$u_switch_mode = '<a href="' . $switch_mode . '">' . $switch_mode_text . '</a>';
 
@@ -404,7 +354,7 @@ elseif ( !empty($forum_id) )
 
 		'U_SWITCH_MODE' => $u_switch_mode,
 
-		'S_FORUMAUTH_ACTION' => append_sid("admin_forumauth_list.$phpEx"),
+		'S_FORUMAUTH_ACTION' => append_sid("admin_forumauth_list.php"),
 		'S_COLUMN_SPAN' => $s_column_span,
 		'S_HIDDEN_FIELDS' => $s_hidden_fields)
 	);
@@ -412,18 +362,11 @@ elseif ( !empty($forum_id) )
 }
 else
 {
-	//
-	// Output the authorisation details if an category id was
-	// specified
-	//
+
 	$template->set_filenames(array(
 		'body' => 'admin/auth_cat_body.tpl')
 	);
 
-	//
-	// First display the current details for all forums
-	// in the category
-	//
 	for ($i=0; $i<count($forum_auth_fields); $i++)
 	{
 		$template->assign_block_vars('forum_auth_titles', array(
@@ -457,7 +400,7 @@ else
 		{
 			$template->assign_block_vars('cat_row.forum_row', array(
 				'ROW_CLASS' => ( !($j % 2) ) ? 'row1' : 'row2',
-				'FORUM_NAME' => '<a class="'.(($forum_rows[$j]['forum_parent']) ? 'genmed' : 'gen').'" href="'.append_sid('admin_forumauth_list.'.$phpEx.'?'.POST_FORUM_URL.'='.$forum_rows[$j]['forum_id']).'">'.$forum_rows[$j]['forum_name'].'</a>',
+				'FORUM_NAME' => '<a class="'.(($forum_rows[$j]['forum_parent']) ? 'genmed' : 'gen').'" href="'.append_sid('admin_forumauth_list.php?'.POST_FORUM_URL.'='.$forum_rows[$j]['forum_id']).'">'.$forum_rows[$j]['forum_name'].'</a>',
 				'SUBF_PAD' => ($forum_rows[$j]['forum_parent']) ? ' style="padding-left: 20px" ' : ''
 			));
 
@@ -515,16 +458,14 @@ else
 		'L_SUBMIT' => $lang['Submit'],
 		'L_RESET' => $lang['Reset'],
 
-		'S_FORUMAUTH_ACTION' => append_sid("admin_forumauth_list.$phpEx"),
+		'S_FORUMAUTH_ACTION' => append_sid("admin_forumauth_list.php"),
 		'S_COLUMN_SPAN' => count($forum_auth_fields)+1,
 		'S_HIDDEN_FIELDS' => $s_hidden_fields)
 	);
 }
 
-include('./page_header_admin.'.$phpEx);
+require('./page_header_admin.php');
 
 $template->pparse('body');
 
-include('./page_footer_admin.'.$phpEx);
-
-?>
+require('./page_footer_admin.php');

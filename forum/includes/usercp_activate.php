@@ -22,7 +22,7 @@ if ( $row = $db->sql_fetchrow($result) )
 	}
 	else if ((trim($row['user_actkey']) == trim($HTTP_GET_VARS['act_key'])) && (trim($row['user_actkey']) != ''))
 	{
-		if (intval($board_config['require_activation']) == USER_ACTIVATION_ADMIN && $userdata['user_level'] != ADMIN)
+		if (intval($ft_cfg['require_activation']) == USER_ACTIVATION_ADMIN && $userdata['user_level'] != ADMIN)
 		{
 			message_die(GENERAL_MESSAGE, $lang['Not_Authorised']);
 		}
@@ -37,23 +37,23 @@ if ( $row = $db->sql_fetchrow($result) )
 			message_die(GENERAL_ERROR, 'Could not update users table', '', __LINE__, __FILE__, $sql_update);
 		}
 
-		if ( intval($board_config['require_activation']) == USER_ACTIVATION_ADMIN && $sql_update_pass == '' )
+		if ( intval($ft_cfg['require_activation']) == USER_ACTIVATION_ADMIN && $sql_update_pass == '' )
 		{
 			require(FT_ROOT . 'includes/emailer.php');
-			$emailer = new emailer($board_config['smtp_delivery']);
+			$emailer = new emailer($ft_cfg['smtp_delivery']);
 
-			$emailer->from($board_config['board_email']);
-			$emailer->replyto($board_config['board_email']);
+			$emailer->from($ft_cfg['board_email']);
+			$emailer->replyto($ft_cfg['board_email']);
 
 			$emailer->use_template('admin_welcome_activated', $row['user_lang']);
 			$emailer->email_address($row['user_email']);
 			$emailer->set_subject($lang['Account_activated_subject']);
 
 			$emailer->assign_vars(array(
-				'SITENAME' => $board_config['sitename'], 
+				'SITENAME' => $ft_cfg['sitename'], 
 				'USERNAME' => $row['username'],
 				'PASSWORD' => $password_confirm,
-				'EMAIL_SIG' => (!empty($board_config['board_email_sig'])) ? str_replace('<br />', "\n", "-- \n" . $board_config['board_email_sig']) : '')
+				'EMAIL_SIG' => (!empty($ft_cfg['board_email_sig'])) ? str_replace('<br />', "\n", "-- \n" . $ft_cfg['board_email_sig']) : '')
 			);
 			$emailer->send();
 			$emailer->reset();

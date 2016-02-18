@@ -1,17 +1,57 @@
 <?php
 
 if (!defined('FT_ROOT')) die(basename(__FILE__));
+if (PHP_VERSION < '5.3') die('ForumTorrent requires PHP version 5.3+. Your PHP version '. PHP_VERSION);
 
+// Define some basic configuration arrays
 unset($stopwords, $synonyms_match, $synonyms_replace);
-$board_config = $userdata = $theme = $images = $lang = $nav_links = array();
+$userdata = $theme = $images = $lang = $nav_links = array();
 $gen_simple_header = false;
+
+// Obtain and encode user IP
+$client_ip = (filter_var($_SERVER['REMOTE_ADDR'], FILTER_VALIDATE_IP)) ? $_SERVER['REMOTE_ADDR'] : '127.0.0.1';
+$user_ip = encode_ip($client_ip);
+define('CLIENT_IP', $client_ip);
+define('USER_IP',   $user_ip);
+
+function send_page ($contents)
+{
+	return compress_output($contents);
+}
+
+define('UA_GZIP_SUPPORTED', (isset($_SERVER['HTTP_ACCEPT_ENCODING']) && strpos($_SERVER['HTTP_ACCEPT_ENCODING'], 'gzip') !== false));
+
+function compress_output ($contents)
+{
+	global $ft_cfg;
+
+	if ($ft_cfg['gzip_compress'] && GZIP_OUTPUT_ALLOWED && !defined('NO_GZIP'))
+	{
+		if (UA_GZIP_SUPPORTED && strlen($contents) > 2000)
+		{
+			header('Content-Encoding: gzip');
+			$contents = gzencode($contents, 1);
+		}
+	}
+
+	return $contents;
+}
+
+// Debug options
+if (DBG_USER)
+{
+	ini_set('error_reporting', E_ALL);
+	ini_set('display_errors',  1);
+}
+else
+{
+	unset($_COOKIE['explain']);
+}
+
+define('DELETED', -1);
 
 // Debug Level
 define('DEBUG', 1); // Debugging off
-
-// User Levels <- Do not change the values of USER or ADMIN
-define('DELETED', -1);
-define('ANONYMOUS', -1);
 
 define('USER', 0);
 define('ADMIN', 1);
@@ -114,13 +154,6 @@ define('AUTH_POLLCREATE', 9);
 define('AUTH_VOTE', 10);
 define('AUTH_ATTACH', 11);
 
-define('BT_AUTH_KEY_LENGTH',   10);
-
-define('DL_STATUS_WILL',       0);
-define('DL_STATUS_DOWN',       1);
-define('DL_STATUS_COMPLETE',   2);
-define('DL_STATUS_CANCEL',     3);
-
 // Table names
 define('ATTACH_CONFIG_TABLE', 			'phpbb_attachments_config');
 define('EXTENSION_GROUPS_TABLE',   		'phpbb_extension_groups');
@@ -130,14 +163,6 @@ define('ATTACHMENTS_DESC_TABLE', 		'phpbb_attachments_desc');
 define('ATTACHMENTS_TABLE', 			'phpbb_attachments');
 define('QUOTA_TABLE',  					'phpbb_attach_quota');
 define('QUOTA_LIMITS_TABLE',  			'phpbb_quota_limits');
-
-define('BT_CONFIG_TABLE',      			'phpbb_bt_config');          // phpbb_bt_config
-define('BT_SEARCH_TABLE',      			'phpbb_bt_search_results');  // phpbb_bt_search_results
-define('BT_TOR_DL_STAT_TABLE', 			'phpbb_bt_tor_dl_stat');     // phpbb_bt_tor_dl_stat
-define('BT_TORRENTS_TABLE',    			'phpbb_bt_torrents');        // phpbb_bt_torrents
-define('BT_TRACKER_TABLE',     			'phpbb_bt_tracker');         // phpbb_bt_tracker
-define('BT_USERS_TABLE',       			'phpbb_bt_users');           // phpbb_bt_users
-define('BT_USR_DL_STAT_TABLE', 			'phpbb_bt_users_dl_status'); // phpbb_bt_users_dl_status
 
 define('TOPICS_MOVE_TABLE', 			'phpbb_topics_move');
 define('CONFIRM_TABLE',					'phpbb_confirm');
@@ -201,10 +226,6 @@ define('SHOW_PEERS_FULL',      3);
 define('UPD_LAST_POST_HOUR_ACTIVE', 3600*3);
 //upt end
 
-//bot
-define('BOT_UID', -746);
-//bot end
-
 //qr
 // To disable - change to "FALSE"
 define('SHOW_QUICK_REPLY', TRUE);
@@ -220,15 +241,8 @@ define('SHOW_SUBFORUMS_ON_INDEX', TRUE);
 define('SF_SEL_SPACER', '&nbsp;|-&nbsp;');
 //sf end
 
-// FLAGHACK-start
-define('FLAG_TABLE', 'phpbb_flags');
-// FLAGHACK-end
-
 // Attachment Debug Mode
 define('ATTACH_DEBUG', 0);		// Attachment Mod Debugging off
-//define('ATTACH_DEBUG', 1);	// Attachment Mod Debugging on
-
-//define('ATTACH_QUERY_DEBUG', 1);
 
 // Auth
 define('AUTH_DOWNLOAD', 20);
@@ -260,3 +274,87 @@ define('QUOTA_UPLOAD_LIMIT', 1);
 define('QUOTA_PM_LIMIT', 2);
 
 define('ATTACH_VERSION', '2.3.14');
+
+define('USER_AGENT', strtolower($_SERVER['HTTP_USER_AGENT']));
+
+if (!empty($banned_user_agents))
+{
+	foreach ($banned_user_agents as $agent)
+	{
+		if (strstr(USER_AGENT, $agent))
+		{
+			$filename = 'Download files by using browser';
+			$output = '@';
+			header('Content-Type: text/plain');
+			header('Content-Disposition: attachment; filename="'. $filename .'"');
+			die($output);
+		}
+	}
+}
+
+// Functions
+function send_no_cache_headers ()
+{
+	header('Expires: Mon, 26 Jul 1997 05:00:00 GMT');
+	header('Last-Modified: '. gmdate('D, d M Y H:i:s'). ' GMT');
+	header('Cache-Control: no-store, no-cache, must-revalidate');
+	header('Cache-Control: post-check=0, pre-check=0', false);
+	header('Pragma: no-cache');
+}
+
+function ft_exit ($output = '')
+{
+	if ($output)
+	{
+		echo $output;
+	}
+	exit;
+}
+
+function prn_r ($var, $title = '', $print = true)
+{
+	$r = '<pre>'. (($title) ? "<b>$title</b>\n\n" : '') . htmlspecialchars(print_r($var, true)) .'</pre>';
+	if ($print) echo $r;
+	return $r;
+}
+
+function pre ($var, $title = '', $print = true)
+{
+	prn_r($var, $title, $print);
+}
+
+function prn ()
+{
+	if (!DBG_USER) return;
+	foreach (func_get_args() as $var) prn_r($var);
+}
+
+function vdump ($var, $title = '')
+{
+	echo '<pre>'. (($title) ? "<b>$title</b>\n\n" : '');
+	var_dump($var);
+	echo '</pre>';
+}
+
+function htmlCHR ($txt, $double_encode = false, $quote_style = ENT_QUOTES, $charset = 'UTF-8')
+{
+	return (string) htmlspecialchars($txt, $quote_style, $charset, $double_encode);
+}
+
+function html_ent_decode ($txt, $quote_style = ENT_QUOTES, $charset = 'UTF-8')
+{
+	return (string) html_entity_decode($txt, $quote_style, $charset);
+}
+
+function make_url ($path = '')
+{
+	return FULL_URL . preg_replace('#^\/?(.*?)\/?$#', '\1', $path);
+}
+
+require(FT_ROOT . 'includes/template.php');
+require(FT_ROOT . 'includes/sessions.php');
+require(FT_ROOT . 'includes/auth.php');
+require(FT_ROOT . 'includes/functions.php');
+require(FT_ROOT . 'db/mysql.php');
+
+define('SQL_LAYER', 'mysql');

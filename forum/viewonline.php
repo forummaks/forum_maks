@@ -202,7 +202,7 @@ while ( $row = $db->sql_fetchrow($result) )
 			'ROW_COLOR' => '#' . $row_color,
 			'ROW_CLASS' => $row_class,
 			'USERNAME' => $username,
-			'LASTUPDATE' => create_date($board_config['default_dateformat'], $row['session_time'], $board_config['board_timezone']),
+			'LASTUPDATE' => create_date($ft_cfg['default_dateformat'], $row['session_time'], $ft_cfg['board_timezone']),
 			'FORUM_LOCATION' => $location,
 
 			'U_USER_PROFILE' => append_sid("profile.php?mode=viewprofile&amp;" . POST_USERS_URL . '=' . $user_id),

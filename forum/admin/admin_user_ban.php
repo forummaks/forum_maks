@@ -1,41 +1,10 @@
 <?php
-/***************************************************************************
- *                            admin_user_ban.php
- *                            -------------------
- *   begin                : Tuesday, Jul 31, 2001
- *   copyright            : (C) 2001 The phpBB Group
- *   email                : support@phpbb.com
- *
- *   $Id: admin_user_ban.php,v 1.21.2.5 2004/03/25 15:57:20 acydburn Exp $
- *
- *
- ***************************************************************************/
-
-/***************************************************************************
- *
- *   This program is free software; you can redistribute it and/or modify
- *   it under the terms of the GNU General Public License as published by
- *   the Free Software Foundation; either version 2 of the License, or
- *   (at your option) any later version.
- *
- ***************************************************************************/
-
-@define('IN_PHPBB', 1);
-
 if ( !empty($setmodules) )
 {
-	$filename = basename(__FILE__);
-	$module['Users']['Ban_Management'] = $filename;
-
+	$module['Users']['Ban_Management'] = basename(__FILE__);
 	return;
 }
-
-//
-// Load default header
-//
-$phpbb_root_path = './../';
-require($phpbb_root_path . 'extension.inc');
-require('./pagestart.' . $phpEx);
+require('./pagestart.php');
 
 //
 // Start program
@@ -318,7 +287,7 @@ if ( isset($HTTP_POST_VARS['submit']) )
 		}
 	}
 
-	$message = $lang['Ban_update_sucessful'] . '<br /><br />' . sprintf($lang['Click_return_banadmin'], '<a href="' . append_sid("admin_user_ban.$phpEx") . '">', '</a>') . '<br /><br />' . sprintf($lang['Click_return_admin_index'], '<a href="' . append_sid("index.$phpEx?pane=right") . '">', '</a>');
+	$message = $lang['Ban_update_sucessful'] . '<br /><br />' . sprintf($lang['Click_return_banadmin'], '<a href="' . append_sid("admin_user_ban.php") . '">', '</a>') . '<br /><br />' . sprintf($lang['Click_return_admin_index'], '<a href="' . append_sid("index.php?pane=right") . '">', '</a>');
 
 	message_die(GENERAL_MESSAGE, $message);
 
@@ -338,7 +307,7 @@ else
 		'L_SUBMIT' => $lang['Submit'],
 		'L_RESET' => $lang['Reset'],
 
-		'S_BANLIST_ACTION' => append_sid("admin_user_ban.$phpEx"))
+		'S_BANLIST_ACTION' => append_sid("admin_user_ban.php"))
 	);
 
 	$template->assign_vars(array(
@@ -437,16 +406,14 @@ else
 		'L_LOOK_UP' => $lang['Look_up_User'],
 		'L_FIND_USERNAME' => $lang['Find_username'],
 
-		'U_SEARCH_USER' => append_sid("./../search.$phpEx?mode=searchuser"),
+		'U_SEARCH_USER' => append_sid("./../search.php?mode=searchuser"),
 		'S_UNBAN_USERLIST_SELECT' => $select_userlist,
 		'S_UNBAN_IPLIST_SELECT' => $select_iplist,
 		'S_UNBAN_EMAILLIST_SELECT' => $select_emaillist,
-		'S_BAN_ACTION' => append_sid("admin_user_ban.$phpEx"))
+		'S_BAN_ACTION' => append_sid("admin_user_ban.php"))
 	);
 }
 
 $template->pparse('body');
 
-include('./page_footer_admin.'.$phpEx);
-
-?>
+require('./page_footer_admin.php');

@@ -350,31 +350,31 @@ if ( !$is_auth[$is_auth_type] )
 //
 // Set toggles for various options
 //
-if ( !$board_config['allow_html'] )
+if ( !$ft_cfg['allow_html'] )
 {
 	$html_on = 0;
 }
 else
 {
-	$html_on = ( $submit || $refresh ) ? ( ( !empty($HTTP_POST_VARS['disable_html']) ) ? 0 : TRUE ) : ( ( $userdata['user_id'] == ANONYMOUS ) ? $board_config['allow_html'] : $userdata['user_allowhtml'] );
+	$html_on = ( $submit || $refresh ) ? ( ( !empty($HTTP_POST_VARS['disable_html']) ) ? 0 : TRUE ) : ( ( $userdata['user_id'] == ANONYMOUS ) ? $ft_cfg['allow_html'] : $userdata['user_allowhtml'] );
 }
 
-if ( !$board_config['allow_bbcode'] )
+if ( !$ft_cfg['allow_bbcode'] )
 {
 	$bbcode_on = 0;
 }
 else
 {
-	$bbcode_on = ( $submit || $refresh ) ? ( ( !empty($HTTP_POST_VARS['disable_bbcode']) ) ? 0 : TRUE ) : ( ( $userdata['user_id'] == ANONYMOUS ) ? $board_config['allow_bbcode'] : $userdata['user_allowbbcode'] );
+	$bbcode_on = ( $submit || $refresh ) ? ( ( !empty($HTTP_POST_VARS['disable_bbcode']) ) ? 0 : TRUE ) : ( ( $userdata['user_id'] == ANONYMOUS ) ? $ft_cfg['allow_bbcode'] : $userdata['user_allowbbcode'] );
 }
 
-if ( !$board_config['allow_smilies'] )
+if ( !$ft_cfg['allow_smilies'] )
 {
 	$smilies_on = 0;
 }
 else
 {
-	$smilies_on = ( $submit || $refresh ) ? ( ( !empty($HTTP_POST_VARS['disable_smilies']) ) ? 0 : TRUE ) : ( ( $userdata['user_id'] == ANONYMOUS ) ? $board_config['allow_smilies'] : $userdata['user_allowsmile'] );
+	$smilies_on = ( $submit || $refresh ) ? ( ( !empty($HTTP_POST_VARS['disable_smilies']) ) ? 0 : TRUE ) : ( ( $userdata['user_id'] == ANONYMOUS ) ? $ft_cfg['allow_smilies'] : $userdata['user_allowsmile'] );
 }
 
 if ( ($submit || $refresh) && $is_auth['auth_read'])
@@ -415,13 +415,13 @@ execute_posting_attachment_handling();
 // если за время пока вы писали ответ, в топике появились новые сообщения, перед тем как ваше сообщение будет отправлено, выводится предупреждение с обзором этих сообщений
 $topic_has_new_posts = FALSE;
 
-if ($userdata['session_logged_in'] && ($submit || $preview || $mode == 'quote' || $mode == 'reply') && isset($_COOKIE[$board_config['cookie_name'] .'_t']))
+if ($userdata['session_logged_in'] && ($submit || $preview || $mode == 'quote' || $mode == 'reply') && isset($_COOKIE[$ft_cfg['cookie_name'] .'_t']))
 {
-	$tracking_topics = unserialize($_COOKIE[$board_config['cookie_name'] .'_t']);
+	$tracking_topics = unserialize($_COOKIE[$ft_cfg['cookie_name'] .'_t']);
 
 	if (isset($tracking_topics[$topic_id]) && $topic_last_read = intval($tracking_topics[$topic_id]))
 	{
-		$snp_limit    = $board_config['posts_per_page'];
+		$snp_limit    = $ft_cfg['posts_per_page'];
 		$snp_topic_id = intval($topic_id);
 
 		$sql = 'SELECT p.*, pt.post_text, pt.bbcode_uid, u.username
@@ -463,21 +463,21 @@ if ($userdata['session_logged_in'] && ($submit || $preview || $mode == 'quote' |
 					$new_post_username = $rowset[$i]['username'];
 				}
 
-				$new_post_post_date = create_date($board_config['default_dateformat'], $rowset[$i]['post_time'], $board_config['board_timezone']);
+				$new_post_post_date = create_date($ft_cfg['default_dateformat'], $rowset[$i]['post_time'], $ft_cfg['board_timezone']);
 				$new_post_message = ($orig_word) ? preg_replace($orig_word, $replacement_word, $rowset[$i]['post_text']) : $rowset[$i]['post_text'];
 
-				if (!$board_config['allow_html'] && $rowset[$i]['enable_html'] && $rowset[$i]['poster_id'] != BOT_UID)
+				if (!$ft_cfg['allow_html'] && $rowset[$i]['enable_html'] && $rowset[$i]['poster_id'] != BOT_UID)
 				{
 					$new_post_message = preg_replace('#(<)([\/]?.*?)(>)#is', '&lt;\2&gt;', $new_post_message);
 				}
 				if ($rowset[$i]['bbcode_uid'])
 				{
-					$new_post_message = ($board_config['allow_bbcode']) ? bbencode_second_pass($new_post_message, $rowset[$i]['bbcode_uid']) : preg_replace('/\:[0-9a-z\:]+\]/i', ']', $new_post_message);
+					$new_post_message = ($ft_cfg['allow_bbcode']) ? bbencode_second_pass($new_post_message, $rowset[$i]['bbcode_uid']) : preg_replace('/\:[0-9a-z\:]+\]/i', ']', $new_post_message);
 				}
 
 				$new_post_message = make_clickable($new_post_message);
 
-				if ($board_config['allow_smilies'] && $rowset[$i]['enable_smilies'])
+				if ($ft_cfg['allow_smilies'] && $rowset[$i]['enable_smilies'])
 				{
 					$new_post_message = smilies_pass($new_post_message);
 				}
@@ -506,7 +506,7 @@ if ($userdata['session_logged_in'] && ($submit || $preview || $mode == 'quote' |
 
 			$template->assign_var_from_handle('SHOW_NEW_POSTS_BOX', 'show_new_posts');
 			$tracking_topics[$topic_id] = time();
-			setcookie($board_config['cookie_name'] .'_t', serialize($tracking_topics), 0, $board_config['cookie_path'], $board_config['cookie_domain'], $board_config['cookie_secure']);
+			setcookie($ft_cfg['cookie_name'] .'_t', serialize($tracking_topics), 0, $ft_cfg['cookie_path'], $ft_cfg['cookie_domain'], $ft_cfg['cookie_secure']);
 			unset($rowset, $new_post_message);
 		}
 	}
@@ -684,8 +684,8 @@ else if ( ($submit || $confirm) && !$topic_has_new_posts )
 
 		if ( $mode == 'newtopic' || $mode == 'reply' )
 		{
-			$tracking_topics = ( !empty($HTTP_COOKIE_VARS[$board_config['cookie_name'] . '_t']) ) ? unserialize($HTTP_COOKIE_VARS[$board_config['cookie_name'] . '_t']) : array();
-			$tracking_forums = ( !empty($HTTP_COOKIE_VARS[$board_config['cookie_name'] . '_f']) ) ? unserialize($HTTP_COOKIE_VARS[$board_config['cookie_name'] . '_f']) : array();
+			$tracking_topics = ( !empty($HTTP_COOKIE_VARS[$ft_cfg['cookie_name'] . '_t']) ) ? unserialize($HTTP_COOKIE_VARS[$ft_cfg['cookie_name'] . '_t']) : array();
+			$tracking_forums = ( !empty($HTTP_COOKIE_VARS[$ft_cfg['cookie_name'] . '_f']) ) ? unserialize($HTTP_COOKIE_VARS[$ft_cfg['cookie_name'] . '_f']) : array();
 
 			if ( count($tracking_topics) + count($tracking_forums) == 100 && empty($tracking_topics[$topic_id]) )
 			{
@@ -695,7 +695,7 @@ else if ( ($submit || $confirm) && !$topic_has_new_posts )
 
 			$tracking_topics[$topic_id] = time();
 
-			setcookie($board_config['cookie_name'] . '_t', serialize($tracking_topics), 0, $board_config['cookie_path'], $board_config['cookie_domain'], $board_config['cookie_secure']);
+			setcookie($ft_cfg['cookie_name'] . '_t', serialize($tracking_topics), 0, $ft_cfg['cookie_path'], $ft_cfg['cookie_domain'], $ft_cfg['cookie_secure']);
 		}
 
 		$template->assign_vars(array(
@@ -705,7 +705,7 @@ else if ( ($submit || $confirm) && !$topic_has_new_posts )
 		$torrent_ext = (@$attachment_mod['posting']->extension === TORRENT_EXT || @$attachment_mod['posting']->attachment_extension_list[0] === TORRENT_EXT) ? TRUE : FALSE;
 		$torrent_attach = ($torrent_ext && defined('TORRENT_ATTACH_ID') && 1 == count($attachment_mod['posting']->attachment_list)) ? TRUE : FALSE;
 
-		if ($torrent_attach && $board_config['bt_newtopic_auto_reg'] && $mode == 'newtopic' && !$error_msg)
+		if ($torrent_attach && $ft_cfg['bt_newtopic_auto_reg'] && $mode == 'newtopic' && !$error_msg)
 		{
 			require_once(FT_ROOT .'includes/functions_torrent.php');
 			tracker_register(TORRENT_ATTACH_ID, 'newtopic');
@@ -750,11 +750,11 @@ if( $refresh || isset($HTTP_POST_VARS['del_poll_option']) || $error_msg != '' ||
 
 	if ( $mode == 'newtopic' || $mode == 'reply')
 	{
-		$user_sig = ( $userdata['user_sig'] != '' && $board_config['allow_sig'] ) ? $userdata['user_sig'] : '';
+		$user_sig = ( $userdata['user_sig'] != '' && $ft_cfg['allow_sig'] ) ? $userdata['user_sig'] : '';
 	}
 	else if ( $mode == 'editpost' )
 	{
-		$user_sig = ( $post_info['user_sig'] != '' && $board_config['allow_sig'] ) ? $post_info['user_sig'] : '';
+		$user_sig = ( $post_info['user_sig'] != '' && $ft_cfg['allow_sig'] ) ? $post_info['user_sig'] : '';
 	}
 
 	if( $preview )
@@ -836,7 +836,7 @@ if( $refresh || isset($HTTP_POST_VARS['del_poll_option']) || $error_msg != '' ||
 			'TOPIC_TITLE' => $preview_subject,
 			'POST_SUBJECT' => $preview_subject,
 			'POSTER_NAME' => $preview_username,
-			'POST_DATE' => create_date($board_config['default_dateformat'], time(), $board_config['board_timezone']),
+			'POST_DATE' => create_date($ft_cfg['default_dateformat'], time(), $ft_cfg['board_timezone']),
 			'MESSAGE' => $preview_message,
 
 			'L_POST_SUBJECT' => $lang['Post_subject'],
@@ -925,7 +925,7 @@ else
 			}
 		//snp end
 
-			$msg_date =  create_date($board_config['default_dateformat'], $postrow['post_time'], $board_config['board_timezone']);
+			$msg_date =  create_date($ft_cfg['default_dateformat'], $postrow['post_time'], $ft_cfg['board_timezone']);
 
 			// Use trim to get rid of spaces placed there by MS-SQL 2000
 			$quote_username = ( trim($post_info['post_username']) != '' ) ? $post_info['post_username'] : $post_info['username'];
@@ -962,7 +962,7 @@ if( $user_sig != '' )
 //
 // HTML toggle selection
 //
-if ( $board_config['allow_html'] )
+if ( $ft_cfg['allow_html'] )
 {
 	$html_status = $lang['HTML_is_ON'];
 	$template->assign_block_vars('switch_html_checkbox', array());
@@ -975,7 +975,7 @@ else
 //
 // BBCode toggle selection
 //
-if ( $board_config['allow_bbcode'] )
+if ( $ft_cfg['allow_bbcode'] )
 {
 	$bbcode_status = $lang['BBCode_is_ON'];
 	$template->assign_block_vars('switch_bbcode_checkbox', array());
@@ -988,7 +988,7 @@ else
 //
 // Smilies toggle selection
 //
-if ( $board_config['allow_smilies'] )
+if ( $ft_cfg['allow_smilies'] )
 {
 	$smilies_status = $lang['Smilies_are_ON'];
 	$template->assign_block_vars('switch_smilies_checkbox', array());
@@ -1236,27 +1236,10 @@ $template->assign_vars(array(
 	'S_NOTIFY_CHECKED' => ( $notify_user ) ? 'checked="checked"' : '',
 	'S_TYPE_TOGGLE' => $topic_type_toggle,
 	'S_TOPIC_ID' => $topic_id,
-	'S_POST_ACTION' => append_sid("posting.$phpEx"),
+	'S_POST_ACTION' => append_sid("posting.php"),
 	'S_HIDDEN_FORM_FIELDS' => $hidden_form_fields)
 );
 
-// Output the data to the template (for MAIL.RU Keyboard)
-$template->assign_vars(array(
-	'L_KB_TITLE' => $lang['kb_title'],
-	'L_LAYOUT' => $lang['kb_rus_keylayout'],
-	'L_NONE' => $lang['kb_none'],
-	'L_TRANSLIT' => $lang['kb_translit'],
-	'L_TRADITIONAL' => $lang['kb_traditional'],
-	'L_RULES' => $lang['kb_rules'],
-	'L_HIDE' => $lang['kb_hide'],
-	'L_SHOW' => $lang['kb_show'],
-	'L_CLOSE' =>  $lang['kb_close'],
-	'L_TRANSLIT_OPERA7' => $lang['kb_translit_opera7'],
-	'L_TRANSLIT_MOZILLA' => $lang['kb_translit_mozilla'],
-	'S_VISIBILITY_RULES' => 'position:absolute;visibility:hidden;',
-	'S_VISIBILITY_KEYB' => 'position:absolute;visibility:hidden;',
-	'S_VISIBILITY_OFF' => '')
-);
 //
 // Poll entry switch/output
 //

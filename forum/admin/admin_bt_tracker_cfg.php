@@ -1,31 +1,24 @@
 <?php
-
-@define('IN_PHPBB', TRUE);
-$page_title = 'Tracker Config';
-
 if (!empty($setmodules))
 {
-	$file = basename(__FILE__);
-	$module['TorrentPier']['Tracker_Config'] = "$file";
+	$module['TorrentPier']['Tracker_Config'] = basename(__FILE__);
 	return;
 }
 
 // Load default header & language
-$phpbb_root_path = './../';
-require($phpbb_root_path .'extension.inc');
-require('./pagestart.'. $phpEx);
-include($phpbb_root_path .'includes/functions_admin_torrent.'. $phpEx);
+require('./pagestart.php');
+require(FT_ROOT .'includes/functions_admin_torrent.php');
 
-$cache_dir = $phpbb_root_path .'cache/';
-$tr_cfg_cache_file = $cache_dir .'tracker_config.'. $phpEx;
+$cache_dir = FT_ROOT .'cache/';
+$tr_cfg_cache_file = $cache_dir .'tracker_config.php';
 
-if (file_exists(@phpbb_realpath($phpbb_root_path .'language/lang_'. $board_config['default_lang'] .'/lang_admin_bt.'. $phpEx)))
+if (file_exists(@phpbb_realpath(FT_ROOT .'language/lang_'. $ft_cfg['default_lang'] .'/lang_admin_bt.php')))
 {
-	include($phpbb_root_path .'language/lang_'. $board_config['default_lang'] .'/lang_admin_bt.'. $phpEx);
+	require(FT_ROOT .'language/lang_'. $ft_cfg['default_lang'] .'/lang_admin_bt.php');
 }
 else
 {
-	include($phpbb_root_path .'language/lang_english/lang_admin_bt.'. $phpEx);
+	require(FT_ROOT .'language/lang_english/lang_admin_bt.php');
 }
 
 $cfg = array();
@@ -96,7 +89,7 @@ if ($set_defaults && $confirm)
 		}
 	}
 
-	$message = $lang['config_upd'] .'<br /><br />'. sprintf($lang['return_config'], '<a href="'. append_sid("admin_bt_tracker_cfg.$phpEx") .'">', '</a>') .'<br /><br />'. sprintf($lang['Click_return_admin_index'], '<a href="'. append_sid("index.$phpEx?pane=right") .'">', '</a>');
+	$message = $lang['config_upd'] .'<br /><br />'. sprintf($lang['return_config'], '<a href="'. append_sid("admin_bt_tracker_cfg.php") .'">', '</a>') .'<br /><br />'. sprintf($lang['Click_return_admin_index'], '<a href="'. append_sid("index.php?pane=right") .'">', '</a>');
 	message_die(GENERAL_MESSAGE, $message);
 }
 
@@ -118,7 +111,7 @@ if ($submit && $confirm)
 		$message .= (@unlink($tr_cfg_cache_file)) ? 'Config cache deleted successfully' : "Can't delete cache file <b>$tr_cfg_cache_file</b>";
 	}
 
-	$message .= '<br /><br />'. sprintf($lang['return_config'], '<a href="'. append_sid("admin_bt_tracker_cfg.$phpEx") .'">', '</a>') .'<br /><br />'. sprintf($lang['Click_return_admin_index'], '<a href="'. append_sid("index.$phpEx?pane=right") .'">', '</a>');
+	$message .= '<br /><br />'. sprintf($lang['return_config'], '<a href="'. append_sid("admin_bt_tracker_cfg.php") .'">', '</a>') .'<br /><br />'. sprintf($lang['Click_return_admin_index'], '<a href="'. append_sid("index.php?pane=right") .'">', '</a>');
 	message_die(GENERAL_MESSAGE, $message);
 }
 
@@ -138,7 +131,7 @@ $template->assign_vars(array(
 	'L_SET_DEFAULTS'        => $lang['set_defaults'],
 
 	'S_HIDDEN_FIELDS' => '',
-	'S_CONFIG_ACTION' => append_sid("admin_bt_tracker_cfg.$phpEx"),
+	'S_CONFIG_ACTION' => append_sid("admin_bt_tracker_cfg.php"),
 
 	'L_CONFIRM'   => $lang['Confirm'],
 	'L_SUBMIT'    => $lang['Submit'],
@@ -151,6 +144,4 @@ $template->set_filenames(array('body' => 'admin/bt_tracker_cfg_body.tpl'));
 
 $template->pparse("body");
 
-include('./page_footer_admin.'.$phpEx);
-
-?>
+require('./page_footer_admin.php');

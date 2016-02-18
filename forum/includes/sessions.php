@@ -4,13 +4,13 @@ if (!defined('FT_ROOT')) die(basename(__FILE__));
 
 function session_begin($user_id, $user_ip, $page_id, $auto_create = 0, $enable_autologin = 0, $admin = 0)
 {
-	global $db, $board_config;
+	global $db, $ft_cfg;
 	global $HTTP_COOKIE_VARS, $HTTP_GET_VARS, $SID;
 
-	$cookiename = $board_config['cookie_name'];
-	$cookiepath = $board_config['cookie_path'];
-	$cookiedomain = $board_config['cookie_domain'];
-	$cookiesecure = $board_config['cookie_secure'];
+	$cookiename = $ft_cfg['cookie_name'];
+	$cookiepath = $ft_cfg['cookie_path'];
+	$cookiedomain = $ft_cfg['cookie_domain'];
+	$cookiesecure = $ft_cfg['cookie_secure'];
 
 	if ( isset($HTTP_COOKIE_VARS[$cookiename . '_sid']) || isset($HTTP_COOKIE_VARS[$cookiename . '_data']) )
 	{
@@ -34,7 +34,7 @@ function session_begin($user_id, $user_ip, $page_id, $auto_create = 0, $enable_a
 	$page_id = (int) $page_id;
 	$last_visit = 0;
 	$current_time = time();
-	$expiry_time = $current_time - $board_config['session_length'];
+	$expiry_time = $current_time - $ft_cfg['session_length'];
 
 	//
 	// Try and pull the last time stored in a cookie, if it exists
@@ -194,13 +194,13 @@ function session_begin($user_id, $user_ip, $page_id, $auto_create = 0, $enable_a
 //
 function session_pagestart($user_ip, $thispage_id)
 {
-	global $db, $lang, $board_config;
+	global $db, $lang, $ft_cfg;
 	global $HTTP_COOKIE_VARS, $HTTP_GET_VARS, $SID;
 
-	$cookiename = $board_config['cookie_name'];
-	$cookiepath = $board_config['cookie_path'];
-	$cookiedomain = $board_config['cookie_domain'];
-	$cookiesecure = $board_config['cookie_secure'];
+	$cookiename = $ft_cfg['cookie_name'];
+	$cookiepath = $ft_cfg['cookie_path'];
+	$cookiedomain = $ft_cfg['cookie_domain'];
+	$cookiesecure = $ft_cfg['cookie_secure'];
 
 	$current_time = time();
 	unset($userdata);
@@ -269,7 +269,7 @@ function session_pagestart($user_ip, $thispage_id)
 				if ( $current_time - $userdata['session_time'] > 60 )
 				{
 					// A little trick to reset session_admin on session re-usage
-					$update_admin = (!defined('IN_ADMIN') && $current_time - $userdata['session_time'] > ($board_config['session_length']+60)) ? ', session_admin = 0' : '';
+					$update_admin = (!defined('IN_ADMIN') && $current_time - $userdata['session_time'] > ($ft_cfg['session_length']+60)) ? ', session_admin = 0' : '';
 
 					$sql = "UPDATE " . SESSIONS_TABLE . "
 						SET session_time = $current_time, session_page = $thispage_id$update_admin
@@ -293,7 +293,7 @@ function session_pagestart($user_ip, $thispage_id)
 					//
 					// Delete expired sessions
 					//
-					$expiry_time = $current_time - $board_config['session_length'];
+					$expiry_time = $current_time - $ft_cfg['session_length'];
 					$sql = "DELETE FROM " . SESSIONS_TABLE . "
 						WHERE session_time < $expiry_time
 							AND session_id <> '$session_id'";
@@ -333,13 +333,13 @@ function session_pagestart($user_ip, $thispage_id)
 //
 function session_end($session_id, $user_id)
 {
-	global $db, $lang, $board_config;
+	global $db, $lang, $ft_cfg;
 	global $HTTP_COOKIE_VARS, $HTTP_GET_VARS, $SID;
 
-	$cookiename = $board_config['cookie_name'];
-	$cookiepath = $board_config['cookie_path'];
-	$cookiedomain = $board_config['cookie_domain'];
-	$cookiesecure = $board_config['cookie_secure'];
+	$cookiename = $ft_cfg['cookie_name'];
+	$cookiepath = $ft_cfg['cookie_path'];
+	$cookiedomain = $ft_cfg['cookie_domain'];
+	$cookiesecure = $ft_cfg['cookie_secure'];
 
 	$current_time = time();
 

@@ -101,10 +101,10 @@ function split_words(&$entry, $mode = 'post')
 
 function add_search_words($mode, $post_id, $post_text, $post_title = '', $topic_id = '')
 {
-	global $db, $board_config, $lang;
+	global $db, $ft_cfg, $lang;
 
-	$stopword_array = @file(FT_ROOT . 'language/lang_' . $board_config['default_lang'] . "/search_stopwords.txt");
-	$synonym_array = @file(FT_ROOT . 'language/lang_' . $board_config['default_lang'] . "/search_synonyms.txt");
+	$stopword_array = @file(FT_ROOT . 'language/lang_' . $ft_cfg['default_lang'] . "/search_stopwords.txt");
+	$synonym_array = @file(FT_ROOT . 'language/lang_' . $ft_cfg['default_lang'] . "/search_synonyms.txt");
 
 	$search_raw_words = array();
 	$search_raw_words['text'] = split_words(clean_words('post', $post_text, $stopword_array, $synonym_array));
@@ -424,7 +424,7 @@ function remove_search_post($post_id_sql)
 //
 function username_search($search_match)
 {
-	global $db, $board_config, $template, $lang, $images, $theme;
+	global $db, $ft_cfg, $template, $lang, $images, $theme;
 	global $starttime, $gen_simple_header;
 
 	$gen_simple_header = TRUE;

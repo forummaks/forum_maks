@@ -1,41 +1,10 @@
 <?php
-/***************************************************************************
- *							admin_attach_cp.php
- *							-------------------
- *	begin				: Saturday, Feb 09, 2002
- *	copyright			: (C) 2002 Meik Sievertsen
- *	email				: acyd.burn@gmx.de
- *
- *	$Id: admin_attach_cp.php,v 1.26 2005/07/16 14:32:20 acydburn Exp $
- *
- ***************************************************************************/
-
-/***************************************************************************
- *
- *   This program is free software; you can redistribute it and/or modify
- *   it under the terms of the GNU General Public License as published by
- *   the Free Software Foundation; either version 2 of the License, or
- *   (at your option) any later version.
- *
- ***************************************************************************/
-
-@define('IN_PHPBB', true);
-
-if( !empty($setmodules) )
+if(!empty($setmodules))
 {
-	$filename = basename(__FILE__);
-	$module['Attachments']['Control_Panel'] = $filename;
+	$module['Attachments']['Control_Panel'] = basename(__FILE__);
 	return;
 }
-
-//
-// Let's set the root dir for phpBB
-//
-$phpbb_root_path = './../';
-require($phpbb_root_path . 'extension.inc');
-require('pagestart.' . $phpEx);
-
-@include_once($phpbb_root_path . 'attach_mod/includes/constants.'.$phpEx);
+require('./pagestart.php');
 
 if (!intval($attach_config['allow_ftp_upload']))
 {
@@ -53,21 +22,21 @@ else
 	$upload_dir = $attach_config['download_path'];
 }
 
-include($phpbb_root_path . 'attach_mod/includes/functions_selects.' . $phpEx);
-include($phpbb_root_path . 'attach_mod/includes/functions_admin.' . $phpEx);
+require(FT_ROOT . 'attach_mod/includes/functions_selects.php');
+require(FT_ROOT . 'attach_mod/includes/functions_admin.php');
 
 //
 // Init Variables
 //
 $start = get_var('start', 0);
 
-if(isset($HTTP_POST_VARS['order']))
+if(isset($_POST['order']))
 {
-	$sort_order = ($HTTP_POST_VARS['order'] == 'ASC') ? 'ASC' : 'DESC';
+	$sort_order = ($_POST['order'] == 'ASC') ? 'ASC' : 'DESC';
 }
-else if(isset($HTTP_GET_VARS['order']))
+else if(isset($_GET['order']))
 {
-	$sort_order = ($HTTP_GET_VARS['order'] == 'ASC') ? 'ASC' : 'DESC';
+	$sort_order = ($_GET['order'] == 'ASC') ? 'ASC' : 'DESC';
 }
 else
 {
@@ -77,16 +46,16 @@ else
 $mode = get_var('mode', '');
 $view = get_var('view', '');
 
-if(isset($HTTP_GET_VARS['uid']) || isset($HTTP_POST_VARS['u_id']))
+if(isset($_GET['uid']) || isset($_POST['u_id']))
 {
-	$uid = (isset($HTTP_POST_VARS['u_id'])) ? $HTTP_POST_VARS['u_id'] : $HTTP_GET_VARS['uid'];
+	$uid = (isset($_POST['u_id'])) ? $_POST['u_id'] : $_GET['uid'];
 }
 else
 {
 	$uid = '';
 }
 
-$view = ( @$HTTP_POST_VARS['search'] ) ? 'attachments' : $view;
+$view = ( @$_POST['search'] ) ? 'attachments' : $view;
 
 //
 // process modes based on view
@@ -143,18 +112,18 @@ if ($view == 'username')
 	switch($mode)
 	{
 		case 'username':
-			$order_by = 'ORDER BY u.username ' . $sort_order . ' LIMIT ' . $start . ', ' . $board_config['topics_per_page'];
+			$order_by = 'ORDER BY u.username ' . $sort_order . ' LIMIT ' . $start . ', ' . $ft_cfg['topics_per_page'];
 			break;
 		case 'attachments':
-			$order_by = 'ORDER BY total_attachments ' . $sort_order . ' LIMIT ' . $start . ', ' . $board_config['topics_per_page'];
+			$order_by = 'ORDER BY total_attachments ' . $sort_order . ' LIMIT ' . $start . ', ' . $ft_cfg['topics_per_page'];
 			break;
 		case 'filesize':
-			$order_by = 'ORDER BY total_size ' . $sort_order . ' LIMIT ' . $start . ', ' . $board_config['topics_per_page'];
+			$order_by = 'ORDER BY total_size ' . $sort_order . ' LIMIT ' . $start . ', ' . $ft_cfg['topics_per_page'];
 			break;
 		default:
 			$mode = 'attachments';
 			$sort_order = 'DESC';
-			$order_by = 'ORDER BY total_attachments ' . $sort_order . ' LIMIT ' . $start . ', ' . $board_config['topics_per_page'];
+			$order_by = 'ORDER BY total_attachments ' . $sort_order . ' LIMIT ' . $start . ', ' . $ft_cfg['topics_per_page'];
 			break;
 	}
 }
@@ -163,27 +132,27 @@ else if ($view == 'attachments')
 	switch($mode)
 	{
 		case 'filename':
-			$order_by = 'ORDER BY a.real_filename ' . $sort_order . ' LIMIT ' . $start . ', ' . $board_config['topics_per_page'];
+			$order_by = 'ORDER BY a.real_filename ' . $sort_order . ' LIMIT ' . $start . ', ' . $ft_cfg['topics_per_page'];
 			break;
 		case 'comment':
-			$order_by = 'ORDER BY a.comment ' . $sort_order . ' LIMIT ' . $start . ', ' . $board_config['topics_per_page'];
+			$order_by = 'ORDER BY a.comment ' . $sort_order . ' LIMIT ' . $start . ', ' . $ft_cfg['topics_per_page'];
 			break;
 		case 'extension':
-			$order_by = 'ORDER BY a.extension ' . $sort_order . ' LIMIT ' . $start . ', ' . $board_config['topics_per_page'];
+			$order_by = 'ORDER BY a.extension ' . $sort_order . ' LIMIT ' . $start . ', ' . $ft_cfg['topics_per_page'];
 			break;
 		case 'filesize':
-			$order_by = 'ORDER BY a.filesize ' . $sort_order . ' LIMIT ' . $start . ', ' . $board_config['topics_per_page'];
+			$order_by = 'ORDER BY a.filesize ' . $sort_order . ' LIMIT ' . $start . ', ' . $ft_cfg['topics_per_page'];
 			break;
 		case 'downloads':
-			$order_by = 'ORDER BY a.download_count ' . $sort_order . ' LIMIT ' . $start . ', ' . $board_config['topics_per_page'];
+			$order_by = 'ORDER BY a.download_count ' . $sort_order . ' LIMIT ' . $start . ', ' . $ft_cfg['topics_per_page'];
 			break;
 		case 'post_time':
-			$order_by = 'ORDER BY a.filetime ' . $sort_order . ' LIMIT ' . $start . ', ' . $board_config['topics_per_page'];
+			$order_by = 'ORDER BY a.filetime ' . $sort_order . ' LIMIT ' . $start . ', ' . $ft_cfg['topics_per_page'];
 			break;
 		default:
 			$mode = 'a.real_filename';
 			$sort_order = 'ASC';
-			$order_by = 'ORDER BY a.real_filename ' . $sort_order . ' LIMIT ' . $start . ', ' . $board_config['topics_per_page'];
+			$order_by = 'ORDER BY a.real_filename ' . $sort_order . ' LIMIT ' . $start . ', ' . $ft_cfg['topics_per_page'];
 			break;
 	}
 }
@@ -268,13 +237,13 @@ else if ( ($delete) && (count($delete_id_list)) > 0 )
 		'L_YES' => $lang['Yes'],
 		'L_NO' => $lang['No'],
 
-		'S_CONFIRM_ACTION' => append_sid('admin_attach_cp.' . $phpEx),
+		'S_CONFIRM_ACTION' => append_sid('admin_attach_cp.php'),
 		'S_HIDDEN_FIELDS' => $hidden_fields)
 	);
 
 	$template->pparse('confirm');
 
-	include('page_footer_admin.'.$phpEx);
+	require('page_footer_admin.php');
 
 	exit;
 }
@@ -289,7 +258,7 @@ $template->assign_vars(array(
 	'L_CONTROL_PANEL_EXPLAIN' => $lang['Control_panel_explain'],
 
 	'S_VIEW_SELECT' => $select_view,
-	'S_MODE_ACTION' => append_sid('admin_attach_cp.' . $phpEx))
+	'S_MODE_ACTION' => append_sid('admin_attach_cp.php'))
 );
 
 if ($submit_change && $view == 'attachments')
@@ -543,7 +512,6 @@ if ($view == 'username')
 		'S_ORDER_SELECT' => $select_sort_order)
 	);
 
-
 	//
 	// Get all Users with their respective total attachments amount
 	//
@@ -610,7 +578,7 @@ if ($view == 'username')
 		if ($mode == 'filesize')
 		{
 			$members = sort_multi_array($members, 'total_size', $sort_order, FALSE);
-			$members = limit_array($members, $start, $board_config['topics_per_page']);
+			$members = limit_array($members, $start, $ft_cfg['topics_per_page']);
 		}
 
 		for ($i = 0; $i < count($members); $i++)
@@ -629,7 +597,7 @@ if ($view == 'username')
 				'USERNAME' => $username,
 				'TOTAL_ATTACHMENTS' => $total_attachments,
 				'TOTAL_SIZE' => round(($total_size / MEGABYTE), 2),
-				'U_VIEW_MEMBER' => append_sid('admin_attach_cp.' . $phpEx . '?view=attachments&amp;uid=' . $members[$i]['user_id']))
+				'U_VIEW_MEMBER' => append_sid('admin_attach_cp.php?view=attachments&amp;uid=' . $members[$i]['user_id']))
 			);
 		}
 	}
@@ -849,12 +817,12 @@ if ($view == 'attachments')
 				'EXTENSION' => $attachments[$i]['extension'],
 				'SIZE' => round(($attachments[$i]['filesize'] / MEGABYTE), 2),
 				'DOWNLOAD_COUNT' => $attachments[$i]['download_count'],
-				'POST_TIME' => create_date($board_config['default_dateformat'], $attachments[$i]['filetime'], $board_config['board_timezone']),
+				'POST_TIME' => create_date($ft_cfg['default_dateformat'], $attachments[$i]['filetime'], $ft_cfg['board_timezone']),
 				'POST_TITLE' => $post_titles,
 
 				'S_DELETE_BOX' => $delete_box,
 				'S_HIDDEN' => $hidden_field,
-				'U_VIEW_ATTACHMENT' => append_sid('../download.' . $phpEx . '?id=' . $attachments[$i]['attach_id']))
+				'U_VIEW_ATTACHMENT' => append_sid('../download.php?id=' . $attachments[$i]['attach_id']))
 //				'U_VIEW_POST' => ($attachments[$i]['post_id'] != 0) ? append_sid("../viewtopic." . $phpEx . "?" . POST_POST_URL . "=" . $attachments[$i]['post_id'] . "#" . $attachments[$i]['post_id']) : '')
 			);
 
@@ -880,13 +848,13 @@ if ($view == 'attachments')
 //
 // Generate Pagination
 //
-if ( ($do_pagination) && ($total_rows > $board_config['topics_per_page']) )
+if ( ($do_pagination) && ($total_rows > $ft_cfg['topics_per_page']) )
 {
-	$pagination = generate_pagination('admin_attach_cp.' . $phpEx . '?view=' . $view . '&amp;mode=' . $mode . '&amp;order=' . $sort_order . '&amp;uid=' . $uid, $total_rows, $board_config['topics_per_page'], $start).'&nbsp;';
+	$pagination = generate_pagination('admin_attach_cp.php?view=' . $view . '&amp;mode=' . $mode . '&amp;order=' . $sort_order . '&amp;uid=' . $uid, $total_rows, $ft_cfg['topics_per_page'], $start).'&nbsp;';
 
 	$template->assign_vars(array(
 		'PAGINATION' => $pagination,
-		'PAGE_NUMBER' => sprintf($lang['Page_of'], ( floor( $start / $board_config['topics_per_page'] ) + 1 ), ceil( $total_rows / $board_config['topics_per_page'] )),
+		'PAGE_NUMBER' => sprintf($lang['Page_of'], ( floor( $start / $ft_cfg['topics_per_page'] ) + 1 ), ceil( $total_rows / $ft_cfg['topics_per_page'] )),
 
 		'L_GOTO_PAGE' => $lang['Goto_page'])
 	);
@@ -898,6 +866,4 @@ $template->assign_vars(array(
 
 $template->pparse('body');
 
-include('page_footer_admin.'.$phpEx);
-
-?>
+require('page_footer_admin.php');

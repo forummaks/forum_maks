@@ -69,9 +69,6 @@ $template->assign_vars(array(
 	'L_ORDER' => $lang['Order'],
 	'L_SORT' => $lang['Sort'],
 	'L_SUBMIT' => $lang['Sort'],
-	'L_AIM' => $lang['AIM'],
-	'L_YIM' => $lang['YIM'],
-	'L_MSNM' => $lang['MSNM'],
 	'L_ICQ' => $lang['ICQ'],
 	'L_JOINED' => $lang['Joined'],
 	'L_POSTS' => $lang['Posts'],
@@ -83,31 +80,31 @@ $template->assign_vars(array(
 switch( $mode )
 {
 	case 'joined':
-		$order_by = "user_regdate $sort_order LIMIT $start, " . $board_config['topics_per_page'];
+		$order_by = "user_regdate $sort_order LIMIT $start, " . $ft_cfg['topics_per_page'];
 		break;
 	case 'username':
-		$order_by = "username $sort_order LIMIT $start, " . $board_config['topics_per_page'];
+		$order_by = "username $sort_order LIMIT $start, " . $ft_cfg['topics_per_page'];
 		break;
 	case 'location':
-		$order_by = "user_from $sort_order LIMIT $start, " . $board_config['topics_per_page'];
+		$order_by = "user_from $sort_order LIMIT $start, " . $ft_cfg['topics_per_page'];
 		break;
 	case 'posts':
-		$order_by = "user_posts $sort_order LIMIT $start, " . $board_config['topics_per_page'];
+		$order_by = "user_posts $sort_order LIMIT $start, " . $ft_cfg['topics_per_page'];
 		break;
 	case 'email':
-		$order_by = "user_email $sort_order LIMIT $start, " . $board_config['topics_per_page'];
+		$order_by = "user_email $sort_order LIMIT $start, " . $ft_cfg['topics_per_page'];
 		break;
 	case 'website':
-		$order_by = "user_website $sort_order LIMIT $start, " . $board_config['topics_per_page'];
+		$order_by = "user_website $sort_order LIMIT $start, " . $ft_cfg['topics_per_page'];
 		break;
 	case 'topten':
 		$order_by = "user_posts $sort_order LIMIT 10";
 		break;
 	default:
-		$order_by = "user_regdate $sort_order LIMIT $start, " . $board_config['topics_per_page'];
+		$order_by = "user_regdate $sort_order LIMIT $start, " . $ft_cfg['topics_per_page'];
 		break;
 }
-$sql = "SELECT username, user_id, user_viewemail, user_posts, user_regdate, user_from, user_from_flag, user_website, user_email, user_icq, user_aim, user_yim, user_msnm, user_avatar, user_avatar_type, user_allowavatar
+$sql = "SELECT username, user_id, user_viewemail, user_posts, user_regdate, user_from, user_website, user_email, user_icq, user_avatar, user_avatar_type, user_allowavatar
 	FROM " . USERS_TABLE . "
 	WHERE user_id <> " . ANONYMOUS . "
 	ORDER BY $order_by";
@@ -123,11 +120,7 @@ if ( $row = $db->sql_fetchrow($result) )
 		$username = $row['username'];
 		$user_id = $row['user_id'];
 		$from = ( !empty($row['user_from']) ) ? $row['user_from'] : '&nbsp;';
-// FLAGHACK-start
-		$flag = ($row['user_from_flag'] && $row['user_from_flag'] != 'blank.gif') ? "&nbsp;<img src=\"images/flags/" . $row['user_from_flag'] . "\" alt=\"" . $row['user_from_flag'] . "\">" : '&nbsp;<img src="images/flags/blank.gif" alt="">';
-// FLAGHACK-end
-
-		$joined = create_date($lang['DATE_FORMAT'], $row['user_regdate'], $board_config['board_timezone']);
+		$joined = create_date($lang['DATE_FORMAT'], $row['user_regdate'], $ft_cfg['board_timezone']);
 		$posts = ( $row['user_posts'] ) ? $row['user_posts'] : 0;
 		$poster_avatar = '';
 		if ( $row['user_avatar_type'] && $user_id != ANONYMOUS && $row['user_allowavatar'] )
@@ -135,19 +128,19 @@ if ( $row = $db->sql_fetchrow($result) )
 			switch( $row['user_avatar_type'] )
 			{
 				case USER_AVATAR_UPLOAD:
-					$poster_avatar = ( $board_config['allow_avatar_upload'] ) ? '<img src="' . $board_config['avatar_path'] . '/' . $row['user_avatar'] . '" alt="" border="0" />' : '';
+					$poster_avatar = ( $ft_cfg['allow_avatar_upload'] ) ? '<img src="' . $ft_cfg['avatar_path'] . '/' . $row['user_avatar'] . '" alt="" border="0" />' : '';
 					break;
 				case USER_AVATAR_REMOTE:
-					$poster_avatar = ( $board_config['allow_avatar_remote'] ) ? '<img src="' . $row['user_avatar'] . '" alt="" border="0" />' : '';
+					$poster_avatar = ( $ft_cfg['allow_avatar_remote'] ) ? '<img src="' . $row['user_avatar'] . '" alt="" border="0" />' : '';
 					break;
 				case USER_AVATAR_GALLERY:
-					$poster_avatar = ( $board_config['allow_avatar_local'] ) ? '<img src="' . $board_config['avatar_gallery_path'] . '/' . $row['user_avatar'] . '" alt="" border="0" />' : '';
+					$poster_avatar = ( $ft_cfg['allow_avatar_local'] ) ? '<img src="' . $ft_cfg['avatar_gallery_path'] . '/' . $row['user_avatar'] . '" alt="" border="0" />' : '';
 					break;
 			}
 		}
 		if ( !empty($row['user_viewemail']) || $userdata['user_level'] == ADMIN )
 		{
-			$email_uri = ( $board_config['board_email_form'] ) ? append_sid("profile.php?mode=email&amp;" . POST_USERS_URL .'=' . $user_id) : 'mailto:' . $row['user_email'];
+			$email_uri = ( $ft_cfg['board_email_form'] ) ? append_sid("profile.php?mode=email&amp;" . POST_USERS_URL .'=' . $user_id) : 'mailto:' . $row['user_email'];
 			$email_img = '<a href="' . $email_uri . '"><img src="' . $images['icon_email'] . '" alt="' . $lang['Send_email'] . '" title="' . $lang['Send_email'] . '" border="0" /></a>';
 			$email = '<a href="' . $email_uri . '">' . $lang['Send_email'] . '</a>';
 		}
@@ -176,13 +169,6 @@ if ( $row = $db->sql_fetchrow($result) )
 			$icq_img = '';
 			$icq = '';
 		}
-		$aim_img = ( $row['user_aim'] ) ? '<a href="aim:goim?screenname=' . $row['user_aim'] . '&amp;message=Hello+Are+you+there?"><img src="' . $images['icon_aim'] . '" alt="' . $lang['AIM'] . '" title="' . $lang['AIM'] . '" border="0" /></a>' : '';
-		$aim = ( $row['user_aim'] ) ? '<a href="aim:goim?screenname=' . $row['user_aim'] . '&amp;message=Hello+Are+you+there?">' . $lang['AIM'] . '</a>' : '';
-		$temp_url = append_sid("profile.php?mode=viewprofile&amp;" . POST_USERS_URL . "=$user_id");
-		$msn_img = ( $row['user_msnm'] ) ? '<a href="' . $temp_url . '"><img src="' . $images['icon_msnm'] . '" alt="' . $lang['MSNM'] . '" title="' . $lang['MSNM'] . '" border="0" /></a>' : '';
-		$msn = ( $row['user_msnm'] ) ? '<a href="' . $temp_url . '">' . $lang['MSNM'] . '</a>' : '';
-		$yim_img = ( $row['user_yim'] ) ? '<a href="http://edit.yahoo.com/config/send_webmesg?.target=' . $row['user_yim'] . '&amp;.src=pg"><img src="' . $images['icon_yim'] . '" alt="' . $lang['YIM'] . '" title="' . $lang['YIM'] . '" border="0" /></a>' : '';
-		$yim = ( $row['user_yim'] ) ? '<a href="http://edit.yahoo.com/config/send_webmesg?.target=' . $row['user_yim'] . '&amp;.src=pg">' . $lang['YIM'] . '</a>' : '';
 		$temp_url = append_sid("search.php?search_author=" . urlencode($username) . "&amp;showresults=posts");
 		$search_img = '<a href="' . $temp_url . '"><img src="' . $images['icon_search'] . '" alt="' . $lang['Search_user_posts'] . '" title="' . $lang['Search_user_posts'] . '" border="0" /></a>';
 		$search = '<a href="' . $temp_url . '">' . $lang['Search_user_posts'] . '</a>';
@@ -194,9 +180,6 @@ if ( $row = $db->sql_fetchrow($result) )
 			'ROW_CLASS' => $row_class,
 			'USERNAME' => $username,
 			'FROM' => $from,
-// FLAGHACK-start
-			'FLAG' => $flag,
-// FLAGHACK-end
 			'JOINED' => $joined,
 			'POSTS' => $posts,
 			'AVATAR_IMG' => $poster_avatar,
@@ -213,12 +196,6 @@ if ( $row = $db->sql_fetchrow($result) )
 			'ICQ_STATUS_IMG' => $icq_status_img,
 			'ICQ_IMG' => $icq_img,
 			'ICQ' => $icq,
-			'AIM_IMG' => $aim_img,
-			'AIM' => $aim,
-			'MSN_IMG' => $msn_img,
-			'MSN' => $msn,
-			'YIM_IMG' => $yim_img,
-			'YIM' => $yim,
 			'U_VIEWPROFILE' => append_sid("profile.php?mode=viewprofile&amp;" . POST_USERS_URL . "=$user_id"))
 		);
 		$i++;
@@ -226,7 +203,7 @@ if ( $row = $db->sql_fetchrow($result) )
 	while ( $row = $db->sql_fetchrow($result) );
 	$db->sql_freeresult($result);
 }
-if ( $mode != 'topten' || $board_config['topics_per_page'] < 10 )
+if ( $mode != 'topten' || $ft_cfg['topics_per_page'] < 10 )
 {
 	$sql = "SELECT count(*) AS total
 		FROM " . USERS_TABLE . "
@@ -238,7 +215,7 @@ if ( $mode != 'topten' || $board_config['topics_per_page'] < 10 )
 	if ( $total = $db->sql_fetchrow($result) )
 	{
 		$total_members = $total['total'];
-		$pagination = generate_pagination("memberlist.php?mode=$mode&amp;order=$sort_order", $total_members, $board_config['topics_per_page'], $start). '&nbsp;';
+		$pagination = generate_pagination("memberlist.php?mode=$mode&amp;order=$sort_order", $total_members, $ft_cfg['topics_per_page'], $start). '&nbsp;';
 	}
 	$db->sql_freeresult($result);
 }
@@ -249,7 +226,7 @@ else
 }
 $template->assign_vars(array(
 	'PAGINATION' => $pagination,
-	'PAGE_NUMBER' => sprintf($lang['Page_of'], ( floor( $start / $board_config['topics_per_page'] ) + 1 ), ceil( $total_members / $board_config['topics_per_page'] )),
+	'PAGE_NUMBER' => sprintf($lang['Page_of'], ( floor( $start / $ft_cfg['topics_per_page'] ) + 1 ), ceil( $total_members / $ft_cfg['topics_per_page'] )),
 	'L_GOTO_PAGE' => $lang['Goto_page'])
 );
 $template->pparse('body');

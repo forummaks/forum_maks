@@ -1110,7 +1110,7 @@ $lang['Transl_Rules'] = 'Translit Rules';
 //qr end
 
 //bt
-include($phpbb_root_path .'language/lang_english/lang_main_bt.'. $phpEx);
+include(FT_ROOT .'language/lang_english/lang_main_bt.php');
 //bt end
 
 //txtb

@@ -35,7 +35,7 @@ else
 	$lang_file = 'lang_faq';
 	$l_title = $lang['FAQ'];
 }
-require(FT_ROOT . 'language/lang_' . $board_config['default_lang'] . '/' . $lang_file . '.php');
+require(FT_ROOT . 'language/lang_' . $ft_cfg['default_lang'] . '/' . $lang_file . '.php');
 attach_faq_include($lang_file);
 
 

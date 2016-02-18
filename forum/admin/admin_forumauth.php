@@ -1,42 +1,12 @@
 <?php
-/***************************************************************************
- *                            admin_forumauth.php
- *                            -------------------
- *   begin                : Saturday, Feb 13, 2001
- *   copyright            : (C) 2001 The phpBB Group
- *   email                : support@phpbb.com
- *
- *   $Id: admin_forumauth.php,v 1.23.2.5 2004/03/25 15:57:19 acydburn Exp $
- *
- *
- ***************************************************************************/
-
-/***************************************************************************
- *
- *   This program is free software; you can redistribute it and/or modify
- *   it under the terms of the GNU General Public License as published by
- *   the Free Software Foundation; either version 2 of the License, or
- *   (at your option) any later version.
- *
- ***************************************************************************/
-
-@define('IN_PHPBB', 1);
-
 if( !empty($setmodules) )
 {
-	$filename = basename(__FILE__);
-	$module['Forums']['Permissions']   = $filename;
-
+	$module['Forums']['Permissions']   = basename(__FILE__);
 	return;
 }
 
-//
-// Load default header
-//
-$no_page_header = TRUE;
-$phpbb_root_path = './../';
-require($phpbb_root_path . 'extension.inc');
-require('./pagestart.' . $phpEx);
+//$no_page_header = TRUE;
+require('./pagestart.php');
 
 //
 // Start program - define vars
@@ -149,9 +119,9 @@ if( isset($HTTP_POST_VARS['submit']) )
 	}
 
 	$template->assign_vars(array(
-		'META' => '<meta http-equiv="refresh" content="3;url=' . append_sid("admin_forumauth.$phpEx?" . POST_FORUM_URL . "=$forum_id") . '">')
+		'META' => '<meta http-equiv="refresh" content="3;url=' . append_sid("admin_forumauth.php?" . POST_FORUM_URL . "=$forum_id") . '">')
 	);
-	$message = $lang['Forum_auth_updated'] . '<br /><br />' . sprintf($lang['Click_return_forumauth'],  '<a href="' . append_sid("admin_forumauth.$phpEx") . '">', "</a>");
+	$message = $lang['Forum_auth_updated'] . '<br /><br />' . sprintf($lang['Click_return_forumauth'],  '<a href="' . append_sid("admin_forumauth.php") . '">', "</a>");
 	message_die(GENERAL_MESSAGE, $message);
 
 } // End of submit
@@ -197,17 +167,13 @@ if( empty($forum_id) )
 		'L_AUTH_SELECT' => $lang['Select_a_Forum'],
 		'L_LOOK_UP' => $lang['Look_up_Forum'],
 
-		'S_AUTH_ACTION' => append_sid("admin_forumauth.$phpEx"),
+		'S_AUTH_ACTION' => append_sid("admin_forumauth.php"),
 		'S_AUTH_SELECT' => $select_list)
 	);
 
 }
 else
 {
-	//
-	// Output the authorisation details if an id was
-	// specified
-	//
 	$template->set_filenames(array(
 		'body' => 'admin/auth_forum_body.tpl')
 	);
@@ -234,10 +200,6 @@ else
 		}
 	}
 
-	//
-	// If we didn't get a match above then we
-	// automatically switch into 'advanced' mode
-	//
 	if ( !isset($adv) && !$matched )
 	{
 		$adv = 1;
@@ -268,10 +230,6 @@ else
 	}
 	else
 	{
-		//
-		// Output values of individual
-		// fields
-		//
 		for($j = 0; $j < count($forum_auth_fields); $j++)
 		{
 			$custom_auth[$j] = '&nbsp;<select name="' . $forum_auth_fields[$j] . '">';
@@ -297,7 +255,7 @@ else
 	}
 
 	$adv_mode = ( empty($adv) ) ? '1' : '0';
-	$switch_mode = append_sid("admin_forumauth.$phpEx?" . POST_FORUM_URL . "=" . $forum_id . "&adv=". $adv_mode);
+	$switch_mode = append_sid("admin_forumauth.php?" . POST_FORUM_URL . "=" . $forum_id . "&adv=". $adv_mode);
 	$switch_mode_text = ( empty($adv) ) ? $lang['Advanced_mode'] : $lang['Simple_mode'];
 	$u_switch_mode = '<a href="' . $switch_mode . '">' . $switch_mode_text . '</a>';
 
@@ -314,17 +272,15 @@ else
 
 		'U_SWITCH_MODE' => $u_switch_mode,
 
-		'S_FORUMAUTH_ACTION' => append_sid("admin_forumauth.$phpEx"),
+		'S_FORUMAUTH_ACTION' => append_sid("admin_forumauth.php"),
 		'S_COLUMN_SPAN' => $s_column_span,
 		'S_HIDDEN_FIELDS' => $s_hidden_fields)
 	);
 
 }
 
-include('./page_header_admin.'.$phpEx);
+require('./page_header_admin.php');
 
 $template->pparse('body');
 
-include('./page_footer_admin.'.$phpEx);
-
-?>
+require('./page_footer_admin.php');

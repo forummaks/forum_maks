@@ -4,7 +4,7 @@ if (!defined('FT_ROOT')) die(basename(__FILE__));
 
 function send_pm($user_from_id, $user_to_id, $pm_subject, $pm_message)
 {
-	global $board_config, $lang, $db;
+	global $ft_cfg, $lang, $db;
 	
 	$sql = "SELECT *
 		FROM " . USERS_TABLE . " 
@@ -40,7 +40,7 @@ function send_pm($user_from_id, $user_to_id, $pm_subject, $pm_message)
 
 	if ( $inbox_info = $db->sql_fetchrow($result) )
 	{
-		if ( $inbox_info['inbox_items'] >= $board_config['max_inbox_privmsgs'] )
+		if ( $inbox_info['inbox_items'] >= $ft_cfg['max_inbox_privmsgs'] )
 		{
 			$sql = "DELETE $sql_priority FROM " . PRIVMSGS_TABLE . " 
 				WHERE ( privmsgs_type = " . PRIVMSGS_NEW_MAIL . " 

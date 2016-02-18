@@ -1,12 +1,6 @@
 <br />
 <h1>{L_WELCOME}</h1>
 
-<p>{L_ADMIN_INTRO}</p>
-
-<h1>{L_VERSION_INFORMATION}</h1>
-
-{VERSION_INFO}
-
 <h1>{L_FORUM_STATS}</h1>
 
 <table width="100%" cellpadding="4" cellspacing="1" border="0" class="forumline">
@@ -53,14 +47,12 @@
 	<tr>
 		<th class="thCornerL" height="25">&nbsp;{L_USERNAME}&nbsp;</th>
 		<th class="thTop">&nbsp;{L_STARTED}<br />{L_LAST_UPDATE}&nbsp;</th>
-		<th class="thTop">&nbsp;{L_FORUM_LOCATION}&nbsp;</th>
 		<th class="thCornerR">&nbsp;{L_IP_ADDRESS}&nbsp;</th>
 	</tr>
 	<!-- BEGIN reg_user_row -->
 	<tr>
 		<td nowrap="nowrap" class="{reg_user_row.ROW_CLASS}">&nbsp;<span class="gen"><a href="{reg_user_row.U_USER_PROFILE}" class="gen">{reg_user_row.USERNAME}</a></span>&nbsp;</td>
 		<td align="center" nowrap="nowrap" class="{reg_user_row.ROW_CLASS}">&nbsp;<span class="gen">{reg_user_row.STARTED}-{reg_user_row.LASTUPDATE}</span>&nbsp;</td>
-		<td class="{reg_user_row.ROW_CLASS}">&nbsp;<span class="gen"><a href="{reg_user_row.U_FORUM_LOCATION}" class="gen">{reg_user_row.FORUM_LOCATION}</a></span>&nbsp;</td>
 		<td class="{reg_user_row.ROW_CLASS}">&nbsp;<span class="gen"><a href="{reg_user_row.U_WHOIS_IP}" class="gen" target="_phpbbwhois">{reg_user_row.IP_ADDRESS}</a></span>&nbsp;</td>
 	</tr>
 	<!-- END reg_user_row -->
@@ -71,7 +63,6 @@
 	<tr>
 		<td nowrap="nowrap" class="{guest_user_row.ROW_CLASS}">&nbsp;<span class="gen">{guest_user_row.USERNAME}</span>&nbsp;</td>
 		<td align="center" nowrap="nowrap" class="{guest_user_row.ROW_CLASS}">&nbsp;<span class="gen">{guest_user_row.STARTED}-{guest_user_row.LASTUPDATE}</span>&nbsp;</td>
-		<td class="{guest_user_row.ROW_CLASS}">&nbsp;<span class="gen"><a href="{guest_user_row.U_FORUM_LOCATION}" class="gen">{guest_user_row.FORUM_LOCATION}</a></span>&nbsp;</td>
 		<td class="{guest_user_row.ROW_CLASS}">&nbsp;<span class="gen"><a href="{guest_user_row.U_WHOIS_IP}" target="_phpbbwhois">{guest_user_row.IP_ADDRESS}</a></span>&nbsp;</td>
 	</tr>
 	<!-- END guest_user_row -->

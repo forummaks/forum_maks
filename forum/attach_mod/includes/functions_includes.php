@@ -4,7 +4,7 @@ if (!defined('FT_ROOT')) die(basename(__FILE__));
 
 function attach_faq_include($lang_file)
 {
-	global $board_config, $faq, $attach_config;
+	global $ft_cfg, $faq, $attach_config;
 
 	if (intval($attach_config['disable_mod']))
 	{
@@ -13,13 +13,13 @@ function attach_faq_include($lang_file)
 
 	if ($lang_file == 'lang_faq')
 	{
-		if (!file_exists(FT_ROOT . 'language/lang_' . $board_config['default_lang'] . '/lang_faq_attach.php'))
+		if (!file_exists(FT_ROOT . 'language/lang_' . $ft_cfg['default_lang'] . '/lang_faq_attach.php'))
 		{
 			require(FT_ROOT . 'language/lang_english/lang_faq_attach.php');
 		}
 		else
 		{
-			require(FT_ROOT . 'language/lang_' . $board_config['default_lang'] . '/lang_faq_attach.php');
+			require(FT_ROOT . 'language/lang_' . $ft_cfg['default_lang'] . '/lang_faq_attach.php');
 		}
 	}
 }
@@ -340,7 +340,7 @@ function attachment_quota_settings($admin_mode, $submit = FALSE, $mode)
 //
 function display_upload_attach_box_limits($user_id, $group_id = 0)
 {
-	global $attach_config, $board_config, $lang, $db, $template, $userdata, $profiledata;
+	global $attach_config, $ft_cfg, $lang, $db, $template, $userdata, $profiledata;
 
 	if (intval($attach_config['disable_mod']))
 	{
@@ -511,10 +511,10 @@ function display_upload_attach_box_limits($user_id, $group_id = 0)
 	}
 
 	$upload_limit_pct = ( $upload_filesize_limit > 0 ) ? round(( $upload_filesize / $upload_filesize_limit ) * 100) : 0;
-	$upload_limit_img_length = ( $upload_filesize_limit > 0 ) ? round(( $upload_filesize / $upload_filesize_limit ) * $board_config['privmsg_graphic_length']) : 0;
+	$upload_limit_img_length = ( $upload_filesize_limit > 0 ) ? round(( $upload_filesize / $upload_filesize_limit ) * $ft_cfg['privmsg_graphic_length']) : 0;
 	if ($upload_limit_pct > 100)
 	{
-		$upload_limit_img_length = $board_config['privmsg_graphic_length'];
+		$upload_limit_img_length = $ft_cfg['privmsg_graphic_length'];
 	}
 	$upload_limit_remain = ( $upload_filesize_limit > 0 ) ? $upload_filesize_limit - $upload_filesize : 100;
 

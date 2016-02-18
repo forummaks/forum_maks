@@ -3,7 +3,7 @@
 if (!defined('FT_ROOT')) die(basename(__FILE__));
 
 // Is send through board enabled? No, return to index
-if (!$board_config['board_email_form'])
+if (!$ft_cfg['board_email_form'])
 {
 	redirect(append_sid("index.php", true));
 }
@@ -35,7 +35,7 @@ if ( $result = $db->sql_query($sql) )
 
 	if ( $row['user_viewemail'] || $userdata['user_level'] == ADMIN )
 	{
-		if ( time() - $userdata['user_emailtime'] < $board_config['flood_interval'] )
+		if ( time() - $userdata['user_emailtime'] < $ft_cfg['flood_interval'] )
 		{
 			message_die(GENERAL_MESSAGE, $lang['Flood_email_limit']);
 		}
@@ -72,7 +72,7 @@ if ( $result = $db->sql_query($sql) )
 				if ( $result = $db->sql_query($sql) )
 				{
 					require(FT_ROOT . 'includes/emailer.php');
-					$emailer = new emailer($board_config['smtp_delivery']);
+					$emailer = new emailer($ft_cfg['smtp_delivery']);
 
 					$emailer->from($userdata['user_email']);
 					$emailer->replyto($userdata['user_email']);
@@ -88,8 +88,8 @@ if ( $result = $db->sql_query($sql) )
 					$emailer->extra_headers($email_headers);
 
 					$emailer->assign_vars(array(
-						'SITENAME' => $board_config['sitename'],
-						'BOARD_EMAIL' => $board_config['board_email'],
+						'SITENAME' => $ft_cfg['sitename'],
+						'BOARD_EMAIL' => $ft_cfg['board_email'],
 						'FROM_USERNAME' => $userdata['username'],
 						'TO_USERNAME' => $username,
 						'MESSAGE' => $message)
@@ -106,8 +106,8 @@ if ( $result = $db->sql_query($sql) )
 						$emailer->set_subject($subject);
 
 						$emailer->assign_vars(array(
-							'SITENAME' => $board_config['sitename'],
-							'BOARD_EMAIL' => $board_config['board_email'],
+							'SITENAME' => $ft_cfg['sitename'],
+							'BOARD_EMAIL' => $ft_cfg['board_email'],
 							'FROM_USERNAME' => $userdata['username'],
 							'TO_USERNAME' => $username,
 							'MESSAGE' => $message)

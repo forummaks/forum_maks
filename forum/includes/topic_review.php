@@ -4,7 +4,7 @@ if (!defined('FT_ROOT')) die(basename(__FILE__));
 
 function topic_review($topic_id, $is_inline_review)
 {
-	global $db, $board_config, $template, $lang, $images, $theme;
+	global $db, $ft_cfg, $template, $lang, $images, $theme;
 	global $userdata, $user_ip;
 	global $orig_word, $replacement_word;
 	global $starttime;
@@ -93,7 +93,7 @@ function topic_review($topic_id, $is_inline_review)
 			AND p.poster_id = u.user_id
 			AND p.post_id = pt.post_id
 		ORDER BY p.post_time DESC
-		LIMIT " . $board_config['posts_per_page'];
+		LIMIT " . $ft_cfg['posts_per_page'];
 	if ( !($result = $db->sql_query($sql)) )
 	{
 		message_die(GENERAL_ERROR, 'Could not obtain post/user information', '', __LINE__, __FILE__, $sql);
@@ -116,7 +116,7 @@ function topic_review($topic_id, $is_inline_review)
 			$poster_id = $row['user_id'];
 			$poster = $row['username'];
 
-			$post_date = create_date($board_config['default_dateformat'], $row['post_time'], $board_config['board_timezone']);
+			$post_date = create_date($ft_cfg['default_dateformat'], $row['post_time'], $ft_cfg['board_timezone']);
 
 			//
 			// Handle anon users posting with usernames
@@ -142,8 +142,8 @@ function topic_review($topic_id, $is_inline_review)
 			// on then we process it, else leave it alone
 			//
 			//bot
-//		if ( !$board_config['allow_html'] && $row['enable_html'] )
-			if ((!$board_config['allow_html'] && $row['enable_html']) && $poster_id != BOT_UID)
+//		if ( !$ft_cfg['allow_html'] && $row['enable_html'] )
+			if ((!$ft_cfg['allow_html'] && $row['enable_html']) && $poster_id != BOT_UID)
 			//bot end
 			{
 				$message = preg_replace('#(<)([\/]?.*?)(>)#is', '&lt;\2&gt;', $message);
@@ -151,7 +151,7 @@ function topic_review($topic_id, $is_inline_review)
 
 			if ( $bbcode_uid != "" )
 			{
-				$message = ( $board_config['allow_bbcode'] ) ? bbencode_second_pass($message, $bbcode_uid) : preg_replace('/\:[0-9a-z\:]+\]/si', ']', $message);
+				$message = ( $ft_cfg['allow_bbcode'] ) ? bbencode_second_pass($message, $bbcode_uid) : preg_replace('/\:[0-9a-z\:]+\]/si', ']', $message);
 			}
 
 			$message = make_clickable($message);
@@ -162,7 +162,7 @@ function topic_review($topic_id, $is_inline_review)
 				$message = preg_replace($orig_word, $replacement_word, $message);
 			}
 
-			if ( $board_config['allow_smilies'] && $row['enable_smilies'] )
+			if ( $ft_cfg['allow_smilies'] && $row['enable_smilies'] )
 			{
 				$message = smilies_pass($message);
 			}
