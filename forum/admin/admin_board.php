@@ -55,9 +55,6 @@ $timezone_select = tz_select($new['board_timezone'], 'board_timezone');
 $disable_board_yes = ( $new['board_disable'] ) ? "checked=\"checked\"" : "";
 $disable_board_no = ( !$new['board_disable'] ) ? "checked=\"checked\"" : "";
 
-$cookie_secure_yes = ( $new['cookie_secure'] ) ? "checked=\"checked\"" : "";
-$cookie_secure_no = ( !$new['cookie_secure'] ) ? "checked=\"checked\"" : "";
-
 $html_tags = $new['allow_html_tags'];
 
 $override_user_style_yes = ( $new['override_user_style'] ) ? "checked=\"checked\"" : "";
@@ -72,9 +69,6 @@ $bbcode_no = ( !$new['allow_bbcode'] ) ? "checked=\"checked\"" : "";
 $activation_none = ( $new['require_activation'] == USER_ACTIVATION_NONE ) ? "checked=\"checked\"" : "";
 $activation_user = ( $new['require_activation'] == USER_ACTIVATION_SELF ) ? "checked=\"checked\"" : "";
 $activation_admin = ( $new['require_activation'] == USER_ACTIVATION_ADMIN ) ? "checked=\"checked\"" : "";
-
-$confirm_yes = ($new['enable_confirm']) ? 'checked="checked"' : '';
-$confirm_no = (!$new['enable_confirm']) ? 'checked="checked"' : '';
 
 $board_email_form_yes = ( $new['board_email_form'] ) ? "checked=\"checked\"" : "";
 $board_email_form_no = ( !$new['board_email_form'] ) ? "checked=\"checked\"" : "";
@@ -215,9 +209,6 @@ $template->assign_vars(array(
 	"L_SUBMIT" => $lang['Submit'],
 	"L_RESET" => $lang['Reset'],
 
-	"SERVER_NAME" => $new['server_name'],
-	"SCRIPT_PATH" => $new['script_path'],
-	"SERVER_PORT" => $new['server_port'],
 	"SITENAME" => $new['sitename'],
 	"SITE_DESCRIPTION" => $new['site_desc'],
 	"S_DISABLE_BOARD_YES" => $disable_board_yes,
@@ -228,8 +219,6 @@ $template->assign_vars(array(
 	"ACTIVATION_USER_CHECKED" => $activation_user,
 	"ACTIVATION_ADMIN" => USER_ACTIVATION_ADMIN,
 	"ACTIVATION_ADMIN_CHECKED" => $activation_admin,
-	"CONFIRM_ENABLE" => $confirm_yes,
-	"CONFIRM_DISABLE" => $confirm_no,
 	"ACTIVATION_NONE_CHECKED" => $activation_none,
 	"BOARD_EMAIL_FORM_ENABLE" => $board_email_form_yes,
 	"BOARD_EMAIL_FORM_DISABLE" => $board_email_form_no,
@@ -250,12 +239,7 @@ $template->assign_vars(array(
 	"INBOX_LIMIT" => $new['max_inbox_privmsgs'],
 	"SENTBOX_LIMIT" => $new['max_sentbox_privmsgs'],
 	"SAVEBOX_LIMIT" => $new['max_savebox_privmsgs'],
-	"COOKIE_DOMAIN" => $new['cookie_domain'],
-	"COOKIE_NAME" => $new['cookie_name'],
-	"COOKIE_PATH" => $new['cookie_path'],
 	"SESSION_LENGTH" => $new['session_length'],
-	"S_COOKIE_SECURE_ENABLED" => $cookie_secure_yes,
-	"S_COOKIE_SECURE_DISABLED" => $cookie_secure_no,
 	"GZIP_YES" => $gzip_yes,
 	"GZIP_NO" => $gzip_no,
 	"PRUNE_YES" => $prune_yes,

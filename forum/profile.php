@@ -22,7 +22,7 @@ $mode = request_var('mode', '');
 switch($mode)
 {
 	case 'viewprofile':
-		require(FT_ROOT . 'includes/usercp_viewprofile.php');
+		require(PROFILE_DIR . 'viewprofile.php');
 		break;
 		
 	case 'register':
@@ -32,19 +32,19 @@ switch($mode)
 			redirect(append_sid("login.php?redirect=profile.php&mode=editprofile", true));
 		}
 		
-		require(FT_ROOT . 'includes/usercp_register.php');
+		require(PROFILE_DIR . 'register.php');
 		break;
 		
 	case 'sendpassword':
-		require(FT_ROOT . 'includes/usercp_sendpasswd.php');
+		require(PROFILE_DIR . 'sendpasswd.php');
 		break;
 		
 	case 'activate':
-		require(FT_ROOT . 'includes/usercp_activate.php');
+		require(PROFILE_DIR . 'activate.php');
 		break;
 		
 	case 'email':
-		require(FT_ROOT . 'includes/usercp_email.php');
+		require(PROFILE_DIR . 'email.php');
 		break;
 		
 	default:

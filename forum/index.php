@@ -32,7 +32,7 @@ if( $mark_read == 'forums' )
 {
 	if( $userdata['session_logged_in'] )
 	{
-		setcookie($ft_cfg['cookie_name'] . '_f_all', time(), 0, $ft_cfg['cookie_path'], $ft_cfg['cookie_domain'], $ft_cfg['cookie_secure']);
+		setcookie($ft_cfg['cookie_prefix'] . '_f_all', time(), 0, $ft_cfg['script_path'], $ft_cfg['cookie_domain'], $ft_cfg['cookie_secure']);
 	}
 
 	//mr ["mark all forums read" fix]
@@ -82,8 +82,8 @@ if( $mark_read == 'forums' )
 // End handle marking posts
 //
 
-$tracking_topics = ( isset($HTTP_COOKIE_VARS[$ft_cfg['cookie_name'] . '_t']) ) ? unserialize($HTTP_COOKIE_VARS[$ft_cfg['cookie_name'] . "_t"]) : array();
-$tracking_forums = ( isset($HTTP_COOKIE_VARS[$ft_cfg['cookie_name'] . '_f']) ) ? unserialize($HTTP_COOKIE_VARS[$ft_cfg['cookie_name'] . "_f"]) : array();
+$tracking_topics = ( isset($HTTP_COOKIE_VARS[$ft_cfg['cookie_prefix'] . '_t']) ) ? unserialize($HTTP_COOKIE_VARS[$ft_cfg['cookie_prefix'] . "_t"]) : array();
+$tracking_forums = ( isset($HTTP_COOKIE_VARS[$ft_cfg['cookie_prefix'] . '_f']) ) ? unserialize($HTTP_COOKIE_VARS[$ft_cfg['cookie_prefix'] . "_f"]) : array();
 
 //
 // If you don't use these stats on your index you may want to consider

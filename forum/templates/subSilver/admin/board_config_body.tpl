@@ -8,19 +8,7 @@
 	  <th class="thHead" colspan="2">{L_GENERAL_SETTINGS}</th>
 	</tr>
 	<tr>
-		<td class="row1">{L_SERVER_NAME}</td>
-		<td class="row2"><input class="post" type="text" maxlength="255" size="40" name="server_name" value="{SERVER_NAME}" /></td>
-	</tr>
-	<tr>
-		<td class="row1">{L_SERVER_PORT}<br /><span class="gensmall">{L_SERVER_PORT_EXPLAIN}</span></td>
-		<td class="row2"><input class="post" type="text" maxlength="5" size="5" name="server_port" value="{SERVER_PORT}" /></td>
-	</tr>
-	<tr>
-		<td class="row1">{L_SCRIPT_PATH}<br /><span class="gensmall">{L_SCRIPT_PATH_EXPLAIN}</span></td>
-		<td class="row2"><input class="post" type="text" maxlength="255" name="script_path" value="{SCRIPT_PATH}" /></td>
-	</tr>
-	<tr>
-		<td class="row1">{L_SITE_NAME}<br /><span class="gensmall">{L_SITE_NAME_EXPLAIN}</span></td>
+		<td class="row1">{L_SITE_NAME}<br /></td>
 		<td class="row2"><input class="post" type="text" size="25" maxlength="100" name="sitename" value="{SITENAME}" /></td>
 	</tr>
 	<tr>
@@ -92,18 +80,6 @@
 	</tr>
 	<tr>
 		<td class="row2" colspan="2"><span class="gensmall">{L_COOKIE_SETTINGS_EXPLAIN}</span></td>
-	</tr>
-	<tr>
-		<td class="row1">{L_COOKIE_DOMAIN}</td>
-		<td class="row2"><input class="post" type="text" maxlength="255" name="cookie_domain" value="{COOKIE_DOMAIN}" /></td>
-	</tr>
-	<tr>
-		<td class="row1">{L_COOKIE_NAME}</td>
-		<td class="row2"><input class="post" type="text" maxlength="16" name="cookie_name" value="{COOKIE_NAME}" /></td>
-	</tr>
-	<tr>
-		<td class="row1">{L_COOKIE_PATH}</td>
-		<td class="row2"><input class="post" type="text" maxlength="255" name="cookie_path" value="{COOKIE_PATH}" /></td>
 	</tr>
 	<tr>
 		<td class="row1">{L_COOKIE_SECURE}<br /><span class="gensmall">{L_COOKIE_SECURE_EXPLAIN}</span></td>

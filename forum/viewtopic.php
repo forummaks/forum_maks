@@ -8,7 +8,7 @@ define('SHOW_POSTER_FROM',   TRUE);
 define('SHOW_BOT_NICK',      FALSE);
 //bot end
 
-unset($HTTP_GET_VARS['highlight'], $_GET['highlight']);
+unset($_GET['highlight'], $_GET['highlight']);
 
 define('FT_ROOT', './');
 require(FT_ROOT . 'common.php');
@@ -18,22 +18,9 @@ require(FT_ROOT . 'includes/bbcode.php');
 // Start initial var setup
 //
 $topic_id = $post_id = 0;
-if ( isset($HTTP_GET_VARS[POST_TOPIC_URL]) )
-{
-	$topic_id = intval($HTTP_GET_VARS[POST_TOPIC_URL]);
-}
-else if ( isset($HTTP_GET_VARS['topic']) )
-{
-	$topic_id = intval($HTTP_GET_VARS['topic']);
-}
-
-if ( isset($HTTP_GET_VARS[POST_POST_URL]))
-{
-	$post_id = intval($HTTP_GET_VARS[POST_POST_URL]);
-}
-
-
-$start = ( isset($HTTP_GET_VARS['start']) ) ? intval($HTTP_GET_VARS['start']) : 0;
+$topic_id = isset($_GET[POST_TOPIC_URL]) ? (int) $_GET[POST_TOPIC_URL] : 0;
+$post_id  = (!$topic_id && isset($_GET[POST_POST_URL])) ? (int) $_GET[POST_POST_URL] : 0;
+$start    = isset($_GET['start']) ? abs(intval($_GET['start'])) : 0;
 
 if ( !isset($topic_id) && !isset($post_id) )
 {
@@ -558,8 +545,8 @@ $post_alt = ( $forum_topic_data['forum_status'] == FORUM_LOCKED ) ? $lang['Forum
 //
 if ( $userdata['session_logged_in'] )
 {
-	$tracking_topics = ( isset($HTTP_COOKIE_VARS[$ft_cfg['cookie_name'] . '_t']) ) ? unserialize($HTTP_COOKIE_VARS[$ft_cfg['cookie_name'] . '_t']) : array();
-	$tracking_forums = ( isset($HTTP_COOKIE_VARS[$ft_cfg['cookie_name'] . '_f']) ) ? unserialize($HTTP_COOKIE_VARS[$ft_cfg['cookie_name'] . '_f']) : array();
+	$tracking_topics = ( isset($HTTP_COOKIE_VARS[$ft_cfg['cookie_prefix'] . '_t']) ) ? unserialize($HTTP_COOKIE_VARS[$ft_cfg['cookie_prefix'] . '_t']) : array();
+	$tracking_forums = ( isset($HTTP_COOKIE_VARS[$ft_cfg['cookie_prefix'] . '_f']) ) ? unserialize($HTTP_COOKIE_VARS[$ft_cfg['cookie_prefix'] . '_f']) : array();
 
 	if ( !empty($tracking_topics[$topic_id]) && !empty($tracking_forums[$forum_id]) )
 	{
@@ -582,7 +569,7 @@ if ( $userdata['session_logged_in'] )
 
 	$tracking_topics[$topic_id] = time();
 
-	setcookie($ft_cfg['cookie_name'] . '_t', serialize($tracking_topics), 0, $ft_cfg['cookie_path'], $ft_cfg['cookie_domain'], $ft_cfg['cookie_secure']);
+	setcookie($ft_cfg['cookie_prefix'] . '_t', serialize($tracking_topics), 0, $ft_cfg['script_path'], $ft_cfg['cookie_domain'], $ft_cfg['cookie_secure']);
 }
 
 //
@@ -983,7 +970,7 @@ for($i = 0; $i < $total_posts; $i++)
 		$profile_img = '<a href="' . $temp_url . '"><img src="' . $images['icon_profile'] . '" alt="' . $lang['Read_profile'] . '" title="' . $lang['Read_profile'] . '" border="0" /></a>';
 		$profile = '<a class="txtb" href="' . $temp_url . '">' . $lang['Read_profile_txtb'] . '</a>&nbsp;';
 
-		$temp_url = append_sid("privmsg.$phpEx?mode=post&amp;" . POST_USERS_URL . "=$poster_id");
+		$temp_url = append_sid("privmsg.php?mode=post&amp;" . POST_USERS_URL . "=$poster_id");
 		$pm_img = '<a href="' . $temp_url . '"><img src="' . $images['icon_pm'] . '" alt="' . $lang['Send_private_message'] . '" title="' . $lang['Send_private_message'] . '" border="0" /></a>';
 		$pm = '<a class="txtb" href="' . $temp_url . '">' . $lang['Send_private_message_txtb'] . '</a>&nbsp;';
 
@@ -1360,7 +1347,7 @@ if( $row = $db->sql_fetchrow($db->sql_query($sql)))
 {   $post_id = $row['topic_first_post_id'];}
 @$sql = "select attach_id from ".ATTACHMENTS_TABLE." where post_id = ".$post_id." limit 1";
 if($row = $db->sql_fetchrow($db->sql_query($sql))){   $attach_id = $row['attach_id'];}
-if ($attach_id > 0) // чтоб небыло ошибки с простыми сообщениями
+if (@$attach_id > 0) // чтоб небыло ошибки с простыми сообщениями
 {
 //нашли
    require(FT_ROOT.'includes/functions_torrent.php');

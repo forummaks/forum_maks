@@ -8,6 +8,7 @@ $lang['DATE_FORMAT'] = 'd-m-Y'; //'d.m.Y'; // This should be changed to the defa
 $lang['TRANSLATION_INFO'] = '';
 $lang['Mod_Mavrick'] = 'Modified by <a class="copyright" href="mailto:mavrickxxx@gmail.com">Mavrick</a> &copy; 2009';
 $lang['TERMS'] = 'Правила'; // Проверка на работу новой системы tamplates
+$lang['REGISTERED'] = 'Зарегистрирован';
 
 //
 // Common, these terms are used
@@ -65,9 +66,6 @@ $lang['View_newest_post'] = 'Перейти к первому непрочита
 $lang['Page_of'] = 'Страница <b>%d</b> из <b>%d</b>'; // Replaces with: Page 1 of 2 for example
 
 $lang['ICQ'] = 'ICQ Number';
-$lang['AIM'] = 'AIM Address';
-$lang['MSNM'] = 'MSN Messenger';
-$lang['YIM'] = 'Yahoo Messenger';
 
 $lang['Forum_Index'] = 'Список форумов %s';
 
@@ -161,7 +159,7 @@ $lang['Enter_password'] = 'Введите ваше имя и пароль для
 $lang['Login'] = 'Вход';
 $lang['Logout'] = 'Выход';
 
-$lang['Forgotten_password'] = 'Забыли пароль?';
+$lang['FORGOTTEN_PASSWORD'] = 'Забыли пароль?';
 
 $lang['Log_me_in'] = 'Автоматически входить при каждом посещении';
 
@@ -511,7 +509,7 @@ $lang['Total_posts'] = 'Всего сообщений';
 $lang['User_post_pct_stats'] = '%.2f%% от общего числа'; // 15% of total
 $lang['User_post_day_stats'] = '%.2f сообщений в день'; // 1.5 posts per day
 $lang['Search_user_posts'] = 'Найти сообщения'; // Find all posts by username
-$lang['Search_user_releases'] = 'Найти все текущие раздачи';
+$lang['SEARCH_USER_RELEASES'] = 'Найти все текущие раздачи';
 
 $lang['No_user_id_specified'] = 'Извините, такого пользователя не существует';
 $lang['Wrong_Profile'] = 'Вы не можете редактировать чужой профиль.';
@@ -762,6 +760,7 @@ $lang['No_searchable_forums'] = 'У вас нет доступа к поиску
 $lang['No_search_match'] = 'Подходящих тем или сообщений не найдено';
 $lang['Found_search_match'] = 'Результатов поиска: %d'; // eg. Search found 1 match
 $lang['Found_search_matches'] = 'Результатов поиска: %d'; // eg. Search found 24 matches
+$lang['MATCHES'] = 'Результатов поиска:';
 
 $lang['Close_window'] = 'Закрыть окно';
 
@@ -993,31 +992,6 @@ $lang['A_critical_error'] = 'Произошла критическая ошиб�
 
 $lang['Admin_reauthenticate'] = 'Чтобы получить доступ к админ-панели, Вам необходимо еще раз ввести пароль.';
 
-// FLAGHACK-start
-$lang['Country_Flag'] = 'Country Flag';
-$lang['Select_Country'] = 'SELECT COUNTRY' ;
-// FLAGHACK-end
-
-//
-// MAIL.RU Keyboard
-//
-$lang['kb_title'] = 'Русская клавиатура';
-$lang['kb_rus_keylayout'] = 'Раскладка: ';
-$lang['kb_none'] = 'Отсутствует';
-$lang['kb_translit'] = 'Транслит';
-$lang['kb_traditional'] = 'Традиционная';
-$lang['kb_rules'] = 'Правила набора';
-$lang['kb_hide'] = 'Спрятать клавиатуру';
-$lang['kb_show'] = 'Показать клавиатуру';
-$lang['kb_about'] = 'О клавиатуре';
-$lang['kb_close'] = 'Close';
-$lang['kb_translit_mozilla'] = 'Select text you wish to translit and click \'Translit\'.';
-$lang['kb_translit_opera7'] = 'Click here to translit your message.';
-
-//
-// That's all, Folks!
-// -------------------------------------------------
-
 $lang['Select_username'] = 'Выберите пользователя';
 $lang['Post_link'] = 'Линк на это сообщение';
 $lang['Last_Visited'] = 'Последний визит';
@@ -1035,7 +1009,7 @@ $lang['Topics_Normal'] = 'Топики';
 //ts end
 
 //sf
-$lang['SF_Subforums'] = 'Subforums';
+$lang['SF_Subforums'] = 'Подфорумы';
 //sf end
 
 //dpc
@@ -1087,9 +1061,6 @@ include(FT_ROOT .'language/lang_russian/lang_main_bt.php');
 
 //txtb
 $lang['ICQ_txtb'] = '[ICQ]';
-$lang['AIM_txtb'] = '[AIM]';
-$lang['MSNM_txtb'] = '[MSN]';
-$lang['YIM_txtb'] = '[Yahoo]';
 $lang['Reply_with_quote_txtb'] = '[Цитировать]';
 $lang['Read_profile_txtb'] = '[Профиль]';
 $lang['Send_email_txtb'] = '[E-mail]';

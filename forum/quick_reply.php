@@ -97,7 +97,7 @@ if ($is_auth['auth_reply'] && !(($forum_topic_data['forum_status'] == FORUM_LOCK
 		'L_CANCEL'        => $lang['Cancel'],
 
 		'QUICK_REPLY'     => TRUE,
-		'QR_POST_ACT'     => append_sid("posting.$phpEx"),
+		'QR_POST_ACT'     => append_sid("posting.php"),
 		'QR_TOPIC_ID'     => $topic_id,
 		'QR_GUEST'        => $guest,
 		'QR_SID'          => $userdata['session_id']

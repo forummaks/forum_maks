@@ -1,5 +1,4 @@
 <?php
-define('HEADER_INC', true);
 $page_title = '';
 
 $do_gzip_compress = false;

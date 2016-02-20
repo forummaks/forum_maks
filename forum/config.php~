@@ -11,9 +11,9 @@ $domain_name = (!empty($_SERVER['SERVER_NAME'])) ? $_SERVER['SERVER_NAME'] : $do
 $dbms = 'mysql';
 
 $dbhost = 'localhost';
-$dbname = '';
-$dbuser = '';
-$dbpasswd = '';
+$dbname = 'baza';
+$dbuser = 'root';
+$dbpasswd = '123456';
 
 // Server
 $ft_cfg['server_name'] = $domain_name;                                                     // The domain name from which this board runs

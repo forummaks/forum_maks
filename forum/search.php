@@ -1,5 +1,5 @@
 <?php
-unset($HTTP_GET_VARS['highlight'], $_GET['highlight']);
+unset($_GET['highlight'], $_GET['highlight']);
 
 define('FT_ROOT', './');
 require(FT_ROOT . 'common.php');

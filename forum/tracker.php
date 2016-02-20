@@ -567,9 +567,9 @@ if ($forum_val && $allowed_forums_sql)
 		$where_sql .= ($seed_exist) ? '
 				AND tr.seeder = 1
 		' :	'';
-		$where_sql .= ($tcs_ids!='') ? '
+		/*$where_sql .= ($tcs_ids!='') ? '
 				AND tor.topic_check_status in ('.$tcs_ids.')
-		' :	'';
+		' :	'';*/
 		$where_sql .= ($title_match) ? "
 				AND MATCH (t.topic_title) AGAINST ('$title_match_sql'". $search_bool_mode .")
 		" :	'';

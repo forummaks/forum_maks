@@ -206,7 +206,7 @@ if ($mode == 'register' && ($userdata['session_logged_in'] || @$username == $use
 //
 if ( isset($HTTP_POST_VARS['submit']) )
 {
-	require(FT_ROOT . 'includes/usercp_avatar.php');
+	require(PROFILE_DIR . 'avatar.php');
 
 	$passwd_sql = '';
 	if ( $mode == 'editprofile' )
@@ -709,7 +709,7 @@ if ( $mode == 'editprofile' )
 
 if( isset($HTTP_POST_VARS['avatargallery']) && !$error )
 {
-	require(FT_ROOT . 'includes/usercp_avatar.php');
+	require(PROFILE_DIR . 'avatar.php');
 
 	$avatar_category = ( !empty($HTTP_POST_VARS['avatarcategory']) ) ? htmlspecialchars($HTTP_POST_VARS['avatarcategory']) : '';
 
@@ -815,7 +815,6 @@ else
 		'NEW_PASSWORD' => @$new_password,
 		'PASSWORD_CONFIRM' => @$password_confirm,
 		'EMAIL' => @$email,
-		'YIM' => $yim,
 		'OCCUPATION' => $occupation,
 		'INTERESTS' => $interests,
 		'LOCATION' => $location,

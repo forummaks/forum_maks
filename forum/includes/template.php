@@ -83,7 +83,7 @@ class Template {
 	var $include_count = 0;
 
 	// Extension tpl-cache files
-	var $php = 'php';
+	var $cached_tpl_ext = 'php';
 
 	// True if check switches
 	var $xs_check_switches = 1;

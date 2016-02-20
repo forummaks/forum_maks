@@ -25,7 +25,7 @@ else
 	$mode = '';
 }
 
-attachment_quota_settings('group', $HTTP_POST_VARS['group_update'], $mode);
+@attachment_quota_settings('group', $_POST['group_update'], $mode);
 
 if ( isset($HTTP_POST_VARS['edit']) || isset($HTTP_POST_VARS['new']) )
 {
@@ -101,7 +101,7 @@ if ( isset($HTTP_POST_VARS['edit']) || isset($HTTP_POST_VARS['new']) )
 	$template->assign_vars(array(
 		'GROUP_NAME' => $group_info['group_name'],
 		'GROUP_DESCRIPTION' => $group_info['group_description'],
-		'GROUP_MODERATOR' => $group_moderator,
+		'GROUP_MODERATOR' => @$group_moderator,
 
 		'L_GROUP_TITLE' => $lang['Group_administration'],
 		'L_GROUP_EDIT_DELETE' => ( isset($HTTP_POST_VARS['new']) ) ? $lang['New_group'] : $lang['Edit_group'],

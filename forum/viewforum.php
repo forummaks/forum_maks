@@ -4,27 +4,24 @@ require(FT_ROOT . 'common.php');
 
 define('LAST_TOPIC_MAX_LEN', 40);
 
-//
-// Start initial var setup
-//
-if ( isset($HTTP_GET_VARS[POST_FORUM_URL]) || isset($HTTP_POST_VARS[POST_FORUM_URL]) )
+if ( isset($_GET[POST_FORUM_URL]) || isset($_POST[POST_FORUM_URL]) )
 {
-	$forum_id = ( isset($HTTP_GET_VARS[POST_FORUM_URL]) ) ? intval($HTTP_GET_VARS[POST_FORUM_URL]) : intval($HTTP_POST_VARS[POST_FORUM_URL]);
+	$forum_id = ( isset($_GET[POST_FORUM_URL]) ) ? intval($_GET[POST_FORUM_URL]) : intval($_POST[POST_FORUM_URL]);
 }
-else if ( isset($HTTP_GET_VARS['forum']))
+else if ( isset($_GET['forum']))
 {
-	$forum_id = intval($HTTP_GET_VARS['forum']);
+	$forum_id = intval($_GET['forum']);
 }
 else
 {
 	$forum_id = '';
 }
 
-$start = ( isset($HTTP_GET_VARS['start']) ) ? intval($HTTP_GET_VARS['start']) : 0;
+$start = ( isset($_GET['start']) ) ? intval($_GET['start']) : 0;
 
-if ( isset($HTTP_GET_VARS['mark']) || isset($HTTP_POST_VARS['mark']) )
+if ( isset($_GET['mark']) || isset($_POST['mark']) )
 {
-	$mark_read = (isset($HTTP_POST_VARS['mark'])) ? $HTTP_POST_VARS['mark'] : $HTTP_GET_VARS['mark'];
+	$mark_read = (isset($_POST['mark'])) ? $_POST['mark'] : $_GET['mark'];
 }
 else
 {
@@ -112,8 +109,8 @@ if ( $mark_read == 'topics' )
 
 		if ( $row = $db->sql_fetchrow($result) )
 		{
-			$tracking_forums = ( isset($HTTP_COOKIE_VARS[$ft_cfg['cookie_name'] . '_f']) ) ? unserialize($HTTP_COOKIE_VARS[$ft_cfg['cookie_name'] . '_f']) : array();
-			$tracking_topics = ( isset($HTTP_COOKIE_VARS[$ft_cfg['cookie_name'] . '_t']) ) ? unserialize($HTTP_COOKIE_VARS[$ft_cfg['cookie_name'] . '_t']) : array();
+			$tracking_forums = ( isset($HTTP_COOKIE_VARS[$ft_cfg['cookie_prefix'] . '_f']) ) ? unserialize($HTTP_COOKIE_VARS[$ft_cfg['cookie_prefix'] . '_f']) : array();
+			$tracking_topics = ( isset($HTTP_COOKIE_VARS[$ft_cfg['cookie_prefix'] . '_t']) ) ? unserialize($HTTP_COOKIE_VARS[$ft_cfg['cookie_prefix'] . '_t']) : array();
 
 			if ( ( count($tracking_forums) + count($tracking_topics) ) >= 150 && empty($tracking_forums[$forum_id]) )
 			{
@@ -141,8 +138,8 @@ if ( $mark_read == 'topics' )
 // End handle marking posts
 //
 
-$tracking_topics = ( isset($HTTP_COOKIE_VARS[$ft_cfg['cookie_name'] . '_t']) ) ? unserialize($HTTP_COOKIE_VARS[$ft_cfg['cookie_name'] . '_t']) : '';
-$tracking_forums = ( isset($HTTP_COOKIE_VARS[$ft_cfg['cookie_name'] . '_f']) ) ? unserialize($HTTP_COOKIE_VARS[$ft_cfg['cookie_name'] . '_f']) : '';
+$tracking_topics = ( isset($HTTP_COOKIE_VARS[$ft_cfg['cookie_prefix'] . '_t']) ) ? unserialize($HTTP_COOKIE_VARS[$ft_cfg['cookie_prefix'] . '_t']) : '';
+$tracking_forums = ( isset($HTTP_COOKIE_VARS[$ft_cfg['cookie_prefix'] . '_f']) ) ? unserialize($HTTP_COOKIE_VARS[$ft_cfg['cookie_prefix'] . '_f']) : '';
 
 //
 // Do the forum Prune

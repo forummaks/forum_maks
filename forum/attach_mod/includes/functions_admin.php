@@ -168,8 +168,8 @@ function entry_exists($attach_id)
 		message_die(GENERAL_ERROR, 'Could not get Entry', '', __LINE__, __FILE__, $sql);
 	}
 
-	$ids = $db->sql_fetchrowset($result);
-	$num_ids = $db->sql_numrows($result);
+	@$ids = $db->sql_fetchrowset($result);
+	@$num_ids = $db->sql_numrows($result);
 
 	$exists = false;
 	

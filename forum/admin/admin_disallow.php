@@ -75,7 +75,7 @@ $disallow_select = '<select name="disallowed_id">';
 
 if( @trim($disallowed) == "" )
 {
-	$disallow_select .= '<option value="">' . $lang['no_disallowed'] . '</option>';
+	$disallow_select .= '<option value="">' . $lang['No'] . '</option>';
 }
 else
 {

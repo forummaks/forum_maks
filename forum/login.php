@@ -187,7 +187,7 @@ else
 			'USERNAME' => $username,
 
 			'L_ENTER_PASSWORD' => (isset($HTTP_GET_VARS['admin'])) ? $lang['Admin_reauthenticate'] : $lang['Enter_password'],
-			'L_SEND_PASSWORD' => $lang['Forgotten_password'],
+			'L_SEND_PASSWORD' => $lang['FORGOTTEN_PASSWORD'],
 
 			'U_SEND_PASSWORD' => append_sid("profile.php?mode=sendpassword"),
 

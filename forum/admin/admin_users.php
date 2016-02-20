@@ -326,7 +326,7 @@ if ( $mode == 'edit' || $mode == 'save' && ( isset($HTTP_POST_VARS['username']) 
 
 	if( isset( $HTTP_POST_VARS['submit'] ) )
 	{
-		require(FT_ROOT . 'includes/usercp_avatar.php');
+		require(PROFILE_DIR . 'avatar.php');
 
 		$error = FALSE;
 

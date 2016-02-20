@@ -1149,35 +1149,35 @@ function phpbb_realpath($path)
 
 function redirect($url)
 {
-	global $db, $ft_cfg;
+	global $ft_cfg;
 
-	if (!empty($db))
+	if (headers_sent($filename, $linenum))
 	{
-		$db->sql_close();
+		trigger_error("Headers already sent in $filename($linenum)", E_USER_ERROR);
 	}
 
-	if (strstr(urldecode($url), "\n") || strstr(urldecode($url), "\r"))
+	if (strstr(urldecode($url), "\n") || strstr(urldecode($url), "\r") || strstr(urldecode($url), ';url'))
 	{
-		message_die(GENERAL_ERROR, 'Tried to redirect to potentially insecure url.');
+		message_die(GENERAL_ERROR, 'Tried to redirect to potentially insecure url');
 	}
 
+	$url = trim($url);
 	$server_protocol = ($ft_cfg['cookie_secure']) ? 'https://' : 'http://';
+
 	$server_name = preg_replace('#^\/?(.*?)\/?$#', '\1', trim($ft_cfg['server_name']));
 	$server_port = ($ft_cfg['server_port'] <> 80) ? ':' . trim($ft_cfg['server_port']) : '';
 	$script_name = preg_replace('#^\/?(.*?)\/?$#', '\1', trim($ft_cfg['script_path']));
-	$script_name = ($script_name == '') ? $script_name : '/' . $script_name;
-	$url = preg_replace('#^\/?(.*?)\/?$#', '/\1', trim($url));
 
-	// Redirect via an HTML form for PITA webservers
-	if (@preg_match('/Microsoft|WebSTAR|Xitami/', getenv('SERVER_SOFTWARE')))
+	if ($script_name)
 	{
-		header('Refresh: 0; URL=' . $server_protocol . $server_name . $server_port . $script_name . $url);
-		echo '<!DOCTYPE HTML PUBLIC "-//W3C//DTD HTML 4.01 Transitional//EN"><html><head><meta http-equiv="Content-Type" content="text/html; charset=iso-8859-1"><meta http-equiv="refresh" content="0; url=' . $server_protocol . $server_name . $server_port . $script_name . $url . '"><title>Redirect</title></head><body><div align="center">If your browser does not support meta redirection please click <a href="' . $server_protocol . $server_name . $server_port . $script_name . $url . '">HERE</a> to be redirected</div></body></html>';
-		exit;
+		$script_name = "/$script_name";
+		$url = preg_replace("#^$script_name#", '', $url);
 	}
 
+	$redirect_url = $server_protocol . $server_name . $server_port . $script_name . preg_replace('#^\/?(.*?)\/?$#', '/\1', $url);
+
 	// Behave as per HTTP/1.1 spec for others
-	header('Location: ' . $server_protocol . $server_name . $server_port . $script_name . $url);
+	header('Location: '. $redirect_url);
 	exit;
 }
 

@@ -943,6 +943,7 @@ else
 			message_die(GENERAL_ERROR, "Couldn't get group list", "", __LINE__, __FILE__, $sql);
 		}
 
+		$select_list = '';
 		if ( $row = $db->sql_fetchrow($result) )
 		{
 			$select_list = '<select name="' . POST_GROUPS_URL . '">';

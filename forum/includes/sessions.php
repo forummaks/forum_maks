@@ -7,8 +7,8 @@ function session_begin($user_id, $user_ip, $page_id, $auto_create = 0, $enable_a
 	global $db, $ft_cfg;
 	global $HTTP_COOKIE_VARS, $HTTP_GET_VARS, $SID;
 
-	$cookiename = $ft_cfg['cookie_name'];
-	$cookiepath = $ft_cfg['cookie_path'];
+	$cookiename = $ft_cfg['cookie_prefix'];
+	$cookiepath = $ft_cfg['script_path'];
 	$cookiedomain = $ft_cfg['cookie_domain'];
 	$cookiesecure = $ft_cfg['cookie_secure'];
 
@@ -197,8 +197,8 @@ function session_pagestart($user_ip, $thispage_id)
 	global $db, $lang, $ft_cfg;
 	global $HTTP_COOKIE_VARS, $HTTP_GET_VARS, $SID;
 
-	$cookiename = $ft_cfg['cookie_name'];
-	$cookiepath = $ft_cfg['cookie_path'];
+	$cookiename = $ft_cfg['cookie_prefix'];
+	$cookiepath = $ft_cfg['script_path'];
 	$cookiedomain = $ft_cfg['cookie_domain'];
 	$cookiesecure = $ft_cfg['cookie_secure'];
 
@@ -336,8 +336,8 @@ function session_end($session_id, $user_id)
 	global $db, $lang, $ft_cfg;
 	global $HTTP_COOKIE_VARS, $HTTP_GET_VARS, $SID;
 
-	$cookiename = $ft_cfg['cookie_name'];
-	$cookiepath = $ft_cfg['cookie_path'];
+	$cookiename = $ft_cfg['cookie_prefix'];
+	$cookiepath = $ft_cfg['script_path'];
 	$cookiedomain = $ft_cfg['cookie_domain'];
 	$cookiesecure = $ft_cfg['cookie_secure'];
 

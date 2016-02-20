@@ -415,9 +415,9 @@ execute_posting_attachment_handling();
 // если за время пока вы писали ответ, в топике появились новые сообщения, перед тем как ваше сообщение будет отправлено, выводится предупреждение с обзором этих сообщений
 $topic_has_new_posts = FALSE;
 
-if ($userdata['session_logged_in'] && ($submit || $preview || $mode == 'quote' || $mode == 'reply') && isset($_COOKIE[$ft_cfg['cookie_name'] .'_t']))
+if ($userdata['session_logged_in'] && ($submit || $preview || $mode == 'quote' || $mode == 'reply') && isset($_COOKIE[$ft_cfg['cookie_prefix'] .'_t']))
 {
-	$tracking_topics = unserialize($_COOKIE[$ft_cfg['cookie_name'] .'_t']);
+	$tracking_topics = unserialize($_COOKIE[$ft_cfg['cookie_prefix'] .'_t']);
 
 	if (isset($tracking_topics[$topic_id]) && $topic_last_read = intval($tracking_topics[$topic_id]))
 	{

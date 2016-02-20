@@ -11,7 +11,7 @@
 <table width="100%" cellspacing="0" cellpadding="2" border="0" align="center">
 	<tr>
 		<td valign="bottom"><span class="nav"><a href="{U_INDEX}" class="nav">{L_INDEX}</a></span></td>
-		<td valign="bottom" align="right"><span class="nav" title="{TP_VER}">{L_MATCHES} {L_SERACH_MAX}</span></td>
+		<td valign="bottom" align="right"><span class="nav" title="{TP_VER}">{L_MATCHES}</span></td>
 	</tr>
 </table>
 

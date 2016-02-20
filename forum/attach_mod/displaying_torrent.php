@@ -2,7 +2,7 @@
 
 if (!defined('FT_ROOT')) die(basename(__FILE__));
 
-global $ft_cfg, $bb_cfg, $forum_topic_data, $poster_id, $is_auth;
+global $ft_cfg, $forum_topic_data, $poster_id, $is_auth;
 
 $change_peers_bgr_over = TRUE;
 $bgr_class_1    = 'prow1';
@@ -76,7 +76,8 @@ $template->assign_vars(array(
 	'L_POSTED'           => $lang['Tor_Posted'],
 	'L_CONFIRM'          => $lang['Confirm'],
 	'L_DEL_TORRENT'      => $lang['Tor_Delete'] ,
-	'L_DEL_MOVE_TORRENT' => $lang['Tor_Del_Move']
+	'L_DEL_MOVE_TORRENT' => $lang['Tor_Del_Move'],
+	'L_YES'				 => $lang['Yes']
 ));
 
 $bt_topic_id    = $forum_topic_data['topic_id'];
@@ -249,11 +250,12 @@ else
 	while( $row = $db->sql_fetchrow($result) ) 
 	{ 
 	$speed_up = humn_size($row['speed_up']).'/s';
-	$speed_down = humn_size($row['speed_down']).'/s'; 
-	}
+	$speed_down = humn_size($row['speed_down']).'/s';
+
 	$template->assign_vars(array(
 		'SEED_SPEED' => $speed_up,
-		'LEECH_SPEED' => $speed_down )); 
+		'LEECH_SPEED' => $speed_down ));
+	}
 
 	// Show peers
 	if ($show_peers)

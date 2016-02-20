@@ -13,6 +13,7 @@ if (empty($_SERVER['HTTP_REFERER']))    $_SERVER['HTTP_REFERER'] = '';
 if (empty($_SERVER['SERVER_NAME']))     $_SERVER['SERVER_NAME'] = '';
 
 if (!defined('FT_ROOT')) define('FT_ROOT', './');
+if (!defined('IN_FORUM') && !defined('IN_TRACKER')) define('IN_FORUM', true);
 
 header('X-Frame-Options: SAMEORIGIN');
 
@@ -24,6 +25,12 @@ if (isset($_SERVER['HTTP_CF_CONNECTING_IP']))
 
 // Get initial config
 require(FT_ROOT . 'config.php');
+
+$server_protocol = ($ft_cfg['cookie_secure']) ? 'https://' : 'http://';
+$server_port = (in_array($ft_cfg['server_port'], array(80, 443))) ? '' : ':' . $ft_cfg['server_port'];
+define('FORUM_PATH', $ft_cfg['script_path']);
+define('FULL_URL', $server_protocol . $ft_cfg['server_name'] . $server_port . $ft_cfg['script_path']);
+unset($server_protocol, $server_port);
 
 /*
 *  Функии временного использования со старой версии php4
@@ -170,12 +177,6 @@ if(!get_magic_quotes_gpc())
 *
 **/
 
-$server_protocol = ($ft_cfg['cookie_secure']) ? 'https://' : 'http://';
-$server_port = (in_array($ft_cfg['server_port'], array(80, 443))) ? '' : ':' . $ft_cfg['server_port'];
-define('FORUM_PATH', $ft_cfg['script_path']);
-define('FULL_URL', $server_protocol . $ft_cfg['server_name'] . $server_port . $ft_cfg['script_path']);
-unset($server_protocol, $server_port);
-
 // Debug options
 define('DBG_USER', (isset($_COOKIE[COOKIE_DBG])));
 
@@ -292,7 +293,7 @@ function clean_filename ($fname)
 function encode_ip ($ip)
 {
 	$d = explode('.', $ip);
-	return sprintf('%02x%02x%02x%02x', $d[0], $d[1], $d[2], $d[3]);
+	return @sprintf('%02x%02x%02x%02x', $d[0], $d[1], $d[2], $d[3]); // '@' - это временное решение познее будет испраленно
 }
 
 function decode_ip ($ip)
@@ -426,9 +427,6 @@ while ( $row = $db->sql_fetchrow($result) )
 {
 	$ft_cfg[$row['config_name']] = $row['config_value'];
 }
-//Allow multiple domain names
-$ft_cfg['server_name'] = $_SERVER['SERVER_NAME'];
-//End Allow multiple domain names
 
 require(FT_ROOT . 'attach_mod/attachment_mod.php');
 //

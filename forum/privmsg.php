@@ -1752,7 +1752,7 @@ else if ( $submit || $refresh || $mode != '' )
 
 	$template->assign_vars(array(
 		'SUBJECT' => $privmsg_subject,
-		'USERNAME' => $to_username,
+		'USERNAME' => @$to_username,
 		'MESSAGE' => $privmsg_message,
 		'HTML_STATUS' => $html_status,
 		'SMILIES_STATUS' => $smilies_status,
@@ -1836,25 +1836,6 @@ else if ( $submit || $refresh || $mode != '' )
 		'U_SEARCH_USER' => append_sid("search.php?mode=searchuser"),
 		'U_VIEW_FORUM' => append_sid("privmsg.php"))
 	);
-
-	// Output the data to the template (for MAIL.RU Keyboard)
-	$template->assign_vars(array(
-		'L_KB_TITLE' => $lang['kb_title'],
-		'L_LAYOUT' => $lang['kb_rus_keylayout'],
-		'L_NONE' => $lang['kb_none'],
-		'L_TRANSLIT' => $lang['kb_translit'],
-		'L_TRADITIONAL' => $lang['kb_traditional'],
-		'L_RULES' => $lang['kb_rules'],
-		'L_HIDE' => $lang['kb_hide'],
-		'L_SHOW' => $lang['kb_show'],
-		'L_CLOSE' =>  $lang['kb_close'],
-		'L_TRANSLIT_OPERA7' => $lang['kb_translit_opera7'],
-		'L_TRANSLIT_MOZILLA' => $lang['kb_translit_mozilla'],
-		'S_VISIBILITY_RULES' => 'position:absolute;visibility:hidden;',
-		'S_VISIBILITY_KEYB' => 'position:absolute;visibility:hidden;',
-		'S_VISIBILITY_OFF' => '')
-	);
-
 	$template->pparse('body');
 
 	require(FT_ROOT . 'includes/page_tail.php');

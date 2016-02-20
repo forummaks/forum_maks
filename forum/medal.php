@@ -21,6 +21,7 @@ init_userprefs($userdata);
 //
 // Generate page
 //
+$start    = isset($_GET['start']) ? abs(intval($_GET['start'])) : 0;
 $page_title = 'Доска почета!';
 require(FT_ROOT . 'includes/page_header.php');
 $template->set_filenames(array(

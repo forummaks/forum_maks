@@ -634,7 +634,7 @@ if ($mode == 'shadow')
 		'L_MARK_ALL' => $lang['Mark_all'],
 		'L_UNMARK_ALL' => $lang['Unmark_all'],
 
-		'S_HIDDEN' => $hidden,
+		'S_HIDDEN' => @$hidden,
 		'S_ATTACH_ACTION' => append_sid('admin_attachments.php?mode=shadow'))
 	);
 
@@ -1487,7 +1487,7 @@ if ($mode == 'quota' && $e_mode == 'view_quota')
 	}
 }
 
-
+$error = array();
 if ($error)
 {
 	$template->set_filenames(array(
