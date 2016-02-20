@@ -56,7 +56,7 @@ function delete_attachment($post_id_array = 0, $attach_id_array = 0, $page = 0, 
 			message_die(GENERAL_ERROR, 'Could not select ids', '', __LINE__, __FILE__, $sql);
 		}
 
-		$num_post_list = $db->sql_numrows($result);
+		$num_post_list = $db->num_rows($result);
 
 		if ($num_post_list == 0)
 		{
@@ -125,7 +125,7 @@ function delete_attachment($post_id_array = 0, $attach_id_array = 0, $page = 0, 
 			message_die(GENERAL_ERROR, 'Could not select Attachment Ids', '', __LINE__, __FILE__, $sql);
 		}
 
-		$num_attach_list = $db->sql_numrows($result);
+		$num_attach_list = $db->num_rows($result);
 
 		if ($num_attach_list == 0)
 		{
@@ -261,7 +261,7 @@ function delete_attachment($post_id_array = 0, $attach_id_array = 0, $page = 0, 
 			message_die(GENERAL_ERROR, 'Could not select Attachment Ids', '', __LINE__, __FILE__, $sql);
 		}
 
-		if ($db->sql_numrows($result) == 0)
+		if ($db->num_rows($result) == 0)
 		{
 			$sql = 'SELECT attach_id, physical_filename, thumbnail
 				FROM ' . ATTACHMENTS_DESC_TABLE . '
@@ -272,10 +272,10 @@ function delete_attachment($post_id_array = 0, $attach_id_array = 0, $page = 0, 
 				message_die(GENERAL_ERROR, 'Couldn\'t query attach description table', '', __LINE__, __FILE__, $sql);
 			}
 
-			if ( $db->sql_numrows($result) != 0)
+			if ( $db->num_rows($result) != 0)
 			{
 				$attachments = $db->sql_fetchrowset($result);
-				$num_attach = $db->sql_numrows($result);
+				$num_attach = $db->num_rows($result);
 
 				//
 				// delete attachments
@@ -316,7 +316,7 @@ function delete_attachment($post_id_array = 0, $attach_id_array = 0, $page = 0, 
 				message_die(GENERAL_ERROR, 'Couldn\'t query Attachments Table', '', __LINE__, __FILE__, $sql);
 			}
 
-			if ($db->sql_numrows($result) == 0)
+			if ($db->num_rows($result) == 0)
 			{
 				$sql = 'UPDATE ' . PRIVMSGS_TABLE . ' SET privmsgs_attachment = 0
 					WHERE privmsgs_id = ' . $post_id_array[$i];

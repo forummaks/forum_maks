@@ -16,11 +16,11 @@ function group_select($select_name, $default_group = 0)
 	}
 
 	$group_select = '<select name="' . $select_name . '">';
-	if (($db->sql_numrows($result)) > 0)
+	if (($db->num_rows($result)) > 0)
 	{
 		$group_name = $db->sql_fetchrowset($result);
-		$group_name[$db->sql_numrows($result)]['group_id'] = 0;
-		$group_name[$db->sql_numrows($result)]['group_name'] = $lang['Not_assigned'];
+		$group_name[$db->num_rows($result)]['group_id'] = 0;
+		$group_name[$db->num_rows($result)]['group_name'] = $lang['Not_assigned'];
 
 		for ($i = 0; $i < sizeof($group_name); $i++)
 		{
@@ -101,7 +101,7 @@ function category_select($select_name, $group_id = 0)
 	}
 
 	$rows = $db->sql_fetchrowset($result);
-	$num_rows = $db->sql_numrows($result);
+	$num_rows = $db->num_rows($result);
 	$db->sql_freeresult($result);
 
 	$type_category = 0;

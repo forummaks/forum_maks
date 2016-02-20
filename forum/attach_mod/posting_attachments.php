@@ -118,7 +118,7 @@ class attach_parent
 					message_die(GENERAL_ERROR, 'Could not get User Group', '', __LINE__, __FILE__, $sql);
 				}
 
-				if ($db->sql_numrows($result) > 0)
+				if ($db->num_rows($result) > 0)
 				{
 					$rows = $db->sql_fetchrowset($result);
 					$group_id = array();
@@ -137,7 +137,7 @@ class attach_parent
 						message_die(GENERAL_ERROR, 'Could not get Group Quota', '', __LINE__, __FILE__, $sql);
 					}
 
-					if ($db->sql_numrows($result) > 0)
+					if ($db->num_rows($result) > 0)
 					{
 						$row = $db->sql_fetchrow($result);
 						$attach_config[$limit_type] = $row['quota_limit'];
@@ -160,7 +160,7 @@ class attach_parent
 					message_die(GENERAL_ERROR, 'Could not get User Quota', '', __LINE__, __FILE__, $sql);
 				}
 
-				if ($db->sql_numrows($result) > 0)
+				if ($db->num_rows($result) > 0)
 				{
 					$row = $db->sql_fetchrow($result);
 					$attach_config[$limit_type] = $row['quota_limit'];
@@ -188,7 +188,7 @@ class attach_parent
 					message_die(GENERAL_ERROR, 'Could not get Default Quota Limit', '', __LINE__, __FILE__, $sql);
 				}
 
-				if ($db->sql_numrows($result) > 0)
+				if ($db->num_rows($result) > 0)
 				{
 					$row = $db->sql_fetchrow($result);
 					$attach_config[$limit_type] = $row['quota_limit'];
@@ -585,7 +585,7 @@ class attach_parent
 							message_die(GENERAL_ERROR, 'Unable to select old Attachment Entry.', '', __LINE__, __FILE__, $sql);
 						}
 
-						if ($db->sql_numrows($result) != 1)
+						if ($db->num_rows($result) != 1)
 						{
 							$error = TRUE;
 							if(!empty($error_msg))
@@ -1310,7 +1310,7 @@ class attach_parent
 					}
 
 					$attach_ids = $db->sql_fetchrowset($result);
-					$num_attach_ids = $db->sql_numrows($result);
+					$num_attach_ids = $db->num_rows($result);
 					$attach_id = array();
 
 					for ($i = 0; $i < $num_attach_ids; $i++)

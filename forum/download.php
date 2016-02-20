@@ -153,7 +153,7 @@ if (!($result = $db->sql_query($sql)))
 }
 
 $auth_pages = $db->sql_fetchrowset($result);
-$num_auth_pages = $db->sql_numrows($result);
+$num_auth_pages = $db->num_rows($result);
 
 for ($i = 0; $i < $num_auth_pages && $authorised == false; $i++)
 {
@@ -208,7 +208,7 @@ if ( !($result = $db->sql_query($sql)) )
 }
 
 $rows = $db->sql_fetchrowset($result);
-$num_rows = $db->sql_numrows($result);
+$num_rows = $db->num_rows($result);
 
 for ($i = 0; $i < $num_rows; $i++)
 {

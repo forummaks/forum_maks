@@ -8,12 +8,33 @@ $ft_cfg = $page_cfg = array();
 $domain_name = 'ft.org'; // enter here your primary domain name of your site
 $domain_name = (!empty($_SERVER['SERVER_NAME'])) ? $_SERVER['SERVER_NAME'] : $domain_name;
 
-$dbms = 'mysql';
+// Database
+$charset  = 'utf8';
+$pconnect = false;
 
-$dbhost = 'localhost';
-$dbname = '';
-$dbuser = '';
-$dbpasswd = '';
+// Ќастройка баз данных ['db']['srv_name'] => (array) srv_cfg;
+// пор€док параметров srv_cfg (хост, название базы, пользователь, пароль, charset, pconnect);
+$ft_cfg['database'] = array(
+	'database1' => array('localhost', 'baza', 'root', '123456', $charset, $pconnect),
+	//'database2' => array('localhost2', 'dbase2', 'user2', 'pass2', $charset, $pconnect),
+	//'database3' => array('localhost3', 'dbase3', 'user2', 'pass3', $charset, $pconnect),
+);
+
+$ft_cfg['database_alias'] = array(
+//	'alias'  => 'srv_name'
+#	db1
+	'log'    => 'database1', // BB_LOG
+	'search' => 'database1', // BB_TOPIC_SEARCH
+	'sres'   => 'database1', // BB_BT_USER_SETTINGS, BB_SEARCH_RESULTS
+	'u_ses'  => 'database1', // BB_USER_SES, BB_USER_LASTVISIT
+#	db2
+	'dls'    => 'database1', // BB_BT_DLS_*
+	'ip'     => 'database1', // BB_POSTS_IP
+	'ut'     => 'database1', // BB_TOPICS_USER_POSTED
+#	db3
+	'pm'     => 'database1', // BB_PRIVMSGS, BB_PRIVMSGS_TEXT
+	'pt'     => 'database1', // BB_POSTS_TEXT
+);
 
 // Server
 $ft_cfg['server_name'] = $domain_name;                                                     // The domain name from which this board runs
@@ -44,12 +65,19 @@ define('GZIP_OUTPUT_ALLOWED', (extension_loaded('zlib') && !ini_get('zlib.output
 // Cookie
 $ft_cfg['cookie_domain'] = in_array($domain_name, array(getenv('SERVER_ADDR'), 'localhost')) ? '' : ".$domain_name";
 $ft_cfg['cookie_secure'] = (!empty($_SERVER['HTTPS']) ? 1 : 0);
-$ft_cfg['cookie_prefix'] = 'ft_'; // 'bb_'
+$ft_cfg['cookie_prefix'] = 'ft_'; // 'ft_'
 
 // Debug
 define('DBG_LOG',              false);    // enable forum debug (off on production)
 define('DBG_TRACKER',          false);    // enable tracker debug (off on production)
 define('COOKIE_DBG',           'ft_dbg'); // debug cookie name
+define('SQL_DEBUG',            true);     // enable forum sql & cache debug
+define('SQL_LOG_ERRORS',       true);     // all SQL_xxx options enabled only if SQL_DEBUG == TRUE
+define('SQL_CALC_QUERY_TIME',  true);     // for stats
+define('SQL_LOG_SLOW_QUERIES', true);     // log sql slow queries
+define('SQL_SLOW_QUERY_TIME',  10);       // slow query in seconds
+define('SQL_PREPEND_SRC_COMM', false);    // prepend source file comment to sql query
+
 
 $ft_cfg['show_tor_info'] = true; // show bt torrent info
 
@@ -57,3 +85,5 @@ $ft_cfg['show_tor_info'] = true; // show bt torrent info
 $ft_cfg['show_latest_news'] = true; // show News
 $ft_cfg['latest_news_count'] = 5;
 $ft_cfg['latest_news_forum_id'] = '1'; // (string) 1,2,3...
+
+define('FT_CFG_LOADED', true);

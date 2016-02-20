@@ -85,10 +85,10 @@ class attach_pm extends attach_parent
 				message_die(GENERAL_ERROR, 'Couldn\'t query Attachment Table', '', __LINE__, __FILE__, $sql);
 			}
 
-			if ( ($db->sql_numrows($result)) > 0 )
+			if ( ($db->num_rows($result)) > 0 )
 			{
 				$rows = $db->sql_fetchrowset($result);
-				$num_rows = $db->sql_numrows($result);
+				$num_rows = $db->num_rows($result);
 
 				for ($i = 0; $i < $num_rows; $i++)
 				{

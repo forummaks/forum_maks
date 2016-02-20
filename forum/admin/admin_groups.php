@@ -177,7 +177,7 @@ else if ( isset($HTTP_POST_VARS['group_update']) )
 					message_die(GENERAL_ERROR, 'Could not obtain moderator permissions', '', __LINE__, __FILE__, $sql);
 				}
 
-				if ($db->sql_numrows($result) == 0)
+				if ($db->num_rows($result) == 0)
 				{
 					$sql = "UPDATE " . USERS_TABLE . " SET user_level = " . USER . "
 					WHERE user_level = " . MOD . " AND user_id = " . intval($rows[$i]['user_id']);

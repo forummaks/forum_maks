@@ -2,6 +2,7 @@
 
 if (!defined('FT_ROOT')) die(basename(__FILE__));
 if (PHP_VERSION < '5.3') die('ForumTorrent requires PHP version 5.3+. Your PHP version '. PHP_VERSION);
+if (!defined('FT_CFG_LOADED')) trigger_error('File config.php not loaded', E_USER_ERROR);
 
 // Define some basic configuration arrays
 unset($stopwords, $synonyms_match, $synonyms_replace);
@@ -351,10 +352,10 @@ function make_url ($path = '')
 	return FULL_URL . preg_replace('#^\/?(.*?)\/?$#', '\1', $path);
 }
 
-require(FT_ROOT . 'includes/template.php');
+require(FT_ROOT . 'includes/functions.php');
 require(FT_ROOT . 'includes/sessions.php');
 require(FT_ROOT . 'includes/auth.php');
-require(FT_ROOT . 'includes/functions.php');
+require(FT_ROOT . 'includes/template.php');
 require(FT_ROOT . 'db/mysql.php');
 
 define('SQL_LAYER', 'mysql');

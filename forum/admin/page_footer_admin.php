@@ -16,7 +16,7 @@ $template->pparse('page_footer');
 //
 // Close our DB connection.
 //
-$db->sql_close();
+//$db->sql_close();
 
 //
 // Compress buffered output if required

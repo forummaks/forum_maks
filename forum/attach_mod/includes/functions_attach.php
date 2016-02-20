@@ -426,7 +426,7 @@ function physical_filename_already_stored($filename)
 		message_die(GENERAL_ERROR, 'Could not get attachment information for filename: ' . $filename, '', __LINE__, __FILE__, $sql);
 	}
 
-	return ($db->sql_numrows($result) == 0) ? false : true;
+	return ($db->num_rows($result) == 0) ? false : true;
 }
 
 //
@@ -455,7 +455,7 @@ function attachment_exists_db($post_id, $page = 0)
 		message_die(GENERAL_ERROR, 'Could not get attachment informations for specific posts', '', __LINE__, __FILE__, $sql);
 	}
 
-	if (($db->sql_numrows($result)) > 0)
+	if (($db->num_rows($result)) > 0)
 	{
 		return true;
 	}
@@ -507,7 +507,7 @@ function get_attachments_from_post($post_id_array)
 		message_die(GENERAL_ERROR, 'Could not get Attachment Informations for post number ' . $post_id_array, '', __LINE__, __FILE__, $sql);
 	}
 
-	if ( ($db->sql_numrows($result)) == 0 )
+	if ( ($db->num_rows($result)) == 0 )
 	{
 		return $attachments;
 	}
@@ -560,7 +560,7 @@ function get_attachments_from_pm($privmsgs_id_array)
 		message_die(GENERAL_ERROR, 'Could not get Attachment Informations for private message number ' . $privmsgs_id_array, '', __LINE__, __FILE__, $sql);
 	}
 
-	if ( ($db->sql_numrows($result)) == 0 )
+	if ( ($db->num_rows($result)) == 0 )
 	{
 		return $attachments;
 	}
@@ -627,7 +627,7 @@ function get_total_attach_pm_filesize($direction, $user_id)
 
 	$pm_filesize_total = 0;
 	$attach_id = array();
-	$num_rows = $db->sql_numrows($result);
+	$num_rows = $db->num_rows($result);
 
 	if ($num_rows == 0)
 	{
@@ -704,7 +704,7 @@ function attachment_sync_topic($topic_id)
 	}
 
 	$post_list = $db->sql_fetchrowset($result);
-	$num_posts = $db->sql_numrows($result);
+	$num_posts = $db->num_rows($result);
 	$db->sql_freeresult($result);
 
 	if ($num_posts == 0)
@@ -736,7 +736,7 @@ function attachment_sync_topic($topic_id)
 		message_die(GENERAL_ERROR, 'Couldn\'t select Attachment ID\'s', '', __LINE__, __FILE__, $sql);
 	}
 
-	$set_id = ($db->sql_numrows($result) == 0) ? 0 : 1;
+	$set_id = ($db->num_rows($result) == 0) ? 0 : 1;
 
 	$sql = 'UPDATE ' . TOPICS_TABLE . " SET topic_attachment = $set_id WHERE topic_id = $topic_id";
 
@@ -757,7 +757,7 @@ function attachment_sync_topic($topic_id)
 			message_die(GENERAL_ERROR, 'Couldn\'t select Attachment ID\'s', '', __LINE__, __FILE__, $sql);
 		}
 
-		$set_id = ( $db->sql_numrows($result) == 0) ? 0 : 1;
+		$set_id = ( $db->num_rows($result) == 0) ? 0 : 1;
 
 		$sql = 'UPDATE ' . POSTS_TABLE . " SET post_attachment = $set_id WHERE post_id = {$post_ids[$i]}";
 
@@ -823,7 +823,7 @@ function user_in_group($user_id, $group_id)
 		message_die(GENERAL_ERROR, 'Could not get User Group', '', __LINE__, __FILE__, $sql);
 	}
 
-	if ($db->sql_numrows($result) == 0)
+	if ($db->num_rows($result) == 0)
 	{
 		return false;
 	}

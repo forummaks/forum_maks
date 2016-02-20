@@ -356,9 +356,9 @@ if ($cat_forums)
 							}
 						}
 
-						if (isset($HTTP_COOKIE_VARS[$ft_cfg['cookie_name'] . '_f_all']))
+						if (isset($HTTP_COOKIE_VARS[$ft_cfg['cookie_prefix'] . '_f_all']))
 						{
-							if ($HTTP_COOKIE_VARS[$ft_cfg['cookie_name'] . '_f_all'] > $forum_last_post_time)
+							if ($HTTP_COOKIE_VARS[$ft_cfg['cookie_prefix'] . '_f_all'] > $forum_last_post_time)
 							{
 								$unread_topics = false;
 							}

@@ -24,7 +24,7 @@ if(!isset($HTTP_POST_VARS['dosearch'])&&!isset($HTTP_GET_VARS['dosearch']))
 
 	$group_list = '';
 
-	if($db->sql_numrows($result) != 0)
+	if($db->num_rows($result) != 0)
 	{
 		$template->assign_block_vars('groups_exist', array());
 
@@ -48,7 +48,7 @@ if(!isset($HTTP_POST_VARS['dosearch'])&&!isset($HTTP_GET_VARS['dosearch']))
 
 	$forums = array();
 
-	if($db->sql_numrows($result) != 0)
+	if($db->num_rows($result) != 0)
 	{
 		$template->assign_block_vars('forums_exist', array());
 
@@ -586,13 +586,13 @@ else
 				message_die(GENERAL_ERROR, "Could not count users", '', __LINE__, __FILE__, $sql);
 			}
 
-			if($db->sql_numrows($result)==0)
+			if($db->num_rows($result)==0)
 			{
 				message_die(GENERAL_MESSAGE, $lang['Search_no_results']);
 			}
 			else
 			{
-				$total_pages['total'] = $db->sql_numrows($result);
+				$total_pages['total'] = $db->num_rows($result);
 
 				$total_sql = NULL;
 
@@ -680,7 +680,7 @@ else
 				message_die(GENERAL_ERROR, 'Could not select group data', '', __LINE__, __FILE__, $sql);
 			}
 
-			if($db->sql_numrows($result)==0)
+			if($db->num_rows($result)==0)
 			{
 				message_die(GENERAL_MESSAGE, $lang['Search_invalid_group']);
 			}
@@ -948,7 +948,7 @@ else
 				message_die(GENERAL_ERROR, 'Could not select style data', '', __LINE__, __FILE__, $sql);
 			}
 
-			if($db->sql_numrows($result)==0)
+			if($db->num_rows($result)==0)
 			{
 				message_die(GENERAL_MESSAGE, $lang['Search_invalid_style']);
 			}
@@ -980,7 +980,7 @@ else
 				message_die(GENERAL_ERROR, 'Could not select forum data', '', __LINE__, __FILE__, $sql);
 			}
 
-			if($db->sql_numrows($result)==0)
+			if($db->num_rows($result)==0)
 			{
 				message_die(GENERAL_MESSAGE, $lang['Search_invalid_moderators']);
 			}

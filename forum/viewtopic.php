@@ -621,7 +621,7 @@ if ( $is_auth['auth_mod'] )
 		}
 		else
 		{
-			$topic_mod .= "<a href=\"modcp.$phpEx?" . POST_TOPIC_URL . "=$topic_id&amp;mode=set_download&amp;sid=" . $userdata['session_id'] . '"><img src="' . $images['topic_dl'] . '" alt="' . $lang['Set_DL_Status'] . '" title="' . $lang['Set_DL_Status'] . '" border="0" /></a>';
+			$topic_mod .= "<a href=\"modcp.php" . POST_TOPIC_URL . "=$topic_id&amp;mode=set_download&amp;sid=" . $userdata['session_id'] . '"><img src="' . $images['topic_dl'] . '" alt="' . $lang['Set_DL_Status'] . '" title="' . $lang['Set_DL_Status'] . '" border="0" /></a>';
 		}
 	}
 	//bt end

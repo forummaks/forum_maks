@@ -352,7 +352,7 @@ if ($view == 'stats')
 		message_die(GENERAL_ERROR, 'Error getting total posts', '', __LINE__, __FILE__, $sql);
 	}
 
-	$number_of_posts = $db->sql_numrows($result);
+	$number_of_posts = $db->num_rows($result);
 
 	$sql = "SELECT privmsgs_id
 	FROM " . ATTACHMENTS_TABLE . "
@@ -364,7 +364,7 @@ if ($view == 'stats')
 		message_die(GENERAL_ERROR, 'Error getting total private messages', '', __LINE__, __FILE__, $sql);
 	}
 
-	$number_of_pms = $db->sql_numrows($result);
+	$number_of_pms = $db->num_rows($result);
 
 	$sql = "SELECT p.topic_id
 	FROM " . ATTACHMENTS_TABLE . " a, " . POSTS_TABLE . " p
@@ -376,7 +376,7 @@ if ($view == 'stats')
 		message_die(GENERAL_ERROR, 'Error getting total topics', '', __LINE__, __FILE__, $sql);
 	}
 
-	$number_of_topics = $db->sql_numrows($result);
+	$number_of_topics = $db->num_rows($result);
 
 	$sql = "SELECT user_id_1
 	FROM " . ATTACHMENTS_TABLE . "
@@ -388,7 +388,7 @@ if ($view == 'stats')
 		message_die(GENERAL_ERROR, 'Error getting total users', '', __LINE__, __FILE__, $sql);
 	}
 
-	$number_of_users = $db->sql_numrows($result);
+	$number_of_users = $db->num_rows($result);
 
 	$template->assign_vars(array(
 		'L_STATISTIC' => $lang['Statistic'],
@@ -531,7 +531,7 @@ if ($view == 'username')
 	}
 
 	$members = $db->sql_fetchrowset($result);
-	$num_members = $db->sql_numrows($result);
+	$num_members = $db->num_rows($result);
 
 	if ( $num_members > 0 )
 	{
@@ -551,7 +551,7 @@ if ($view == 'username')
 			}
 
 			$attach_ids = $db->sql_fetchrowset($result);
-			$num_attach_ids = $db->sql_numrows($result);
+			$num_attach_ids = $db->num_rows($result);
 			$attach_id = array();
 
 			for ($j = 0; $j < $num_attach_ids; $j++)
@@ -611,7 +611,7 @@ if ($view == 'username')
 		message_die(GENERAL_ERROR, 'Error getting total users', '', __LINE__, __FILE__, $sql);
 	}
 
-	$total_rows = $db->sql_numrows($result);
+	$total_rows = $db->num_rows($result);
 }
 
 //
@@ -688,7 +688,7 @@ if ($view == 'attachments')
 		}
 
 		$attach_ids = $db->sql_fetchrowset($result);
-		$num_attach_ids = $db->sql_numrows($result);
+		$num_attach_ids = $db->num_rows($result);
 
 		if ($num_attach_ids == 0)
 		{
@@ -732,7 +732,7 @@ if ($view == 'attachments')
 		}
 
 		$attachments = $db->sql_fetchrowset($result);
-		$num_attach = $db->sql_numrows($result);
+		$num_attach = $db->num_rows($result);
 	}
 
 	if (count($attachments) > 0)
@@ -769,7 +769,7 @@ if ($view == 'attachments')
 			}
 
 			$ids = $db->sql_fetchrowset($result);
-			$num_ids = $db->sql_numrows($result);
+			$num_ids = $db->num_rows($result);
 
 			for ($j = 0; $j < $num_ids; $j++)
 			{
@@ -840,7 +840,7 @@ if ($view == 'attachments')
 				message_die(GENERAL_ERROR, 'Could not query Attachment Description Table', '', __LINE__, __FILE__, $sql);
 			}
 
-			$total_rows = $db->sql_numrows($result);
+			$total_rows = $db->num_rows($result);
 		}
 	}
 }

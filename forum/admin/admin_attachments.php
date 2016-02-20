@@ -293,7 +293,7 @@ if ($check_upload)
 	}
 
 	$row = $db->sql_fetchrowset($result);
-	$num_rows = $db->sql_numrows($result);
+	$num_rows = $db->num_rows($result);
 
 	for ($i = 0; $i < $num_rows; $i++)
 	{
@@ -921,7 +921,7 @@ if ($check_image_cat)
 	}
 
 	$row = $db->sql_fetchrowset($result);
-	$num_rows = $db->sql_numrows($result);
+	$num_rows = $db->num_rows($result);
 
 	for ($i = 0; $i < $num_rows; $i++)
 	{
@@ -1115,7 +1115,7 @@ if ($mode == 'sync')
 	echo '<br />';
 
 	$rows = $db->sql_fetchrowset($result);
-	$num_rows = $db->sql_numrows($result);
+	$num_rows = $db->num_rows($result);
 
 	for ($i = 0; $i < $num_rows; $i++)
 	{
@@ -1286,7 +1286,7 @@ if ($submit && $mode == 'quota')
 		}
 
 		$row = $db->sql_fetchrowset($result);
-		$num_rows = $db->sql_numrows($result);
+		$num_rows = $db->num_rows($result);
 
 		if ( $num_rows > 0 )
 		{
@@ -1437,7 +1437,7 @@ if ($mode == 'quota' && $e_mode == 'view_quota')
 	}
 
 	$rows = $db->sql_fetchrowset($result);
-	$num_rows = $db->sql_numrows($result);
+	$num_rows = $db->num_rows($result);
 
 	for ($i = 0; $i < $num_rows; $i++)
 	{
@@ -1466,7 +1466,7 @@ if ($mode == 'quota' && $e_mode == 'view_quota')
 	}
 
 	$rows = $db->sql_fetchrowset($result);
-	$num_rows = $db->sql_numrows($result);
+	$num_rows = $db->num_rows($result);
 
 	for ($i = 0; $i < $num_rows; $i++)
 	{

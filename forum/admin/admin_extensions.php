@@ -115,7 +115,7 @@ if ($submit && $mode == 'extensions')
 		message_die(GENERAL_ERROR, 'Couldn\'t get Extension Informations.', '', __LINE__, __FILE__, $sql);
 	}
 
-	if ( ($db->sql_numrows($result)) > 0 )
+	if ( ($db->num_rows($result)) > 0 )
 	{
 		$extension_row = $db->sql_fetchrowset($result);
 
@@ -184,7 +184,7 @@ if ($submit && $mode == 'extensions')
 			}
 
 			$row = $db->sql_fetchrowset($result);
-			$num_rows = $db->sql_numrows($result);
+			$num_rows = $db->num_rows($result);
 
 			if ( $num_rows > 0 )
 			{
@@ -216,7 +216,7 @@ if ($submit && $mode == 'extensions')
 				}
 
 				$row = $db->sql_fetchrowset($result);
-				$num_rows = $db->sql_numrows($result);
+				$num_rows = $db->num_rows($result);
 
 				if ( $num_rows > 0 )
 				{
@@ -304,7 +304,7 @@ if ($mode == 'extensions')
 	}
 
 	$extension_row = $db->sql_fetchrowset($result);
-	$num_extension_row = $db->sql_numrows($result);
+	$num_extension_row = $db->num_rows($result);
 
 	if ( $num_extension_row > 0 )
 	{
@@ -439,7 +439,7 @@ if ($submit && $mode == 'groups')
 		}
 
 		$row = $db->sql_fetchrowset($result);
-		$num_rows = $db->sql_numrows($result);
+		$num_rows = $db->num_rows($result);
 
 		if ( $num_rows > 0 )
 		{
@@ -541,7 +541,7 @@ if ($mode == 'groups')
 	}
 
 	$extension_group = $db->sql_fetchrowset($result);
-	$num_extension_group = $db->sql_numrows($result);
+	$num_extension_group = $db->num_rows($result);
 
 	for ($i = 0; $i < $num_extension_group; $i++)
 	{
@@ -593,7 +593,7 @@ if ($mode == 'groups')
 			}
 
 			$extension = $db->sql_fetchrowset($result);
-			$num_extension = $db->sql_numrows($result);
+			$num_extension = $db->num_rows($result);
 
 			for ($j = 0; $j < $num_extension; $j++)
 			{
@@ -647,7 +647,7 @@ if ($submit && $mode == 'forbidden')
 		}
 
 		$row = $db->sql_fetchrowset($result);
-		$num_rows = $db->sql_numrows($result);
+		$num_rows = $db->num_rows($result);
 
 		if( $num_rows > 0 )
 		{
@@ -677,7 +677,7 @@ if ($submit && $mode == 'forbidden')
 			}
 
 			$row = $db->sql_fetchrowset($result);
-			$num_rows = $db->sql_numrows($result);
+			$num_rows = $db->num_rows($result);
 
 			if( $num_rows > 0 )
 			{
@@ -744,7 +744,7 @@ if ($mode == 'forbidden')
 	}
 
 	$extensionrow = $db->sql_fetchrowset($result);
-	$num_extensionrow = $db->sql_numrows($result);
+	$num_extensionrow = $db->num_rows($result);
 
 	if ( $num_extensionrow > 0 )
 	{
@@ -998,7 +998,7 @@ if ($e_mode == 'perm' && $group)
 		}
 
 		$rows = $db->sql_fetchrowset($result);
-		$num_rows = $db->sql_numrows($result);
+		$num_rows = $db->num_rows($result);
 
 		$found_forum = FALSE;
 

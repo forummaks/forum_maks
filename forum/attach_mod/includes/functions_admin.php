@@ -27,7 +27,7 @@ function process_quota_settings($mode, $id, $quota_type, $quota_limit_id = 0)
 				message_die(GENERAL_ERROR, 'Could not get Entry', '', __LINE__, __FILE__, $sql);
 			}
 
-			if ($db->sql_numrows($result) == 0)
+			if ($db->num_rows($result) == 0)
 			{
 				$sql = 'INSERT INTO ' . QUOTA_TABLE . " (user_id, group_id, quota_type, quota_limit_id) 
 					VALUES ($id, 0, $quota_type, $quota_limit_id)";
@@ -73,7 +73,7 @@ function process_quota_settings($mode, $id, $quota_type, $quota_limit_id = 0)
 				message_die(GENERAL_ERROR, 'Could not get Entry', '', __LINE__, __FILE__, $sql);
 			}
 
-			if ($db->sql_numrows($result) == 0)
+			if ($db->num_rows($result) == 0)
 			{
 				$sql = 'INSERT INTO ' . QUOTA_TABLE . " (user_id, group_id, quota_type, quota_limit_id) 
 					VALUES (0, $id, $quota_type, $quota_limit_id)";
@@ -169,7 +169,7 @@ function entry_exists($attach_id)
 	}
 
 	@$ids = $db->sql_fetchrowset($result);
-	@$num_ids = $db->sql_numrows($result);
+	@$num_ids = $db->num_rows($result);
 
 	$exists = false;
 	
@@ -193,7 +193,7 @@ function entry_exists($attach_id)
 			message_die(GENERAL_ERROR, 'Could not get Entry', '', __LINE__, __FILE__, $sql);
 		}
 	
-		if (($db->sql_numrows($result)) > 0)
+		if (($db->num_rows($result)) > 0)
 		{
 			$exists = true;
 			break;
@@ -492,7 +492,7 @@ function search_attachments($order_by, &$total_rows)
 	}
 
 	$attachments = $db->sql_fetchrowset($result);
-	$num_attach = $db->sql_numrows($result);
+	$num_attach = $db->num_rows($result);
 
 	if ($num_attach == 0)
 	{
@@ -504,7 +504,7 @@ function search_attachments($order_by, &$total_rows)
 		message_die(GENERAL_ERROR, 'Could not query attachments', '', __LINE__, __FILE__, $sql);
 	}
 
-	$total_rows = $db->sql_numrows($result);
+	$total_rows = $db->num_rows($result);
 		
 	return $attachments;
 }

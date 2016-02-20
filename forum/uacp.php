@@ -253,7 +253,7 @@ if ( !($result = $db->sql_query($sql)) )
 }
 		
 $attach_ids = $db->sql_fetchrowset($result);
-$num_attach_ids = $db->sql_numrows($result);
+$num_attach_ids = $db->num_rows($result);
 $total_rows = $num_attach_ids;
 
 if ($num_attach_ids > 0)
@@ -276,7 +276,7 @@ if ($num_attach_ids > 0)
 	}
 
 	$attachments = $db->sql_fetchrowset($result);
-	$num_attach = $db->sql_numrows($result);
+	$num_attach = $db->num_rows($result);
 }
 else
 {
@@ -306,7 +306,7 @@ if (count($attachments) > 0)
 		}
 
 		$ids = $db->sql_fetchrowset($result);
-		$num_ids = $db->sql_numrows($result);
+		$num_ids = $db->num_rows($result);
 
 		for ($j = 0; $j < $num_ids; $j++)
 		{
@@ -347,7 +347,7 @@ if (count($attachments) > 0)
 					message_die(GENERAL_ERROR, 'Couldn\'t get Privmsgs Type', '', __LINE__, __FILE__, $sql);
 				}
 
-				if ($db->sql_numrows($result) != 0)
+				if ($db->num_rows($result) != 0)
 				{
 					$row = $db->sql_fetchrow($result);
 					$privmsgs_type = $row['privmsgs_type'];

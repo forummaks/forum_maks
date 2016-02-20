@@ -6,8 +6,6 @@ if (defined('PAGE_HEADER_SENT')) return;
 // Parse and show the overall page header
 global $page_cfg, $userdata, $ads, $ft_cfg, $template, $lang, $images;
 
-define('HEADER_INC', TRUE);
-
 //sv
 $template->assign_vars(array(
 	'SVISTOK'  => FALSE,

@@ -178,9 +178,9 @@ elseif( isset($_GET['pane']) && $_GET['pane'] == 'right' )
 		$version = $row['mysql_version'];
 		if (preg_match('/^(3\.23|4\.|5\.|10\.)/', $version))
 		{
-			$db_name = ( preg_match("/^(3\.23\.[6-9])|(3\.23\.[1-9][1-9])|(4\.)/", $version) ) ? "`$dbname`" : $dbname;
+
 			$dblist = array();
-			foreach ($db_name as $name => $row)
+			foreach ($ft_cfg['database'] as $name => $row)
 			{
 				$sql = "SHOW TABLE STATUS FROM {$row[1]}";
 				if ($result = $db->sql_query($sql))

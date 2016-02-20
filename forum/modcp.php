@@ -1054,7 +1054,7 @@ switch( $mode )
 
 			$s_hidden_fields = '<input type="hidden" name="sid" value="' . $userdata['session_id'] . '" /><input type="hidden" name="' . POST_FORUM_URL . '" value="' . $forum_id . '" /><input type="hidden" name="' . POST_TOPIC_URL . '" value="' . $topic_id . '" /><input type="hidden" name="mode" value="split" />';
 
-			if( ( $total_posts = $db->sql_numrows($result) ) > 0 )
+			if( ( $total_posts = $db->num_rows($result) ) > 0 )
 			{
 				$postrow = $db->sql_fetchrowset($result);
 

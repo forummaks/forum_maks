@@ -199,6 +199,32 @@ define('DL_STATUS_CANCEL',     3);
 define('ANONYMOUS', -1);
 define('BOT_UID', -746);
 
+// Board init
+if (!defined('IN_TRACKER'))
+{
+	require(FT_ROOT . 'includes/init_ft.php');
+}
+
+/**
+ * Database
+ */
+// Core DB class
+require(FT_ROOT . 'db/dbs.php');
+$DBS = new DBS($ft_cfg);
+
+$db = $DBS->get_db_obj($database_alias = 'database1');
+
+/*function DB ($db_alias = 'database1')
+{
+	global $DBS;
+	return $DBS->get_db_obj($db_alias);
+}*/
+
+function sql_dbg_enabled ()
+{
+	return (SQL_DEBUG && DBG_USER && !empty($_COOKIE['sql_log']));
+}
+
 // Functions
 function utime ()
 {
@@ -402,14 +428,6 @@ function log_post ($file = '', $prepend_str = false)
 {
 	log_request($file, $prepend_str, true);
 }*/
-
-require(FT_ROOT . 'includes/constants.php');
-
-$db = new sql_db($dbhost, $dbuser, $dbpasswd, $dbname, false);
-if(!$db->db_connect_id)
-{
-	message_die(CRITICAL_ERROR, 'Could not connect to the database');
-}
 
 //
 // Setup forum wide options, if this fails

@@ -85,7 +85,7 @@ function get_info($mode, $id)
 		message_die(GENERAL_ERROR, "Couldn't get Forum/Category information", "", __LINE__, __FILE__, $sql);
 	}
 
-	if( $db->sql_numrows($result) != 1 )
+	if( $db->num_rows($result) != 1 )
 	{
 		message_die(GENERAL_ERROR, "Forum/Category doesn't exist or multiple forums/categories with ID $id", "", __LINE__, __FILE__);
 	}
@@ -848,7 +848,7 @@ if( !empty($mode) )
 					message_die(GENERAL_ERROR, "Couldn't get forum move Information","",__LINE__, __FILE__, $sql);
 				}
 
-				if( $db->sql_numrows($result) > 0 )
+				if( $db->num_rows($result) > 0 )
 				{
 					$sql = "UPDATE ".TOPICS_MOVE_TABLE." SET 
 							waits_days = $waits_days, 
@@ -888,7 +888,7 @@ if( !empty($mode) )
 					message_die(GENERAL_ERROR, "Couldn't get forum Prune Information", '', __LINE__, __FILE__, $sql);
 				}
 
-				if ($db->sql_numrows($result) > 0)
+				if ($db->num_rows($result) > 0)
 				{
 					$sql = 'UPDATE '. PRUNE_TABLE ." SET
 							prune_days = $prune_days,
@@ -1105,7 +1105,7 @@ if( !empty($mode) )
 					message_die(GENERAL_ERROR, "Couldn't verify existence of forums", "", __LINE__, __FILE__, $sql);
 				}
 
-				if($db->sql_numrows($result) != 2)
+				if($db->num_rows($result) != 2)
 				{
 					message_die(GENERAL_ERROR, "Ambiguous forum ID's", "", __LINE__, __FILE__);
 				}
@@ -1290,7 +1290,7 @@ if( !empty($mode) )
 				{
 					message_die(GENERAL_ERROR, "Couldn't verify existence of categories", "", __LINE__, __FILE__, $sql);
 				}
-				if($db->sql_numrows($result) != 2)
+				if($db->num_rows($result) != 2)
 				{
 					message_die(GENERAL_ERROR, "Ambiguous category ID's", "", __LINE__, __FILE__);
 				}
@@ -1484,7 +1484,7 @@ if( !$q_categories = $db->sql_query($sql) )
 	message_die(GENERAL_ERROR, "Could not query categories list", "", __LINE__, __FILE__, $sql);
 }
 
-if( $total_categories = $db->sql_numrows($q_categories) )
+if( $total_categories = $db->num_rows($q_categories) )
 {
 	$category_rows = $db->sql_fetchrowset($q_categories);
 
@@ -1496,7 +1496,7 @@ if( $total_categories = $db->sql_numrows($q_categories) )
 		message_die(GENERAL_ERROR, "Could not query forums information", "", __LINE__, __FILE__, $sql);
 	}
 
-	if( $total_forums = $db->sql_numrows($q_forums) )
+	if( $total_forums = $db->num_rows($q_forums) )
 	{
 		$forum_rows = $db->sql_fetchrowset($q_forums);
 	}
@@ -1525,7 +1525,7 @@ if( $total_categories = $db->sql_numrows($q_categories) )
 			'U_CAT_DELETE' => append_sid("admin_forums.php?mode=deletecat&amp;" . POST_CAT_URL . "=$cat_id"),
 			'U_CAT_MOVE_UP' => append_sid("admin_forums.php?mode=cat_order&amp;move=-15&amp;" . POST_CAT_URL . "=$cat_id"),
 			'U_CAT_MOVE_DOWN' => append_sid("admin_forums.php?mode=cat_order&amp;move=15&amp;" . POST_CAT_URL . "=$cat_id"),
-			'U_VIEWCAT' => append_sid($phpbb_root_path."index.php?" . POST_CAT_URL . "=$cat_id"))
+			'U_VIEWCAT' => append_sid(FT_ROOT . "index.php?" . POST_CAT_URL . "=$cat_id"))
 		);
 
 		for($j = 0; $j < $total_forums; $j++)

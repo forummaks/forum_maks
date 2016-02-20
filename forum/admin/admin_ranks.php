@@ -292,7 +292,7 @@ else
 	{
 		message_die(GENERAL_ERROR, "Couldn't obtain ranks data", "", __LINE__, __FILE__, $sql);
 	}
-	$rank_count = $db->sql_numrows($result);
+	$rank_count = $db->num_rows($result);
 
 	$rank_rows = $db->sql_fetchrowset($result);
 

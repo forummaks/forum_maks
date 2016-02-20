@@ -384,7 +384,7 @@ function display_upload_attach_box_limits($user_id, $group_id = 0)
 			message_die(GENERAL_ERROR, 'Could not get Group Quota', '', __LINE__, __FILE__, $sql);
 		}
 
-		if ($db->sql_numrows($result) > 0)
+		if ($db->num_rows($result) > 0)
 		{
 			$row = $db->sql_fetchrow($result);
 			$attach_config['upload_filesize_limit'] = intval($row['quota_limit']);
@@ -413,7 +413,7 @@ function display_upload_attach_box_limits($user_id, $group_id = 0)
 					message_die(GENERAL_ERROR, 'Could not get Quota Limit', '', __LINE__, __FILE__, $sql);
 				}
 
-				if ($db->sql_numrows($result) > 0)
+				if ($db->num_rows($result) > 0)
 				{
 					$row = $db->sql_fetchrow($result);
 					$attach_config['upload_filesize_limit'] = $row['quota_limit'];
@@ -484,7 +484,7 @@ function display_upload_attach_box_limits($user_id, $group_id = 0)
 	}
 
 	$attach_ids = $db->sql_fetchrowset($result);
-	$num_attach_ids = $db->sql_numrows($result);
+	$num_attach_ids = $db->num_rows($result);
 	$db->sql_freeresult($result);
 	$attach_id = array();
 

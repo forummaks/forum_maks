@@ -20,7 +20,7 @@ if (!empty($template))
 	$template->pparse('overall_footer');
 }
 
-$db->sql_close();
+//$db->sql_close();
 
 if(!$ft_cfg['gzip_compress'])
 {
@@ -30,11 +30,12 @@ if(!$ft_cfg['gzip_compress'])
 // generation time
 if (@$userdata['session_logged_in'] && $userdata['user_level'] > USER)
 {
-	$gen_time = sprintf('%.2f', (array_sum(explode(' ', microtime())) - $starttime));
+	$gen_time = utime() - TIMESTART;
+	$gen_time_txt = sprintf('%.3f', $gen_time);
 	$gzip_text = ($ft_cfg['gzip_compress']) ? 'GZIP enabled' : 'GZIP disabled';
 	$debug_text = (DEBUG == 1) ? 'Debug on' : 'Debug off';
 
-	echo '<div class="copyright" style="margin: 6px; color: 000" align="center">[ &nbsp;Execution time: '. $gen_time .' sec &nbsp;|&nbsp; MySQL: '. $db->num_queries .' queries used &nbsp;|&nbsp; '. $gzip_text .' &nbsp;]</div>';
+	echo '<div class="copyright" style="margin: 6px; color: 000" align="center">[ &nbsp;Execution time: '. $gen_time_txt .' sec &nbsp;|&nbsp; MySQL: '. $db->num_queries .' queries used &nbsp;|&nbsp; '. $gzip_text .' &nbsp;]</div>';
 }
 
 if (defined('REQUESTED_PAGE') && !defined('DISABLE_CACHING_OUTPUT'))

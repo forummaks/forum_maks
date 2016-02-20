@@ -194,7 +194,7 @@ $template->assign_vars(array(
 
 //bt
 // Show users torrent-profile
-require(PROFILE_DIR .'torrent_userprofile.php');
+require(PROFILE_DIR .'viewtorrent.php');
 //bt end
 
 $template->pparse('body');

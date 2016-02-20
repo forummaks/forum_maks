@@ -48,7 +48,7 @@ if ( !($result = $db->sql_query($sql)) )
 
 $allowed_filesize = array(); 
 $rows = $db->sql_fetchrowset($result); 
-$num_rows = $db->sql_numrows($result); 
+$num_rows = $db->num_rows($result);
 
 // Ok, only process those Groups allowed within this forum
 $nothing = true;
@@ -97,7 +97,7 @@ for ($i = 0; $i < $num_rows; $i++)
 		} 
 
 		$e_rows = $db->sql_fetchrowset($result);
-		$e_num_rows = $db->sql_numrows($result);
+		$e_num_rows = $db->num_rows($result);
 
 		for ($j = 0; $j < $e_num_rows; $j++)
 		{

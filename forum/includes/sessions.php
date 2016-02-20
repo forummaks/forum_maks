@@ -135,7 +135,7 @@ function session_begin($user_id, $user_ip, $page_id, $auto_create = 0, $enable_a
 		SET session_user_id = $user_id, session_start = $current_time, session_time = $current_time, session_page = $page_id, session_logged_in = $login, session_admin = $admin
 		WHERE session_id = '" . $session_id . "'
 			AND session_ip = '$user_ip'";
-	if ( !$db->sql_query($sql) || !$db->sql_affectedrows() )
+	if ( !$db->sql_query($sql) || !$db->affected_rows() )
 	{
 		list($sec, $usec) = explode(' ', microtime());
 		mt_srand((float) $sec + ((float) $usec * 100000));
