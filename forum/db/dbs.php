@@ -24,7 +24,7 @@ class DBS
         }
     }
 
-    // ïîëó÷åíèå/èíèöèàëèçàöèÿ êëàññà äëÿ ñåðâåðà $srv_name
+    // Ð¿Ð¾Ð»ÑƒÑ‡ÐµÐ½Ð¸Ðµ/Ð¸Ð½Ð¸Ñ†Ð¸Ð°Ð»Ð¸Ð·Ð°Ñ†Ð¸Ñ ÐºÐ»Ð°ÑÑÐ° Ð´Ð»Ñ ÑÐµÑ€Ð²ÐµÑ€Ð° $srv_name
     function get_db_obj ($srv_name_or_alias = 'database1')
     {
         $srv_name = $this->get_srv_name($srv_name_or_alias);
@@ -37,7 +37,7 @@ class DBS
         return $this->srv[$srv_name];
     }
 
-    // îïðåäåëåíèå èìåíè ñåðâåðà
+    // Ð¾Ð¿Ñ€ÐµÐ´ÐµÐ»ÐµÐ½Ð¸Ðµ Ð¸Ð¼ÐµÐ½Ð¸ ÑÐµÑ€Ð²ÐµÑ€Ð°
     function get_srv_name ($name)
     {
         if (isset($this->alias[$name]))

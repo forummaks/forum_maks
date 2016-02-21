@@ -12,8 +12,8 @@ $domain_name = (!empty($_SERVER['SERVER_NAME'])) ? $_SERVER['SERVER_NAME'] : $do
 $charset  = 'utf8';
 $pconnect = false;
 
-// àñòðîéêà áàç äàííûõ ['db']['srv_name'] => (array) srv_cfg;
-// ïîðßäîê ïàðàìåòðîâ srv_cfg (õîñò, íàçâàíèå áàçû, ïîëüçîâàòåëü, ïàðîëü, charset, pconnect);
+// ÐÐ°ÑÑ‚Ñ€Ð¾Ð¹ÐºÐ° Ð±Ð°Ð· Ð´Ð°Ð½Ð½Ñ‹Ñ… ['db']['srv_name'] => (array) srv_cfg;
+// Ð¿Ð¾Ñ€ÑÐ´Ð¾Ðº Ð¿Ð°Ñ€Ð°Ð¼ÐµÑ‚Ñ€Ð¾Ð² srv_cfg (Ñ…Ð¾ÑÑ‚, Ð½Ð°Ð·Ð²Ð°Ð½Ð¸Ðµ Ð±Ð°Ð·Ñ‹, Ð¿Ð¾Ð»ÑŒÐ·Ð¾Ð²Ð°Ñ‚ÐµÐ»ÑŒ, Ð¿Ð°Ñ€Ð¾Ð»ÑŒ, charset, pconnect);
 $ft_cfg['database'] = array(
 	'database1' => array('localhost', '', '', '', $charset, $pconnect),
 	//'database2' => array('localhost2', 'dbase2', 'user2', 'pass2', $charset, $pconnect),
