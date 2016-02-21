@@ -173,12 +173,9 @@ function topic_review($topic_id, $is_inline_review)
 			// Again this will be handled by the templating
 			// code at some point
 			//
-			$row_color = ( !($i % 2) ) ? $theme['td_color1'] : $theme['td_color2'];
-			$row_class = ( !($i % 2) ) ? $theme['td_class1'] : $theme['td_class2'];
 
 			$template->assign_block_vars('postrow', array(
-				'ROW_COLOR' => '#' . $row_color,
-				'ROW_CLASS' => $row_class,
+					'ROW_CLASS' => !($i % 2) ? 'row1' : 'row2',
 
 				'MINI_POST_IMG' => $mini_post_img,
 				'POSTER_NAME' => $poster,

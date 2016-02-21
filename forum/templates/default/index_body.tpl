@@ -113,7 +113,7 @@
 	<td class="catHead" colspan="2" style="padding-left: 16px; height: 26px"><span class="cattitle">{L_STATS}</span></td>
 </tr>
 <tr>
-	<td class="row1" align="center" valign="middle" rowspan="2"><img src="templates/subSilver/images/whosonline.gif" alt="{L_WHO_IS_ONLINE}" /></td>
+	<td class="row1" align="center" valign="middle" rowspan="2"><img src="templates/default/images/whosonline.gif" alt="{L_WHO_IS_ONLINE}" /></td>
 	<td class="row1" align="left" width="100%">
 	<div class="genmed" style="line-height: 16px;">{TOTAL_USERS}<br />{RECORD_USERS}<br />{NEWEST_USER}<br />{TOTAL_POSTS}<br />{L_TORRENTS}: <b style="color: blue;">{T_TORRENTS}</b>&nbsp; {L_ACT_TORRENTS}: <b>{T_ACT_TORRENTS}</b>&nbsp; {L_TORRENTS_SIZE}: <b>{T_TORRENTS_SIZE}</b><br />{L_PEER}: <b>{P_PEER}</b>&nbsp; {L_SEED}: <b class="seedmed">{P_SEED}</b>&nbsp; {L_LEECH}: <b class="leechmed">{P_LEECH}</b><br />{L_TRANSFER}: <b>{TR_TRANSFER}</b>&nbsp; {L_UP}: <b class="seedmed">{TR_UP}</b>&nbsp; {L_DOWN}: <b class="leechmed">{TR_DOWN}</b></div></td>
 </tr>
@@ -125,7 +125,7 @@
 	<td class="catHead" colspan="2" style="padding-left: 16px; height: 26px"><span class="cattitle"><a href="{U_VIEWONLINE}" class="cattitle">{L_WHO_IS_ONLINE}</a></span></td>
 </tr>
 <tr>
-	<td class="row1" align="center" valign="middle" rowspan="3"><img src="templates/subSilver/images/whosonline.gif" alt="{L_WHO_IS_ONLINE}" /></td>
+	<td class="row1" align="center" valign="middle" rowspan="3"><img src="templates/default/images/whosonline.gif" alt="{L_WHO_IS_ONLINE}" /></td>
 	<td class="row1" align="left" width="100%"><div class="genmed" style="padding-bottom: 10px;"><!-- IF SHOW_ONLINE_LIST -->{TOTAL_USERS_ONLINE}<!-- ENDIF --><br /><br /><!-- IF SHOW_ONLINE_LIST -->{LOGGED_IN_USER_LIST}<!-- ENDIF --></div></td>
 </tr>
 <tr>
@@ -154,13 +154,13 @@
 
 <table cellspacing="3" border="0" align="center" cellpadding="0" style="margin-left: 160px">
   <tr>
-	<td width="20" align="center"><img src="templates/subSilver/images/folder_new_big.gif" alt="{L_NEW_POSTS}"/></td>
+	<td width="20" align="center"><img src="templates/default/images/folder_new_big.gif" alt="{L_NEW_POSTS}"/></td>
 	<td><span class="gensmall">{L_NEW_POSTS}</span></td>
 	<td>&nbsp;&nbsp;</td>
-	<td width="20" align="center"><img src="templates/subSilver/images/folder_big.gif" alt="{L_NO_NEW_POSTS}" /></td>
+	<td width="20" align="center"><img src="templates/default/images/folder_big.gif" alt="{L_NO_NEW_POSTS}" /></td>
 	<td><span class="gensmall">{L_NO_NEW_POSTS}</span></td>
 	<td>&nbsp;&nbsp;</td>
-	<td width="20" align="center"><img src="templates/subSilver/images/folder_locked_big.gif" alt="{L_FORUM_LOCKED}" /></td>
+	<td width="20" align="center"><img src="templates/default/images/folder_locked_big.gif" alt="{L_FORUM_LOCKED}" /></td>
 	<td><span class="gensmall">{L_FORUM_LOCKED}</span></td>
   </tr>
 </table>

@@ -14,7 +14,7 @@
 		<td class="row3" colspan="6" style="padding: 0px 0px 0px 12px; height: 23px"><span class="topicSep">{topicrow.TOPICS_SEPARATOR}</span></td>
 	</tr>
 	<!--	<tr>
-		<td class="spaceRow" colspan="6" style="padding: 0px"><img src="templates/subSilver/images/spacer.gif" alt="" width="1" height="5" /></td>
+		<td class="spaceRow" colspan="6" style="padding: 0px"><img src="templates/default/images/spacer.gif" alt="" width="1" height="5" /></td>
 	</tr> -->
 	<!-- ENDIF -->
 	<tr>

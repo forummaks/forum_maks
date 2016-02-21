@@ -587,13 +587,9 @@ if ($view == 'username')
 			$total_attachments = $members[$i]['total_attachments'];
 			$total_size = $members[$i]['total_size'];
 
-			$row_color = ( !($i % 2) ) ? $theme['td_color1'] : $theme['td_color2'];
-			$row_class = ( !($i % 2) ) ? $theme['td_class1'] : $theme['td_class2'];
-
 			$template->assign_block_vars('memberrow', array(
 				'ROW_NUMBER' => $i + ( $HTTP_GET_VARS['start'] + 1 ),
-				'ROW_COLOR' => '#' . $row_color,
-				'ROW_CLASS' => $row_class,
+					'ROW_CLASS' => !($i % 2) ? 'row1' : 'row2',
 				'USERNAME' => $username,
 				'TOTAL_ATTACHMENTS' => $total_attachments,
 				'TOTAL_SIZE' => round(($total_size / MEGABYTE), 2),
@@ -750,9 +746,6 @@ if ($view == 'attachments')
 				}
 			}
 
-			$row_color = ( !($i % 2) ) ? $theme['td_color1'] : $theme['td_color2'];
-			$row_class = ( !($i % 2) ) ? $theme['td_class1'] : $theme['td_class2'];
-
 			//
 			// Is the Attachment assigned to more than one post ?
 			// If it's not assigned to any post, it's an private message thingy. ;)
@@ -809,8 +802,7 @@ if ($view == 'attachments')
 
 			$template->assign_block_vars('attachrow', array(
 				'ROW_NUMBER' => $i + ( @$HTTP_GET_VARS['start'] + 1 ),
-				'ROW_COLOR' => '#' . $row_color,
-				'ROW_CLASS' => $row_class,
+					'ROW_CLASS' => !($i % 2) ? 'row1' : 'row2',
 
 				'FILENAME' => htmlspecialchars($attachments[$i]['real_filename']),
 				'COMMENT' => htmlspecialchars($attachments[$i]['comment']),

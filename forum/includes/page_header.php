@@ -6,13 +6,6 @@ if (defined('PAGE_HEADER_SENT')) return;
 // Parse and show the overall page header
 global $page_cfg, $userdata, $ads, $ft_cfg, $template, $lang, $images;
 
-//sv
-$template->assign_vars(array(
-	'SVISTOK'  => FALSE,
-	'PM_FLASH' => FALSE
-));
-//sv end
-
 if ( @$userdata['session_logged_in'] )
 {
 	$u_login_logout = 'login.php?logout=true&amp;sid=' . $userdata['session_id'];
@@ -65,17 +58,11 @@ if ( (@$userdata['session_logged_in']) && (empty($gen_simple_header)) )
 			}
 
 			$s_privmsg_new = 1;
-			//sv
-			$template->assign_vars(array('SVISTOK' => TRUE));
-			//sv end
 			$icon_pm = $images['pm_new_msg'];
 		}
 		else
 		{
 			$s_privmsg_new = 0;
-			//sv
-			$template->assign_vars(array('SVISTOK' => TRUE));
-			//sv end
 			$icon_pm = $images['pm_new_msg'];
 		}
 	}
@@ -87,62 +74,14 @@ if ( (@$userdata['session_logged_in']) && (empty($gen_simple_header)) )
 		$icon_pm = $images['pm_no_new_msg'];
 	}
 
-	//sv
-	// synch unread pm count
-	if ($userdata['user_unread_privmsg'] && defined('IN_PM'))
-	{
-		$sql = 'SELECT COUNT(*) AS real_unread_pm_count
-			FROM '. PRIVMSGS_TABLE .'
-			WHERE privmsgs_to_userid = '. $userdata['user_id'] .'
-				AND privmsgs_type = '. PRIVMSGS_UNREAD_MAIL .'
-			GROUP BY privmsgs_to_userid
-			LIMIT 1';
-
-		if (!$result = $db->sql_query($sql))
-		{
-			message_die(GENERAL_ERROR, 'Could not query unread private messages count', '', __LINE__, __FILE__, $sql);
-		}
-
-		if ($row = $db->sql_fetchrow($result))
-		{
-			$real_unread_pm_count = $row['real_unread_pm_count'];
-		}
-		else
-		{
-			$real_unread_pm_count = 0;
-		}
-
-		if ($userdata['user_unread_privmsg'] != $real_unread_pm_count)
-		{
-			$userdata['user_unread_privmsg'] = $real_unread_pm_count;
-
-			$sql = 'UPDATE '. USERS_TABLE ." SET
-					user_unread_privmsg = $real_unread_pm_count
-				WHERE user_id = ". $userdata['user_id'] .'
-				LIMIT 1';
-
-			if (!$db->sql_query($sql))
-			{
-				message_die(GENERAL_ERROR, 'Could not update unread private messages count', '', __LINE__, __FILE__, $sql);
-			}
-		}
-	}
-	//sv end
-
 	if ( $userdata['user_unread_privmsg'] )
 	{
 		$l_message_unread = ( $userdata['user_unread_privmsg'] == 1 ) ? $lang['Unread_pm'] : $lang['Unread_pms'];
 		$l_privmsgs_text_unread = sprintf($l_message_unread, $userdata['user_unread_privmsg']);
-		//sv
-		$template->assign_vars(array('PM_FLASH' => (defined('IN_PM')) ? FALSE : TRUE));
-		//sv end
 	}
 	else
 	{
 		$l_privmsgs_text_unread = $lang['No_unread_pm'];
-		//sv
-		$l_privmsgs_text_unread = (defined('IN_PM')) ? $lang['No_unread_pm'] : '';
-		//sv end
 	}
 }
 else
@@ -200,8 +139,8 @@ $template->assign_vars(array(
 	'L_SEARCH_NEW' => $lang['Search_new'],
 	'L_SEARCH_UNANSWERED' => $lang['Search_unanswered'],
 	'L_SEARCH_SELF' => $lang['Search_your_posts'],
-	'L_WHOSONLINE_ADMIN' => sprintf($lang['Admin_online_color'], '<span style="color:#' . $theme['fontcolor3'] . '">', '</span>'),
-	'L_WHOSONLINE_MOD' => sprintf($lang['Mod_online_color'], '<span style="color:#' . $theme['fontcolor2'] . '">', '</span>'),
+	'L_WHOSONLINE_ADMIN' => sprintf($lang['Admin_online_color'], '<span class="colorAdmin">', '</span>'),
+	'L_WHOSONLINE_MOD' => sprintf($lang['Mod_online_color'], '<span class="colorMod">', '</span>'),
 
 	'U_SEARCH_UNANSWERED' => append_sid('search.php?search_id=unanswered'),
 	'U_SEARCH_SELF' => append_sid('search.php?search_id=egosearch'),

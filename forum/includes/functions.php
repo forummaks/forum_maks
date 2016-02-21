@@ -2,18 +2,6 @@
 
 if (!defined('FT_ROOT')) die(basename(__FILE__));
 
-function file_put_contents_php4 ($location, $whattowrite)
-{
-	if ( file_exists($location) )
-	{
-		unlink($location);
-	}
-
-	$fileHandler = fopen ($location, "w");
-	fwrite ($fileHandler, $whattowrite);
-	fclose ($fileHandler);
-}
-
 /**
  * Adds commas every three numbers from the right of the period to a given
  * number (www.sitellite.org).
@@ -695,7 +683,7 @@ function init_userprefs($userdata)
 		}
 	}
 
-	$theme = setup_style($ft_cfg['default_style']);
+	$theme = setup_style();
 
 	//
 	// Mozilla navigation bar
@@ -723,50 +711,39 @@ function init_userprefs($userdata)
 	return;
 }
 
-function setup_style($style)
+function setup_style()
 {
-	global $db, $ft_cfg, $template, $images;
+	global $ft_cfg, $template, $userdata;
 
-	$sql = "SELECT *
-		FROM " . THEMES_TABLE . "
-		WHERE themes_id = $style";
-	if ( !($result = $db->sql_query($sql)) )
+	// AdminCP works only with default template
+	$tpl_dir_name = defined('IN_ADMIN') ? 'default'   : basename($ft_cfg['tpl_name']);
+	$stylesheet   = defined('IN_ADMIN') ? 'main.css'  : basename($ft_cfg['link_css']);
+
+	if (!ANONYMOUS && !empty($userdata['tpl_name']))
 	{
-		message_die(CRITICAL_ERROR, 'Could not query database for theme info');
-	}
-
-	if ( !($row = $db->sql_fetchrow($result)) )
-	{
-		message_die(CRITICAL_ERROR, "Could not get theme data for themes_id [$style]");
-	}
-
-	$template_path = 'templates/' ;
-	$template_name = $row['template_name'] ;
-
-	$template = new Template(FT_ROOT . $template_path . $template_name);
-
-	if ( $template )
-	{
-		$current_template_path = $template_path . $template_name;
-		@require(FT_ROOT . $template_path . $template_name . '/' . $template_name . '.cfg');
-
-		if ( !defined('TEMPLATE_CONFIG') )
+		foreach ($ft_cfg['templates'] as $folder => $name)
 		{
-			message_die(CRITICAL_ERROR, "Could not open $template_name template config file", '', __LINE__, __FILE__);
-		}
-
-		$img_lang = ( file_exists(@phpbb_realpath(FT_ROOT . $current_template_path . '/images/lang_' . $ft_cfg['default_lang'])) ) ? $ft_cfg['default_lang'] : 'english';
-
-		while( list($key, $value) = @each($images) )
-		{
-			if ( !is_array($value) )
-			{
-				$images[$key] = str_replace('{LANG}', 'lang_' . $img_lang, $value);
-			}
+			if ($userdata['tpl_name'] == $folder) $tpl_dir_name = basename($userdata['tpl_name']);
 		}
 	}
 
-	return $row;
+	$template = new Template(TEMPLATES_DIR . $tpl_dir_name);
+	$css_dir = basename(TEMPLATES_DIR) . '/' . $tpl_dir_name . '/css/';
+
+	$template->assign_vars(array(
+		'FT_ROOT'          => FT_ROOT,
+		'SPACER'           => make_url('styles/images/spacer.gif'),
+		'STYLESHEET'       => make_url($css_dir . $stylesheet),
+		'EXT_LINK_NEW_WIN' => $ft_cfg['ext_link_new_win'],
+		'TPL_DIR'          => make_url($css_dir),
+		'SITE_URL'         => make_url('/'),
+	));
+
+	require(TEMPLATES_DIR . $tpl_dir_name .'/tpl_config.php');
+
+	$theme = array('template_name' => $tpl_dir_name);
+
+	return $theme;
 }
 
 //

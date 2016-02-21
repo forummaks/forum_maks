@@ -974,12 +974,9 @@ else if ( $group_id )
 
 		if ( $group_info['group_type'] != GROUP_HIDDEN || $is_group_member || $is_moderator )
 		{
-			$row_color = ( !($i % 2) ) ? $theme['td_color1'] : $theme['td_color2'];
-			$row_class = ( !($i % 2) ) ? $theme['td_class1'] : $theme['td_class2'];
 
 			$template->assign_block_vars('member_row', array(
-				'ROW_COLOR' => '#' . $row_color,
-				'ROW_CLASS' => $row_class,
+					'ROW_CLASS' => !($i % 2) ? 'row1' : 'row2',
 				'USERNAME' => $username,
 				'FROM' => $from,
 				'JOINED' => $joined,
@@ -1065,14 +1062,10 @@ else if ( $group_id )
 
 				generate_user_info($modgroup_pending_list[$i], $ft_cfg['default_dateformat'], $is_moderator, $from, $posts, $joined, $poster_avatar, $profile_img, $profile, $search_img, $search, $pm_img, $pm, $email_img, $email, $www_img, $www, $icq_status_img, $icq_img, $icq, $aim_img, $aim, $msn_img, $msn, $yim_img, $yim);
 
-				$row_color = ( !($i % 2) ) ? $theme['td_color1'] : $theme['td_color2'];
-				$row_class = ( !($i % 2) ) ? $theme['td_class1'] : $theme['td_class2'];
-
 				$user_select = '<input type="checkbox" name="member[]" value="' . $user_id . '">';
 
 				$template->assign_block_vars('pending_members_row', array(
-					'ROW_CLASS' => $row_class,
-					'ROW_COLOR' => '#' . $row_color,
+						'ROW_CLASS' => !($i % 2) ? 'row1' : 'row2',
 					'USERNAME' => $username,
 					'FROM' => $from,
 					'JOINED' => $joined,

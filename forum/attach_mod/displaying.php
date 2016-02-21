@@ -161,7 +161,7 @@ function display_assign_link($post_id)
 {
 	global $attach_config, $is_auth, $phpEx;
 
-	$image = 'templates/subSilver/images/icon_mini_message.gif';
+	$image = 'templates/default/images/icon_mini_message.gif';
 
 	if ( (intval($attach_config['disable_mod'])) || (!( ($is_auth['auth_download']) && ($is_auth['auth_view']))) )
 	{

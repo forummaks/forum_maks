@@ -95,7 +95,7 @@ class sql_db
 		{
 			$server = (DBG_USER) ? $this->cfg['dbhost'] : '';
 			header("HTTP/1.0 503 Service Unavailable");
-			//ft_log(' ', "db_err/connect_failed_{$this->cfg['dbhost']}");
+			ft_log(' ', "db_err/connect_failed_{$this->cfg['dbhost']}");
 			die("Could not connect to mysql server $server");
 		}
 
@@ -442,7 +442,7 @@ class sql_db
 
 		if (!$query)
 		{
-			bb_die('<pre><b>'. __FUNCTION__ ."</b>: Wrong params for <b>$query_type</b> query type\n\n\$input_ary:\n\n". htmlCHR(print_r($input_ary, true)) .'</pre>');
+			ft_die('<pre><b>'. __FUNCTION__ ."</b>: Wrong params for <b>$query_type</b> query type\n\n\$input_ary:\n\n". htmlCHR(print_r($input_ary, true)) .'</pre>');
 		}
 
 		return "\n". $query ."\n";
@@ -708,7 +708,7 @@ class sql_db
 	 */
 	function expect_slow_query ($ignoring_time = 60, $new_priority = 10)
 	{
-		if ($old_priority = CACHE('bb_cache')->get('dont_log_slow_query'))
+		if ($old_priority = CACHE('ft_cache')->get('dont_log_slow_query'))
 		{
 			if ($old_priority > $new_priority)
 			{
@@ -717,7 +717,7 @@ class sql_db
 		}
 
 		@define('IN_FIRST_SLOW_QUERY', true);
-		CACHE('bb_cache')->set('dont_log_slow_query', $new_priority, $ignoring_time);
+		CACHE('ft_cache')->set('dont_log_slow_query', $new_priority, $ignoring_time);
 	}
 
 	/**
@@ -818,7 +818,7 @@ class sql_db
 				{
 					case 'file': return $trace['file'];
 					case 'line': return $trace['line'];
-					default: return hide_bb_path($trace['file']) .'('. $trace['line'] .')';
+					default: return hide_ft_path($trace['file']) .'('. $trace['line'] .')';
 				}
 			}
 		}
@@ -852,15 +852,15 @@ class sql_db
 		$msg .= ($info = $this->query_info()) ? ' # '. $info : '';
 		$msg .= ' # '. $this->debug_find_source() .' ';
 		$msg .= defined('IN_CRON') ? 'cron' : basename($_SERVER['REQUEST_URI']);
-		bb_log($msg . LOG_LF, $log_file);
+		ft_log($msg . LOG_LF, $log_file);
 	}
 
 	/**
 	 * Log slow query
 	 */
-	function log_slow_query ($log_file = 'sql_slow_bb')
+	function log_slow_query ($log_file = 'sql_slow_ft')
 	{
-		if (!defined('IN_FIRST_SLOW_QUERY') && CACHE('bb_cache')->get('dont_log_slow_query'))
+		if (!defined('IN_FIRST_SLOW_QUERY') && CACHE('ft_cache')->get('dont_log_slow_query'))
 		{
 			return;
 		}
@@ -890,7 +890,7 @@ class sql_db
 		$msg[] = 'PID     : '. sprintf('%05d', getmypid());
 		$msg[] = 'Request : '. trim(print_r($_REQUEST, true)) . str_repeat('_', 78) . LOG_LF;
 		$msg[] = '';
-		bb_log($msg, 'sql_error_bb');
+		ft_log($msg, 'sql_error_ft');
 	}
 
 	/**

@@ -172,12 +172,9 @@ if ( $row = $db->sql_fetchrow($result) )
 		$temp_url = append_sid("search.php?search_author=" . urlencode($username) . "&amp;showresults=posts");
 		$search_img = '<a href="' . $temp_url . '"><img src="' . $images['icon_search'] . '" alt="' . $lang['Search_user_posts'] . '" title="' . $lang['Search_user_posts'] . '" border="0" /></a>';
 		$search = '<a href="' . $temp_url . '">' . $lang['Search_user_posts'] . '</a>';
-		$row_color = ( !($i % 2) ) ? $theme['td_color1'] : $theme['td_color2'];
-		$row_class = ( !($i % 2) ) ? $theme['td_class1'] : $theme['td_class2'];
 		$template->assign_block_vars('memberrow', array(
 			'ROW_NUMBER' => $i + ( $start + 1 ),
-			'ROW_COLOR' => '#' . $row_color,
-			'ROW_CLASS' => $row_class,
+				'ROW_CLASS' => !($i % 2) ? 'row1' : 'row2',
 			'USERNAME' => $username,
 			'FROM' => $from,
 			'JOINED' => $joined,

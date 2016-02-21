@@ -470,12 +470,9 @@ else
 		$smilies[$i]['code'] = str_replace('&lt;', '<', $smilies[$i]['code']);
 		$smilies[$i]['code'] = str_replace('&gt;', '>', $smilies[$i]['code']);
 
-		$row_color = ( !($i % 2) ) ? $theme['td_color1'] : $theme['td_color2'];
-		$row_class = ( !($i % 2) ) ? $theme['td_class1'] : $theme['td_class2'];
 
 		$template->assign_block_vars("smiles", array(
-			"ROW_COLOR" => "#" . $row_color,
-			"ROW_CLASS" => $row_class,
+				"ROW_CLASS" => !($i % 2) ? 'row1' : 'row2',
 
 			"SMILEY_IMG" =>  FT_ROOT . $ft_cfg['smilies_path'] . '/' . $smilies[$i]['smile_url'],
 			"CODE" => $smilies[$i]['code'],

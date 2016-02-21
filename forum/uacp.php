@@ -287,9 +287,6 @@ if (count($attachments) > 0)
 {
 	for ($i = 0; $i < count($attachments); $i++)
 	{
-		$row_color = ( !($i % 2) ) ? $theme['td_color1'] : $theme['td_color2'];
-		$row_class = ( !($i % 2) ) ? $theme['td_class1'] : $theme['td_class2'];
-
 		//
 		// Is the Attachment assigned to more than one post ?
 		// If it's not assigned to any post, it's an private message thingy. ;)
@@ -413,8 +410,7 @@ if (count($attachments) > 0)
 
 			$template->assign_block_vars('attachrow', array(
 				'ROW_NUMBER' => $i + ($start + 1 ),
-				'ROW_COLOR' => '#' . $row_color,
-				'ROW_CLASS' => $row_class,
+					'ROW_CLASS' => !($i % 2) ? 'row1' : 'row2',
 
 				'FILENAME' => htmlspecialchars($attachments[$i]['real_filename']),
 				'COMMENT' => $comment,

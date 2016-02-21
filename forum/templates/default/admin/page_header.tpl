@@ -3,7 +3,7 @@
 <head>
 {META}
 <meta http-equiv="Content-Type" content="text/html; charset={S_CONTENT_ENCODING}"  />
-<link rel="stylesheet" href="../templates/subSilver/subSilver.css" type="text/css">
+<link rel="stylesheet" href="../templates/default/css/main.css" type="text/css">
 <style type="text/css">
 <!--
 font,th,td,p { font-family: Verdana, Arial, Helvetica, sans-serif; font-size: 12px; }

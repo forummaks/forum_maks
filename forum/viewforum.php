@@ -767,9 +767,6 @@ if( $total_topics )
 
 		$views = $topic_rowset[$i]['topic_views'];
 
-		$row_color = ( !($i % 2) ) ? $theme['td_color1'] : $theme['td_color2'];
-		$row_class = ( !($i % 2) ) ? $theme['td_class1'] : $theme['td_class2'];
-
 		//ts
 		$topics_separator = '';
 
@@ -807,8 +804,7 @@ if( $total_topics )
 	    }
 
 		$template->assign_block_vars('topicrow', array(
-			'ROW_COLOR' => $row_color,
-			'ROW_CLASS' => $row_class,
+				'ROW_CLASS' => !($i % 2) ? 'row1' : 'row2',
 			'FORUM_ID' => $forum_id,
 			'TOPIC_ID' => $topic_id,
 			'TOPIC_FOLDER_IMG' => $folder_image,
@@ -989,12 +985,8 @@ if (!$forum_row['forum_parent'] && isset($forums_ary[$forum_id]['subforums']))
 				$last_post = $lang['No_Posts'];
 			}
 
-			$row_color = (!($i % 2)) ? $theme['td_color1'] : $theme['td_color2'];
-			$row_class = (!($i % 2)) ? $theme['td_class1'] : $theme['td_class2'];
-
 			$template->assign_block_vars('forumrow',	array(
-				'ROW_COLOR' => '#' . $row_color,
-				'ROW_CLASS' => $row_class,
+					'ROW_CLASS' => !($i % 2) ? 'row1' : 'row2',
 				'FORUM_FOLDER_IMG' => $folder_image,
 				'FORUM_NAME' => $forum_data['forum_name'],
 				'FORUM_DESC' => $forum_data['forum_desc'],

@@ -483,12 +483,8 @@ if ($userdata['session_logged_in'] && ($submit || $preview || $mode == 'quote' |
 				}
 				$new_post_message = str_replace("\n", '<br />', $new_post_message);
 
-				$row_color = (!($i % 2)) ? $theme['td_color1'] : $theme['td_color2'];
-				$row_class = (!($i % 2)) ? $theme['td_class1'] : $theme['td_class2'];
-
 				$template->assign_block_vars('new_posts', array(
-					'ROW_COLOR' => '#'. $row_color,
-					'ROW_CLASS' => $row_class,
+					'ROW_CLASS' => !($i % 2) ? 'row1' : 'row2',
 
 					'POSTER_NAME' => $new_post_username,
 					'POST_DATE'   => $new_post_post_date,

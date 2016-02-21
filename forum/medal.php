@@ -51,12 +51,9 @@ if ( $row = $db->sql_fetchrow($result) )
                 $download = $row['u_down_total'];
                 $ratio = ($download) ? round((($upload + $bonus) / $download), 2) : '';
 
-                $row_color = ( !($i % 2) ) ? $theme['td_color1'] : $theme['td_color2'];
-                $row_class = ( !($i % 2) ) ? $theme['td_class1'] : $theme['td_class2'];
                 $template->assign_block_vars('memberrow1', array(
                         'ROW_NUMBER' => $i + ( $start + 1 ),
-                        'ROW_COLOR' => '#' . $row_color,
-                        'ROW_CLASS' => $row_class,
+                        'ROW_CLASS' => !($i % 2) ? 'row1' : 'row2',
                         'USERNAME' => $username,
                         'JOINED' => $joined,
                         'UP' => humn_size ($upload),
@@ -93,12 +90,9 @@ if ( $row = $db->sql_fetchrow($result) )
                 $download = $row['u_down_total'];
                 $ratio = ($download) ? round((($upload + $bonus) / $download), 2) : '';
 
-                $row_color = ( !($i % 2) ) ? $theme['td_color1'] : $theme['td_color2'];
-                $row_class = ( !($i % 2) ) ? $theme['td_class1'] : $theme['td_class2'];
                 $template->assign_block_vars('memberrow2', array(
                         'ROW_NUMBER' => $i + ( $start + 1 ),
-                        'ROW_COLOR' => '#' . $row_color,
-                        'ROW_CLASS' => $row_class,
+                        'ROW_CLASS' => !($i % 2) ? 'row1' : 'row2',
                         'USERNAME' => $username,
                         'JOINED' => $joined,
                         'UP' => humn_size ($upload),
@@ -137,12 +131,9 @@ if ( $row = $db->sql_fetchrow($result) )
                 $download = $row['u_down_total'];
                 $ratio = ($download) ? round((($upload + $bonus) / $download), 2) : '';
 
-                $row_color = ( !($i % 2) ) ? $theme['td_color1'] : $theme['td_color2'];
-                $row_class = ( !($i % 2) ) ? $theme['td_class1'] : $theme['td_class2'];
                 $template->assign_block_vars('memberrow3', array(
                         'ROW_NUMBER' => $i + ( $start + 1 ),
-                        'ROW_COLOR' => '#' . $row_color,
-                        'ROW_CLASS' => $row_class,
+                        'ROW_CLASS' => !($i % 2) ? 'row1' : 'row2',
                         'USERNAME' => $username,
                         'JOINED' => $joined,
                         'UP' => humn_size ($upload),
@@ -188,12 +179,9 @@ if ( $row = $db->sql_fetchrow($result) )
                 $topic_id = $row['topic_id'];
                 $reg_time = create_date($lang['DATE_FORMAT'], $row['reg_time'], $ft_cfg['board_timezone']);
 
-                $row_color = ( !($i % 2) ) ? $theme['td_color1'] : $theme['td_color2'];
-                $row_class = ( !($i % 2) ) ? $theme['td_class1'] : $theme['td_class2'];
                 $template->assign_block_vars('torrentsrow', array(
                         'ROW_NUMBER' => $i + ( $start + 1 ),
-                        'ROW_COLOR' => '#' . $row_color,
-                        'ROW_CLASS' => $row_class,
+                        'ROW_CLASS' => !($i % 2) ? 'row1' : 'row2',
                         'USERNAME' => $username,
                         'CATEGORY' => $category,
                         'FORUM_NAME' => $forum_name,

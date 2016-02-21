@@ -57,7 +57,7 @@ class Template {
 	var $tpldir = '';
 
 	// Default template directory.
-	var $tpldef = 'subSilver';
+	var $tpldef = 'default';
 
 	// this will hash handle names to the compiled code for that handle.
 	var $compiled_code = array();

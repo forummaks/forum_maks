@@ -33,12 +33,12 @@ while( $row = $db->sql_fetchrow($result) )
 			if ( $row['user_level'] == ADMIN )
 			{
 				$row['username'] = '<b>' . $row['username'] . '</b>';
-				$style_color = 'style="color:#' . $theme['fontcolor3'] . '"';
+				$style_color = 'class="colorAdmin"';
 			}
 			else if ( $row['user_level'] == MOD )
 			{
 				$row['username'] = '<b>' . $row['username'] . '</b>';
-				$style_color = 'style="color:#' . $theme['fontcolor2'] . '"';
+				$style_color = 'class="colorMod"';
 			}
 
 			if ( $row['user_allow_viewonline'] )

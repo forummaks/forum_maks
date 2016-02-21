@@ -51,6 +51,7 @@ if (isset($_SERVER['HTTP_CF_CONNECTING_IP']))
 define('FT_PATH',       realpath(FT_ROOT)                    );
 define('ADMIN_DIR',     FT_PATH .'/admin/'                   );
 define('CACHE_DIR',     FT_PATH .'/cache/'     				 );
+define('LOG_DIR',       FT_PATH .'/log/'       				 );
 define('INC_DIR',       FT_PATH .'/includes/'        		 );
 define('PROFILE_DIR',   FT_PATH .'/includes/profile/'        );
 define('LANG_ROOT_DIR', FT_PATH .'/language/'        		 );
@@ -59,6 +60,15 @@ define('TEMPLATES_DIR', FT_PATH .'/templates/'        		 );
 
 // Templates
 define('ADMIN_TPL_DIR', TEMPLATES_DIR .'/admin/');
+
+// Templates
+$ft_cfg['templates'] = array(
+//	'folder'  => 'Name',
+	'default' => 'Стандартный',
+);
+
+$ft_cfg['tpl_name'] = 'default';
+$ft_cfg['link_css'] = 'main.css';
 
 define('GZIP_OUTPUT_ALLOWED', (extension_loaded('zlib') && !ini_get('zlib.output_compression')));
 
@@ -78,6 +88,14 @@ define('SQL_LOG_SLOW_QUERIES', true);     // log sql slow queries
 define('SQL_SLOW_QUERY_TIME',  10);       // slow query in seconds
 define('SQL_PREPEND_SRC_COMM', false);    // prepend source file comment to sql query
 
+// Log options
+define('LOG_EXT',      'log');
+define('LOG_SEPR',     ' | ');
+define('LOG_LF',       "\n");
+define('LOG_MAX_SIZE', 1048576); // bytes
+
+// Topics
+$ft_cfg['ext_link_new_win']       = true;          // open external links in new window
 
 $ft_cfg['show_tor_info'] = true; // show bt torrent info
 

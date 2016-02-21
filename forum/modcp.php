@@ -1147,12 +1147,8 @@ switch( $mode )
 
 					$message = str_replace("\n", '<br />', $message);
 
-					$row_color = ( !($i % 2) ) ? $theme['td_color1'] : $theme['td_color2'];
-					$row_class = ( !($i % 2) ) ? $theme['td_class1'] : $theme['td_class2'];
-
 					$template->assign_block_vars('postrow', array(
-						'ROW_COLOR' => '#' . $row_color,
-						'ROW_CLASS' => $row_class,
+						'ROW_CLASS' => !($i % 2) ? 'row1' : 'row2',
 						'POSTER_NAME' => $poster,
 						'POST_DATE' => $post_date,
 						'POST_SUBJECT' => $post_subject,
@@ -1257,12 +1253,8 @@ switch( $mode )
 				$ip = decode_ip($row['poster_ip']);
 				$ip = ( $rdns_ip_num == $row['poster_ip'] || $rdns_ip_num == 'all') ? gethostbyaddr($ip) : $ip;
 
-				$row_color = ( !($i % 2) ) ? $theme['td_color1'] : $theme['td_color2'];
-				$row_class = ( !($i % 2) ) ? $theme['td_class1'] : $theme['td_class2'];
-
 				$template->assign_block_vars('iprow', array(
-					'ROW_COLOR' => '#' . $row_color,
-					'ROW_CLASS' => $row_class,
+						'ROW_CLASS' => !($i % 2) ? 'row1' : 'row2',
 					'IP' => $ip,
 					'POSTS' => $row['postings'] . ' ' . ( ( $row['postings'] == 1 ) ? $lang['Post'] : $lang['Posts'] ),
 
@@ -1296,12 +1288,8 @@ switch( $mode )
 				$id = $row['user_id'];
 				$username = ( $id == ANONYMOUS ) ? $lang['Guest'] : $row['username'];
 
-				$row_color = ( !($i % 2) ) ? $theme['td_color1'] : $theme['td_color2'];
-				$row_class = ( !($i % 2) ) ? $theme['td_class1'] : $theme['td_class2'];
-
 				$template->assign_block_vars('userrow', array(
-					'ROW_COLOR' => '#' . $row_color,
-					'ROW_CLASS' => $row_class,
+						'ROW_CLASS' => !($i % 2) ? 'row1' : 'row2',
 					'USERNAME' => $username,
 					'POSTS' => $row['postings'] . ' ' . ( ( $row['postings'] == 1 ) ? $lang['Post'] : $lang['Posts'] ),
 					'L_SEARCH_POSTS' => sprintf($lang['Search_user_posts'], $username),

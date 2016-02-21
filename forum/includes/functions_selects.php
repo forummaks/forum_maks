@@ -2,6 +2,9 @@
 
 if (!defined('FT_ROOT')) die(basename(__FILE__));
 
+//
+// Languages
+//
 function language_select($default, $select_name = "language", $dirname="language")
 {
 	$dir = opendir(FT_ROOT . $dirname);
@@ -35,33 +38,6 @@ function language_select($default, $select_name = "language", $dirname="language
 }
 
 //
-// Pick a template/theme combo,
-//
-function style_select($default_style, $select_name = "style", $dirname = "templates")
-{
-	global $db;
-
-	$sql = "SELECT themes_id, style_name
-		FROM " . THEMES_TABLE . "
-		ORDER BY template_name, themes_id";
-	if ( !($result = $db->sql_query($sql)) )
-	{
-		message_die(GENERAL_ERROR, "Couldn't query themes table", "", __LINE__, __FILE__, $sql);
-	}
-
-	$style_select = '<select name="' . $select_name . '">';
-	while ( $row = $db->sql_fetchrow($result) )
-	{
-		$selected = ( $row['themes_id'] == $default_style ) ? ' selected="selected"' : '';
-
-		$style_select .= '<option value="' . $row['themes_id'] . '"' . $selected . '>' . $row['style_name'] . '</option>';
-	}
-	$style_select .= "</select>";
-
-	return $style_select;
-}
-
-//
 // Pick a timezone
 //
 function tz_select($default, $select_name = 'timezone')
@@ -82,4 +58,24 @@ function tz_select($default, $select_name = 'timezone')
 	$tz_select .= '</select>';
 
 	return $tz_select;
+}
+
+//
+// Pick a template/theme combo,
+//
+function style_select($default_style, $select_name = 'tpl_name')
+{
+	global $ft_cfg;
+
+	$templates_select = '<select name="'. $select_name .'">';
+	$x = 0;
+	foreach ($ft_cfg['templates'] as $folder => $name)
+	{
+		$selected = '';
+		if ($folder == $default_style) $selected = ' selected="selected"';
+		$templates_select .= '<option value="'. $folder .'"'. $selected .'>'. $name .'</option>';
+		$x++;
+	}
+	$templates_select .= '</select>';
+	return ($x > 1) ? $templates_select : reset($ft_cfg['templates']);
 }

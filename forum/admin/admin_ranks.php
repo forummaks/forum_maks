@@ -260,12 +260,8 @@ if( $mode != "" )
 				$rank_min = $rank_max = "-";
 			}
 
-			$row_color = ( !($i % 2) ) ? $theme['td_color1'] : $theme['td_color2'];
-			$row_class = ( !($i % 2) ) ? $theme['td_class1'] : $theme['td_class2'];
-
 			$template->assign_block_vars("ranks", array(
-				"ROW_COLOR" => "#" . $row_color,
-				"ROW_CLASS" => $row_class,
+					"ROW_CLASS" => !($i % 2) ? 'row1' : 'row2',
 				"RANK" => $rank,
 				"RANK_MIN" => $rank_min,
 
@@ -322,14 +318,10 @@ else
 			$rank_min = $rank_max = "-";
 		}
 
-		$row_color = ( !($i % 2) ) ? $theme['td_color1'] : $theme['td_color2'];
-		$row_class = ( !($i % 2) ) ? $theme['td_class1'] : $theme['td_class2'];
-
 		$rank_is_special = ( $special_rank ) ? $lang['Yes'] : $lang['No'];
 
 		$template->assign_block_vars("ranks", array(
-			"ROW_COLOR" => "#" . $row_color,
-			"ROW_CLASS" => $row_class,
+				"ROW_CLASS" => !($i % 2) ? 'row1' : 'row2',
 			"RANK" => $rank,
 			"SPECIAL_RANK" => $rank_is_special,
 			"RANK_MIN" => $rank_min,

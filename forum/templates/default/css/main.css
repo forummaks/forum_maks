@@ -1,32 +1,91 @@
-/*
-  The original subSilver Theme for phpBB version 2+
-  Created by subBlue design
-  http://www.subBlue.com
-*/
+/* ================================================================ *
+     Initial neutralization
+ * ================================================================ */
 
-.bold{
-font-weight:bold
+/* Clean out MARGIN and PADDING */
+html, body, form, fieldset, h3, h4, h5, h6, p, pre, blockquote,
+ul, ol, dl, li, dd {
+	margin: 0; padding: 0;
 }
+/* Add LEFT MARGIN */
+blockquote, ul, ol, li, dd { margin-left: 1em; }
 
-.test {}
-
- /* General page style. The scroll bar colours only visible in IE5.5+ */
+/* ================================================================ *
+     Top Level
+ * ================================================================ */
+html {
+	min-height: 100.1%;   /* always show vertical scrollbar in Mozilla */
+}
 body {
-	background-color: #E5E5E5;
-	scrollbar-face-color: #DEE3E7;
-	scrollbar-highlight-color: #FFFFFF;
-	scrollbar-shadow-color: #DEE3E7;
-	scrollbar-3dlight-color: #D1D7DC;
-	scrollbar-arrow-color:  #006699;
-	scrollbar-track-color: #EFEFEF;
-	scrollbar-darkshadow-color: #98AAB1;
+	min-width: 760px; color: #000000; background: #E3E3E3;
+}
+body, th, td, font {
+	font: 12px Verdana,Arial,sans-serif;
 }
 
+#body_container { background: #E3E3E3; padding: 0 0 4px; }
+#page_container {
+	margin: 0 auto;
+	background: #FFFFFF; border: 1px solid #CFD4D8;
+}
+#page_header {
+	position: relative; width: 100%;
+}
+#page_content {
+	padding: 12px 10px 0; margin: 0 auto;
+	clear: both; position: relative;
+}
+#sidebar1 {}
+#sidebar2 {
+	padding: 0 3px 0 6px; vertical-align: top;
+	width: 240px;
+}
+#sidebar1-wrap { margin-top: -8px; width: 210px; }
+#sidebar2-wrap {}
+#main_content {
+	vertical-align: top;
+}
+#main_content_wrap {}
+#page_footer {
+	clear: both;
+	margin: 12px 0 3px;
+}
+
+/* ================================================================ *
+     Globals
+ * ================================================================ */
+hr  { height: 0; border: 0 solid #B7C0C5; border-top-width: 1px; }
+.hr1 { border-top: 1px #B7C0C5 solid; }
+
+form  { display: inline; }
+label { cursor: pointer; white-space: nowrap; }
+img   { border: 0; }
+wbr   { display: inline-block; }
+
+.highlight { color: #FF0000; background: #FFFFE0; }
+/* ---------------------------------- *
+     Links
+ * ---------------------------------- */
+:link:focus, :visited:focus   { color: #DD6900; }
+:link        { color: #006699; text-decoration: none !important; }
+:visited  { color: #006699; text-decoration: none !important; }
+:link:hover, :visited:hover     { color: #DD6900; }
+:link:active, :visited:active { color: #DD6900; }
+
+.a-like       { color: #006699 !important; cursor: pointer; }
+.a-like:hover { color: #DD6900 !important; text-decoration: underline !important; }
+.colorAdmin, a.colorAdmin, a.colorAdmin:visited { color: #A00 !important; }
+.colorSuperMod, a.colorSuperMod, a.colorSuperMod:visited { color: #0080FF !important; }
+.colorMod,   a.colorMod,   a.colorMod:visited   { color: #009900 !important; }
+.colorGroup, a.colorGroup, a.colorGroup:visited { color: #476996 !important; }
+.colorUser, a.colorUser, a.colorUser:visited { color: #006699 !important; }
+.colorCPH,   a.colorCPH,   a.colorCPH:visited   { color: #0080FF !important; }
+
+.adm, a.adm, a.adm:visited { color: #800000; text-decoration: none; font-size: 11px; }
 /* General font families for common tags */
 font,th,td,p { font-family: Verdana, Arial, Helvetica, sans-serif; font-size: 12px; }
 a:link,a:active,a:visited { color : #006699; }
 a:hover { text-decoration: underline; color : #DD6900; }
-hr { height: 0px; border: solid #D1D7DC 0px; border-top-width: 1px; }
 
 /* This is the border line & background colour round the entire page */
 .bodyline	{ background-color: #FFFFFF; border: 1px #CFCFCF solid; }
@@ -34,11 +93,22 @@ hr { height: 0px; border: solid #D1D7DC 0px; border-top-width: 1px; }
 /* This is the outline round the main forum tables */
 .forumline	{ background-color: #ADBAC6; border: 1px #ADBAC6 solid; }
 
-/* Main table cell colours and backgrounds */
-.row1	{ background-color: #EFEFEF; }
-.row2	{ background-color: #DEE3E7; }
-.row3	{ background-color: #D1D7DC; }
-.row4 { background-color: #ECECEC; }
+/* ---------------------------------- *
+     Backgrounds
+ * ---------------------------------- */
+.row1, .row1 td { background: #EFEFEF; }
+.row2, .row2 td { background: #DEE3E7; }
+.row3, .row3 td { background: #D1D7DC; }
+.row4, .row4 td { background: #ECECEC; }
+.row5, .row5 td { background: #E7E7E7; }
+.row6, .row6 td { background: #DDDDDD; }
+
+.prow1 { background: #ECECEC; }
+.prow2 { background: #E7E7E7; }
+.prow3 { background: #DEE3E7; }
+
+.p-body tr { background: #ECECEC; }
+.p-body tr:hover { background: #DEE3E7; }
 
 /*
   This is for the table cell above the Topics, Post & Last posts on the index.php page
@@ -47,7 +117,7 @@ hr { height: 0px; border: solid #D1D7DC 0px; border-top-width: 1px; }
 */
 td.rowpic {
 		background-color: #FFFFFF;
-		background-image: url(images/cellpic2.jpg);
+		background-image: url(../images/cellpic2.jpg);
 		background-repeat: repeat-x;
 }
 
@@ -55,13 +125,13 @@ td.rowpic {
 th	{
 	color: #D5E4EC; font-size: 11px; font-weight : bold;
 	background-color: #006699; height: 28px;
-	background-image: url(images/cellpic3.gif);
+	background-image: url(../images/cellpic3.gif);
 	background-repeat: repeat-x;
 /* 	background-color: #3A95C2; */
 }
 
 td.cat,td.catHead,td.catSides,td.catLeft,td.catRight,td.catBottom {
-	background-image: url(images/cellpic1.gif);
+	background-image: url(../images/cellpic1.gif);
 	background-color: #E0E5E9; height: 28px;
 	background-repeat: repeat-x;
 }
@@ -219,10 +289,6 @@ input.liteoption {
 .tDLDown	{ color: #800000; font-weight: bold; }
 .tDLCmpl	{ color: #006600; font-weight: bold; }
 
-.prow1	{ background-color: #ECECEC; }
-.prow2	{ background-color: #E7E7E7; }
-.prow3	{ background-color: #DEE3E7; }
-
 a.seed:link, a.seed:visited, a.seed:hover, a.seed:active, a.seedmed:link, a.seedmed:visited, a.seedmed:hover, a.seedmed:active, a.seedsmall:link, a.seedsmall:visited, a.seedsmall:hover, a.seedsmall:active {
 	color: #006600; text-decoration: none; }
 
@@ -323,7 +389,7 @@ input.mainoption, input.liteoption, input.button {
 #latest_news h3     { padding: 0 0 3px 0; color: #333333; } 
 #latest_news td     { vertical-align: top; } 
 .news_date          { float: right; padding: 1px 8px 1px; white-space: nowrap; font-family: "Courier New",Courier,monospace; color: #333333; background: #F2F2F2; border: 1px solid #B4B4B4; } 
-.news_title         { padding: 3px 8px 2px; margin-bottom: 2px; background: transparent url(images/hr400_ltr_gradient.jpg) no-repeat left top; } 
+.news_title         { padding: 3px 8px 2px; margin-bottom: 2px; background: transparent url(../images/hr400_ltr_gradient.jpg) no-repeat left top; }
 #latest_news a      { color: #000000; text-decoration: none; }
 #latest_news a:hover { text-decoration: underline; } 
 #latest_news .new a { color: #A52A2A; font-weight: bold; }
@@ -352,16 +418,16 @@ input.mainoption, input.liteoption, input.button {
 
 .clickable { cursor: pointer; }
 .folded, .folded2 { display: block;
-        background: transparent url(images/icon_plus_1.gif) no-repeat left center; padding-left: 14px; }
+        background: transparent url(../images/icon_plus_1.gif) no-repeat left center; padding-left: 14px; }
 .unfolded, .unfolded2 { display: block;
-        background: transparent url(images/icon_minus_1.gif) no-repeat left center; padding-left: 14px; }
-.folded2   { background-image: url(images/icon_plus_2.gif); }
-.unfolded2 { background-image: url(images/icon_minus_2.gif); }
+        background: transparent url(../images/icon_minus_1.gif) no-repeat left center; padding-left: 14px; }
+.folded2   { background-image: url(../images/icon_plus_2.gif); }
+.unfolded2 { background-image: url(../images/icon_minus_2.gif); }
 
 .forded { display: block;
-        background: transparent url(images/icon_minus_1.gif) no-repeat left center; padding-left: 14px; }
+        background: transparent url(../images/icon_minus_1.gif) no-repeat left center; padding-left: 14px; }
 .unforded { display: block;
-        background: transparent url(images/icon_plus_1.gif) no-repeat left center; padding-left: 14px; }
+        background: transparent url(../images/icon_plus_1.gif) no-repeat left center; padding-left: 14px; }
 
 /* The buttons used for bbCode styling in message post */
 input.button { background-color : #F5F5F5; }
@@ -384,11 +450,11 @@ input.button { background-color : #F5F5F5; }
 }
 .tbs-icon {
 	padding-left: 8px;
-	background-image: url(/forum/templates/subSilver/images/tbl_sort_bg.gif); background-repeat: no-repeat; background-position: 0 50%;
+	background-image: url(/forum/templates/default/images/tbl_sort_bg.gif); background-repeat: no-repeat; background-position: 0 50%;
 }
 .headerSortUp .tbs-icon {
-	background-image: url(/forum/templates/subSilver/images/tbl_sort_asc.gif);
+	background-image: url(/forum/templates/default/images/tbl_sort_asc.gif);
 }
 .headerSortDown .tbs-icon {
-	background-image: url(/forum/templates/subSilver/images/tbl_sort_desc.gif);
+	background-image: url(/forum/templates/default/images/tbl_sort_desc.gif);
 }

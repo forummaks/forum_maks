@@ -3,10 +3,10 @@ SET SQL_MODE = "";
 -- --------------------------------------------------------
 
 --
--- Структура таблицы `phpbb_attachments`
+-- Структура таблицы `ft_attachments`
 --
 
-CREATE TABLE IF NOT EXISTS `phpbb_attachments` (
+CREATE TABLE IF NOT EXISTS `ft_attachments` (
   `attach_id` mediumint(8) unsigned NOT NULL DEFAULT '0',
   `post_id` mediumint(8) unsigned NOT NULL DEFAULT '0',
   `privmsgs_id` mediumint(8) unsigned NOT NULL DEFAULT '0',
@@ -15,28 +15,28 @@ CREATE TABLE IF NOT EXISTS `phpbb_attachments` (
 ) ENGINE=MyISAM DEFAULT CHARSET=utf8;
 
 --
--- Дамп данных таблицы `phpbb_attachments`
+-- Дамп данных таблицы `ft_attachments`
 --
 
-INSERT INTO `phpbb_attachments` (`attach_id`, `post_id`, `privmsgs_id`, `user_id_1`, `user_id_2`) VALUES
+INSERT INTO `ft_attachments` (`attach_id`, `post_id`, `privmsgs_id`, `user_id_1`, `user_id_2`) VALUES
 (1, 4, 0, 4, 0);
 
 -- --------------------------------------------------------
 
 --
--- Структура таблицы `phpbb_attachments_config`
+-- Структура таблицы `ft_attachments_config`
 --
 
-CREATE TABLE IF NOT EXISTS `phpbb_attachments_config` (
+CREATE TABLE IF NOT EXISTS `ft_attachments_config` (
   `config_name` varchar(255) NOT NULL DEFAULT '',
   `config_value` varchar(255) NOT NULL DEFAULT ''
 ) ENGINE=MyISAM DEFAULT CHARSET=utf8;
 
 --
--- Дамп данных таблицы `phpbb_attachments_config`
+-- Дамп данных таблицы `ft_attachments_config`
 --
 
-INSERT INTO `phpbb_attachments_config` (`config_name`, `config_value`) VALUES
+INSERT INTO `ft_attachments_config` (`config_name`, `config_value`) VALUES
 ('upload_dir', 'files'),
 ('upload_img', 'images/dl_tor_icon.gif'),
 ('topic_icon', 'images/icon_clip.gif'),
@@ -75,10 +75,10 @@ INSERT INTO `phpbb_attachments_config` (`config_name`, `config_value`) VALUES
 -- --------------------------------------------------------
 
 --
--- Структура таблицы `phpbb_attachments_desc`
+-- Структура таблицы `ft_attachments_desc`
 --
 
-CREATE TABLE IF NOT EXISTS `phpbb_attachments_desc` (
+CREATE TABLE IF NOT EXISTS `ft_attachments_desc` (
   `attach_id` mediumint(8) unsigned NOT NULL,
   `physical_filename` varchar(255) NOT NULL DEFAULT '',
   `real_filename` varchar(255) NOT NULL DEFAULT '',
@@ -93,19 +93,19 @@ CREATE TABLE IF NOT EXISTS `phpbb_attachments_desc` (
 ) ENGINE=MyISAM AUTO_INCREMENT=2 DEFAULT CHARSET=utf8;
 
 --
--- Дамп данных таблицы `phpbb_attachments_desc`
+-- Дамп данных таблицы `ft_attachments_desc`
 --
 
-INSERT INTO `phpbb_attachments_desc` (`attach_id`, `physical_filename`, `real_filename`, `download_count`, `comment`, `extension`, `mimetype`, `filesize`, `filetime`, `thumbnail`, `tracker_status`) VALUES
+INSERT INTO `ft_attachments_desc` (`attach_id`, `physical_filename`, `real_filename`, `download_count`, `comment`, `extension`, `mimetype`, `filesize`, `filetime`, `thumbnail`, `tracker_status`) VALUES
 (1, 'test_167.torrent', 'test.torrent', 8, 'File Comment', 'torrent', 'application/x-bittorrent', 251, 1117378177, 0, 1);
 
 -- --------------------------------------------------------
 
 --
--- Структура таблицы `phpbb_attach_quota`
+-- Структура таблицы `ft_attach_quota`
 --
 
-CREATE TABLE IF NOT EXISTS `phpbb_attach_quota` (
+CREATE TABLE IF NOT EXISTS `ft_attach_quota` (
   `user_id` mediumint(8) unsigned NOT NULL DEFAULT '0',
   `group_id` mediumint(8) unsigned NOT NULL DEFAULT '0',
   `quota_type` smallint(2) NOT NULL DEFAULT '0',
@@ -115,10 +115,10 @@ CREATE TABLE IF NOT EXISTS `phpbb_attach_quota` (
 -- --------------------------------------------------------
 
 --
--- Структура таблицы `phpbb_auth_access`
+-- Структура таблицы `ft_auth_access`
 --
 
-CREATE TABLE IF NOT EXISTS `phpbb_auth_access` (
+CREATE TABLE IF NOT EXISTS `ft_auth_access` (
   `group_id` mediumint(8) NOT NULL DEFAULT '0',
   `forum_id` smallint(5) unsigned NOT NULL DEFAULT '0',
   `auth_view` tinyint(1) NOT NULL DEFAULT '0',
@@ -139,10 +139,10 @@ CREATE TABLE IF NOT EXISTS `phpbb_auth_access` (
 -- --------------------------------------------------------
 
 --
--- Структура таблицы `phpbb_banlist`
+-- Структура таблицы `ft_banlist`
 --
 
-CREATE TABLE IF NOT EXISTS `phpbb_banlist` (
+CREATE TABLE IF NOT EXISTS `ft_banlist` (
   `ban_id` mediumint(8) unsigned NOT NULL,
   `ban_userid` mediumint(8) NOT NULL DEFAULT '0',
   `ban_ip` varchar(8) NOT NULL DEFAULT '',
@@ -152,19 +152,19 @@ CREATE TABLE IF NOT EXISTS `phpbb_banlist` (
 -- --------------------------------------------------------
 
 --
--- Структура таблицы `phpbb_bt_config`
+-- Структура таблицы `ft_bt_config`
 --
 
-CREATE TABLE IF NOT EXISTS `phpbb_bt_config` (
+CREATE TABLE IF NOT EXISTS `ft_bt_config` (
   `config_name` varchar(255) NOT NULL DEFAULT '',
   `config_value` varchar(255) NOT NULL DEFAULT ''
 ) ENGINE=MyISAM DEFAULT CHARSET=utf8;
 
 --
--- Дамп данных таблицы `phpbb_bt_config`
+-- Дамп данных таблицы `ft_bt_config`
 --
 
-INSERT INTO `phpbb_bt_config` (`config_name`, `config_value`) VALUES
+INSERT INTO `ft_bt_config` (`config_name`, `config_value`) VALUES
 ('last_clean_time', '0'),
 ('autoclean', '1'),
 ('off', '0'),
@@ -204,10 +204,10 @@ INSERT INTO `phpbb_bt_config` (`config_name`, `config_value`) VALUES
 -- --------------------------------------------------------
 
 --
--- Структура таблицы `phpbb_bt_search_results`
+-- Структура таблицы `ft_bt_search_results`
 --
 
-CREATE TABLE IF NOT EXISTS `phpbb_bt_search_results` (
+CREATE TABLE IF NOT EXISTS `ft_bt_search_results` (
   `session_id` varchar(32) NOT NULL DEFAULT '',
   `search_id` int(10) unsigned NOT NULL DEFAULT '0',
   `added` int(11) NOT NULL DEFAULT '0',
@@ -218,10 +218,10 @@ CREATE TABLE IF NOT EXISTS `phpbb_bt_search_results` (
 -- --------------------------------------------------------
 
 --
--- Структура таблицы `phpbb_bt_torrents`
+-- Структура таблицы `ft_bt_torrents`
 --
 
-CREATE TABLE IF NOT EXISTS `phpbb_bt_torrents` (
+CREATE TABLE IF NOT EXISTS `ft_bt_torrents` (
   `torrent_id` mediumint(8) unsigned NOT NULL,
   `info_hash` binary(20) NOT NULL DEFAULT '\0\0\0\0\0\0\0\0\0\0\0\0\0\0\0\0\0\0\0\0',
   `post_id` mediumint(8) unsigned NOT NULL DEFAULT '0',
@@ -242,19 +242,19 @@ CREATE TABLE IF NOT EXISTS `phpbb_bt_torrents` (
 ) ENGINE=MyISAM AUTO_INCREMENT=2 DEFAULT CHARSET=utf8;
 
 --
--- Дамп данных таблицы `phpbb_bt_torrents`
+-- Дамп данных таблицы `ft_bt_torrents`
 --
 
-INSERT INTO `phpbb_bt_torrents` (`torrent_id`, `info_hash`, `post_id`, `poster_id`, `topic_id`, `attach_id`, `size`, `piece_length`, `reg_time`, `complete_count`, `seeder_last_seen`, `last_seeder_uid`, `topic_check_status`, `topic_check_uid`, `topic_check_date`, `topic_check_first_fid`, `topic_check_duble_tid`) VALUES
+INSERT INTO `ft_bt_torrents` (`torrent_id`, `info_hash`, `post_id`, `poster_id`, `topic_id`, `attach_id`, `size`, `piece_length`, `reg_time`, `complete_count`, `seeder_last_seen`, `last_seeder_uid`, `topic_check_status`, `topic_check_uid`, `topic_check_date`, `topic_check_first_fid`, `topic_check_duble_tid`) VALUES
 (1, 0xf51a6d93f8d475fd7f816f463f20c5734f15a87f, 4, 4, 3, 1, 16748964, 4194304, 1117378225, 0, 0, 0, 2, 2, 1455969875, 0, 0);
 
 -- --------------------------------------------------------
 
 --
--- Структура таблицы `phpbb_bt_tor_dl_stat`
+-- Структура таблицы `ft_bt_tor_dl_stat`
 --
 
-CREATE TABLE IF NOT EXISTS `phpbb_bt_tor_dl_stat` (
+CREATE TABLE IF NOT EXISTS `ft_bt_tor_dl_stat` (
   `torrent_id` mediumint(8) unsigned NOT NULL DEFAULT '0',
   `user_id` mediumint(9) NOT NULL DEFAULT '0',
   `attach_id` mediumint(8) unsigned NOT NULL DEFAULT '0',
@@ -265,10 +265,10 @@ CREATE TABLE IF NOT EXISTS `phpbb_bt_tor_dl_stat` (
 -- --------------------------------------------------------
 
 --
--- Структура таблицы `phpbb_bt_tracker`
+-- Структура таблицы `ft_bt_tracker`
 --
 
-CREATE TABLE IF NOT EXISTS `phpbb_bt_tracker` (
+CREATE TABLE IF NOT EXISTS `ft_bt_tracker` (
   `torrent_id` mediumint(8) unsigned NOT NULL DEFAULT '0',
   `peer_id` char(20) CHARACTER SET utf8 COLLATE utf8_bin NOT NULL DEFAULT '',
   `user_id` mediumint(9) NOT NULL DEFAULT '0',
@@ -291,10 +291,10 @@ CREATE TABLE IF NOT EXISTS `phpbb_bt_tracker` (
 -- --------------------------------------------------------
 
 --
--- Структура таблицы `phpbb_bt_users`
+-- Структура таблицы `ft_bt_users`
 --
 
-CREATE TABLE IF NOT EXISTS `phpbb_bt_users` (
+CREATE TABLE IF NOT EXISTS `ft_bt_users` (
   `user_id` mediumint(9) NOT NULL DEFAULT '0',
   `auth_key` binary(10) NOT NULL DEFAULT '\0\0\0\0\0\0\0\0\0\0',
   `u_up_total` bigint(20) unsigned NOT NULL DEFAULT '0',
@@ -303,20 +303,20 @@ CREATE TABLE IF NOT EXISTS `phpbb_bt_users` (
 ) ENGINE=MyISAM DEFAULT CHARSET=utf8;
 
 --
--- Дамп данных таблицы `phpbb_bt_users`
+-- Дамп данных таблицы `ft_bt_users`
 --
 
-INSERT INTO `phpbb_bt_users` (`user_id`, `auth_key`, `u_up_total`, `u_bonus_total`, `u_down_total`) VALUES
+INSERT INTO `ft_bt_users` (`user_id`, `auth_key`, `u_up_total`, `u_bonus_total`, `u_down_total`) VALUES
 (-1, 0x00000000000000000000, 0, 0, 0),
 (2, 0x5531546f43774a4b426c, 0, 0, 0);
 
 -- --------------------------------------------------------
 
 --
--- Структура таблицы `phpbb_bt_users_dl_status`
+-- Структура таблицы `ft_bt_users_dl_status`
 --
 
-CREATE TABLE IF NOT EXISTS `phpbb_bt_users_dl_status` (
+CREATE TABLE IF NOT EXISTS `ft_bt_users_dl_status` (
   `topic_id` mediumint(8) unsigned NOT NULL DEFAULT '0',
   `user_id` mediumint(9) NOT NULL DEFAULT '0',
   `user_status` tinyint(1) NOT NULL DEFAULT '0',
@@ -327,38 +327,38 @@ CREATE TABLE IF NOT EXISTS `phpbb_bt_users_dl_status` (
 -- --------------------------------------------------------
 
 --
--- Структура таблицы `phpbb_categories`
+-- Структура таблицы `ft_categories`
 --
 
-CREATE TABLE IF NOT EXISTS `phpbb_categories` (
+CREATE TABLE IF NOT EXISTS `ft_categories` (
   `cat_id` mediumint(8) unsigned NOT NULL,
   `cat_title` varchar(100) DEFAULT NULL,
   `cat_order` mediumint(8) unsigned NOT NULL DEFAULT '0'
 ) ENGINE=MyISAM AUTO_INCREMENT=2 DEFAULT CHARSET=utf8;
 
 --
--- Дамп данных таблицы `phpbb_categories`
+-- Дамп данных таблицы `ft_categories`
 --
 
-INSERT INTO `phpbb_categories` (`cat_id`, `cat_title`, `cat_order`) VALUES
+INSERT INTO `ft_categories` (`cat_id`, `cat_title`, `cat_order`) VALUES
 (1, 'Test category 1', 10);
 
 -- --------------------------------------------------------
 
 --
--- Структура таблицы `phpbb_config`
+-- Структура таблицы `ft_config`
 --
 
-CREATE TABLE IF NOT EXISTS `phpbb_config` (
+CREATE TABLE IF NOT EXISTS `ft_config` (
   `config_name` varchar(255) NOT NULL DEFAULT '',
   `config_value` varchar(255) NOT NULL DEFAULT ''
 ) ENGINE=MyISAM DEFAULT CHARSET=utf8;
 
 --
--- Дамп данных таблицы `phpbb_config`
+-- Дамп данных таблицы `ft_config`
 --
 
-INSERT INTO `phpbb_config` (`config_name`, `config_value`) VALUES
+INSERT INTO `ft_config` (`config_name`, `config_value`) VALUES
 ('config_id', '1'),
 ('board_disable', '0'),
 ('sitename', 'yourdomain.com'),
@@ -462,10 +462,10 @@ INSERT INTO `phpbb_config` (`config_name`, `config_value`) VALUES
 -- --------------------------------------------------------
 
 --
--- Структура таблицы `phpbb_disallow`
+-- Структура таблицы `ft_disallow`
 --
 
-CREATE TABLE IF NOT EXISTS `phpbb_disallow` (
+CREATE TABLE IF NOT EXISTS `ft_disallow` (
   `disallow_id` mediumint(8) unsigned NOT NULL,
   `disallow_username` varchar(25) NOT NULL DEFAULT ''
 ) ENGINE=MyISAM DEFAULT CHARSET=utf8;
@@ -473,10 +473,10 @@ CREATE TABLE IF NOT EXISTS `phpbb_disallow` (
 -- --------------------------------------------------------
 
 --
--- Структура таблицы `phpbb_extensions`
+-- Структура таблицы `ft_extensions`
 --
 
-CREATE TABLE IF NOT EXISTS `phpbb_extensions` (
+CREATE TABLE IF NOT EXISTS `ft_extensions` (
   `ext_id` mediumint(8) unsigned NOT NULL,
   `group_id` mediumint(8) unsigned NOT NULL DEFAULT '0',
   `extension` varchar(100) NOT NULL DEFAULT '',
@@ -484,10 +484,10 @@ CREATE TABLE IF NOT EXISTS `phpbb_extensions` (
 ) ENGINE=MyISAM AUTO_INCREMENT=30 DEFAULT CHARSET=utf8;
 
 --
--- Дамп данных таблицы `phpbb_extensions`
+-- Дамп данных таблицы `ft_extensions`
 --
 
-INSERT INTO `phpbb_extensions` (`ext_id`, `group_id`, `extension`, `comment`) VALUES
+INSERT INTO `ft_extensions` (`ext_id`, `group_id`, `extension`, `comment`) VALUES
 (1, 1, 'gif', ''),
 (2, 1, 'png', ''),
 (3, 1, 'jpeg', ''),
@@ -521,10 +521,10 @@ INSERT INTO `phpbb_extensions` (`ext_id`, `group_id`, `extension`, `comment`) VA
 -- --------------------------------------------------------
 
 --
--- Структура таблицы `phpbb_extension_groups`
+-- Структура таблицы `ft_extension_groups`
 --
 
-CREATE TABLE IF NOT EXISTS `phpbb_extension_groups` (
+CREATE TABLE IF NOT EXISTS `ft_extension_groups` (
   `group_id` mediumint(8) NOT NULL,
   `group_name` varchar(20) NOT NULL DEFAULT '',
   `cat_id` tinyint(2) NOT NULL DEFAULT '0',
@@ -536,10 +536,10 @@ CREATE TABLE IF NOT EXISTS `phpbb_extension_groups` (
 ) ENGINE=MyISAM AUTO_INCREMENT=9 DEFAULT CHARSET=utf8;
 
 --
--- Дамп данных таблицы `phpbb_extension_groups`
+-- Дамп данных таблицы `ft_extension_groups`
 --
 
-INSERT INTO `phpbb_extension_groups` (`group_id`, `group_name`, `cat_id`, `allow_group`, `download_mode`, `upload_icon`, `max_filesize`, `forum_permissions`) VALUES
+INSERT INTO `ft_extension_groups` (`group_id`, `group_name`, `cat_id`, `allow_group`, `download_mode`, `upload_icon`, `max_filesize`, `forum_permissions`) VALUES
 (1, 'Images', 1, 1, 1, '', 262144, ''),
 (2, 'Archives', 0, 1, 1, '', 262144, ''),
 (3, 'Plain Text', 0, 0, 1, '', 262144, ''),
@@ -552,19 +552,19 @@ INSERT INTO `phpbb_extension_groups` (`group_id`, `group_name`, `cat_id`, `allow
 -- --------------------------------------------------------
 
 --
--- Структура таблицы `phpbb_forbidden_extensions`
+-- Структура таблицы `ft_forbidden_extensions`
 --
 
-CREATE TABLE IF NOT EXISTS `phpbb_forbidden_extensions` (
+CREATE TABLE IF NOT EXISTS `ft_forbidden_extensions` (
   `ext_id` mediumint(8) unsigned NOT NULL,
   `extension` varchar(100) NOT NULL DEFAULT ''
 ) ENGINE=MyISAM AUTO_INCREMENT=8 DEFAULT CHARSET=utf8;
 
 --
--- Дамп данных таблицы `phpbb_forbidden_extensions`
+-- Дамп данных таблицы `ft_forbidden_extensions`
 --
 
-INSERT INTO `phpbb_forbidden_extensions` (`ext_id`, `extension`) VALUES
+INSERT INTO `ft_forbidden_extensions` (`ext_id`, `extension`) VALUES
 (1, 'php'),
 (2, 'php3'),
 (3, 'php4'),
@@ -576,10 +576,10 @@ INSERT INTO `phpbb_forbidden_extensions` (`ext_id`, `extension`) VALUES
 -- --------------------------------------------------------
 
 --
--- Структура таблицы `phpbb_forums`
+-- Структура таблицы `ft_forums`
 --
 
-CREATE TABLE IF NOT EXISTS `phpbb_forums` (
+CREATE TABLE IF NOT EXISTS `ft_forums` (
   `forum_id` smallint(5) unsigned NOT NULL DEFAULT '0',
   `cat_id` mediumint(8) unsigned NOT NULL DEFAULT '0',
   `forum_name` varchar(150) DEFAULT NULL,
@@ -619,10 +619,10 @@ CREATE TABLE IF NOT EXISTS `phpbb_forums` (
 ) ENGINE=MyISAM DEFAULT CHARSET=utf8;
 
 --
--- Дамп данных таблицы `phpbb_forums`
+-- Дамп данных таблицы `ft_forums`
 --
 
-INSERT INTO `phpbb_forums` (`forum_id`, `cat_id`, `forum_name`, `forum_desc`, `forum_status`, `forum_order`, `forum_posts`, `forum_topics`, `forum_last_post_id`, `prune_next`, `prune_enable`, `auth_view`, `auth_read`, `auth_post`, `auth_reply`, `auth_edit`, `auth_delete`, `auth_sticky`, `auth_announce`, `auth_vote`, `auth_pollcreate`, `auth_attachments`, `auth_download`, `allow_reg_tracker`, `allow_dl_topic`, `dl_type_default`, `self_moderated`, `last_dl_topics_synch`, `show_dl_buttons`, `forum_parent`, `show_on_index`, `forum_display_sort`, `forum_display_order`, `move_next`, `recycle_move_next`, `move_enable`) VALUES
+INSERT INTO `ft_forums` (`forum_id`, `cat_id`, `forum_name`, `forum_desc`, `forum_status`, `forum_order`, `forum_posts`, `forum_topics`, `forum_last_post_id`, `prune_next`, `prune_enable`, `auth_view`, `auth_read`, `auth_post`, `auth_reply`, `auth_edit`, `auth_delete`, `auth_sticky`, `auth_announce`, `auth_vote`, `auth_pollcreate`, `auth_attachments`, `auth_download`, `allow_reg_tracker`, `allow_dl_topic`, `dl_type_default`, `self_moderated`, `last_dl_topics_synch`, `show_dl_buttons`, `forum_parent`, `show_on_index`, `forum_display_sort`, `forum_display_order`, `move_next`, `recycle_move_next`, `move_enable`) VALUES
 (1, 1, 'Test Forum 1', 'This is just a test forum.', 0, 10, 1, 1, 1, NULL, 0, 0, 0, 0, 0, 1, 1, 3, 3, 1, 1, 3, 0, 1, 0, 0, 0, 0, 1, 0, 1, 0, 0, 0, 0, 0),
 (2, 1, 'subforum 1', 'subforum 1 description', 0, 20, 0, 0, 0, NULL, 0, 0, 0, 1, 1, 1, 1, 3, 3, 1, 1, 1, 1, 0, 1, 0, 1, 1117359869, 1, 1, 1, 0, 0, 0, 0, 0),
 (3, 1, 'Download Forum 1', '', 0, 30, 1, 1, 4, NULL, 0, 0, 0, 1, 1, 1, 1, 3, 3, 1, 1, 1, 1, 1, 0, 0, 0, 0, 1, 0, 1, 0, 0, 0, 0, 0);
@@ -630,10 +630,10 @@ INSERT INTO `phpbb_forums` (`forum_id`, `cat_id`, `forum_name`, `forum_desc`, `f
 -- --------------------------------------------------------
 
 --
--- Структура таблицы `phpbb_forum_prune`
+-- Структура таблицы `ft_forum_prune`
 --
 
-CREATE TABLE IF NOT EXISTS `phpbb_forum_prune` (
+CREATE TABLE IF NOT EXISTS `ft_forum_prune` (
   `prune_id` mediumint(8) unsigned NOT NULL,
   `forum_id` smallint(5) unsigned NOT NULL DEFAULT '0',
   `prune_days` smallint(5) unsigned NOT NULL DEFAULT '0',
@@ -643,10 +643,10 @@ CREATE TABLE IF NOT EXISTS `phpbb_forum_prune` (
 -- --------------------------------------------------------
 
 --
--- Структура таблицы `phpbb_groups`
+-- Структура таблицы `ft_groups`
 --
 
-CREATE TABLE IF NOT EXISTS `phpbb_groups` (
+CREATE TABLE IF NOT EXISTS `ft_groups` (
   `group_id` mediumint(8) NOT NULL,
   `group_type` tinyint(4) NOT NULL DEFAULT '1',
   `group_name` varchar(40) NOT NULL DEFAULT '',
@@ -656,10 +656,10 @@ CREATE TABLE IF NOT EXISTS `phpbb_groups` (
 ) ENGINE=MyISAM AUTO_INCREMENT=6 DEFAULT CHARSET=utf8;
 
 --
--- Дамп данных таблицы `phpbb_groups`
+-- Дамп данных таблицы `ft_groups`
 --
 
-INSERT INTO `phpbb_groups` (`group_id`, `group_type`, `group_name`, `group_description`, `group_moderator`, `group_single_user`) VALUES
+INSERT INTO `ft_groups` (`group_id`, `group_type`, `group_name`, `group_description`, `group_moderator`, `group_single_user`) VALUES
 (1, 1, 'Anonymous', '', 0, 1),
 (2, 1, 'Admin', '', 0, 1),
 (3, 1, '', '', 0, 1),
@@ -669,10 +669,10 @@ INSERT INTO `phpbb_groups` (`group_id`, `group_type`, `group_name`, `group_descr
 -- --------------------------------------------------------
 
 --
--- Структура таблицы `phpbb_posts`
+-- Структура таблицы `ft_posts`
 --
 
-CREATE TABLE IF NOT EXISTS `phpbb_posts` (
+CREATE TABLE IF NOT EXISTS `ft_posts` (
   `post_id` mediumint(8) unsigned NOT NULL,
   `topic_id` mediumint(8) unsigned NOT NULL DEFAULT '0',
   `forum_id` smallint(5) unsigned NOT NULL DEFAULT '0',
@@ -690,20 +690,20 @@ CREATE TABLE IF NOT EXISTS `phpbb_posts` (
 ) ENGINE=MyISAM AUTO_INCREMENT=5 DEFAULT CHARSET=utf8;
 
 --
--- Дамп данных таблицы `phpbb_posts`
+-- Дамп данных таблицы `ft_posts`
 --
 
-INSERT INTO `phpbb_posts` (`post_id`, `topic_id`, `forum_id`, `poster_id`, `post_time`, `poster_ip`, `post_username`, `enable_bbcode`, `enable_html`, `enable_smilies`, `enable_sig`, `post_edit_time`, `post_edit_count`, `post_attachment`) VALUES
+INSERT INTO `ft_posts` (`post_id`, `topic_id`, `forum_id`, `poster_id`, `post_time`, `poster_ip`, `post_username`, `enable_bbcode`, `enable_html`, `enable_smilies`, `enable_sig`, `post_edit_time`, `post_edit_count`, `post_attachment`) VALUES
 (1, 1, 1, 2, 972086460, '7F000001', NULL, 1, 0, 1, 1, NULL, 0, 0),
 (4, 3, 3, 4, 1117362875, '7f000001', '', 1, 0, 1, 0, NULL, 0, 1);
 
 -- --------------------------------------------------------
 
 --
--- Структура таблицы `phpbb_posts_text`
+-- Структура таблицы `ft_posts_text`
 --
 
-CREATE TABLE IF NOT EXISTS `phpbb_posts_text` (
+CREATE TABLE IF NOT EXISTS `ft_posts_text` (
   `post_id` mediumint(8) unsigned NOT NULL DEFAULT '0',
   `bbcode_uid` varchar(10) NOT NULL DEFAULT '',
   `post_subject` varchar(120) DEFAULT NULL,
@@ -711,20 +711,20 @@ CREATE TABLE IF NOT EXISTS `phpbb_posts_text` (
 ) ENGINE=MyISAM DEFAULT CHARSET=utf8;
 
 --
--- Дамп данных таблицы `phpbb_posts_text`
+-- Дамп данных таблицы `ft_posts_text`
 --
 
-INSERT INTO `phpbb_posts_text` (`post_id`, `bbcode_uid`, `post_subject`, `post_text`) VALUES
+INSERT INTO `ft_posts_text` (`post_id`, `bbcode_uid`, `post_subject`, `post_text`) VALUES
 (1, '', NULL, 'This is an example post in your phpBB 2 installation. You may delete this post, this topic and even this forum if you like since everything seems to be working!'),
 (4, '833b835389', 'Download Topic 1', 'test');
 
 -- --------------------------------------------------------
 
 --
--- Структура таблицы `phpbb_privmsgs`
+-- Структура таблицы `ft_privmsgs`
 --
 
-CREATE TABLE IF NOT EXISTS `phpbb_privmsgs` (
+CREATE TABLE IF NOT EXISTS `ft_privmsgs` (
   `privmsgs_id` mediumint(8) unsigned NOT NULL,
   `privmsgs_type` tinyint(4) NOT NULL DEFAULT '0',
   `privmsgs_subject` varchar(255) NOT NULL DEFAULT '0',
@@ -737,57 +737,37 @@ CREATE TABLE IF NOT EXISTS `phpbb_privmsgs` (
   `privmsgs_enable_smilies` tinyint(1) NOT NULL DEFAULT '1',
   `privmsgs_attach_sig` tinyint(1) NOT NULL DEFAULT '1',
   `privmsgs_attachment` tinyint(1) NOT NULL DEFAULT '0'
-) ENGINE=MyISAM AUTO_INCREMENT=5 DEFAULT CHARSET=utf8;
-
---
--- Дамп данных таблицы `phpbb_privmsgs`
---
-
-INSERT INTO `phpbb_privmsgs` (`privmsgs_id`, `privmsgs_type`, `privmsgs_subject`, `privmsgs_from_userid`, `privmsgs_to_userid`, `privmsgs_date`, `privmsgs_ip`, `privmsgs_enable_bbcode`, `privmsgs_enable_html`, `privmsgs_enable_smilies`, `privmsgs_attach_sig`, `privmsgs_attachment`) VALUES
-(1, 0, 'dfgdfgdfg', 2, 2, 1455629540, '7f000001', 1, 0, 1, 0, 0),
-(2, 2, 'dfgdfgdfg', 2, 2, 1455629540, '7f000001', 1, 0, 1, 0, 0),
-(3, 1, '', 2, 4, 1455660266, '', 1, 0, 1, 1, 0),
-(4, 1, '', 2, 4, 1455662105, '', 1, 0, 1, 1, 0);
+) ENGINE=MyISAM AUTO_INCREMENT=11 DEFAULT CHARSET=utf8;
 
 -- --------------------------------------------------------
 
 --
--- Структура таблицы `phpbb_privmsgs_text`
+-- Структура таблицы `ft_privmsgs_text`
 --
 
-CREATE TABLE IF NOT EXISTS `phpbb_privmsgs_text` (
+CREATE TABLE IF NOT EXISTS `ft_privmsgs_text` (
   `privmsgs_text_id` mediumint(8) unsigned NOT NULL DEFAULT '0',
   `privmsgs_bbcode_uid` varchar(10) NOT NULL DEFAULT '0',
   `privmsgs_text` text
 ) ENGINE=MyISAM DEFAULT CHARSET=utf8;
 
---
--- Дамп данных таблицы `phpbb_privmsgs_text`
---
-
-INSERT INTO `phpbb_privmsgs_text` (`privmsgs_text_id`, `privmsgs_bbcode_uid`, `privmsgs_text`) VALUES
-(1, '5f0b123485', 'dfgdfgdgfdgdf'),
-(2, '5f0b123485', 'dfgdfgdgfdgdf'),
-(3, 'd768f1977b', ''),
-(4, '36f3473bc8', '');
-
 -- --------------------------------------------------------
 
 --
--- Структура таблицы `phpbb_quota_limits`
+-- Структура таблицы `ft_quota_limits`
 --
 
-CREATE TABLE IF NOT EXISTS `phpbb_quota_limits` (
+CREATE TABLE IF NOT EXISTS `ft_quota_limits` (
   `quota_limit_id` mediumint(8) unsigned NOT NULL,
   `quota_desc` varchar(20) NOT NULL DEFAULT '',
   `quota_limit` bigint(20) unsigned NOT NULL DEFAULT '0'
 ) ENGINE=MyISAM AUTO_INCREMENT=4 DEFAULT CHARSET=utf8;
 
 --
--- Дамп данных таблицы `phpbb_quota_limits`
+-- Дамп данных таблицы `ft_quota_limits`
 --
 
-INSERT INTO `phpbb_quota_limits` (`quota_limit_id`, `quota_desc`, `quota_limit`) VALUES
+INSERT INTO `ft_quota_limits` (`quota_limit_id`, `quota_desc`, `quota_limit`) VALUES
 (1, 'Low', 262144),
 (2, 'Medium', 10485760),
 (3, 'High', 15728640);
@@ -795,10 +775,10 @@ INSERT INTO `phpbb_quota_limits` (`quota_limit_id`, `quota_desc`, `quota_limit`)
 -- --------------------------------------------------------
 
 --
--- Структура таблицы `phpbb_ranks`
+-- Структура таблицы `ft_ranks`
 --
 
-CREATE TABLE IF NOT EXISTS `phpbb_ranks` (
+CREATE TABLE IF NOT EXISTS `ft_ranks` (
   `rank_id` smallint(5) unsigned NOT NULL,
   `rank_title` varchar(50) NOT NULL DEFAULT '',
   `rank_min` mediumint(8) NOT NULL DEFAULT '0',
@@ -807,19 +787,19 @@ CREATE TABLE IF NOT EXISTS `phpbb_ranks` (
 ) ENGINE=MyISAM AUTO_INCREMENT=2 DEFAULT CHARSET=utf8;
 
 --
--- Дамп данных таблицы `phpbb_ranks`
+-- Дамп данных таблицы `ft_ranks`
 --
 
-INSERT INTO `phpbb_ranks` (`rank_id`, `rank_title`, `rank_min`, `rank_special`, `rank_image`) VALUES
+INSERT INTO `ft_ranks` (`rank_id`, `rank_title`, `rank_min`, `rank_special`, `rank_image`) VALUES
 (1, 'Site Admin', -1, 1, NULL);
 
 -- --------------------------------------------------------
 
 --
--- Структура таблицы `phpbb_search_results`
+-- Структура таблицы `ft_search_results`
 --
 
-CREATE TABLE IF NOT EXISTS `phpbb_search_results` (
+CREATE TABLE IF NOT EXISTS `ft_search_results` (
   `search_id` int(11) unsigned NOT NULL DEFAULT '0',
   `session_id` varchar(32) NOT NULL DEFAULT '',
   `search_array` text NOT NULL
@@ -828,10 +808,10 @@ CREATE TABLE IF NOT EXISTS `phpbb_search_results` (
 -- --------------------------------------------------------
 
 --
--- Структура таблицы `phpbb_search_wordlist`
+-- Структура таблицы `ft_search_wordlist`
 --
 
-CREATE TABLE IF NOT EXISTS `phpbb_search_wordlist` (
+CREATE TABLE IF NOT EXISTS `ft_search_wordlist` (
   `word_text` varchar(50) CHARACTER SET utf8 COLLATE utf8_bin NOT NULL DEFAULT '',
   `word_id` mediumint(8) unsigned NOT NULL,
   `word_common` tinyint(1) unsigned NOT NULL DEFAULT '0'
@@ -840,10 +820,10 @@ CREATE TABLE IF NOT EXISTS `phpbb_search_wordlist` (
 -- --------------------------------------------------------
 
 --
--- Структура таблицы `phpbb_search_wordmatch`
+-- Структура таблицы `ft_search_wordmatch`
 --
 
-CREATE TABLE IF NOT EXISTS `phpbb_search_wordmatch` (
+CREATE TABLE IF NOT EXISTS `ft_search_wordmatch` (
   `post_id` mediumint(8) unsigned NOT NULL DEFAULT '0',
   `word_id` mediumint(8) unsigned NOT NULL DEFAULT '0',
   `title_match` tinyint(1) NOT NULL DEFAULT '0'
@@ -852,10 +832,10 @@ CREATE TABLE IF NOT EXISTS `phpbb_search_wordmatch` (
 -- --------------------------------------------------------
 
 --
--- Структура таблицы `phpbb_sessions`
+-- Структура таблицы `ft_sessions`
 --
 
-CREATE TABLE IF NOT EXISTS `phpbb_sessions` (
+CREATE TABLE IF NOT EXISTS `ft_sessions` (
   `session_id` char(32) NOT NULL DEFAULT '',
   `session_user_id` mediumint(8) NOT NULL DEFAULT '0',
   `session_start` int(11) NOT NULL DEFAULT '0',
@@ -867,20 +847,19 @@ CREATE TABLE IF NOT EXISTS `phpbb_sessions` (
 ) ENGINE=MyISAM DEFAULT CHARSET=utf8;
 
 --
--- Дамп данных таблицы `phpbb_sessions`
+-- Дамп данных таблицы `ft_sessions`
 --
 
-INSERT INTO `phpbb_sessions` (`session_id`, `session_user_id`, `session_start`, `session_time`, `session_ip`, `session_page`, `session_logged_in`, `session_admin`) VALUES
-('335b64319eceaad524bfe007b9358b5b', -1, 1455981352, 1455981352, '7f000001', 0, 0, 0),
-('84658c970604ccc6b8e7d727d06b328d', 2, 1455970540, 1455981194, '7f000001', 0, 1, 1);
+INSERT INTO `ft_sessions` (`session_id`, `session_user_id`, `session_start`, `session_time`, `session_ip`, `session_page`, `session_logged_in`, `session_admin`) VALUES
+('96971e5d41b170677b0c1a50a5c6ae00', 2, 1456079565, 1456081315, '7f000001', 0, 1, 1);
 
 -- --------------------------------------------------------
 
 --
--- Структура таблицы `phpbb_smilies`
+-- Структура таблицы `ft_smilies`
 --
 
-CREATE TABLE IF NOT EXISTS `phpbb_smilies` (
+CREATE TABLE IF NOT EXISTS `ft_smilies` (
   `smilies_id` smallint(5) unsigned NOT NULL,
   `code` varchar(50) DEFAULT NULL,
   `smile_url` varchar(100) DEFAULT NULL,
@@ -888,10 +867,10 @@ CREATE TABLE IF NOT EXISTS `phpbb_smilies` (
 ) ENGINE=MyISAM AUTO_INCREMENT=50 DEFAULT CHARSET=utf8;
 
 --
--- Дамп данных таблицы `phpbb_smilies`
+-- Дамп данных таблицы `ft_smilies`
 --
 
-INSERT INTO `phpbb_smilies` (`smilies_id`, `code`, `smile_url`, `emoticon`) VALUES
+INSERT INTO `ft_smilies` (`smilies_id`, `code`, `smile_url`, `emoticon`) VALUES
 (1, 'O:-)', 'aa.gif', ''),
 (2, '=)', 'ab.gif', ''),
 (3, ':(', 'ac.gif', ''),
@@ -945,116 +924,10 @@ INSERT INTO `phpbb_smilies` (`smilies_id`, `code`, `smile_url`, `emoticon`) VALU
 -- --------------------------------------------------------
 
 --
--- Структура таблицы `phpbb_themes`
+-- Структура таблицы `ft_topics`
 --
 
-CREATE TABLE IF NOT EXISTS `phpbb_themes` (
-  `themes_id` mediumint(8) unsigned NOT NULL,
-  `template_name` varchar(30) NOT NULL DEFAULT '',
-  `style_name` varchar(30) NOT NULL DEFAULT '',
-  `head_stylesheet` varchar(100) DEFAULT NULL,
-  `body_background` varchar(100) DEFAULT NULL,
-  `body_bgcolor` varchar(6) DEFAULT NULL,
-  `body_text` varchar(6) DEFAULT NULL,
-  `body_link` varchar(6) DEFAULT NULL,
-  `body_vlink` varchar(6) DEFAULT NULL,
-  `body_alink` varchar(6) DEFAULT NULL,
-  `body_hlink` varchar(6) DEFAULT NULL,
-  `tr_color1` varchar(6) DEFAULT NULL,
-  `tr_color2` varchar(6) DEFAULT NULL,
-  `tr_color3` varchar(6) DEFAULT NULL,
-  `tr_class1` varchar(25) DEFAULT NULL,
-  `tr_class2` varchar(25) DEFAULT NULL,
-  `tr_class3` varchar(25) DEFAULT NULL,
-  `th_color1` varchar(6) DEFAULT NULL,
-  `th_color2` varchar(6) DEFAULT NULL,
-  `th_color3` varchar(6) DEFAULT NULL,
-  `th_class1` varchar(25) DEFAULT NULL,
-  `th_class2` varchar(25) DEFAULT NULL,
-  `th_class3` varchar(25) DEFAULT NULL,
-  `td_color1` varchar(6) DEFAULT NULL,
-  `td_color2` varchar(6) DEFAULT NULL,
-  `td_color3` varchar(6) DEFAULT NULL,
-  `td_class1` varchar(25) DEFAULT NULL,
-  `td_class2` varchar(25) DEFAULT NULL,
-  `td_class3` varchar(25) DEFAULT NULL,
-  `fontface1` varchar(50) DEFAULT NULL,
-  `fontface2` varchar(50) DEFAULT NULL,
-  `fontface3` varchar(50) DEFAULT NULL,
-  `fontsize1` tinyint(4) DEFAULT NULL,
-  `fontsize2` tinyint(4) DEFAULT NULL,
-  `fontsize3` tinyint(4) DEFAULT NULL,
-  `fontcolor1` varchar(6) DEFAULT NULL,
-  `fontcolor2` varchar(6) DEFAULT NULL,
-  `fontcolor3` varchar(6) DEFAULT NULL,
-  `span_class1` varchar(25) DEFAULT NULL,
-  `span_class2` varchar(25) DEFAULT NULL,
-  `span_class3` varchar(25) DEFAULT NULL,
-  `img_size_poll` smallint(5) unsigned DEFAULT NULL,
-  `img_size_privmsg` smallint(5) unsigned DEFAULT NULL
-) ENGINE=MyISAM AUTO_INCREMENT=2 DEFAULT CHARSET=utf8;
-
---
--- Дамп данных таблицы `phpbb_themes`
---
-
-INSERT INTO `phpbb_themes` (`themes_id`, `template_name`, `style_name`, `head_stylesheet`, `body_background`, `body_bgcolor`, `body_text`, `body_link`, `body_vlink`, `body_alink`, `body_hlink`, `tr_color1`, `tr_color2`, `tr_color3`, `tr_class1`, `tr_class2`, `tr_class3`, `th_color1`, `th_color2`, `th_color3`, `th_class1`, `th_class2`, `th_class3`, `td_color1`, `td_color2`, `td_color3`, `td_class1`, `td_class2`, `td_class3`, `fontface1`, `fontface2`, `fontface3`, `fontsize1`, `fontsize2`, `fontsize3`, `fontcolor1`, `fontcolor2`, `fontcolor3`, `span_class1`, `span_class2`, `span_class3`, `img_size_poll`, `img_size_privmsg`) VALUES
-(1, 'subSilver', 'subSilver', 'subSilver.css', '', 'E5E5E5', '000000', '006699', '5493B4', '', 'DD6900', 'EFEFEF', 'DEE3E7', 'D1D7DC', '', '', '', '98AAB1', '006699', 'FFFFFF', 'cellpic1.gif', 'cellpic3.gif', 'cellpic2.jpg', 'FAFAFA', 'FFFFFF', '', 'row1', 'row2', '', 'Verdana, Arial, Helvetica, sans-serif', 'Trebuchet MS', 'Courier, ''Courier New'', sans-serif', 10, 11, 12, '444444', '006600', 'FFA34F', '', '', '', NULL, NULL);
-
--- --------------------------------------------------------
-
---
--- Структура таблицы `phpbb_themes_name`
---
-
-CREATE TABLE IF NOT EXISTS `phpbb_themes_name` (
-  `themes_id` smallint(5) unsigned NOT NULL DEFAULT '0',
-  `tr_color1_name` char(50) DEFAULT NULL,
-  `tr_color2_name` char(50) DEFAULT NULL,
-  `tr_color3_name` char(50) DEFAULT NULL,
-  `tr_class1_name` char(50) DEFAULT NULL,
-  `tr_class2_name` char(50) DEFAULT NULL,
-  `tr_class3_name` char(50) DEFAULT NULL,
-  `th_color1_name` char(50) DEFAULT NULL,
-  `th_color2_name` char(50) DEFAULT NULL,
-  `th_color3_name` char(50) DEFAULT NULL,
-  `th_class1_name` char(50) DEFAULT NULL,
-  `th_class2_name` char(50) DEFAULT NULL,
-  `th_class3_name` char(50) DEFAULT NULL,
-  `td_color1_name` char(50) DEFAULT NULL,
-  `td_color2_name` char(50) DEFAULT NULL,
-  `td_color3_name` char(50) DEFAULT NULL,
-  `td_class1_name` char(50) DEFAULT NULL,
-  `td_class2_name` char(50) DEFAULT NULL,
-  `td_class3_name` char(50) DEFAULT NULL,
-  `fontface1_name` char(50) DEFAULT NULL,
-  `fontface2_name` char(50) DEFAULT NULL,
-  `fontface3_name` char(50) DEFAULT NULL,
-  `fontsize1_name` char(50) DEFAULT NULL,
-  `fontsize2_name` char(50) DEFAULT NULL,
-  `fontsize3_name` char(50) DEFAULT NULL,
-  `fontcolor1_name` char(50) DEFAULT NULL,
-  `fontcolor2_name` char(50) DEFAULT NULL,
-  `fontcolor3_name` char(50) DEFAULT NULL,
-  `span_class1_name` char(50) DEFAULT NULL,
-  `span_class2_name` char(50) DEFAULT NULL,
-  `span_class3_name` char(50) DEFAULT NULL
-) ENGINE=MyISAM DEFAULT CHARSET=utf8;
-
---
--- Дамп данных таблицы `phpbb_themes_name`
---
-
-INSERT INTO `phpbb_themes_name` (`themes_id`, `tr_color1_name`, `tr_color2_name`, `tr_color3_name`, `tr_class1_name`, `tr_class2_name`, `tr_class3_name`, `th_color1_name`, `th_color2_name`, `th_color3_name`, `th_class1_name`, `th_class2_name`, `th_class3_name`, `td_color1_name`, `td_color2_name`, `td_color3_name`, `td_class1_name`, `td_class2_name`, `td_class3_name`, `fontface1_name`, `fontface2_name`, `fontface3_name`, `fontsize1_name`, `fontsize2_name`, `fontsize3_name`, `fontcolor1_name`, `fontcolor2_name`, `fontcolor3_name`, `span_class1_name`, `span_class2_name`, `span_class3_name`) VALUES
-(1, 'The lightest row colour', 'The medium row color', 'The darkest row colour', '', '', '', 'Border round the whole page', 'Outer table border', 'Inner table border', 'Silver gradient picture', 'Blue gradient picture', 'Fade-out gradient on index', 'Background for quote boxes', 'All white areas', '', 'Background for topic posts', '2nd background for topic posts', '', 'Main fonts', 'Additional topic title font', 'Form fonts', 'Smallest font size', 'Medium font size', 'Normal font size (post body etc)', 'Quote & copyright text', 'Code text colour', 'Main table header text colour', '', '', '');
-
--- --------------------------------------------------------
-
---
--- Структура таблицы `phpbb_topics`
---
-
-CREATE TABLE IF NOT EXISTS `phpbb_topics` (
+CREATE TABLE IF NOT EXISTS `ft_topics` (
   `topic_id` mediumint(8) unsigned NOT NULL,
   `forum_id` smallint(8) unsigned NOT NULL DEFAULT '0',
   `topic_title` char(120) NOT NULL DEFAULT '',
@@ -1074,20 +947,20 @@ CREATE TABLE IF NOT EXISTS `phpbb_topics` (
 ) ENGINE=MyISAM AUTO_INCREMENT=4 DEFAULT CHARSET=utf8;
 
 --
--- Дамп данных таблицы `phpbb_topics`
+-- Дамп данных таблицы `ft_topics`
 --
 
-INSERT INTO `phpbb_topics` (`topic_id`, `forum_id`, `topic_title`, `topic_poster`, `topic_time`, `topic_views`, `topic_replies`, `topic_status`, `topic_vote`, `topic_type`, `topic_first_post_id`, `topic_last_post_id`, `topic_moved_id`, `topic_attachment`, `topic_dl_type`, `topic_dl_status`) VALUES
-(1, 1, 'Welcome to phpBB 2', 2, 972086460, 13, 0, 0, 0, 0, 1, 1, 0, 0, 0, 0),
-(3, 3, 'Download Topic 1', 4, 1117362875, 141, 0, 0, 0, 0, 4, 4, 0, 1, 1, 1);
+INSERT INTO `ft_topics` (`topic_id`, `forum_id`, `topic_title`, `topic_poster`, `topic_time`, `topic_views`, `topic_replies`, `topic_status`, `topic_vote`, `topic_type`, `topic_first_post_id`, `topic_last_post_id`, `topic_moved_id`, `topic_attachment`, `topic_dl_type`, `topic_dl_status`) VALUES
+(1, 1, 'Welcome to phpBB 2', 2, 972086460, 23, 0, 0, 0, 0, 1, 1, 0, 0, 0, 0),
+(3, 3, 'Download Topic 1', 4, 1117362875, 156, 0, 0, 0, 0, 4, 4, 0, 1, 1, 1);
 
 -- --------------------------------------------------------
 
 --
--- Структура таблицы `phpbb_topics_move`
+-- Структура таблицы `ft_topics_move`
 --
 
-CREATE TABLE IF NOT EXISTS `phpbb_topics_move` (
+CREATE TABLE IF NOT EXISTS `ft_topics_move` (
   `id` mediumint(8) unsigned NOT NULL,
   `forum_id` smallint(5) unsigned NOT NULL DEFAULT '0',
   `waits_days` smallint(5) unsigned NOT NULL DEFAULT '0',
@@ -1101,10 +974,10 @@ CREATE TABLE IF NOT EXISTS `phpbb_topics_move` (
 -- --------------------------------------------------------
 
 --
--- Структура таблицы `phpbb_topics_watch`
+-- Структура таблицы `ft_topics_watch`
 --
 
-CREATE TABLE IF NOT EXISTS `phpbb_topics_watch` (
+CREATE TABLE IF NOT EXISTS `ft_topics_watch` (
   `topic_id` mediumint(8) unsigned NOT NULL DEFAULT '0',
   `user_id` mediumint(8) NOT NULL DEFAULT '0',
   `notify_status` tinyint(1) NOT NULL DEFAULT '0'
@@ -1113,10 +986,10 @@ CREATE TABLE IF NOT EXISTS `phpbb_topics_watch` (
 -- --------------------------------------------------------
 
 --
--- Структура таблицы `phpbb_users`
+-- Структура таблицы `ft_users`
 --
 
-CREATE TABLE IF NOT EXISTS `phpbb_users` (
+CREATE TABLE IF NOT EXISTS `ft_users` (
   `user_id` mediumint(8) NOT NULL DEFAULT '0',
   `user_active` tinyint(1) DEFAULT '1',
   `username` varchar(25) NOT NULL DEFAULT '',
@@ -1164,33 +1037,33 @@ CREATE TABLE IF NOT EXISTS `phpbb_users` (
 ) ENGINE=MyISAM DEFAULT CHARSET=utf8;
 
 --
--- Дамп данных таблицы `phpbb_users`
+-- Дамп данных таблицы `ft_users`
 --
 
-INSERT INTO `phpbb_users` (`user_id`, `user_active`, `username`, `user_password`, `user_session_time`, `user_session_page`, `user_lastvisit`, `user_regdate`, `user_level`, `user_posts`, `user_timezone`, `user_style`, `user_lang`, `user_dateformat`, `user_new_privmsg`, `user_unread_privmsg`, `user_last_privmsg`, `user_emailtime`, `user_viewemail`, `user_attachsig`, `user_allowhtml`, `user_allowbbcode`, `user_allowsmile`, `user_allowavatar`, `user_allow_pm`, `user_allow_viewonline`, `user_notify`, `user_notify_pm`, `user_popup_pm`, `user_rank`, `user_avatar`, `user_avatar_type`, `user_email`, `user_icq`, `user_website`, `user_from`, `user_sig`, `user_sig_bbcode_uid`, `user_occ`, `user_interests`, `user_actkey`, `user_newpasswd`, `user_allow_passkey`, `bt_tor_browse_set`) VALUES
+INSERT INTO `ft_users` (`user_id`, `user_active`, `username`, `user_password`, `user_session_time`, `user_session_page`, `user_lastvisit`, `user_regdate`, `user_level`, `user_posts`, `user_timezone`, `user_style`, `user_lang`, `user_dateformat`, `user_new_privmsg`, `user_unread_privmsg`, `user_last_privmsg`, `user_emailtime`, `user_viewemail`, `user_attachsig`, `user_allowhtml`, `user_allowbbcode`, `user_allowsmile`, `user_allowavatar`, `user_allow_pm`, `user_allow_viewonline`, `user_notify`, `user_notify_pm`, `user_popup_pm`, `user_rank`, `user_avatar`, `user_avatar_type`, `user_email`, `user_icq`, `user_website`, `user_from`, `user_sig`, `user_sig_bbcode_uid`, `user_occ`, `user_interests`, `user_actkey`, `user_newpasswd`, `user_allow_passkey`, `bt_tor_browse_set`) VALUES
 (-1, 0, 'Anonymous', '', 0, 0, 0, 1455565573, 0, 0, 0.00, NULL, '', '', 0, 0, 0, NULL, 0, 0, 1, 1, 1, 1, 0, 1, 0, 1, 0, NULL, '', 0, '', '', '', '', '', NULL, '', '', '', '', 1, ''),
-(2, 1, 'admin', '21232f297a57a5a743894a0e4a801fc3', 1455981194, 0, 1455963972, 1455565573, 1, 1, 0.00, 1, 'russian', 'Y-m-d H:i', 0, 0, 1455970540, NULL, 1, 0, 0, 1, 1, 1, 1, 1, 0, 1, 1, 1, '', 0, 'admin@admin.com', '', '', '', '', '', '', '', '', '', 1, 'a:15:{s:3:"sid";s:32:"84658c970604ccc6b8e7d727d06b328d";s:1:"n";i:0;s:2:"sd";i:0;s:1:"a";i:0;s:2:"my";i:0;s:1:"f";s:1:"3";s:3:"pid";i:0;s:2:"pn";s:0:"";s:3:"sns";i:-2;s:1:"o";i:1;s:1:"s";i:2;s:2:"tm";i:30;s:3:"shf";i:1;s:3:"sha";i:1;s:3:"shs";i:0;}'),
+(2, 1, 'admin', '21232f297a57a5a743894a0e4a801fc3', 1456081315, 0, 1456076587, 1455565573, 1, 1, 0.00, 1, 'russian', 'Y-m-d H:i', 0, 0, 1456079565, NULL, 1, 0, 0, 1, 1, 1, 1, 1, 0, 1, 1, 1, '', 0, 'admin@admin.com', '', '', '', '', '', '', '', '', '', 1, 'a:15:{s:3:"sid";s:32:"96971e5d41b170677b0c1a50a5c6ae00";s:1:"n";i:0;s:2:"sd";i:0;s:1:"a";i:0;s:2:"my";i:0;s:1:"f";s:1:"3";s:3:"pid";i:0;s:2:"pn";s:0:"";s:3:"sns";i:-2;s:1:"o";i:1;s:1:"s";i:2;s:2:"tm";i:30;s:3:"shf";i:1;s:3:"sha";i:1;s:3:"shs";i:0;}'),
 (-746, 0, 'bot', '', 1117115716, 2, 1117115634, 1455565573, 0, 0, 0.00, 1, 'english', 'Y-m-d H:i', 0, 0, 0, NULL, 0, 0, 1, 0, 1, 1, 1, 1, 0, 0, 0, 0, 'bot.gif', 1, 'bot@bot.bot', '', '', '', '', '', '', '', '', NULL, 1, ''),
-(4, 1, 'user1', 'c4ca4238a0b923820dcc509a6f75849b', 1117378293, -1, 1117362875, 1455565573, 0, 1, 0.00, 1, 'english', 'Y-m-d H:i', 2, 0, 1455662105, NULL, 0, 1, 0, 1, 1, 1, 1, 1, 0, 1, 1, 0, '', 0, '1@11.com', '', '', '', '', '', '', '', '', NULL, 1, ''),
+(4, 1, 'user1', 'c4ca4238a0b923820dcc509a6f75849b', 1117378293, -1, 1117362875, 1455565573, 0, 1, 0.00, 1, 'english', 'Y-m-d H:i', 0, 0, 1455662105, NULL, 0, 1, 0, 1, 1, 1, 1, 1, 0, 1, 1, 0, '', 0, '1@11.com', '', '', '', '', '', '', '', '', NULL, 1, ''),
 (5, 1, 'user2', 'c4ca4238a0b923820dcc509a6f75849b', 1117378592, 3, 1117378303, 1455565573, 0, 0, 0.00, 1, 'english', 'Y-m-d H:i', 0, 0, 0, NULL, 0, 1, 0, 1, 1, 1, 1, 1, 0, 1, 1, 0, '', 0, '2@2.com', '', '', '', '', '', '', '', '', NULL, 1, '');
 
 -- --------------------------------------------------------
 
 --
--- Структура таблицы `phpbb_user_group`
+-- Структура таблицы `ft_user_group`
 --
 
-CREATE TABLE IF NOT EXISTS `phpbb_user_group` (
+CREATE TABLE IF NOT EXISTS `ft_user_group` (
   `group_id` mediumint(8) NOT NULL DEFAULT '0',
   `user_id` mediumint(8) NOT NULL DEFAULT '0',
   `user_pending` tinyint(1) DEFAULT NULL
 ) ENGINE=MyISAM DEFAULT CHARSET=utf8;
 
 --
--- Дамп данных таблицы `phpbb_user_group`
+-- Дамп данных таблицы `ft_user_group`
 --
 
-INSERT INTO `phpbb_user_group` (`group_id`, `user_id`, `user_pending`) VALUES
+INSERT INTO `ft_user_group` (`group_id`, `user_id`, `user_pending`) VALUES
 (1, -1, 0),
 (2, 2, 0),
 (3, -746, 0),
@@ -1200,10 +1073,10 @@ INSERT INTO `phpbb_user_group` (`group_id`, `user_id`, `user_pending`) VALUES
 -- --------------------------------------------------------
 
 --
--- Структура таблицы `phpbb_vote_desc`
+-- Структура таблицы `ft_vote_desc`
 --
 
-CREATE TABLE IF NOT EXISTS `phpbb_vote_desc` (
+CREATE TABLE IF NOT EXISTS `ft_vote_desc` (
   `vote_id` mediumint(8) unsigned NOT NULL,
   `topic_id` mediumint(8) unsigned NOT NULL DEFAULT '0',
   `vote_text` text NOT NULL,
@@ -1214,10 +1087,10 @@ CREATE TABLE IF NOT EXISTS `phpbb_vote_desc` (
 -- --------------------------------------------------------
 
 --
--- Структура таблицы `phpbb_vote_results`
+-- Структура таблицы `ft_vote_results`
 --
 
-CREATE TABLE IF NOT EXISTS `phpbb_vote_results` (
+CREATE TABLE IF NOT EXISTS `ft_vote_results` (
   `vote_id` mediumint(8) unsigned NOT NULL DEFAULT '0',
   `vote_option_id` tinyint(4) unsigned NOT NULL DEFAULT '0',
   `vote_option_text` varchar(255) NOT NULL DEFAULT '',
@@ -1227,10 +1100,10 @@ CREATE TABLE IF NOT EXISTS `phpbb_vote_results` (
 -- --------------------------------------------------------
 
 --
--- Структура таблицы `phpbb_vote_voters`
+-- Структура таблицы `ft_vote_voters`
 --
 
-CREATE TABLE IF NOT EXISTS `phpbb_vote_voters` (
+CREATE TABLE IF NOT EXISTS `ft_vote_voters` (
   `vote_id` mediumint(8) unsigned NOT NULL DEFAULT '0',
   `vote_user_id` mediumint(8) NOT NULL DEFAULT '0',
   `vote_user_ip` char(8) NOT NULL DEFAULT ''
@@ -1239,10 +1112,10 @@ CREATE TABLE IF NOT EXISTS `phpbb_vote_voters` (
 -- --------------------------------------------------------
 
 --
--- Структура таблицы `phpbb_words`
+-- Структура таблицы `ft_words`
 --
 
-CREATE TABLE IF NOT EXISTS `phpbb_words` (
+CREATE TABLE IF NOT EXISTS `ft_words` (
   `word_id` mediumint(8) unsigned NOT NULL,
   `word` char(100) NOT NULL DEFAULT '',
   `replacement` char(100) NOT NULL DEFAULT ''
@@ -1253,65 +1126,65 @@ CREATE TABLE IF NOT EXISTS `phpbb_words` (
 --
 
 --
--- Индексы таблицы `phpbb_attachments`
+-- Индексы таблицы `ft_attachments`
 --
-ALTER TABLE `phpbb_attachments`
+ALTER TABLE `ft_attachments`
   ADD KEY `attach_id_post_id` (`attach_id`,`post_id`),
   ADD KEY `attach_id_privmsgs_id` (`attach_id`,`privmsgs_id`),
   ADD KEY `post_id` (`post_id`),
   ADD KEY `privmsgs_id` (`privmsgs_id`);
 
 --
--- Индексы таблицы `phpbb_attachments_config`
+-- Индексы таблицы `ft_attachments_config`
 --
-ALTER TABLE `phpbb_attachments_config`
+ALTER TABLE `ft_attachments_config`
   ADD PRIMARY KEY (`config_name`);
 
 --
--- Индексы таблицы `phpbb_attachments_desc`
+-- Индексы таблицы `ft_attachments_desc`
 --
-ALTER TABLE `phpbb_attachments_desc`
+ALTER TABLE `ft_attachments_desc`
   ADD PRIMARY KEY (`attach_id`),
   ADD KEY `filetime` (`filetime`),
   ADD KEY `physical_filename` (`physical_filename`(10)),
   ADD KEY `filesize` (`filesize`);
 
 --
--- Индексы таблицы `phpbb_attach_quota`
+-- Индексы таблицы `ft_attach_quota`
 --
-ALTER TABLE `phpbb_attach_quota`
+ALTER TABLE `ft_attach_quota`
   ADD KEY `quota_type` (`quota_type`);
 
 --
--- Индексы таблицы `phpbb_auth_access`
+-- Индексы таблицы `ft_auth_access`
 --
-ALTER TABLE `phpbb_auth_access`
+ALTER TABLE `ft_auth_access`
   ADD KEY `group_id` (`group_id`),
   ADD KEY `forum_id` (`forum_id`);
 
 --
--- Индексы таблицы `phpbb_banlist`
+-- Индексы таблицы `ft_banlist`
 --
-ALTER TABLE `phpbb_banlist`
+ALTER TABLE `ft_banlist`
   ADD PRIMARY KEY (`ban_id`),
   ADD KEY `ban_ip_user_id` (`ban_ip`,`ban_userid`);
 
 --
--- Индексы таблицы `phpbb_bt_config`
+-- Индексы таблицы `ft_bt_config`
 --
-ALTER TABLE `phpbb_bt_config`
+ALTER TABLE `ft_bt_config`
   ADD PRIMARY KEY (`config_name`);
 
 --
--- Индексы таблицы `phpbb_bt_search_results`
+-- Индексы таблицы `ft_bt_search_results`
 --
-ALTER TABLE `phpbb_bt_search_results`
+ALTER TABLE `ft_bt_search_results`
   ADD PRIMARY KEY (`session_id`);
 
 --
--- Индексы таблицы `phpbb_bt_torrents`
+-- Индексы таблицы `ft_bt_torrents`
 --
-ALTER TABLE `phpbb_bt_torrents`
+ALTER TABLE `ft_bt_torrents`
   ADD PRIMARY KEY (`torrent_id`),
   ADD UNIQUE KEY `info_hash` (`info_hash`),
   ADD UNIQUE KEY `post_id` (`post_id`),
@@ -1320,96 +1193,96 @@ ALTER TABLE `phpbb_bt_torrents`
   ADD KEY `reg_time` (`reg_time`);
 
 --
--- Индексы таблицы `phpbb_bt_tor_dl_stat`
+-- Индексы таблицы `ft_bt_tor_dl_stat`
 --
-ALTER TABLE `phpbb_bt_tor_dl_stat`
+ALTER TABLE `ft_bt_tor_dl_stat`
   ADD PRIMARY KEY (`torrent_id`,`user_id`);
 
 --
--- Индексы таблицы `phpbb_bt_tracker`
+-- Индексы таблицы `ft_bt_tracker`
 --
-ALTER TABLE `phpbb_bt_tracker`
+ALTER TABLE `ft_bt_tracker`
   ADD KEY `torrent_id` (`torrent_id`),
   ADD KEY `user_id` (`user_id`);
 
 --
--- Индексы таблицы `phpbb_bt_users`
+-- Индексы таблицы `ft_bt_users`
 --
-ALTER TABLE `phpbb_bt_users`
+ALTER TABLE `ft_bt_users`
   ADD PRIMARY KEY (`user_id`),
   ADD UNIQUE KEY `auth_key` (`auth_key`);
 
 --
--- Индексы таблицы `phpbb_bt_users_dl_status`
+-- Индексы таблицы `ft_bt_users_dl_status`
 --
-ALTER TABLE `phpbb_bt_users_dl_status`
+ALTER TABLE `ft_bt_users_dl_status`
   ADD PRIMARY KEY (`topic_id`,`user_id`),
   ADD KEY `user_id` (`user_id`);
 
 --
--- Индексы таблицы `phpbb_categories`
+-- Индексы таблицы `ft_categories`
 --
-ALTER TABLE `phpbb_categories`
+ALTER TABLE `ft_categories`
   ADD PRIMARY KEY (`cat_id`),
   ADD KEY `cat_order` (`cat_order`);
 
 --
--- Индексы таблицы `phpbb_config`
+-- Индексы таблицы `ft_config`
 --
-ALTER TABLE `phpbb_config`
+ALTER TABLE `ft_config`
   ADD PRIMARY KEY (`config_name`);
 
 --
--- Индексы таблицы `phpbb_disallow`
+-- Индексы таблицы `ft_disallow`
 --
-ALTER TABLE `phpbb_disallow`
+ALTER TABLE `ft_disallow`
   ADD PRIMARY KEY (`disallow_id`);
 
 --
--- Индексы таблицы `phpbb_extensions`
+-- Индексы таблицы `ft_extensions`
 --
-ALTER TABLE `phpbb_extensions`
+ALTER TABLE `ft_extensions`
   ADD PRIMARY KEY (`ext_id`);
 
 --
--- Индексы таблицы `phpbb_extension_groups`
+-- Индексы таблицы `ft_extension_groups`
 --
-ALTER TABLE `phpbb_extension_groups`
+ALTER TABLE `ft_extension_groups`
   ADD PRIMARY KEY (`group_id`);
 
 --
--- Индексы таблицы `phpbb_forbidden_extensions`
+-- Индексы таблицы `ft_forbidden_extensions`
 --
-ALTER TABLE `phpbb_forbidden_extensions`
+ALTER TABLE `ft_forbidden_extensions`
   ADD PRIMARY KEY (`ext_id`);
 
 --
--- Индексы таблицы `phpbb_forums`
+-- Индексы таблицы `ft_forums`
 --
-ALTER TABLE `phpbb_forums`
+ALTER TABLE `ft_forums`
   ADD PRIMARY KEY (`forum_id`),
   ADD KEY `forums_order` (`forum_order`),
   ADD KEY `cat_id` (`cat_id`),
   ADD KEY `forum_last_post_id` (`forum_last_post_id`);
 
 --
--- Индексы таблицы `phpbb_forum_prune`
+-- Индексы таблицы `ft_forum_prune`
 --
-ALTER TABLE `phpbb_forum_prune`
+ALTER TABLE `ft_forum_prune`
   ADD PRIMARY KEY (`prune_id`),
   ADD KEY `forum_id` (`forum_id`);
 
 --
--- Индексы таблицы `phpbb_groups`
+-- Индексы таблицы `ft_groups`
 --
-ALTER TABLE `phpbb_groups`
+ALTER TABLE `ft_groups`
   ADD PRIMARY KEY (`group_id`),
   ADD KEY `group_single_user` (`group_single_user`);
 
 --
--- Индексы таблицы `phpbb_posts`
+-- Индексы таблицы `ft_posts`
 --
-ALTER TABLE `phpbb_posts`
+ALTER TABLE `ft_posts`
   ADD PRIMARY KEY (`post_id`),
   ADD KEY `forum_id` (`forum_id`),
   ADD KEY `topic_id` (`topic_id`),
@@ -1417,88 +1290,76 @@ ALTER TABLE `phpbb_posts`
   ADD KEY `post_time` (`post_time`);
 
 --
--- Индексы таблицы `phpbb_posts_text`
+-- Индексы таблицы `ft_posts_text`
 --
-ALTER TABLE `phpbb_posts_text`
+ALTER TABLE `ft_posts_text`
   ADD PRIMARY KEY (`post_id`);
 
 --
--- Индексы таблицы `phpbb_privmsgs`
+-- Индексы таблицы `ft_privmsgs`
 --
-ALTER TABLE `phpbb_privmsgs`
+ALTER TABLE `ft_privmsgs`
   ADD PRIMARY KEY (`privmsgs_id`),
   ADD KEY `privmsgs_from_userid` (`privmsgs_from_userid`),
   ADD KEY `privmsgs_to_userid` (`privmsgs_to_userid`);
 
 --
--- Индексы таблицы `phpbb_privmsgs_text`
+-- Индексы таблицы `ft_privmsgs_text`
 --
-ALTER TABLE `phpbb_privmsgs_text`
+ALTER TABLE `ft_privmsgs_text`
   ADD PRIMARY KEY (`privmsgs_text_id`);
 
 --
--- Индексы таблицы `phpbb_quota_limits`
+-- Индексы таблицы `ft_quota_limits`
 --
-ALTER TABLE `phpbb_quota_limits`
+ALTER TABLE `ft_quota_limits`
   ADD PRIMARY KEY (`quota_limit_id`);
 
 --
--- Индексы таблицы `phpbb_ranks`
+-- Индексы таблицы `ft_ranks`
 --
-ALTER TABLE `phpbb_ranks`
+ALTER TABLE `ft_ranks`
   ADD PRIMARY KEY (`rank_id`);
 
 --
--- Индексы таблицы `phpbb_search_results`
+-- Индексы таблицы `ft_search_results`
 --
-ALTER TABLE `phpbb_search_results`
+ALTER TABLE `ft_search_results`
   ADD PRIMARY KEY (`search_id`),
   ADD KEY `session_id` (`session_id`);
 
 --
--- Индексы таблицы `phpbb_search_wordlist`
+-- Индексы таблицы `ft_search_wordlist`
 --
-ALTER TABLE `phpbb_search_wordlist`
+ALTER TABLE `ft_search_wordlist`
   ADD PRIMARY KEY (`word_text`),
   ADD KEY `word_id` (`word_id`);
 
 --
--- Индексы таблицы `phpbb_search_wordmatch`
+-- Индексы таблицы `ft_search_wordmatch`
 --
-ALTER TABLE `phpbb_search_wordmatch`
+ALTER TABLE `ft_search_wordmatch`
   ADD KEY `post_id` (`post_id`),
   ADD KEY `word_id` (`word_id`);
 
 --
--- Индексы таблицы `phpbb_sessions`
+-- Индексы таблицы `ft_sessions`
 --
-ALTER TABLE `phpbb_sessions`
+ALTER TABLE `ft_sessions`
   ADD PRIMARY KEY (`session_id`),
   ADD KEY `session_user_id` (`session_user_id`),
   ADD KEY `session_id_ip_user_id` (`session_id`,`session_ip`,`session_user_id`);
 
 --
--- Индексы таблицы `phpbb_smilies`
+-- Индексы таблицы `ft_smilies`
 --
-ALTER TABLE `phpbb_smilies`
+ALTER TABLE `ft_smilies`
   ADD PRIMARY KEY (`smilies_id`);
 
 --
--- Индексы таблицы `phpbb_themes`
+-- Индексы таблицы `ft_topics`
 --
-ALTER TABLE `phpbb_themes`
-  ADD PRIMARY KEY (`themes_id`);
-
---
--- Индексы таблицы `phpbb_themes_name`
---
-ALTER TABLE `phpbb_themes_name`
-  ADD PRIMARY KEY (`themes_id`);
-
---
--- Индексы таблицы `phpbb_topics`
---
-ALTER TABLE `phpbb_topics`
+ALTER TABLE `ft_topics`
   ADD PRIMARY KEY (`topic_id`),
   ADD KEY `forum_id` (`forum_id`),
   ADD KEY `topic_moved_id` (`topic_moved_id`),
@@ -1507,60 +1368,60 @@ ALTER TABLE `phpbb_topics`
   ADD FULLTEXT KEY `topic_title` (`topic_title`);
 
 --
--- Индексы таблицы `phpbb_topics_move`
+-- Индексы таблицы `ft_topics_move`
 --
-ALTER TABLE `phpbb_topics_move`
+ALTER TABLE `ft_topics_move`
   ADD PRIMARY KEY (`id`),
   ADD KEY `forum_id` (`forum_id`);
 
 --
--- Индексы таблицы `phpbb_topics_watch`
+-- Индексы таблицы `ft_topics_watch`
 --
-ALTER TABLE `phpbb_topics_watch`
+ALTER TABLE `ft_topics_watch`
   ADD KEY `topic_id` (`topic_id`),
   ADD KEY `user_id` (`user_id`),
   ADD KEY `notify_status` (`notify_status`);
 
 --
--- Индексы таблицы `phpbb_users`
+-- Индексы таблицы `ft_users`
 --
-ALTER TABLE `phpbb_users`
+ALTER TABLE `ft_users`
   ADD PRIMARY KEY (`user_id`),
   ADD KEY `user_session_time` (`user_session_time`);
 
 --
--- Индексы таблицы `phpbb_user_group`
+-- Индексы таблицы `ft_user_group`
 --
-ALTER TABLE `phpbb_user_group`
+ALTER TABLE `ft_user_group`
   ADD KEY `group_id` (`group_id`),
   ADD KEY `user_id` (`user_id`);
 
 --
--- Индексы таблицы `phpbb_vote_desc`
+-- Индексы таблицы `ft_vote_desc`
 --
-ALTER TABLE `phpbb_vote_desc`
+ALTER TABLE `ft_vote_desc`
   ADD PRIMARY KEY (`vote_id`),
   ADD KEY `topic_id` (`topic_id`);
 
 --
--- Индексы таблицы `phpbb_vote_results`
+-- Индексы таблицы `ft_vote_results`
 --
-ALTER TABLE `phpbb_vote_results`
+ALTER TABLE `ft_vote_results`
   ADD KEY `vote_option_id` (`vote_option_id`),
   ADD KEY `vote_id` (`vote_id`);
 
 --
--- Индексы таблицы `phpbb_vote_voters`
+-- Индексы таблицы `ft_vote_voters`
 --
-ALTER TABLE `phpbb_vote_voters`
+ALTER TABLE `ft_vote_voters`
   ADD KEY `vote_id` (`vote_id`),
   ADD KEY `vote_user_id` (`vote_user_id`),
   ADD KEY `vote_user_ip` (`vote_user_ip`);
 
 --
--- Индексы таблицы `phpbb_words`
+-- Индексы таблицы `ft_words`
 --
-ALTER TABLE `phpbb_words`
+ALTER TABLE `ft_words`
   ADD PRIMARY KEY (`word_id`);
 
 --
@@ -1568,109 +1429,104 @@ ALTER TABLE `phpbb_words`
 --
 
 --
--- AUTO_INCREMENT для таблицы `phpbb_attachments_desc`
+-- AUTO_INCREMENT для таблицы `ft_attachments_desc`
 --
-ALTER TABLE `phpbb_attachments_desc`
+ALTER TABLE `ft_attachments_desc`
   MODIFY `attach_id` mediumint(8) unsigned NOT NULL AUTO_INCREMENT,AUTO_INCREMENT=2;
 --
--- AUTO_INCREMENT для таблицы `phpbb_banlist`
+-- AUTO_INCREMENT для таблицы `ft_banlist`
 --
-ALTER TABLE `phpbb_banlist`
+ALTER TABLE `ft_banlist`
   MODIFY `ban_id` mediumint(8) unsigned NOT NULL AUTO_INCREMENT;
 --
--- AUTO_INCREMENT для таблицы `phpbb_bt_torrents`
+-- AUTO_INCREMENT для таблицы `ft_bt_torrents`
 --
-ALTER TABLE `phpbb_bt_torrents`
+ALTER TABLE `ft_bt_torrents`
   MODIFY `torrent_id` mediumint(8) unsigned NOT NULL AUTO_INCREMENT,AUTO_INCREMENT=2;
 --
--- AUTO_INCREMENT для таблицы `phpbb_categories`
+-- AUTO_INCREMENT для таблицы `ft_categories`
 --
-ALTER TABLE `phpbb_categories`
+ALTER TABLE `ft_categories`
   MODIFY `cat_id` mediumint(8) unsigned NOT NULL AUTO_INCREMENT,AUTO_INCREMENT=2;
 --
--- AUTO_INCREMENT для таблицы `phpbb_disallow`
+-- AUTO_INCREMENT для таблицы `ft_disallow`
 --
-ALTER TABLE `phpbb_disallow`
+ALTER TABLE `ft_disallow`
   MODIFY `disallow_id` mediumint(8) unsigned NOT NULL AUTO_INCREMENT;
 --
--- AUTO_INCREMENT для таблицы `phpbb_extensions`
+-- AUTO_INCREMENT для таблицы `ft_extensions`
 --
-ALTER TABLE `phpbb_extensions`
+ALTER TABLE `ft_extensions`
   MODIFY `ext_id` mediumint(8) unsigned NOT NULL AUTO_INCREMENT,AUTO_INCREMENT=30;
 --
--- AUTO_INCREMENT для таблицы `phpbb_extension_groups`
+-- AUTO_INCREMENT для таблицы `ft_extension_groups`
 --
-ALTER TABLE `phpbb_extension_groups`
+ALTER TABLE `ft_extension_groups`
   MODIFY `group_id` mediumint(8) NOT NULL AUTO_INCREMENT,AUTO_INCREMENT=9;
 --
--- AUTO_INCREMENT для таблицы `phpbb_forbidden_extensions`
+-- AUTO_INCREMENT для таблицы `ft_forbidden_extensions`
 --
-ALTER TABLE `phpbb_forbidden_extensions`
+ALTER TABLE `ft_forbidden_extensions`
   MODIFY `ext_id` mediumint(8) unsigned NOT NULL AUTO_INCREMENT,AUTO_INCREMENT=8;
 --
--- AUTO_INCREMENT для таблицы `phpbb_forum_prune`
+-- AUTO_INCREMENT для таблицы `ft_forum_prune`
 --
-ALTER TABLE `phpbb_forum_prune`
+ALTER TABLE `ft_forum_prune`
   MODIFY `prune_id` mediumint(8) unsigned NOT NULL AUTO_INCREMENT;
 --
--- AUTO_INCREMENT для таблицы `phpbb_groups`
+-- AUTO_INCREMENT для таблицы `ft_groups`
 --
-ALTER TABLE `phpbb_groups`
+ALTER TABLE `ft_groups`
   MODIFY `group_id` mediumint(8) NOT NULL AUTO_INCREMENT,AUTO_INCREMENT=6;
 --
--- AUTO_INCREMENT для таблицы `phpbb_posts`
+-- AUTO_INCREMENT для таблицы `ft_posts`
 --
-ALTER TABLE `phpbb_posts`
+ALTER TABLE `ft_posts`
   MODIFY `post_id` mediumint(8) unsigned NOT NULL AUTO_INCREMENT,AUTO_INCREMENT=5;
 --
--- AUTO_INCREMENT для таблицы `phpbb_privmsgs`
+-- AUTO_INCREMENT для таблицы `ft_privmsgs`
 --
-ALTER TABLE `phpbb_privmsgs`
-  MODIFY `privmsgs_id` mediumint(8) unsigned NOT NULL AUTO_INCREMENT,AUTO_INCREMENT=5;
+ALTER TABLE `ft_privmsgs`
+  MODIFY `privmsgs_id` mediumint(8) unsigned NOT NULL AUTO_INCREMENT,AUTO_INCREMENT=11;
 --
--- AUTO_INCREMENT для таблицы `phpbb_quota_limits`
+-- AUTO_INCREMENT для таблицы `ft_quota_limits`
 --
-ALTER TABLE `phpbb_quota_limits`
+ALTER TABLE `ft_quota_limits`
   MODIFY `quota_limit_id` mediumint(8) unsigned NOT NULL AUTO_INCREMENT,AUTO_INCREMENT=4;
 --
--- AUTO_INCREMENT для таблицы `phpbb_ranks`
+-- AUTO_INCREMENT для таблицы `ft_ranks`
 --
-ALTER TABLE `phpbb_ranks`
+ALTER TABLE `ft_ranks`
   MODIFY `rank_id` smallint(5) unsigned NOT NULL AUTO_INCREMENT,AUTO_INCREMENT=2;
 --
--- AUTO_INCREMENT для таблицы `phpbb_search_wordlist`
+-- AUTO_INCREMENT для таблицы `ft_search_wordlist`
 --
-ALTER TABLE `phpbb_search_wordlist`
+ALTER TABLE `ft_search_wordlist`
   MODIFY `word_id` mediumint(8) unsigned NOT NULL AUTO_INCREMENT;
 --
--- AUTO_INCREMENT для таблицы `phpbb_smilies`
+-- AUTO_INCREMENT для таблицы `ft_smilies`
 --
-ALTER TABLE `phpbb_smilies`
+ALTER TABLE `ft_smilies`
   MODIFY `smilies_id` smallint(5) unsigned NOT NULL AUTO_INCREMENT,AUTO_INCREMENT=50;
 --
--- AUTO_INCREMENT для таблицы `phpbb_themes`
+-- AUTO_INCREMENT для таблицы `ft_topics`
 --
-ALTER TABLE `phpbb_themes`
-  MODIFY `themes_id` mediumint(8) unsigned NOT NULL AUTO_INCREMENT,AUTO_INCREMENT=2;
---
--- AUTO_INCREMENT для таблицы `phpbb_topics`
---
-ALTER TABLE `phpbb_topics`
+ALTER TABLE `ft_topics`
   MODIFY `topic_id` mediumint(8) unsigned NOT NULL AUTO_INCREMENT,AUTO_INCREMENT=4;
 --
--- AUTO_INCREMENT для таблицы `phpbb_topics_move`
+-- AUTO_INCREMENT для таблицы `ft_topics_move`
 --
-ALTER TABLE `phpbb_topics_move`
+ALTER TABLE `ft_topics_move`
   MODIFY `id` mediumint(8) unsigned NOT NULL AUTO_INCREMENT;
 --
--- AUTO_INCREMENT для таблицы `phpbb_vote_desc`
+-- AUTO_INCREMENT для таблицы `ft_vote_desc`
 --
-ALTER TABLE `phpbb_vote_desc`
+ALTER TABLE `ft_vote_desc`
   MODIFY `vote_id` mediumint(8) unsigned NOT NULL AUTO_INCREMENT;
 --
--- AUTO_INCREMENT для таблицы `phpbb_words`
+-- AUTO_INCREMENT для таблицы `ft_words`
 --
-ALTER TABLE `phpbb_words`
+ALTER TABLE `ft_words`
   MODIFY `word_id` mediumint(8) unsigned NOT NULL AUTO_INCREMENT;
 /*!40101 SET CHARACTER_SET_CLIENT=@OLD_CHARACTER_SET_CLIENT */;
 /*!40101 SET CHARACTER_SET_RESULTS=@OLD_CHARACTER_SET_RESULTS */;

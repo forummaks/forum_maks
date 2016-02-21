@@ -185,12 +185,9 @@ else
 		$replacement = $word_rows[$i]['replacement'];
 		$word_id = $word_rows[$i]['word_id'];
 
-		$row_color = ( !($i % 2) ) ? $theme['td_color1'] : $theme['td_color2'];
-		$row_class = ( !($i % 2) ) ? $theme['td_class1'] : $theme['td_class2'];
 
 		$template->assign_block_vars("words", array(
-			"ROW_COLOR" => "#" . $row_color,
-			"ROW_CLASS" => $row_class,
+				"ROW_CLASS" => !($i % 2) ? 'row1' : 'row2',
 			"WORD" => $word,
 			"REPLACEMENT" => $replacement,
 

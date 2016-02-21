@@ -181,13 +181,13 @@ if(!get_magic_quotes_gpc())
 define('DBG_USER', (isset($_COOKIE[COOKIE_DBG])));
 
 // Board/Tracker shared constants and functions
-define('BT_CONFIG_TABLE',      			'phpbb_bt_config');          // phpbb_bt_config
-define('BT_SEARCH_TABLE',      			'phpbb_bt_search_results');  // phpbb_bt_search_results
-define('BT_TOR_DL_STAT_TABLE', 			'phpbb_bt_tor_dl_stat');     // phpbb_bt_tor_dl_stat
-define('BT_TORRENTS_TABLE',    			'phpbb_bt_torrents');        // phpbb_bt_torrents
-define('BT_TRACKER_TABLE',     			'phpbb_bt_tracker');         // phpbb_bt_tracker
-define('BT_USERS_TABLE',       			'phpbb_bt_users');           // phpbb_bt_users
-define('BT_USR_DL_STAT_TABLE', 			'phpbb_bt_users_dl_status'); // phpbb_bt_users_dl_status
+define('BT_CONFIG_TABLE',      			'ft_bt_config');          // phpbb_bt_config
+define('BT_SEARCH_TABLE',      			'ft_bt_search_results');  // phpbb_bt_search_results
+define('BT_TOR_DL_STAT_TABLE', 			'ft_bt_tor_dl_stat');     // phpbb_bt_tor_dl_stat
+define('BT_TORRENTS_TABLE',    			'ft_bt_torrents');        // phpbb_bt_torrents
+define('BT_TRACKER_TABLE',     			'ft_bt_tracker');         // phpbb_bt_tracker
+define('BT_USERS_TABLE',       			'ft_bt_users');           // phpbb_bt_users
+define('BT_USR_DL_STAT_TABLE', 			'ft_bt_users_dl_status'); // phpbb_bt_users_dl_status
 
 define('BT_AUTH_KEY_LENGTH',   10);
 
@@ -223,6 +223,22 @@ $db = $DBS->get_db_obj($database_alias = 'database1');
 function sql_dbg_enabled ()
 {
 	return (SQL_DEBUG && DBG_USER && !empty($_COOKIE['sql_log']));
+}
+
+function short_query ($sql, $esc_html = false)
+{
+	$max_len = 100;
+	$sql = str_compact($sql);
+
+	if (!empty($_COOKIE['sql_log_full']))
+	{
+		if (mb_strlen($sql, 'UTF-8') > $max_len)
+		{
+			$sql = mb_substr($sql, 0, 50) .' [...cut...] '. mb_substr($sql, -50);
+		}
+	}
+
+	return ($esc_html) ? htmlCHR($sql, true) : $sql;
 }
 
 // Functions
@@ -415,7 +431,7 @@ function ver_compare ($version1, $operator, $version2)
 
 /*function dbg_log ($str, $file)
 {
-	$dir = LOG_DIR . (defined('IN_TRACKER') ? 'dbg_tr/' : 'dbg_bb/') . date('m-d_H') .'/';
+	$dir = LOG_DIR . (defined('IN_TRACKER') ? 'dbg_tr/' : 'dbg_ft/') . date('m-d_H') .'/';
 	return file_write($str, $dir . $file, false, false);
 }
 
@@ -427,8 +443,35 @@ function log_get ($file = '', $prepend_str = false)
 function log_post ($file = '', $prepend_str = false)
 {
 	log_request($file, $prepend_str, true);
-}*/
+}
 
+function log_request ($file = '', $prepend_str = false, $add_post = true)
+{
+	global $user;
+
+	$file = ($file) ? $file : 'req/'. date('m-d');
+	$str = array();
+	$str[] = date('m-d H:i:s');
+	if ($prepend_str !== false) $str[] = $prepend_str;
+	if (!empty($user->data)) $str[] = $user->id ."\t". html_entity_decode($user->name);
+	$str[] = sprintf('%-15s', $_SERVER['REMOTE_ADDR']);
+
+	if (isset($_SERVER['REQUEST_URI'])) {
+		$str[] = $_SERVER['REQUEST_URI'];
+	}
+	if (isset($_SERVER['HTTP_USER_AGENT'])) {
+		$str[] = $_SERVER['HTTP_USER_AGENT'];
+	}
+	if (isset($_SERVER['HTTP_REFERER'])) {
+		$str[] = $_SERVER['HTTP_REFERER'];
+	}
+
+	if (!empty($_POST) && $add_post) $str[] = "post: ". str_compact(urldecode(http_build_query($_POST)));
+	$str = join("\t", $str) . "\n";
+	ft_log($str, $file);
+}
+
+*/
 //
 // Setup forum wide options, if this fails
 // then we output a CRITICAL_ERROR since

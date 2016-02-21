@@ -755,16 +755,12 @@ else if ( ( $mode == 'user' && ( isset($HTTP_POST_VARS['username']) || $user_id 
 		: '<option value="1">' . $lang['Is_Moderator'] . '</option><option value="0" selected="selected">' . $lang['Not_Moderator'] . '</option>';
 		$optionlist_mod .= '</select>';
 
-		$row_class = ( !( $i % 2 ) ) ? 'row2' : 'row1';
-		$row_color = ( !( $i % 2 ) ) ? $theme['td_color1'] : $theme['td_color2'];
-
 		$bgr_class = (!($i % 2)) ? $bgr_class_2 : $bgr_class_1;
 		$row_class = " class=\"$bgr_class\" onmouseover=\"this.className='$bgr_class_over';\" onmouseout=\"this.className='$bgr_class';\"";
 		$row_class .= ($user_ary['auth_mod']) ? ' style="font-weight: bold"' : '';
 
 		$template->assign_block_vars('forums', array(
-			'ROW_COLOR' => '#' . $row_color,
-			'ROW_CLASS' => $row_class,
+				'ROW_CLASS' => !($i % 2) ? 'row1' : 'row2',
 			//sf
 			'FORUM_NAME' => (($forum_access[$i]['forum_parent']) ? SF_SEL_SPACER : '') . $forum_access[$i]['forum_name'],
 
