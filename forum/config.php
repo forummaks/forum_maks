@@ -12,10 +12,10 @@ $domain_name = (!empty($_SERVER['SERVER_NAME'])) ? $_SERVER['SERVER_NAME'] : $do
 $charset  = 'utf8';
 $pconnect = false;
 
-// Ќастройка баз данных ['db']['srv_name'] => (array) srv_cfg;
-// пор€док параметров srv_cfg (хост, название базы, пользователь, пароль, charset, pconnect);
+// Настройка баз данных ['db']['srv_name'] => (array) srv_cfg;
+// порядок параметров srv_cfg (хост, название базы, пользователь, пароль, charset, pconnect);
 $ft_cfg['database'] = array(
-	'database1' => array('localhost', 'baza', 'root', '123456', $charset, $pconnect),
+	'database1' => array('localhost', '', '', '', $charset, $pconnect),
 	//'database2' => array('localhost2', 'dbase2', 'user2', 'pass2', $charset, $pconnect),
 	//'database3' => array('localhost3', 'dbase3', 'user2', 'pass3', $charset, $pconnect),
 );
