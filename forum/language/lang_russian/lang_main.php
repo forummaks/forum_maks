@@ -779,7 +779,7 @@ $lang['Sorry_auth_delete'] = 'Извините, только %s могут уд�
 $lang['Sorry_auth_vote'] = 'Извините, только %s могут голосовать в опросах этого форума';
 
 // These replace the %s in the above strings
-$lang['Auth_Anonymous_Users'] = '<b>гости</b>';
+$lang['Auth_guest_uid_Users'] = '<b>гости</b>';
 $lang['Auth_Registered_Users'] = '<b>зарегистрированные пользователи</b>';
 $lang['Auth_Users_granted_access'] = '<b>пользователи со специальными правами доступа</b>';
 $lang['Auth_Moderators'] = '<b>модераторы</b>';
@@ -1085,4 +1085,11 @@ $lang['L_TRANSFER'] = 'Всего передано';
 $lang['L_STATS'] = 'Статистика';
 //statistics end
 
-?>
+// Debug
+$lang['EXECUTION_TIME'] = 'Время выполнения:';
+$lang['SEC'] = 'сек';
+$lang['ON'] = 'вкл';
+$lang['OFF'] = 'выкл';
+$lang['MEMORY'] = 'Память: ';
+$lang['QUERIES'] = 'запр.';
+$lang['LIMIT'] = 'Лимит:';

@@ -3,7 +3,7 @@ define('IN_ADMIN', true);
 define('FT_ROOT', './../');
 require(FT_ROOT . 'common.php');
 
-$userdata = session_pagestart($user_ip, PAGE_INDEX);
+$userdata = session_pagestart($user_ip);
 init_userprefs($userdata);
 
 if (!$userdata['session_logged_in'])

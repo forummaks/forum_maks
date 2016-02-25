@@ -28,13 +28,6 @@ function toggle_disabled (id, val) {
 }
 //-->
 </script>
-<style type="text/css">
-<!--
-.sel { background-color:#FFEFD5; }
-.hiddenRow { display:none; }
--->
-</style>
-
 <table width="100%" cellspacing="2" cellpadding="2" border="0">
   <tr>
 	<td align="left" valign="bottom" colspan="2"><a class="maintitle" href="{U_VIEW_TOPIC}">{TOPIC_TITLE}</a>
@@ -70,7 +63,14 @@ function toggle_disabled (id, val) {
 		<!-- IF postrow.POSTER_BOT -->
 			<!-- IF SHOW_BOT_NICK --><div class="name" style="padding-top: 2px"><b>{postrow.POSTER_NAME}</b></div><!-- ENDIF --><img src="images/spacer.gif" width="122" height="2" border="0" alt="" /><div <!-- IF postrow.MOD_CHECKBOX -->onclick="set_hid_cbox('{postrow.CB_ID}', '{postrow.U_POST_ID}', '{postrow.ROW_ID_1}', '{postrow.ROW_ID_2}')"<!-- ENDIF --> style="margin-bottom: 2px">{postrow.POSTER_AVATAR}</div>
 		<!-- ELSE -->
-   <!-- IF QUICK_REPLY --><div class="genmed" style="padding-top: 2px" title="{L_INS_NAME_TIP}" onmouseout="bbcode && bbcode.refreshSelection(false)" onmouseover="bbcode && bbcode.refreshSelection(true)" onclick="bbcode && bbcode.onclickPoster('{postrow.POSTER_NAME}'); return false"><a href="#" class="gen" style="font-size: 13px" onclick="return false"><b>{postrow.POSTER_NAME}</b></a></div><!-- ELSE --><div class="name" style="padding-top: 2px"><b>{postrow.POSTER_NAME}</b></div><!-- ENDIF --><!-- IF postrow.POSTER_RANK --><div style="padding-top: 2px">{postrow.POSTER_RANK}</div><!-- ENDIF --><!-- IF postrow.RANK_IMAGE --><div style="padding-top: 2px">{postrow.RANK_IMAGE}</div><!-- ENDIF --><!-- IF postrow.POSTER_AVATAR --><div style="padding-top: 3px">{postrow.POSTER_AVATAR}</div><!-- ENDIF --><!-- IF postrow.POSTER_JOINED --><div style="padding-top: 2px">{postrow.POSTER_JOINED}</div><!-- ENDIF --><!-- IF postrow.POSTER_POSTS --><div style="padding-top: 2px">{postrow.POSTER_POSTS}</div><!-- ENDIF --><!-- IF postrow.POSTER_FROM --><div style="padding-top: 2px">{postrow.POSTER_FROM}</div><!-- ENDIF --><div><img src="images/spacer.gif" width="122" height="<!-- IF postrow.POSTER_AVATAR || postrow.RANK_IMAGE -->2<!-- ELSE -->20<!-- ENDIF -->" border="0" alt="" /></div>
+   <!-- IF QUICK_REPLY --><div class="genmed" style="padding-top: 2px" title="{L_INS_NAME_TIP}" onmouseout="bbcode && bbcode.refreshSelection(false)" onmouseover="bbcode && bbcode.refreshSelection(true)" onclick="bbcode && bbcode.onclickPoster('{postrow.POSTER_NAME}'); return false"><a href="#" class="gen" style="font-size: 13px" onclick="return false"><b>{postrow.POSTER_NAME}</b></a></div><!-- ELSE --><div class="name" style="padding-top: 2px"><b>{postrow.POSTER_NAME}</b></div><!-- ENDIF -->
+   <!-- IF postrow.POSTER_RANK --><div style="padding-top: 2px">{postrow.POSTER_RANK}</div><!-- ENDIF -->
+   <!-- IF postrow.RANK_IMAGE --><div style="padding-top: 2px">{postrow.RANK_IMAGE}</div><!-- ENDIF -->
+   <!-- IF postrow.POSTER_AVATAR --><div style="padding-top: 3px">{postrow.POSTER_AVATAR}</div><!-- ENDIF -->
+   <!-- IF postrow.POSTER_JOINED --><div style="padding-top: 2px">{postrow.POSTER_JOINED}</div><!-- ENDIF -->
+   <!-- IF postrow.POSTER_POSTS --><div style="padding-top: 2px">{postrow.POSTER_POSTS}</div><!-- ENDIF -->
+   <!-- IF postrow.POSTER_FROM --><div style="padding-top: 2px">{postrow.POSTER_FROM}</div><!-- ENDIF -->
+   <div><img src="images/spacer.gif" width="122" height="<!-- IF postrow.POSTER_AVATAR || postrow.RANK_IMAGE -->2<!-- ELSE -->20<!-- ENDIF -->" border="0" alt="" /></div>
 		<!-- ENDIF -->
 		</td>
 		<td height="28" valign="top" style="padding: 0px;<!-- IF postrow.POSTER_BOT --> border-bottom: 1px solid #ADBAC6;<!-- ENDIF -->"><table width="100%" border="0" cellspacing="0" cellpadding="0">
@@ -92,12 +92,12 @@ function toggle_disabled (id, val) {
 		</td>
 		<!-- ELSE -->
 		<td style="border-bottom: 1px solid #ADBAC6; padding: 4px" valign="middle">
-			<span class="postdetails"><a href="#top" class="genmed">{L_BACK_TO_TOP}</a></span>
+			<span class="postdetails">{postrow.PROFILE} {postrow.PM}</span>
 		</td>
 		<!-- ENDIF -->
 		<td style="border-bottom: 1px solid #ADBAC6;" valign="middle" nowrap="nowrap"><table cellspacing="0" cellpadding="0" border="0" width="100%">
 			<tr>
-				<td valign="middle" class="txtb" nowrap="nowrap"> &nbsp;{postrow.PROFILE} {postrow.PM} {postrow.EMAIL} {postrow.WWW} {postrow.AIM} {postrow.YIM} {postrow.MSN} {postrow.ICQ}</td>
+				<td valign="middle" class="txtb" nowrap="nowrap"> &nbsp;</td>
 			</tr>
 		</table></td>
 	</tr>
@@ -210,52 +210,6 @@ function toggle_disabled (id, val) {
 			</table>
 		</td>
 	</tr>
-	<tr id="translit_opt" class="hiddenRow">
-		<td colspan="2" class="row2" align="center">
-		<table border="0" cellpadding="0" cellspacing="4">
-		<tr>
-			<td class="t">À</td><td>-</td><td>a</td>
-			<td class="t">Ä</td><td>-</td><td>d</td>
-			<td class="t">È</td><td>-</td><td>i</td>
-			<td class="t">Ì</td><td>-</td><td>m</td>
-			<td class="t">Ð</td><td>-</td><td>r</td>
-			<td class="t">Ô</td><td>-</td><td>f</td>
-			<td class="t">Ø</td><td>-</td><td>sh</td>
-			<td class="t">Û</td><td>-</td><td>y</td>
-		</tr>
-		<tr>
-			<td class="t">Á</td><td>-</td><td>b</td>
-			<td class="t">Å</td><td>-</td><td>e</td>
-			<td class="t">É</td><td>-</td><td>j</td>
-			<td class="t">Í</td><td>-</td><td>n</td>
-			<td class="t">Ñ</td><td>-</td><td>s</td>
-			<td class="t">Õ</td><td>-</td><td>h</td>
-			<td class="t">Ù</td><td>-</td><td>sz</td>
-			<td class="t">Ý</td><td>-</td><td>eh</td>
-		</tr>
-		<tr>
-			<td class="t">Â</td><td>-</td><td>v</td>
-			<td class="t">Æ</td><td>-</td><td>zh</td>
-			<td class="t">Ê</td><td>-</td><td>k</td>
-			<td class="t">Î</td><td>-</td><td>o</td>
-			<td class="t">Ò</td><td>-</td><td>t</td>
-			<td class="t">Ö</td><td>-</td><td>c</td>
-			<td class="t">Ü</td><td>-</td><td>'</td>
-			<td class="t">Þ</td><td>-</td><td>ju</td>
-		</tr>
-		<tr>
-			<td class="t">Ã</td><td>-</td><td>g</td>
-			<td class="t">Ç</td><td>-</td><td>z</td>
-			<td class="t">Ë</td><td>-</td><td>l</td>
-			<td class="t">Ï</td><td>-</td><td>p</td>
-			<td class="t">Ó</td><td>-</td><td>u</td>
-			<td class="t">×</td><td>-</td><td>ch</td>
-			<td class="t">Ú</td><td>-</td><td>&quot;</td>
-			<td class="t">ß</td><td>-</td><td>ja</td>
-		</tr>
-		</table>
-		</td>
-	</tr>
 	<tr id="post_opt" class="row2">
 		<td colspan="2" class="row2" align="center">
 			<table cellspacing="0" cellpadding="1" border="0">
@@ -282,7 +236,7 @@ function toggle_disabled (id, val) {
 		</td>
 	</tr>
 	<tr>
-		<td colspan="2" class="row2" align="center" style="padding: 4px"><span class="genmed"><a href="#" onclick="toggle_TR('translit_opt'); return false" class="genmed">{L_TRANSL_RULES}</a></span>
+		<td colspan="2" class="row2" align="center" style="padding: 4px">
 			<script language="JavaScript">
 			<!--
 			var bbcode = new BBCode(document.post.message);

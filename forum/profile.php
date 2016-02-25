@@ -1,10 +1,11 @@
 <?php
-
+define('IN_PROFILE', true);
+define('FT_SCRIPT', 'profile');
 define('IN_PROFILE', true);
 define('FT_ROOT', './');
 require(FT_ROOT . 'common.php');
 
-$userdata = session_pagestart($user_ip, PAGE_PROFILE);
+$userdata = session_pagestart($user_ip);
 init_userprefs($userdata);
 
 // session id check

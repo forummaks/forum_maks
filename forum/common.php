@@ -5,7 +5,6 @@ if (isset($_REQUEST['GLOBALS'])) die();
 ignore_user_abort(true);
 define('TIMESTART', utime());
 define('TIMENOW',   time());
-$starttime = array_sum(explode(' ', microtime()));
 
 if (empty($_SERVER['REMOTE_ADDR']))     $_SERVER['REMOTE_ADDR'] = '127.0.0.1';
 if (empty($_SERVER['HTTP_USER_AGENT'])) $_SERVER['HTTP_USER_AGENT'] = '';
@@ -196,7 +195,7 @@ define('DL_STATUS_DOWN',       1);
 define('DL_STATUS_COMPLETE',   2);
 define('DL_STATUS_CANCEL',     3);
 
-define('ANONYMOUS', -1);
+define('GUEST_UID', -1);
 define('BOT_UID', -746);
 
 // Board init
@@ -422,6 +421,24 @@ function array_deep (&$var, $fn, $one_dimensional = false, $array_only = false)
 function hide_ft_path ($path)
 {
 	return ltrim(str_replace(FT_PATH, '', $path), '/\\');
+}
+
+function sys ($param)
+{
+	switch ($param)
+	{
+		case 'la':
+			return function_exists('sys_getloadavg') ? join(' ', sys_getloadavg()) : 0;
+			break;
+		case 'mem':
+			return function_exists('memory_get_usage') ? memory_get_usage() : 0;
+			break;
+		case 'mem_peak':
+			return function_exists('memory_get_peak_usage') ? memory_get_peak_usage() : 0;
+			break;
+		default:
+			trigger_error("invalid param: $param", E_USER_ERROR);
+	}
 }
 
 function ver_compare ($version1, $operator, $version2)

@@ -2,6 +2,7 @@
 
 if (!defined('FT_ROOT')) die(basename(__FILE__));
 if (PHP_VERSION < '5.3') die('ForumTorrent requires PHP version 5.3+. Your PHP version '. PHP_VERSION);
+if (!defined('FT_SCRIPT')) define('FT_SCRIPT', 'undefined');
 if (!defined('FT_CFG_LOADED')) trigger_error('File config.php not loaded', E_USER_ERROR);
 
 // Define some basic configuration arrays
@@ -38,6 +39,27 @@ function compress_output ($contents)
 	return $contents;
 }
 
+// Cookie params
+$c = $ft_cfg['cookie_prefix'];
+define('COOKIE_DATA',  $c .'data');
+define('COOKIE_FORUM', $c .'f');
+define('COOKIE_MARK',  $c .'mark_read');
+define('COOKIE_TOPIC', $c .'t');
+define('COOKIE_PM',    $c .'pm');
+unset($c);
+
+define('COOKIE_SESSION', 0);
+define('COOKIE_EXPIRED', TIMENOW - 31536000);
+define('COOKIE_PERSIST', TIMENOW + 31536000);
+
+define('COOKIE_MAX_TRACKS', 90);
+
+function ft_setcookie ($name, $val, $lifetime = COOKIE_PERSIST, $httponly = false)
+{
+	global $ft_cfg;
+	return setcookie($name, $val, $lifetime, $ft_cfg['script_path'], $ft_cfg['cookie_domain'], $ft_cfg['cookie_secure'], $httponly);
+}
+
 // Debug options
 if (DBG_USER)
 {
@@ -51,12 +73,11 @@ else
 
 define('DELETED', -1);
 
-// Debug Level
-define('DEBUG', 1); // Debugging off
-
+// User Levels
 define('USER', 0);
 define('ADMIN', 1);
 define('MOD', 2);
+define('EXCLUDED_USERS', implode(',', array(GUEST_UID, BOT_UID)));
 
 // User related
 define('USER_ACTIVATION_NONE', 0);
@@ -120,20 +141,6 @@ define('POST_GROUPS_URL', 	'g');
 define('SESSION_METHOD_COOKIE', 100);
 define('SESSION_METHOD_GET', 101);
 
-// Page numbers for session handling
-define('PAGE_INDEX', 0);
-define('PAGE_LOGIN', -1);
-define('PAGE_SEARCH', -2);
-define('PAGE_REGISTER', -3);
-define('PAGE_PROFILE', -4);
-define('PAGE_VIEWONLINE', -6);
-define('PAGE_VIEWMEMBERS', -7);
-define('PAGE_FAQ', -8);
-define('PAGE_POSTING', -9);
-define('PAGE_PRIVMSGS', -10);
-define('PAGE_GROUPCP', -11);
-define('PAGE_TOPIC_OFFSET', 5000);
-
 // Auth settings
 define('AUTH_LIST_ALL', 0);
 define('AUTH_ALL', 0);
@@ -157,26 +164,20 @@ define('AUTH_ATTACH', 11);
 
 // Table names
 define('ATTACH_CONFIG_TABLE', 			'ft_attachments_config');
-define('EXTENSION_GROUPS_TABLE',   		'ft_extension_groups');
-define('EXTENSIONS_TABLE',  			'ft_extensions');
-define('FORBIDDEN_EXTENSIONS_TABLE',  	'ft_forbidden_extensions');
 define('ATTACHMENTS_DESC_TABLE', 		'ft_attachments_desc');
 define('ATTACHMENTS_TABLE', 			'ft_attachments');
 define('QUOTA_TABLE',  					'ft_attach_quota');
 define('QUOTA_LIMITS_TABLE',  			'ft_quota_limits');
-
 define('TOPICS_MOVE_TABLE', 			'ft_topics_move');
 define('CONFIRM_TABLE',					'ft_confirm');
 define('AUTH_ACCESS_TABLE', 			'ft_auth_access');
 define('BANLIST_TABLE',					'ft_banlist');
-
 define('CATEGORIES_TABLE', 				'ft_categories');
 define('CONFIG_TABLE', 					'ft_config');
 define('DISALLOW_TABLE', 				'ft_disallow');
 define('FORUMS_TABLE', 					'ft_forums');
 define('GROUPS_TABLE', 					'ft_groups');
 define('POSTS_TABLE',					'ft_posts');
-
 define('POSTS_TEXT_TABLE', 				'ft_posts_text');
 define('PRIVMSGS_TABLE', 				'ft_privmsgs');
 define('PRIVMSGS_TEXT_TABLE', 			'ft_privmsgs_text');
@@ -189,7 +190,6 @@ define('SEARCH_MATCH_TABLE', 			'ft_search_wordmatch');
 define('SESSIONS_TABLE', 				'ft_sessions');
 define('SMILIES_TABLE', 				'ft_smilies');
 define('TOPICS_TABLE', 					'ft_topics');
-
 define('TOPICS_WATCH_TABLE', 			'ft_topics_watch');
 define('USER_GROUP_TABLE', 				'ft_user_group');
 define('USERS_TABLE', 					'ft_users');
@@ -197,14 +197,6 @@ define('WORDS_TABLE', 					'ft_words');
 define('VOTE_DESC_TABLE',				'ft_vote_desc');
 define('VOTE_RESULTS_TABLE', 			'ft_vote_results');
 define('VOTE_USERS_TABLE', 				'ft_vote_voters');
-
-define('TP_VER',      '0.3.5');
-define('TP_NAME',     'TorrentPier');
-define('TP_AUTHOR',   'Meithar');
-define('TP_SITE_URL', 'http://www.torrentpier.com/');
-
-define('TP_LINK',     '<a href="'. TP_SITE_URL .'" class="copyright">'. TP_NAME .'</a> &copy; '. TP_AUTHOR);
-define('TP_LINK_VER', '<a href="'. TP_SITE_URL .'" target="_blank" class="copyright">'. TP_NAME .'</a> '. TP_VER .' &copy; '. TP_AUTHOR);
 
 define('TORRENT_EXT', 'torrent');
 define('PAGE_TRACKER', -1180);
@@ -255,6 +247,7 @@ define('NONE_CAT', 0);
 define('IMAGE_CAT', 1);
 define('STREAM_CAT', 2);
 define('SWF_CAT', 3);
+
 // Pages
 define('PAGE_UACP', -32);
 define('PAGE_RULES', -33);
@@ -275,6 +268,16 @@ define('QUOTA_PM_LIMIT', 2);
 define('ATTACH_VERSION', '2.3.14');
 
 define('USER_AGENT', strtolower($_SERVER['HTTP_USER_AGENT']));
+
+define('HTML_SELECT_MAX_LENGTH', 60);
+define('HTML_WBR_LENGTH',        12);
+
+define('HTML_CHECKED',  ' checked="checked" ');
+define('HTML_DISABLED', ' disabled="disabled" ');
+define('HTML_READONLY', ' readonly="readonly" ');
+define('HTML_SELECTED', ' selected="selected" ');
+
+define('HTML_SF_SPACER', '&nbsp;|-&nbsp;');
 
 if (!empty($banned_user_agents))
 {

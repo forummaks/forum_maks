@@ -5,7 +5,8 @@
 // Number of recent articles you wish to display
 $medal_num_recent = 10;
 
-
+define('IN_FORUM',   true);
+define('FT_SCRIPT', 'medal');
 define('FT_ROOT', './');
 require(FT_ROOT . 'common.php');
 
@@ -13,7 +14,7 @@ $current_time = (isset($_GET['time']) && $_GET['time'] == 'all') ? 0 : time();
 //
 // Start session management
 //
-$userdata = session_pagestart($user_ip, PAGE_VIEWMEMBERS);
+$userdata = session_pagestart($user_ip);
 init_userprefs($userdata);
 //
 // End session management

@@ -1,9 +1,10 @@
 <?php
 
+define('FT_SCRIPT', 'tracker');
 define('FT_ROOT', './');
 require(FT_ROOT . 'common.php');
 
-$userdata = session_pagestart($user_ip, PAGE_TRACKER);
+$userdata = session_pagestart($user_ip);
 init_userprefs($userdata);
 
 $tor_search_limit    = 500;
@@ -434,9 +435,9 @@ if (!$def)
 
 		if ($req_poster_id)
 		{
-			if ($req_poster_id == ANONYMOUS)
+			if ($req_poster_id == GUEST_UID)
 			{
-				$poster_id_val = ANONYMOUS;
+				$poster_id_val = GUEST_UID;
 				$poster_name_val = $lang['Guest'];
 			}
 			else if ($poster_name_val = get_username($req_poster_id))
@@ -1055,8 +1056,6 @@ $template->assign_vars(array(
 	'TITLE_MATCH_MAX'    => $title_match_max_len,
 	'POSTER_NAME_MAX'    => $poster_name_max_len,
 	'POSTER_ERROR'       => $poster_error,
-	'TP_VER'             => TP_VER,
-
 	'SHOW_FORUM'         => $show_forum_val,
 	'SHOW_AUTHOR'        => $show_author_val,
 	'SHOW_SPEED'         => $show_speed_val

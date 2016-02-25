@@ -77,7 +77,7 @@ if ( isset($HTTP_POST_VARS['edit']) || isset($HTTP_POST_VARS['new']) )
 	//
 	$sql = "SELECT user_id, username
 		FROM " . USERS_TABLE . "
-		WHERE user_id <> " . ANONYMOUS . "
+		WHERE user_id <> " . GUEST_UID . "
 		ORDER BY username";
 	if ( !($result = $db->sql_query($sql)) )
 	{

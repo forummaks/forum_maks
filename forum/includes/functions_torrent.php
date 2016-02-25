@@ -320,7 +320,7 @@ function tracker_register ($attach_id, $mode = '')
 /*
 	// Insert empty up/down "statistic record" for guests
 	$torrent_id = $db->sql_nextid();
-	$guest_uid  = ANONYMOUS;
+	$guest_uid  = GUEST_UID;
 
 	$columns = 'torrent_id,  user_id,    attach_id, t_up_total, t_down_total';
 	$values = "$torrent_id, $guest_uid, $attach_id, 0,          0";

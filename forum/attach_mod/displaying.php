@@ -30,26 +30,6 @@ function display_compile_cache_clear($filename, $template_var)
 }
 
 //
-// Create needed arrays for Extension Assignments
-//
-function init_complete_extensions_data()
-{
-	global $db, $allowed_extensions, $display_categories, $download_modes, $upload_icons;
-
-	$extension_informations = get_extension_informations();
-	$allowed_extensions = array();
-
-	for ($i = 0; $i < count($extension_informations); $i++)
-	{
-		$extension = strtolower(trim($extension_informations[$i]['extension']));
-		$allowed_extensions[] = $extension;
-		$display_categories[$extension] = intval($extension_informations[$i]['cat_id']);
-		$download_modes[$extension] = intval($extension_informations[$i]['download_mode']);
-		$upload_icons[$extension] = trim($extension_informations[$i]['upload_icon']);
-	}
-}
-
-//
 // Writing Data into plain Template Vars
 //
 function init_display_template($template_var, $replacement, $filename = 'viewtopic_attach_body.tpl')
@@ -154,28 +134,6 @@ function display_post_attachments($post_id, $switch_attachment)
 }
 
 //
-// Generate the Display Assign File Link
-//
-/*
-function display_assign_link($post_id)
-{
-	global $attach_config, $is_auth, $phpEx;
-
-	$image = 'templates/default/images/icon_mini_message.gif';
-
-	if ( (intval($attach_config['disable_mod'])) || (!( ($is_auth['auth_download']) && ($is_auth['auth_view']))) )
-	{
-		return ('');
-	}
-
-	$temp_url = append_sid("assign_file.$phpEx?p=" . $post_id);
-	$link = '<a href="' . $temp_url . '" target="_blank"><img src="' . $image . '" alt="Add File" title="Add File" border="0" /></a>';
-
-	return ($link);
-}
-*/
-
-//
 // Initializes some templating variables for displaying Attachments in Posts
 //
 function init_display_post_attachments($switch_attachment)
@@ -234,22 +192,11 @@ function init_display_post_attachments($switch_attachment)
 
 	init_display_template('body', '{postrow.ATTACHMENTS}');
 
-	init_complete_extensions_data();
-
 	$template->assign_vars(array(
 		'L_POSTED_ATTACHMENTS' => $lang['Posted_attachments'],
 		'L_KILOBYTE' => $lang['KB'])
 	);
 }
-
-//
-// END ATTACHMENT DISPLAY IN POSTS
-//
-
-//
-// BEGIN ATTACHMENT DISPLAY IN PM's
-//
-
 //
 // Returns the image-tag for the PM image icon
 //
@@ -333,8 +280,6 @@ function init_display_pm_attachments($switch_attachment)
 
 	init_display_template('body', '{ATTACHMENTS}');
 
-	init_complete_extensions_data();
-
 	$template->assign_vars(array(
 		'L_POSTED_ATTACHMENTS' => $lang['Posted_attachments'],
 		'L_KILOBYTE' => $lang['KB'])
@@ -342,14 +287,6 @@ function init_display_pm_attachments($switch_attachment)
 
 	display_pm_attachments($privmsgs_id, $switch_attachment);
 }
-
-//
-// END ATTACHMENT DISPLAY IN PM's
-//
-
-//
-// BEGIN ATTACHMENT DISPLAY IN TOPIC REVIEW WINDOW
-//
 
 //
 // Display Attachments in Review Window
@@ -387,8 +324,6 @@ function init_display_review_attachments($is_auth)
 	}
 
 	init_display_template('reviewbody', '{postrow.ATTACHMENTS}');
-
-	init_complete_extensions_data();
 
 }
 
@@ -676,18 +611,6 @@ function display_attachments($post_id)
 		$attachments['_' . $post_id][$i]['extension'] = strtolower(trim($attachments['_' . $post_id][$i]['extension']));
 
 		$denied = false;
-
-		//
-		// Admin is allowed to view forbidden Attachments, but the error-message is displayed too to inform the Admin
-		//
-		if ( (!in_array($attachments['_' . $post_id][$i]['extension'], $allowed_extensions)) )
-		{
-			$denied = true;
-
-			$template->assign_block_vars('postrow.attach.denyrow', array(
-				'L_DENIED' => sprintf($lang['Extension_disabled_after_posting'], $attachments['_' . $post_id][$i]['extension']))
-			);
-		}
 
 		if (!$denied)
 		{

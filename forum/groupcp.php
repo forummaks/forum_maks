@@ -1,20 +1,22 @@
 <?php
 
+define('IN_FORUM',   true);
+define('FT_SCRIPT', 'groupcp');
 define('FT_ROOT', './');
 require(FT_ROOT . 'common.php');
 
 // -------------------------
 //
-function generate_user_info(&$row, $date_format, $group_mod, &$from, &$posts, &$joined, &$poster_avatar, &$profile_img, &$profile, &$search_img, &$search, &$pm_img, &$pm, &$email_img, &$email, &$www_img, &$www, &$icq_status_img, &$icq_img, &$icq, &$aim_img, &$aim, &$msn_img, &$msn, &$yim_img, &$yim)
+function generate_user_info(&$row, $date_format, $group_mod, &$from, &$posts, &$joined, &$poster_avatar, &$profile_img, &$profile, &$search_img, &$search, &$pm_img, &$pm, &$email_img, &$email, &$www_img, &$www, &$icq_status_img, &$icq_img, &$icq)
 {
-	global $lang, $images, $ft_cfg, $phpEx;
+	global $lang, $images, $ft_cfg;
 
 	$from = ( !empty($row['user_from']) ) ? $row['user_from'] : '&nbsp;';
 	$joined = create_date($date_format, $row['user_regdate'], $ft_cfg['board_timezone']);
 	$posts = ( $row['user_posts'] ) ? $row['user_posts'] : 0;
 
 	$poster_avatar = '';
-	if ( $row['user_avatar_type'] && $row['user_id'] != ANONYMOUS && $row['user_allowavatar'] )
+	if ( $row['user_avatar_type'] && $row['user_id'] != GUEST_UID && $row['user_allowavatar'] )
 	{
 		switch( $row['user_avatar_type'] )
 		{
@@ -66,17 +68,6 @@ function generate_user_info(&$row, $date_format, $group_mod, &$from, &$posts, &$
 		$icq_img = '';
 		$icq = '';
 	}
-
-	$aim_img = ( $row['user_aim'] ) ? '<a href="aim:goim?screenname=' . $row['user_aim'] . '&amp;message=Hello+Are+you+there?"><img src="' . $images['icon_aim'] . '" alt="' . $lang['AIM'] . '" title="' . $lang['AIM'] . '" border="0" /></a>' : '';
-	$aim = ( $row['user_aim'] ) ? '<a href="aim:goim?screenname=' . $row['user_aim'] . '&amp;message=Hello+Are+you+there?">' . $lang['AIM'] . '</a>' : '';
-
-	$temp_url = append_sid("profile.php?mode=viewprofile&amp;" . POST_USERS_URL . "=" . $row['user_id']);
-	$msn_img = ( $row['user_msnm'] ) ? '<a href="' . $temp_url . '"><img src="' . $images['icon_msnm'] . '" alt="' . $lang['MSNM'] . '" title="' . $lang['MSNM'] . '" border="0" /></a>' : '';
-	$msn = ( $row['user_msnm'] ) ? '<a href="' . $temp_url . '">' . $lang['MSNM'] . '</a>' : '';
-
-	$yim_img = ( $row['user_yim'] ) ? '<a href="http://edit.yahoo.com/config/send_webmesg?.target=' . $row['user_yim'] . '&amp;.src=pg"><img src="' . $images['icon_yim'] . '" alt="' . $lang['YIM'] . '" title="' . $lang['YIM'] . '" border="0" /></a>' : '';
-	$yim = ( $row['user_yim'] ) ? '<a href="http://edit.yahoo.com/config/send_webmesg?.target=' . $row['user_yim'] . '&amp;.src=pg">' . $lang['YIM'] . '</a>' : '';
-
 	$temp_url = append_sid("search.php?search_author=" . urlencode($username) . "&amp;showresults=posts");
 	$search_img = '<a href="' . $temp_url . '"><img src="' . $images['icon_search'] . '" alt="' . $lang['Search_user_posts'] . '" title="' . $lang['Search_user_posts'] . '" border="0" /></a>';
 	$search = '<a href="' . $temp_url . '">' . $lang['Search_user_posts'] . '</a>';
@@ -89,7 +80,7 @@ function generate_user_info(&$row, $date_format, $group_mod, &$from, &$posts, &$
 //
 // Start session management
 //
-$userdata = session_pagestart($user_ip, PAGE_GROUPCP);
+$userdata = session_pagestart($user_ip);
 init_userprefs($userdata);
 //
 // End session management
@@ -378,7 +369,7 @@ else if ( $group_id )
 	{
 		if ( !$userdata['session_logged_in'] )
 		{
-			redirect(append_sid("login.$phpEx?redirect=groupcp.php&" . POST_GROUPS_URL . "=$group_id", true));
+			redirect(append_sid("login.php?redirect=groupcp.php&" . POST_GROUPS_URL . "=$group_id", true));
 		}
 	}
 
@@ -439,7 +430,7 @@ else if ( $group_id )
 		{
 			if ( !$userdata['session_logged_in'] )
 			{
-				redirect(append_sid("login.$phpEx?redirect=groupcp.php&" . POST_GROUPS_URL . "=$group_id", true));
+				redirect(append_sid("login.php?redirect=groupcp.php&" . POST_GROUPS_URL . "=$group_id", true));
 			}
 
 			if ( !$is_moderator )
@@ -455,7 +446,7 @@ else if ( $group_id )
 
 			if ( isset($HTTP_POST_VARS['add']) )
 			{
-				$username = ( isset($HTTP_POST_VARS['username']) ) ? phpbb_clean_username($HTTP_POST_VARS['username']) : '';
+				$username = ( isset($HTTP_POST_VARS['username']) ) ? clean_username($HTTP_POST_VARS['username']) : '';
 
 				$sql = "SELECT user_id, user_email, user_lang, user_level
 					FROM " . USERS_TABLE . "
@@ -476,7 +467,7 @@ else if ( $group_id )
 					message_die(GENERAL_MESSAGE, $message);
 				}
 
-				if ( $row['user_id'] == ANONYMOUS )
+				if ( $row['user_id'] == GUEST_UID )
 				{
 					$template->assign_vars(array(
 						'META' => '<meta http-equiv="refresh" content="3;url=' . append_sid("groupcp.php?" . POST_GROUPS_URL . "=$group_id") . '">')
@@ -744,7 +735,7 @@ else if ( $group_id )
 	//
 	// Get moderator details for this group
 	//
-	$sql = "SELECT username, user_id, user_viewemail, user_posts, user_regdate, user_from, user_website, user_email, user_icq, user_aim, user_yim, user_msnm
+	$sql = "SELECT username, user_id, user_viewemail, user_posts, user_regdate, user_from, user_website, user_email, user_icq
 		FROM " . USERS_TABLE . "
 		WHERE user_id = " . $group_info['group_moderator'];
 	if ( !($result = $db->sql_query($sql)) )
@@ -757,7 +748,7 @@ else if ( $group_id )
 	//
 	// Get user information for this group
 	//
-	$sql = "SELECT u.username, u.user_id, u.user_viewemail, u.user_posts, u.user_regdate, u.user_from, u.user_website, u.user_email, u.user_icq, u.user_aim, u.user_yim, u.user_msnm, ug.user_pending
+	$sql = "SELECT u.username, u.user_id, u.user_viewemail, u.user_posts, u.user_regdate, u.user_from, u.user_website, u.user_email, u.user_icq, ug.user_pending
 		FROM " . USERS_TABLE . " u, " . USER_GROUP_TABLE . " ug
 		WHERE ug.group_id = $group_id
 			AND u.user_id = ug.user_id
@@ -773,7 +764,7 @@ else if ( $group_id )
 	$members_count = count($group_members);
 	$db->sql_freeresult($result);
 
-	$sql = "SELECT u.username, u.user_id, u.user_viewemail, u.user_posts, u.user_regdate, u.user_from, u.user_website, u.user_email, u.user_icq, u.user_aim, u.user_yim, u.user_msnm
+	$sql = "SELECT u.username, u.user_id, u.user_viewemail, u.user_posts, u.user_regdate, u.user_from, u.user_website, u.user_email, u.user_icq
 		FROM " . GROUPS_TABLE . " g, " . USER_GROUP_TABLE . " ug, " . USERS_TABLE . " u
 		WHERE ug.group_id = $group_id
 			AND g.group_id = ug.group_id
@@ -834,7 +825,7 @@ else if ( $group_id )
 
 		$s_hidden_fields = '<input type="hidden" name="' . POST_GROUPS_URL . '" value="' . $group_id . '" />';
 	}
-	else if ( $userdata['user_id'] == ANONYMOUS )
+	else if ( $userdata['user_id'] == GUEST_UID )
 	{
 		$group_details =  $lang['Login_to_join'];
 		$s_hidden_fields = '';
@@ -878,7 +869,7 @@ else if ( $group_id )
 	$username = $group_moderator['username'];
 	$user_id = $group_moderator['user_id'];
 
-	generate_user_info($group_moderator, $ft_cfg['default_dateformat'], $is_moderator, $from, $posts, $joined, $poster_avatar, $profile_img, $profile, $search_img, $search, $pm_img, $pm, $email_img, $email, $www_img, $www, $icq_status_img, $icq_img, $icq, $aim_img, $aim, $msn_img, $msn, $yim_img, $yim);
+	generate_user_info($group_moderator, $ft_cfg['default_dateformat'], $is_moderator, $from, $posts, $joined, $poster_avatar, $profile_img, $profile, $search_img, $search, $pm_img, $pm, $email_img, $email, $www_img, $www, $icq_status_img, $icq_img, $icq);
 
 	$s_hidden_fields .= '';
 
@@ -908,9 +899,6 @@ else if ( $group_id )
 		'L_ORDER' => $lang['Order'],
 		'L_SORT' => $lang['Sort'],
 		'L_SUBMIT' => $lang['Sort'],
-		'L_AIM' => $lang['AIM'],
-		'L_YIM' => $lang['YIM'],
-		'L_MSNM' => $lang['MSNM'],
 		'L_ICQ' => $lang['ICQ'],
 		'L_SELECT' => $lang['Select'],
 		'L_REMOVE_SELECTED' => $lang['Remove_selected'],
@@ -940,13 +928,7 @@ else if ( $group_id )
 		'MOD_ICQ_STATUS_IMG' => $icq_status_img,
 		'MOD_ICQ_IMG' => $icq_img,
 		'MOD_ICQ' => $icq,
-		'MOD_AIM_IMG' => $aim_img,
-		'MOD_AIM' => $aim,
-		'MOD_MSN_IMG' => $msn_img,
-		'MOD_MSN' => $msn,
-		'MOD_YIM_IMG' => $yim_img,
-		'MOD_YIM' => $yim,
-
+		
 		'U_MOD_VIEWPROFILE' => append_sid("profile.php?mode=viewprofile&amp;" . POST_USERS_URL . "=$user_id"),
 		'U_SEARCH_USER' => append_sid("search.php?mode=searchuser"),
 
@@ -970,7 +952,7 @@ else if ( $group_id )
 		$username = $group_members[$i]['username'];
 		$user_id = $group_members[$i]['user_id'];
 
-		generate_user_info($group_members[$i], $ft_cfg['default_dateformat'], $is_moderator, $from, $posts, $joined, $poster_avatar, $profile_img, $profile, $search_img, $search, $pm_img, $pm, $email_img, $email, $www_img, $www, $icq_status_img, $icq_img, $icq, $aim_img, $aim, $msn_img, $msn, $yim_img, $yim);
+		generate_user_info($group_members[$i], $ft_cfg['default_dateformat'], $is_moderator, $from, $posts, $joined, $poster_avatar, $profile_img, $profile, $search_img, $search, $pm_img, $pm, $email_img, $email, $www_img, $www, $icq_status_img, $icq_img, $icq);
 
 		if ( $group_info['group_type'] != GROUP_HIDDEN || $is_group_member || $is_moderator )
 		{
@@ -996,12 +978,6 @@ else if ( $group_id )
 				'ICQ_STATUS_IMG' => $icq_status_img,
 				'ICQ_IMG' => $icq_img,
 				'ICQ' => $icq,
-				'AIM_IMG' => $aim_img,
-				'AIM' => $aim,
-				'MSN_IMG' => $msn_img,
-				'MSN' => $msn,
-				'YIM_IMG' => $yim_img,
-				'YIM' => $yim,
 
 				'U_VIEWPROFILE' => append_sid("profile.php?mode=viewprofile&amp;" . POST_USERS_URL . "=$user_id"))
 			);
@@ -1060,7 +1036,7 @@ else if ( $group_id )
 				$username = $modgroup_pending_list[$i]['username'];
 				$user_id = $modgroup_pending_list[$i]['user_id'];
 
-				generate_user_info($modgroup_pending_list[$i], $ft_cfg['default_dateformat'], $is_moderator, $from, $posts, $joined, $poster_avatar, $profile_img, $profile, $search_img, $search, $pm_img, $pm, $email_img, $email, $www_img, $www, $icq_status_img, $icq_img, $icq, $aim_img, $aim, $msn_img, $msn, $yim_img, $yim);
+				generate_user_info($modgroup_pending_list[$i], $ft_cfg['default_dateformat'], $is_moderator, $from, $posts, $joined, $poster_avatar, $profile_img, $profile, $search_img, $search, $pm_img, $pm, $email_img, $email, $www_img, $www, $icq_status_img, $icq_img, $icq);
 
 				$user_select = '<input type="checkbox" name="member[]" value="' . $user_id . '">';
 
@@ -1085,12 +1061,6 @@ else if ( $group_id )
 					'ICQ_STATUS_IMG' => $icq_status_img,
 					'ICQ_IMG' => $icq_img,
 					'ICQ' => $icq,
-					'AIM_IMG' => $aim_img,
-					'AIM' => $aim,
-					'MSN_IMG' => $msn_img,
-					'MSN' => $msn,
-					'YIM_IMG' => $yim_img,
-					'YIM' => $yim,
 
 					'U_VIEWPROFILE' => append_sid("profile.php?mode=viewprofile&amp;" . POST_USERS_URL . "=$user_id"))
 				);

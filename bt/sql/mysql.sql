@@ -187,7 +187,7 @@ INSERT INTO phpbb_bt_config VALUES ('limit_concurrent_ips', '0');
 INSERT INTO phpbb_bt_config VALUES ('limit_seed_ips', '0');
 INSERT INTO phpbb_bt_config VALUES ('limit_leech_ips', '2');
 
-# -- Anonymous tracker user
+# -- GUEST_UID tracker user
 INSERT INTO phpbb_bt_users (user_id, auth_key, u_up_total, u_down_total) VALUES ('-1', '', '0', '0');
 
 # -- forum config

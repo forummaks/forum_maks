@@ -609,7 +609,7 @@ else if ( ( $mode == 'user' && ( isset($HTTP_POST_VARS['username']) || $user_id 
 	}
 	$db->sql_freeresult($result);
 
-	$is_admin = ( $mode == 'user' ) ? ( ( $ug_info[0]['user_level'] == ADMIN && $ug_info[0]['user_id'] != ANONYMOUS ) ? 1 : 0 ) : 0;
+	$is_admin = ( $mode == 'user' ) ? ( ( $ug_info[0]['user_level'] == ADMIN && $ug_info[0]['user_id'] != GUEST_UID ) ? 1 : 0 ) : 0;
 
 	for($i = 0; $i < count($forum_access); $i++)
 	{

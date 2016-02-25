@@ -101,24 +101,39 @@ $l_timezone = (count($l_timezone) > 1 && $l_timezone[count($l_timezone)-1] != 0)
 //
 $template->assign_vars(array(
 	'SIMPLE_HEADER'      => !empty($gen_simple_header),
-	'SITENAME' => $ft_cfg['sitename'],
-	'SITE_DESCRIPTION' => $ft_cfg['site_desc'],
-	'PAGE_TITLE' => (isset($page_title)) ? $page_title : '',
-	'LAST_VISIT_DATE' => sprintf($lang['You_last_visit'], $s_last_visit),
-	'CURRENT_TIME' => sprintf($lang['Current_time'], create_date($ft_cfg['default_dateformat'], time(), $ft_cfg['board_timezone'])),
+	'IN_ADMIN'           => defined('IN_ADMIN'),
+	'SITENAME' 			 => $ft_cfg['sitename'],
+	'SITE_DESCRIPTION' 	 => $ft_cfg['site_desc'],
+	'PAGE_TITLE' 		 => (isset($page_title)) ? $page_title : '',
+	'LAST_VISIT_DATE' 	 => sprintf($lang['You_last_visit'], $s_last_visit),
+	'CURRENT_TIME' 		 => sprintf($lang['Current_time'], create_date($ft_cfg['default_dateformat'], time(), $ft_cfg['board_timezone'])),
 	'TOTAL_USERS_ONLINE' => $l_online_users,
 	'LOGGED_IN_USER_LIST' => $online_userlist,
-	'RECORD_USERS' => sprintf($lang['Record_online_users'], $ft_cfg['record_online_users'], create_date($ft_cfg['default_dateformat'], $ft_cfg['record_online_date'], $ft_cfg['board_timezone'])),
+	'RECORD_USERS' 		 => sprintf($lang['Record_online_users'], $ft_cfg['record_online_users'], create_date($ft_cfg['default_dateformat'], $ft_cfg['record_online_date'], $ft_cfg['board_timezone'])),
 	'PRIVATE_MESSAGE_INFO' => $l_privmsgs_text,
 	'PRIVATE_MESSAGE_INFO_UNREAD' => $l_privmsgs_text_unread,
 	'PRIVATE_MESSAGE_NEW_FLAG' => $s_privmsg_new,
 	
 	'FORUM_PATH'         => FORUM_PATH,
 	'FULL_URL'           => FULL_URL,
+	
+	'SHOW_SIDEBAR1'      => (!empty($page_cfg['show_sidebar1'][FT_SCRIPT]) || $ft_cfg['show_sidebar1_on_every_page']),
+	'SHOW_SIDEBAR2'      => (!empty($page_cfg['show_sidebar2'][FT_SCRIPT]) || $ft_cfg['show_sidebar2_on_every_page']),
 
-	'LOGGED_IN' => @$userdata['session_logged_in'],
+	'LOGGED_IN' 		 => @$userdata['session_logged_in'],
+	
+	// Misc
+	'BOT_UID'            => BOT_UID,
+	'COOKIE_MARK'        => COOKIE_MARK,
+	'SID'                => $userdata['session_id'],
+	'SID_HIDDEN'         => '<input type="hidden" name="sid" value="'. $userdata['session_id'] .'" />',
+	
+	'CHECKED'            => HTML_CHECKED,
+	'DISABLED'           => HTML_DISABLED,
+	'READONLY'           => HTML_READONLY,
+	'SELECTED'           => HTML_SELECTED,
 
-	'PRIVMSG_IMG' => $icon_pm,
+	'PRIVMSG_IMG' 		 => $icon_pm,
 
 	'L_USERNAME' => $lang['Username'],
 	'L_PASSWORD' => $lang['Password'],
@@ -221,7 +236,7 @@ else
 	}
 }
 
-if (!ANONYMOUS)
+if (!GUEST_UID)
 {
 	header('Cache-Control: private, pre-check=0, post-check=0, max-age=0');
 	header('Expires: 0');

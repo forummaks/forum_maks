@@ -1,5 +1,7 @@
 <?php
 
+define('IN_FORUM', true);
+define('FT_SCRIPT', 'dl_list');
 define('FT_ROOT', './');
 require(FT_ROOT . 'common.php');
 require(FT_ROOT .'includes/functions_dl_list.php');
@@ -50,7 +52,7 @@ else
 }
 
 // Start session management
-$userdata = session_pagestart($user_ip, PAGE_INDEX);
+$userdata = session_pagestart($user_ip);
 init_userprefs($userdata);
 
 // Check if user logged in

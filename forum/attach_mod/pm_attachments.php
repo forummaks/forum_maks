@@ -15,7 +15,6 @@ class attach_pm extends attach_parent
 
 		$this->attach_parent();
 		$this->pm_delete_attachments = ( isset($HTTP_POST_VARS['pm_delete_attach']) ) ? TRUE : FALSE;
-		$this->page = PAGE_PRIVMSGS;
 	}
 
 	//
@@ -199,7 +198,7 @@ class attach_pm extends attach_parent
 
 		$post_id = $privmsgs_id;
 
-		$result = $this->handle_attachments($mode, PAGE_PRIVMSGS);
+		$result = $this->handle_attachments($mode);
 
 		if ($result == FALSE)
 		{

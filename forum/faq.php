@@ -1,11 +1,13 @@
 <?php
+define('IN_FORUM', true);
+define('FT_SCRIPT', 'faq');
 define('FT_ROOT', './');
 require(FT_ROOT . 'common.php');
 
 //
 // Start session management
 //
-$userdata = session_pagestart($user_ip, PAGE_FAQ);
+$userdata = session_pagestart($user_ip);
 init_userprefs($userdata);
 //
 // End session management

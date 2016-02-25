@@ -264,8 +264,8 @@ $poster_id   = $row['poster_id'];
 $torrent_id  = $row['torrent_id'];
 $s_last_seen = $row['seeder_last_seen'];
 
-$user_id = ($row['user_id']) ? $row['user_id'] : ANONYMOUS;
-$guest   = ($user_id == ANONYMOUS) ? TRUE : FALSE;
+$user_id = ($row['user_id']) ? $row['user_id'] : GUEST_UID;
+$guest   = ($user_id == GUEST_UID) ? TRUE : FALSE;
 
 $user_rating = ($row['u_down_total']) ? ($row['u_up_total'] / $row['u_down_total']) : 1;
 $rating_msg = '';

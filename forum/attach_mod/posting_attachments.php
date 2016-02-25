@@ -61,18 +61,6 @@ class attach_parent
 	{
 		global $attach_config, $db;
 
-		//
-		// Define Filesize Limits (Prepare Quota Settings)
-		// Priority: User, Group, Management
-		//
-		// This method is somewhat query intensive, but i think because this one is only executed while attaching a file,
-		// it does not make much sense to come up with an new db-entry.
-		// Maybe i will change this in a future version, where you are able to disable the User Quota Feature at all (using
-		// Default Limits for all Users/Groups)
-		//
-
-		// Change this to 'group;user' if you want to have first priority on group quota settings.
-//		$priority = 'group;user';
 		$priority = 'user;group';
 
 		if ( $userdata_quota['user_level'] == ADMIN )
@@ -82,18 +70,9 @@ class attach_parent
 			return;
 		}
 
-		if ($this->page == PAGE_PRIVMSGS)
-		{
-			$quota_type = QUOTA_PM_LIMIT;
-			$limit_type = 'pm_filesize_limit';
-			$default = 'max_filesize_pm';
-		}
-		else
-		{
-			$quota_type = QUOTA_UPLOAD_LIMIT;
-			$limit_type = 'upload_filesize_limit';
-			$default = 'attachment_quota';
-		}
+		$quota_type = QUOTA_UPLOAD_LIMIT;
+		$limit_type = 'upload_filesize_limit';
+		$default = 'attachment_quota';
 
 		if (!$user_id)
 		{
@@ -224,42 +203,13 @@ class attach_parent
 		//
 		// Some adjustments for PM's
 		//
-		if ($this->page == PAGE_PRIVMSGS)
+		if ( $userdata['user_level'] == ADMIN )
 		{
-			global $privmsg_id;
-
-			$post_id = $privmsg_id;
-
-			if ($mode == 'post')
-			{
-				$mode = 'newtopic';
-			}
-			else if ($mode == 'edit')
-			{
-				$mode = 'editpost';
-			}
-
-			if ( $userdata['user_level'] == ADMIN )
-			{
-				$is_auth['auth_attachments'] = '1';
-				$max_attachments = ADMIN_MAX_ATTACHMENTS;
-			}
-			else
-			{
-				$is_auth['auth_attachments'] = intval($attach_config['allow_pm_attach']);
-				$max_attachments = intval($attach_config['max_attachments_pm']);
-			}
+			$max_attachments = ADMIN_MAX_ATTACHMENTS;
 		}
 		else
 		{
-			if ( $userdata['user_level'] == ADMIN )
-			{
-				$max_attachments = ADMIN_MAX_ATTACHMENTS;
-			}
-			else
-			{
-				$max_attachments = intval($attach_config['max_attachments']);
-			}
+			$max_attachments = intval($attach_config['max_attachments_pm']);
 		}
 
 		//
@@ -292,47 +242,9 @@ class attach_parent
 		//
 		// Get Attachments
 		//
-		if ($this->page == PAGE_PRIVMSGS)
-		{
-			$attachments = get_attachments_from_pm($post_id);
-		}
-		else
-		{
-			$attachments = get_attachments_from_post($post_id);
-		}
+		$attachments = get_attachments_from_post($post_id);
 
-		if ($this->page == PAGE_PRIVMSGS)
-		{
-			if ( $userdata['user_level'] == ADMIN )
-			{
-				$auth = TRUE;
-			}
-			else
-			{
-				$auth = ( intval($attach_config['allow_pm_attach']) ) ? TRUE : FALSE;
-			}
-
-			if (count($attachments) == 1)
-			{
-				$template->assign_block_vars('switch_attachments',array());
-
-				$template->assign_vars(array(
-					'L_DELETE_ATTACHMENTS' => $lang['Delete_attachment'])
-				);
-			}
-			else if (count($attachments) > 0)
-			{
-				$template->assign_block_vars('switch_attachments',array());
-
-				$template->assign_vars(array(
-					'L_DELETE_ATTACHMENTS' => $lang['Delete_attachments'])
-				);
-			}
-		}
-		else
-		{
-			$auth = ( $is_auth['auth_edit'] || $is_auth['auth_mod'] ) ? TRUE : FALSE;
-		}
+		$auth = ( $is_auth['auth_edit'] || $is_auth['auth_mod'] ) ? TRUE : FALSE;
 
 		if ( (!$submit) && ($mode == 'editpost') && ( $auth ))
 		{
@@ -1002,21 +914,7 @@ class attach_parent
 			$this->filesize = @filesize($file);
 			$this->filesize = intval($this->filesize);
 
-			$sql = "SELECT g.allow_group, g.max_filesize, g.cat_id, g.forum_permissions
-			FROM " . EXTENSION_GROUPS_TABLE . " g, " . EXTENSIONS_TABLE . " e
-			WHERE (g.group_id = e.group_id) AND (e.extension = '" . $this->extension . "')
-			LIMIT 1";
-
-			if ( !($result = $db->sql_query($sql)) )
-			{
-				message_die(GENERAL_ERROR, 'Could not query Extensions.', '', __LINE__, __FILE__, $sql);
-			}
-
-			$row = $db->sql_fetchrow($result);
-
-			$allowed_filesize = ($row['max_filesize']) ? $row['max_filesize'] : $attach_config['max_filesize'];
-			$cat_id = intval($row['cat_id']);
-			$auth_cache = trim($row['forum_permissions']);
+			$allowed_filesize = $attach_config['max_filesize'];
 
 			//
 			// check Filename
@@ -1053,19 +951,6 @@ class attach_parent
 				{
 					$error_msg .= sprintf($lang['Attachment_php_size_overrun'], $max_size);
 				}
-			}
-
-			//
-			// Check Extension
-			//
-			if (!$error && intval($row['allow_group']) == 0)
-			{
-				$error = TRUE;
-				if(!empty($error_msg))
-				{
-					$error_msg .= '<br />';
-				}
-				$error_msg .= sprintf($lang['Disallowed_extension'], $this->extension);
 			}
 
 			//
@@ -1125,7 +1010,7 @@ class attach_parent
 
 					if (!$new_filename)
 					{
-						$u_id = (intval($userdata['user_id']) == ANONYMOUS) ? 0 : intval($userdata['user_id']);
+						$u_id = (intval($userdata['user_id']) == GUEST_UID) ? 0 : intval($userdata['user_id']);
 						$new_filename = $u_id . '_' . $this->filetime . '.' . $this->extension;
 					}
 
@@ -1139,7 +1024,7 @@ class attach_parent
 				}
 				else
 				{
-					$u_id = (intval($userdata['user_id']) == ANONYMOUS) ? 0 : intval($userdata['user_id']);
+					$u_id = (intval($userdata['user_id']) == GUEST_UID) ? 0 : intval($userdata['user_id']);
 					$this->attach_filename = $u_id . '_' . $this->filetime . '.' . $this->extension;
 				}
 
@@ -1295,8 +1180,6 @@ class attach_parent
 			//
 			// Check our user quota
 			//
-			if ($this->page != PAGE_PRIVMSGS)
-			{
 				if ($attach_config['upload_filesize_limit'])
 				{
 					$sql = "SELECT attach_id
@@ -1361,68 +1244,7 @@ class attach_parent
 						}
 						$error_msg .= sprintf($lang['User_upload_quota_reached'], $upload_filesize_limit, $size_lang);
 					}
-				}
-			}
-
-			//
-			// If we are at Private Messaging, check our PM Quota
-			//
-			if ($this->page == PAGE_PRIVMSGS)
-			{
-				$to_user = ( isset($HTTP_POST_VARS['username']) ) ? $HTTP_POST_VARS['username'] : '';
-
-				if ($attach_config['pm_filesize_limit'])
-				{
-					$total_filesize = get_total_attach_pm_filesize('from_user', $userdata['user_id']);
-
-					if (($total_filesize + $this->filesize) > $attach_config['pm_filesize_limit'])
-					{
-						$error = TRUE;
-						if(!empty($error_msg))
-						{
-							$error_msg .= '<br />';
-						}
-						$error_msg .= $lang['Attach_quota_sender_pm_reached'];
 					}
-				}
-
-				//
-				// Check Receivers PM Quota
-				//
-				if (!empty($to_user) && $userdata['user_level'] != ADMIN)
-				{
-					$sql = "SELECT user_id
-					FROM " . USERS_TABLE . "
-					WHERE username = '" . str_replace("'", "''", htmlspecialchars($to_user)) . "'";
-
-					if ( !($result = $db->sql_query($sql)) )
-					{
-						message_die(GENERAL_ERROR, 'Could not query userdata', '', __LINE__, __FILE__, $sql);
-					}
-
-					$row = $db->sql_fetchrow($result);
-					$user_id = intval($row['user_id']);
-
-					$u_data = get_userdata($user_id);
-					$this->get_quota_limits($u_data, $user_id);
-
-					if ($attach_config['pm_filesize_limit'])
-					{
-						$total_filesize = get_total_attach_pm_filesize('to_user', $user_id);
-
-						if (($total_filesize + $this->filesize) > $attach_config['pm_filesize_limit'])
-						{
-							$error = TRUE;
-							if(!empty($error_msg))
-							{
-								$error_msg .= '<br />';
-							}
-							$error_msg .= sprintf($lang['Attach_quota_receiver_pm_reached'], $to_user);
-						}
-					}
-				}
-			}
-
 			if ($error)
 			{
 				unlink_attach($this->attach_filename);
@@ -1480,33 +1302,9 @@ class attach_parent
 					}
 				}
 				@chmod($upload_dir . '/' . $this->attach_filename, 0666);
-
-/*				if ($tmp_path != '')
-				{
-					unlink_attach($file);
-				}
-*/
 				break;
 
 			case 'move':
-/*				$ini_val = ( phpversion() >= '4.0.0' ) ? 'ini_get' : 'get_cfg_var';
-
-				$tmp_path = ( !@$ini_val('safe_mode') ) ? '' : $upload_dir . '/tmp';
-
-				if ($tmp_path != '')
-				{
-					$tmp_filename = tempnam($tmp_path, 't0000');
-
-					$fd = fopen($file, 'r');
-					$data = fread ($fd, $this->filesize);
-					fclose ($fd);
-
-					$fptr = @fopen($tmp_filename, 'wb');
-					$bytes_written = @fwrite($fptr, $data, $this->filesize);
-					@fclose($fptr);
-					$file = $tmp_filename;
-				}
-*/
 				if ( !@move_uploaded_file($file, $upload_dir . '/' . $this->attach_filename) )
 				{
 					if ( !@copy($file, $upload_dir . '/' . $this->attach_filename) )

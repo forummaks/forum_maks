@@ -222,11 +222,11 @@ elseif( isset($_GET['pane']) && $_GET['pane'] == 'right' )
 		"GZIP_COMPRESSION" => ( $ft_cfg['gzip_compress'] ) ? $lang['ON'] : $lang['OFF'])
 	);
 
-	$sql = "SELECT u.user_id, u.username, u.user_session_time, u.user_session_page, u.user_allow_viewonline, s.session_logged_in, s.session_ip, s.session_start
+	$sql = "SELECT u.user_id, u.username, u.user_session_time, u.user_allow_viewonline, s.session_logged_in, s.session_ip, s.session_start
 		FROM " . USERS_TABLE . " u, " . SESSIONS_TABLE . " s
 		WHERE s.session_logged_in = " . TRUE . "
 			AND u.user_id = s.session_user_id
-			AND u.user_id <> " . ANONYMOUS . "
+			AND u.user_id <> " . GUEST_UID . "
 			AND s.session_time >= " . ( time() - 300 ) . "
 		ORDER BY s.session_ip ASC, u.user_session_time DESC";
 	if(!$result = $db->sql_query($sql))
@@ -235,7 +235,7 @@ elseif( isset($_GET['pane']) && $_GET['pane'] == 'right' )
 	}
 	$onlinerow_reg = @$db->sql_fetchrowset($result);
 
-	$sql = "SELECT session_page, session_logged_in, session_time, session_ip, session_start
+	$sql = "SELECT session_logged_in, session_time, session_ip, session_start
 		FROM " . SESSIONS_TABLE . "
 		WHERE session_logged_in = 0
 			AND session_time >= " . ( time() - 300 ) . "

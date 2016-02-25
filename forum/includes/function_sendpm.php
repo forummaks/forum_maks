@@ -9,7 +9,7 @@ function send_pm($user_from_id, $user_to_id, $pm_subject, $pm_message)
 	$sql = "SELECT *
 		FROM " . USERS_TABLE . " 
 		WHERE user_id = " . $user_to_id . "
-		AND user_id <> " . ANONYMOUS;
+		AND user_id <> " . GUEST_UID;
 	if ( !($result = $db->sql_query($sql)) )
 	{
 		message_die(GENERAL_ERROR, $lang['non_existing_user'], '', __LINE__, __FILE__, $sql);

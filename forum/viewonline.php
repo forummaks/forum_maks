@@ -1,11 +1,13 @@
 <?php
+define('IN_FORUM', true);
+define('FT_SCRIPT', 'online');
 define('FT_ROOT', './');
 require(FT_ROOT . 'common.php');
 
 //
 // Start session management
 //
-$userdata = session_pagestart($user_ip, PAGE_VIEWONLINE);
+$userdata = session_pagestart($user_ip);
 init_userprefs($userdata);
 //
 // End session management
@@ -56,7 +58,7 @@ $is_auth_ary = auth(AUTH_VIEW, AUTH_LIST_ALL, $userdata);
 //
 // Get user list
 //
-$sql = "SELECT u.user_id, u.username, u.user_allow_viewonline, u.user_level, s.session_logged_in, s.session_time, s.session_page, s.session_ip
+$sql = "SELECT u.user_id, u.username, u.user_allow_viewonline, u.user_level, s.session_logged_in, s.session_time, s.session_ip
 	FROM " . USERS_TABLE . " u, " . SESSIONS_TABLE . " s
 	WHERE u.user_id = s.session_user_id
 		AND s.session_time >= " . (time() - 300) . "
@@ -118,59 +120,6 @@ while ($row = $db->sql_fetchrow($result)) {
     $prev_ip = $row['session_ip'];
 
     if ($view_online) {
-        if ($row['session_page'] < 1 || !$is_auth_ary[$row['session_page']]['auth_view']) {
-            switch ($row['session_page']) {
-                case PAGE_INDEX:
-                    $location = $lang['Forum_index'];
-                    $location_url = "index.php";
-                    break;
-                case PAGE_POSTING:
-                    $location = $lang['Posting_message'];
-                    $location_url = "index.php";
-                    break;
-                case PAGE_LOGIN:
-                    $location = $lang['Logging_on'];
-                    $location_url = "index.php";
-                    break;
-                case PAGE_SEARCH:
-                    $location = $lang['Searching_forums'];
-                    $location_url = "search.php";
-                    break;
-                case PAGE_PROFILE:
-                    $location = $lang['Viewing_profile'];
-                    $location_url = "index.php";
-                    break;
-                case PAGE_VIEWONLINE:
-                    $location = $lang['Viewing_online'];
-                    $location_url = "viewonline.php";
-                    break;
-                case PAGE_VIEWMEMBERS:
-                    $location = $lang['Viewing_member_list'];
-                    $location_url = "memberlist.php";
-                    break;
-                case PAGE_PRIVMSGS:
-                    $location = $lang['Viewing_priv_msgs'];
-                    $location_url = "privmsg.php";
-                    break;
-                case PAGE_FAQ:
-                    $location = $lang['Viewing_FAQ'];
-                    $location_url = "faq.php";
-                    break;
-                //bt
-                case PAGE_TRACKER:
-                    $location = $lang['Viewing_TRACKER'];
-                    $location_url = "tracker.php";
-                    break;
-                //bt end
-
-                default:
-                    $location = $lang['Forum_index'];
-                    $location_url = "index.php";
-            }
-        } else {
-            $location_url = append_sid("viewforum.php?" . POST_FORUM_URL . '=' . $row['session_page']);
-            $location = $forum_data[$row['session_page']];
-        }
 
         $template->assign_block_vars("$which_row", array(
                 'ROW_CLASS' => !($i % 2) ? 'row1' : 'row2',
@@ -179,8 +128,7 @@ while ($row = $db->sql_fetchrow($result)) {
                 'FORUM_LOCATION' => $location,
 
                 'U_USER_PROFILE' => append_sid("profile.php?mode=viewprofile&amp;" . POST_USERS_URL . '=' . $user_id),
-                'U_FORUM_LOCATION' => append_sid($location_url))
-        );
+		));
 
         $$which_counter++;
     }

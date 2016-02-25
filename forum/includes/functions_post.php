@@ -108,7 +108,7 @@ function prepare_post(&$mode, &$post_data, &$bbcode_on, &$html_on, &$smilies_on,
 	// Check username
 	if (!empty($username))
 	{
-		$username = phpbb_clean_username($username);
+		$username = clean_username($username);
 
 		if (!$userdata['session_logged_in'] || ($userdata['session_logged_in'] && $username != $userdata['username']))
 		{
@@ -211,7 +211,7 @@ function submit_post($mode, &$post_data, &$message, &$meta, &$forum_id, &$topic_
 		//
 		// Flood control
 		//
-		$where_sql = ($userdata['user_id'] == ANONYMOUS) ? "poster_ip = '$user_ip'" : 'poster_id = ' . $userdata['user_id'];
+		$where_sql = ($userdata['user_id'] == GUEST_UID) ? "poster_ip = '$user_ip'" : 'poster_id = ' . $userdata['user_id'];
 		$sql = "SELECT MAX(post_time) AS last_post_time
 			FROM " . POSTS_TABLE . "
 			WHERE $where_sql";
@@ -232,7 +232,7 @@ function submit_post($mode, &$post_data, &$message, &$meta, &$forum_id, &$topic_
 	if ($mode != 'editpost')
 	{
 		$lastposttime = $row['last_post_time'];
-		$where_sql = ($userdata['user_id'] == ANONYMOUS) ? "p.poster_ip = '$user_ip'" : 'p.poster_id = ' . $userdata['user_id'];
+		$where_sql = ($userdata['user_id'] == GUEST_UID) ? "p.poster_ip = '$user_ip'" : 'p.poster_id = ' . $userdata['user_id'];
 
 		$sql = "SELECT pt.post_text, pt.bbcode_uid
 			FROM " . POSTS_TABLE . " p, " . POSTS_TEXT_TABLE . " pt
@@ -643,7 +643,7 @@ function user_notification($mode, &$post_data, &$topic_title, &$forum_id, &$topi
 			$sql = "SELECT u.user_id, u.user_email, u.user_lang
 				FROM " . TOPICS_WATCH_TABLE . " tw, " . USERS_TABLE . " u
 				WHERE tw.topic_id = $topic_id
-					AND tw.user_id NOT IN (" . $userdata['user_id'] . ", " . ANONYMOUS . $user_id_sql . ")
+					AND tw.user_id NOT IN (" . $userdata['user_id'] . ", " . GUEST_UID . $user_id_sql . ")
 					AND tw.notify_status = " . TOPIC_WATCH_UN_NOTIFIED . "
 					AND u.user_id = tw.user_id";
 			if (!($result = $db->sql_query($sql)))
@@ -787,7 +787,7 @@ function user_notification($mode, &$post_data, &$topic_title, &$forum_id, &$topi
 // Fill smiley templates (or just the variables) with smileys
 // Either in a window or inline
 //
-function generate_smilies($mode, $page_id)
+function generate_smilies($mode)
 {
 	global $db, $ft_cfg, $template, $lang, $images, $theme;
 	global $user_ip, $session_length, $starttime;
@@ -799,7 +799,7 @@ function generate_smilies($mode, $page_id)
 
 	if ($mode == 'window')
 	{
-		$userdata = session_pagestart($user_ip, $page_id);
+		$userdata = session_pagestart($user_ip);
 		init_userprefs($userdata);
 
 		$gen_simple_header = TRUE;

@@ -390,20 +390,20 @@ else
 				$total_sql .= "SELECT COUNT(user_id) AS total
 								FROM ".USERS_TABLE."
 									WHERE REGEXP_LIKE(username, '".str_replace("\'", "''", $username)."')
-										AND user_id <> ".ANONYMOUS;
+										AND user_id <> ".GUEST_UID;
 
 				$select_sql .= "	WHERE REGEXP_LIKE(u.username, '".str_replace("\'", "''", $username)."')
-										AND u.user_id <> ".ANONYMOUS;
+										AND u.user_id <> ".GUEST_UID;
 			}
 			else
 			{
 				$total_sql .= "SELECT COUNT(user_id) AS total
 								FROM ".USERS_TABLE."
 									WHERE {$lower_b}username{$lower_e} $op '".str_replace("\'", "''", $username)."'
-										AND user_id <> ".ANONYMOUS;
+										AND user_id <> ".GUEST_UID;
 
 				$select_sql .= "	WHERE {$lower_b}u.username{$lower_e} $op '".str_replace("\'", "''", $username)."'
-										AND u.user_id <> ".ANONYMOUS;
+										AND u.user_id <> ".GUEST_UID;
 			}
 			break;
 		case 'search_email':
@@ -439,20 +439,20 @@ else
 				$total_sql .= "SELECT COUNT(user_id) AS total
 								FROM ".USERS_TABLE."
 									WHERE REGEXP_LIKE(user_email, '".str_replace("\'", "''", $email)."')
-										AND user_id <> ".ANONYMOUS;
+										AND user_id <> ".GUEST_UID;
 
 				$select_sql .= "	WHERE REGEXP_LIKE(u.user_email, '".str_replace("\'", "''", $email)."')
-										AND u.user_id <> ".ANONYMOUS;
+										AND u.user_id <> ".GUEST_UID;
 			}
 			else
 			{
 				$total_sql .= "SELECT COUNT(user_id) AS total
 								FROM ".USERS_TABLE."
 									WHERE {$lower_b}user_email{$lower_e} $op '".str_replace("\'", "''", $email)."'
-										AND user_id <> ".ANONYMOUS;
+										AND user_id <> ".GUEST_UID;
 
 				$select_sql .= "	WHERE {$lower_b}u.user_email{$lower_e} $op '".str_replace("\'", "''", $email)."'
-										AND u.user_id <> ".ANONYMOUS;
+										AND u.user_id <> ".GUEST_UID;
 			}
 			break;
 		case 'search_ip':
@@ -577,7 +577,7 @@ else
 
 			$sql = "SELECT poster_id
 						FROM ".POSTS_TABLE."
-							WHERE poster_id <> ".ANONYMOUS."
+							WHERE poster_id <> ".GUEST_UID."
 								AND ($where_sql)
 							GROUP BY poster_id";
 
@@ -654,10 +654,10 @@ else
 			$total_sql .= "SELECT COUNT(user_id) AS total
 							FROM ".USERS_TABLE."
 								WHERE user_regdate $arg $time
-									AND user_id <> ".ANONYMOUS;
+									AND user_id <> ".GUEST_UID;
 
 			$select_sql .= "	WHERE u.user_regdate $arg $time
-									AND u.user_id <> ".ANONYMOUS;
+									AND u.user_id <> ".GUEST_UID;
 
 			break;
 		case 'search_group':
@@ -693,12 +693,12 @@ else
 							FROM ".USERS_TABLE." AS u, ".USER_GROUP_TABLE." AS ug
 								WHERE u.user_id = ug.user_id
 										AND ug.group_id = $group_id
-										AND u.user_id <> ".ANONYMOUS;
+										AND u.user_id <> ".GUEST_UID;
 
 			$select_sql .= ", ".USER_GROUP_TABLE." AS ug
 								WHERE u.user_id = ug.user_id
 										AND ug.group_id = $group_id
-										AND u.user_id <> ".ANONYMOUS;
+										AND u.user_id <> ".GUEST_UID;
 
 			break;
 		case 'search_postcount':
@@ -717,10 +717,10 @@ else
 					$total_sql .= "SELECT COUNT(user_id) AS total
 									FROM ".USERS_TABLE."
 										WHERE user_posts > $postcount_value
-											AND user_id <> ".ANONYMOUS;
+											AND user_id <> ".GUEST_UID;
 
 					$select_sql .= "	WHERE u.user_posts > $postcount_value
-											AND u.user_id <> ".ANONYMOUS;
+											AND u.user_id <> ".GUEST_UID;
 					break;
 				case 'lesser':
 					$postcount_value = intval($postcount_value);
@@ -730,10 +730,10 @@ else
 					$total_sql .= "SELECT COUNT(user_id) AS total
 									FROM ".USERS_TABLE."
 										WHERE user_posts < $postcount_value
-											AND user_id <> ".ANONYMOUS;
+											AND user_id <> ".GUEST_UID;
 
 					$select_sql .= "	WHERE u.user_posts < $postcount_value
-											AND u.user_id <> ".ANONYMOUS;
+											AND u.user_id <> ".GUEST_UID;
 					break;
 				case 'equals':
 					// looking for a -
@@ -755,11 +755,11 @@ else
 										FROM ".USERS_TABLE."
 											WHERE user_posts >= $range_begin
 												AND user_posts <= $range_end
-												AND user_id <> ".ANONYMOUS;
+												AND user_id <> ".GUEST_UID;
 
 						$select_sql .= "	WHERE u.user_posts >= $range_begin
 												AND u.user_posts <= $range_end
-												AND u.user_id <> ".ANONYMOUS;
+												AND u.user_id <> ".GUEST_UID;
 					}
 					else
 					{
@@ -770,10 +770,10 @@ else
 						$total_sql .= "SELECT COUNT(user_id) AS total
 										FROM ".USERS_TABLE."
 											WHERE user_posts = $postcount_value
-												AND user_id <> ".ANONYMOUS;
+												AND user_id <> ".GUEST_UID;
 
 						$select_sql .= "	WHERE u.user_posts = $postcount_value
-												AND u.user_id <> ".ANONYMOUS;
+												AND u.user_id <> ".GUEST_UID;
 					}
 					break;
 				default:
@@ -842,20 +842,20 @@ else
 				$total_sql .= "SELECT COUNT(user_id) AS total
 								FROM ".USERS_TABLE."
 									WHERE REGEXP_LIKE($field, '".str_replace("\'", "''", $userfield_value)."')
-										AND user_id <> ".ANONYMOUS;
+										AND user_id <> ".GUEST_UID;
 
 				$select_sql .= "	WHERE REGEXP_LIKE(u.$field, '".str_replace("\'", "''", $userfield_value)."')
-										AND u.user_id <> ".ANONYMOUS;
+										AND u.user_id <> ".GUEST_UID;
 			}
 			else
 			{
 				$total_sql .= "SELECT COUNT(user_id) AS total
 								FROM ".USERS_TABLE."
 									WHERE {$lower_b}$field{$lower_e} $op '".str_replace("\'", "''", $userfield_value)."'
-										AND user_id <> ".ANONYMOUS;
+										AND user_id <> ".GUEST_UID;
 
 				$select_sql .= "	WHERE {$lower_b}u.$field{$lower_e} $op '".str_replace("\'", "''", $userfield_value)."'
-										AND u.user_id <> ".ANONYMOUS;
+										AND u.user_id <> ".GUEST_UID;
 			}
 
 			break;
@@ -875,10 +875,10 @@ else
 					$total_sql .= "SELECT COUNT(user_id) AS total
 									FROM ".USERS_TABLE."
 										WHERE user_lastvisit >= $lastvisited_seconds
-											AND user_id <> ".ANONYMOUS;
+											AND user_id <> ".GUEST_UID;
 
 					$select_sql .= "	WHERE u.user_lastvisit >= $lastvisited_seconds
-											AND u.user_id <> ".ANONYMOUS;
+											AND u.user_id <> ".GUEST_UID;
 					break;
 				case 'after':
 					$text = sprintf($lang['Search_for_lastvisited_afterthelast'], $lastvisited_days, ( ( $lastvisited_days > 1 ) ? $lang['Days'] : $lang['Day'] ));
@@ -886,10 +886,10 @@ else
 					$total_sql .= "SELECT COUNT(user_id) AS total
 									FROM ".USERS_TABLE."
 										WHERE user_lastvisit < $lastvisited_seconds
-											AND user_id <> ".ANONYMOUS;
+											AND user_id <> ".GUEST_UID;
 
 					$select_sql .= "	WHERE u.user_lastvisit < $lastvisited_seconds
-											AND u.user_id <> ".ANONYMOUS;
+											AND u.user_id <> ".GUEST_UID;
 
 					break;
 				default:
@@ -912,10 +912,10 @@ else
 			$total_sql .= "SELECT COUNT(user_id) AS total
 							FROM ".USERS_TABLE."
 								WHERE user_lang = '".str_replace("\'", "''", $language_type)."'
-									AND user_id <> ".ANONYMOUS;
+									AND user_id <> ".GUEST_UID;
 
 			$select_sql .= "	WHERE u.user_lang = '".str_replace("\'", "''", $language_type)."'
-									AND u.user_id <> ".ANONYMOUS;
+									AND u.user_id <> ".GUEST_UID;
 
 			break;
 		case 'search_timezone':
@@ -927,10 +927,10 @@ else
 			$total_sql .= "SELECT COUNT(user_id) AS total
 							FROM ".USERS_TABLE."
 								WHERE user_timezone = $timezone_type
-									AND user_id <> ".ANONYMOUS;
+									AND user_id <> ".GUEST_UID;
 
 			$select_sql .= "	WHERE u.user_timezone = $timezone_type
-									AND u.user_id <> ".ANONYMOUS;
+									AND u.user_id <> ".GUEST_UID;
 
 			break;
 		case 'search_style':
@@ -960,10 +960,10 @@ else
 			$total_sql .= "SELECT COUNT(user_id) AS total
 							FROM ".USERS_TABLE."
 								WHERE user_style = $style_type
-									AND user_id <> ".ANONYMOUS;
+									AND user_id <> ".GUEST_UID;
 
 			$select_sql .= "	WHERE u.user_style = $style_type
-									AND u.user_id <> ".ANONYMOUS;
+									AND u.user_id <> ".GUEST_UID;
 
 			break;
 		case 'search_moderators':
@@ -996,7 +996,7 @@ else
 									AND	g.group_id = aa.group_id
 									AND aa.forum_id = ". $moderators_forum ."
 									AND aa.auth_mod = 1
-									AND u.user_id <> ".ANONYMOUS;
+									AND u.user_id <> ".GUEST_UID;
 
 			$select_sql .= ", ".GROUPS_TABLE." AS g, ".USER_GROUP_TABLE." AS ug, ".AUTH_ACCESS_TABLE." AS aa
 								WHERE u.user_id = ug.user_id
@@ -1004,7 +1004,7 @@ else
 									AND	g.group_id = aa.group_id
 									AND aa.forum_id = ". $moderators_forum ."
 									AND aa.auth_mod = 1
-									AND u.user_id <> ".ANONYMOUS."
+									AND u.user_id <> ".GUEST_UID."
 								GROUP BY u.user_id, u.username, u.user_email, u.user_posts, u.user_regdate, u.user_level, u.user_active, u.user_lastvisit";
 			break;
 		case 'search_misc':
@@ -1021,10 +1021,10 @@ else
 					$total_sql .= "SELECT COUNT(user_id) AS total
 									FROM ".USERS_TABLE."
 										WHERE user_level = ".ADMIN."
-											AND user_id <> ".ANONYMOUS;
+											AND user_id <> ".GUEST_UID;
 
 					$select_sql .= "	WHERE u.user_level = ".ADMIN."
-											AND u.user_id <> ".ANONYMOUS;
+											AND u.user_id <> ".GUEST_UID;
 					break;
 				case 'mods':
 					$text = $lang['Search_for_mods'];
@@ -1032,10 +1032,10 @@ else
 					$total_sql .= "SELECT COUNT(user_id) AS total
 									FROM ".USERS_TABLE."
 										WHERE user_level = ".MOD."
-											AND user_id <> ".ANONYMOUS;
+											AND user_id <> ".GUEST_UID;
 
 					$select_sql .= "	WHERE u.user_level = ".MOD."
-											AND u.user_id <> ".ANONYMOUS;
+											AND u.user_id <> ".GUEST_UID;
 					break;
 				case 'banned':
 					$text = $lang['Search_for_banned'];
@@ -1043,11 +1043,11 @@ else
 					$total_sql .= "SELECT COUNT(u.user_id) AS total
 									FROM ".USERS_TABLE." AS u, ".BANLIST_TABLE." AS b
 										WHERE u.user_id = b.ban_userid
-											AND u.user_id <> ".ANONYMOUS;
+											AND u.user_id <> ".GUEST_UID;
 
 					$select_sql .= ", ".BANLIST_TABLE." AS b
 										WHERE u.user_id = b.ban_userid
-											AND u.user_id <> ".ANONYMOUS;
+											AND u.user_id <> ".GUEST_UID;
 
 					break;
 				case 'disabled':
@@ -1056,10 +1056,10 @@ else
 					$total_sql .= "SELECT COUNT(user_id) AS total
 									FROM ".USERS_TABLE."
 										WHERE user_active = 0
-											AND user_id <> ".ANONYMOUS;
+											AND user_id <> ".GUEST_UID;
 
 					$select_sql .= "	WHERE u.user_active = 0
-											AND u.user_id <> ".ANONYMOUS;
+											AND u.user_id <> ".GUEST_UID;
 
 					break;
 				case 'disabled_pms':
@@ -1068,10 +1068,10 @@ else
 					$total_sql .= "SELECT COUNT(user_id) AS total
 									FROM ".USERS_TABLE."
 										WHERE user_allow_pm = 0
-											AND user_id <> ".ANONYMOUS;
+											AND user_id <> ".GUEST_UID;
 
 					$select_sql .= "	WHERE u.user_allow_pm = 0
-											AND u.user_id <> ".ANONYMOUS;
+											AND u.user_id <> ".GUEST_UID;
 
 					break;
 				default:

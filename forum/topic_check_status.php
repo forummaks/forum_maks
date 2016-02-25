@@ -1,5 +1,6 @@
 <?php
 
+define('FT_SCRIPT', 'check_status');
 define('FT_ROOT', './');
 require(FT_ROOT . 'common.php');
 require_once(FT_ROOT .'includes/functions_torrent.php');
@@ -10,7 +11,7 @@ require_once(FT_ROOT . 'includes/bbcode.php');
 require_once(FT_ROOT . 'includes/functions_post.php');
 
 // Start session management
-$userdata = session_pagestart($user_ip, PAGE_INDEX);
+$userdata = session_pagestart($user_ip);
 init_userprefs($userdata);
 
 $user_id = $userdata['user_id'];

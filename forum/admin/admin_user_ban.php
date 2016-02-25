@@ -327,7 +327,7 @@ else
 		FROM " . BANLIST_TABLE . " b, " . USERS_TABLE . " u
 		WHERE u.user_id = b.ban_userid
 			AND b.ban_userid <> 0
-			AND u.user_id <> " . ANONYMOUS . "
+			AND u.user_id <> " . GUEST_UID . "
 		ORDER BY u.user_id ASC";
 	if ( !($result = $db->sql_query($sql)) )
 	{

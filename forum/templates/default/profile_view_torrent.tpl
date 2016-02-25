@@ -10,19 +10,19 @@
 		<td colspan="5" class="row2" align="center">
 			<table cellspacing="2" cellpadding="2" border="0">
                         <tr>
-					<td align="right"><span class="gen" style="color: #993300"><b>Рейтинг:</b></span></td>
+					<td align="right"><span class="gen" style="color: #993300"><b>Р РµР№С‚РёРЅРі:</b></span></td>
 					<td><span class="gen"><b>{UP_DOWN_RATIO}</b></span> &nbsp;[ <a href="{U_SEARCH_RELEASES}" class="genmed">{L_SEARCH_USER_RELEASES}</a> ]</td>
 				</tr>
 				<tr>
-					<td align="right"><span class="gen"><b>Отдано:</b></span></td>
+					<td align="right"><span class="gen"><b>РћС‚РґР°РЅРѕ:</b></span></td>
 					<td><span class="seed"><b>{TOTAL_UPLOADED}</b></span></td>
 				</tr>
                         <tr>
-                              <td align="right"><span class="gen"><b>Бонус:</b></span></td>
+                              <td align="right"><span class="gen"><b>Р‘РѕРЅСѓСЃ:</b></span></td>
                               <td><span class="seed"><b>{TOTAL_BONUS}</b></span> &nbsp;[ {WHAT_IS_BONUS} ]</td>
                         </tr>
 				<tr>
-					<td align="right"><span class="gen"><b>Скачано:</b></span></td>
+					<td align="right"><span class="gen"><b>РЎРєР°С‡Р°РЅРѕ:</b></span></td>
 					<td><span class="leech"><b>{TOTAL_DOWNLOADED}</b></span></td>
 				</tr>
 				<!-- BEGIN switch_auth_key -->

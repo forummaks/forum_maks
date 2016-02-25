@@ -1,34 +1,4 @@
 
-<table width="100%" cellpadding="0" cellspacing="0" border="0">
-<tr>
-<!-- begin left block -->
-<td style="width: 200px; padding: 10px 10px 4px 4px; vertical-align: top;">
-<a href="index.php"><img src="images/left-banner.gif" style="border: 1px solid #000000; width: 200px; height: 400px;"></a>
-</td>
-<!-- end left block -->
-
-<td style="vertical-align: top;">
-
-<!-- IF SHOW_LATEST_NEWS -->
-	<div id="latest_news">
-	<table cellspacing="0" cellpadding="0" width="100%">
-	<tr>
-      	<td width="100%" style="padding-left: 1px">
-		<div style="font-size: 13px; font-weight: bold; letter-spacing: 1px; padding: 6px 0 3px 0; color: #333333;">Новости трекера</div>
-		<table cellpadding="0">
-	      <!-- BEGIN news -->
-		<tr>
-      	<td><div class="news_date">{news.NEWS_TIME}</div></td>
-		<td width="100%"><div class="news_title<!-- IF news.NEWS_IS_NEW --> new<!-- ENDIF -->"><a href=./viewtopic.php?t={news.NEWS_TOPIC_ID}>{news.NEWS_TOPIC_NAME}</a></div></td>
-	      </tr>
-		<!-- END news -->
-		</table>
-		</td>
-	</tr>
-      </table>
-	</div>
-<!-- ENDIF / SHOW_LATEST_NEWS -->
-
 <table width="100%" cellspacing="0" cellpadding="0" border="0" align="center" style="margin-top:3px">
   <tr>
 	<td align="left" valign="bottom" class="mainmenu">
@@ -163,8 +133,4 @@
 	<td width="20" align="center"><img src="templates/default/images/folder_locked_big.gif" alt="{L_FORUM_LOCKED}" /></td>
 	<td><span class="gensmall">{L_FORUM_LOCKED}</span></td>
   </tr>
-</table>
-
-</td>
-</tr>
 </table>

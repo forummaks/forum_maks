@@ -1,4 +1,6 @@
 <?php
+define('IN_FORUM', true);
+define('FT_SCRIPT', 'modcp');
 define('FT_ROOT', './');
 require(FT_ROOT . 'common.php');
 require(FT_ROOT . 'includes/bbcode.php');
@@ -138,7 +140,7 @@ else
 //
 // Start session management
 //
-$userdata = session_pagestart($user_ip, $forum_id);
+$userdata = session_pagestart($user_ip);
 init_userprefs($userdata);
 //
 // End session management
@@ -1286,7 +1288,7 @@ switch( $mode )
 			do
 			{
 				$id = $row['user_id'];
-				$username = ( $id == ANONYMOUS ) ? $lang['Guest'] : $row['username'];
+				$username = ( $id == GUEST_UID ) ? $lang['Guest'] : $row['username'];
 
 				$template->assign_block_vars('userrow', array(
 						'ROW_CLASS' => !($i % 2) ? 'row1' : 'row2',
@@ -1294,7 +1296,7 @@ switch( $mode )
 					'POSTS' => $row['postings'] . ' ' . ( ( $row['postings'] == 1 ) ? $lang['Post'] : $lang['Posts'] ),
 					'L_SEARCH_POSTS' => sprintf($lang['Search_user_posts'], $username),
 
-					'U_PROFILE' => ($id == ANONYMOUS) ? "modcp.php?mode=ip&amp;" . POST_POST_URL . "=" . $post_id . "&amp;" . POST_TOPIC_URL . "=" . $topic_id . "&amp;sid=" . $userdata['session_id'] : append_sid("profile.php?mode=viewprofile&amp;" . POST_USERS_URL . "=$id"),
+					'U_PROFILE' => ($id == GUEST_UID) ? "modcp.php?mode=ip&amp;" . POST_POST_URL . "=" . $post_id . "&amp;" . POST_TOPIC_URL . "=" . $topic_id . "&amp;sid=" . $userdata['session_id'] : append_sid("profile.php?mode=viewprofile&amp;" . POST_USERS_URL . "=$id"),
 					'U_SEARCHPOSTS' => append_sid("search.php?search_author=" . urlencode($username) . "&amp;showresults=topics"))
 				);
 

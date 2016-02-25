@@ -1,11 +1,11 @@
 <?php
-
+define('FT_SCRIPT', 'torrent');
 define('FT_ROOT', './');
 require(FT_ROOT . 'common.php');
 require_once(FT_ROOT .'includes/functions_torrent.php');
 
 // Start session management
-$userdata = session_pagestart($user_ip, PAGE_INDEX);
+$userdata = session_pagestart($user_ip);
 init_userprefs($userdata);
 
 $user_id = $userdata['user_id'];

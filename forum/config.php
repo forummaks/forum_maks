@@ -4,6 +4,9 @@ if (!defined('FT_ROOT')) die(basename(__FILE__));
 
 $ft_cfg = $page_cfg = array();
 
+// Increase number after changing js or css
+$ft_cfg['js_ver'] = $ft_cfg['css_ver'] = 1;
+
 // Primary domain name
 $domain_name = 'ft.org'; // enter here your primary domain name of your site
 $domain_name = (!empty($_SERVER['SERVER_NAME'])) ? $_SERVER['SERVER_NAME'] : $domain_name;
@@ -58,6 +61,11 @@ define('LANG_ROOT_DIR', FT_PATH .'/language/'        		 );
 define('IMAGES_DIR',    FT_PATH .'/images/'           		 );
 define('TEMPLATES_DIR', FT_PATH .'/templates/'        		 );
 
+// URL's
+$ft_cfg['login_url']   = 'login.php';    #  "http://{$domain_name}/login.php"
+$ft_cfg['posting_url'] = 'posting.php';  #  "http://{$domain_name}/posting.php"
+$ft_cfg['pm_url']      = 'privmsg.php';  #  "http://{$domain_name}/privmsg.php"
+
 // Templates
 define('ADMIN_TPL_DIR', TEMPLATES_DIR .'/admin/');
 
@@ -70,7 +78,17 @@ $ft_cfg['templates'] = array(
 $ft_cfg['tpl_name'] = 'default';
 $ft_cfg['link_css'] = 'main.css';
 
-define('GZIP_OUTPUT_ALLOWED', (extension_loaded('zlib') && !ini_get('zlib.output_compression')));
+$ft_cfg['show_sidebar1_on_every_page'] = false;
+$ft_cfg['show_sidebar2_on_every_page'] = false;
+
+$page_cfg['show_sidebar1'] = array(
+#	FT_SCRIPT => true
+	'index'   => true,
+);
+$page_cfg['show_sidebar2'] = array(
+#	FT_SCRIPT => true
+	'index'   => true,
+);
 
 // Cookie
 $ft_cfg['cookie_domain'] = in_array($domain_name, array(getenv('SERVER_ADDR'), 'localhost')) ? '' : ".$domain_name";
@@ -93,6 +111,25 @@ define('LOG_EXT',      'log');
 define('LOG_SEPR',     ' | ');
 define('LOG_LF',       "\n");
 define('LOG_MAX_SIZE', 1048576); // bytes
+
+// Error reporting
+ini_set('error_reporting', E_ALL);
+ini_set('display_errors',  0);
+ini_set('log_errors',      1);
+ini_set('error_log',       LOG_DIR .'php_err.log');
+
+// Check some variable
+// Magic quotes
+if (get_magic_quotes_gpc()) die('Set magic_quotes off');
+// JSON
+if (!function_exists('json_encode')) die('Json_encode not installed');
+
+// Misc
+define('MEM_USAGE', function_exists('memory_get_usage'));
+
+$ft_cfg['mem_on_start'] = (MEM_USAGE) ? memory_get_usage() : 0;
+
+define('GZIP_OUTPUT_ALLOWED', (extension_loaded('zlib') && !ini_get('zlib.output_compression')));
 
 // Topics
 $ft_cfg['ext_link_new_win']       = true;          // open external links in new window

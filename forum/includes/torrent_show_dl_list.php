@@ -113,7 +113,7 @@ if ($show_dl_list)
 			{
 				$upd_time = create_date($title_date_format, $user['update_time'], $ft_cfg['board_timezone']);
 				$upd_time_title = ($exp_time) ? " upd: $upd_time \n exp: $exp_time " : " $upd_time ";
-				$u_prof_href = ($user['user_id'] == ANONYMOUS) ? '#' : append_sid("profile.php?mode=viewprofile&amp;u=". $user['user_id']) .'#torrent';
+				$u_prof_href = ($user['user_id'] == GUEST_UID) ? '#' : append_sid("profile.php?mode=viewprofile&amp;u=". $user['user_id']) .'#torrent';
 				$dl_cat[$user['user_status']] .= '<nobr><a class="'. $u_link_class .'" href="'. $u_prof_href .'" title="'. $upd_time_title .'">'. $user['username'] .'</a></nobr>, ';
 				$dl_count[$user['user_status']]++;
 			}

@@ -649,36 +649,10 @@ function get_total_attach_pm_filesize($direction, $user_id)
 //
 function prune_attachments($sql_post)
 {
-
 	//
 	// Yeah, prune it.
 	//
 	delete_attachment($sql_post);
-}
-
-//
-// Get allowed Extensions and their respective Values
-//
-function get_extension_informations()
-{
-	global $db;
-
-	$extensions = array();
-
-	// Don't count on forbidden extensions table, because it is not allowed to allow forbidden extensions at all
-	$sql = 'SELECT e.extension, g.cat_id, g.download_mode, g.upload_icon
-		FROM ' . EXTENSIONS_TABLE . ' e, ' . EXTENSION_GROUPS_TABLE . ' g
-		WHERE e.group_id = g.group_id
-			AND g.allow_group = 1';
-
-	if ( !($result = $db->sql_query($sql)) )
-	{
-		message_die(GENERAL_ERROR, 'Could not query Allowed Extensions.', '', __LINE__, __FILE__, $sql);
-	}
-
-	$extensions = $db->sql_fetchrowset($result);
-	$db->sql_freeresult($result);
-	return $extensions;
 }
 
 //

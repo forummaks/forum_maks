@@ -2,9 +2,6 @@
 		<th class="thHead" colspan="2">{L_ADD_ATTACH_TITLE}</th>
 	</tr>
 	<tr>
-		<td class="row1" colspan="2"><span class="gensmall">{L_ADD_ATTACH_EXPLAIN}<br />{RULES}</span></td>
-	</tr>
-	<tr>
 		<td class="row1"><span class="gen"><b>{L_FILE_NAME}</b></span></td>
   <td class="row2"><input type="file" name="fileupload" size="45" maxlength="{FILESIZE}" value="" class="post" /></td>
 	</tr>

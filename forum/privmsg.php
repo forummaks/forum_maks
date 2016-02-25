@@ -1,7 +1,7 @@
 <?php
-//sv
+define('IN_FORUM',   true);
+define('FT_SCRIPT', 'pm');
 define('IN_PM', TRUE);
-//sv end
 define('FT_ROOT', './');
 require(FT_ROOT . 'common.php');
 require(FT_ROOT . 'includes/bbcode.php');
@@ -55,7 +55,7 @@ else
 //
 // Start session management
 //
-$userdata = session_pagestart($user_ip, PAGE_PRIVMSGS);
+$userdata = session_pagestart($user_ip);
 init_userprefs($userdata);
 //
 // End session management
@@ -1149,7 +1149,7 @@ else if ( $submit || $refresh || $mode != '' )
 	{
 		if ( !empty($HTTP_POST_VARS['username']) )
 		{
-			$to_username = phpbb_clean_username($HTTP_POST_VARS['username']);
+			$to_username = clean_username($HTTP_POST_VARS['username']);
 			// DelUsrKeepPM
 			$to_username_sql = str_replace("\'", "''", $to_username);
 
@@ -1159,7 +1159,7 @@ else if ( $submit || $refresh || $mode != '' )
 
 			$to_userdata = $db->sql_fetchrow($db->sql_query($sql));
 
-			if (!$to_userdata || $to_userdata['user_id'] == ANONYMOUS)
+			if (!$to_userdata || $to_userdata['user_id'] == GUEST_UID)
 			{
 				$error = TRUE;
 				$error_msg = $lang['No_such_user'];
@@ -1424,7 +1424,7 @@ else if ( $submit || $refresh || $mode != '' )
 			$sql = "SELECT username
 				FROM " . USERS_TABLE . "
 				WHERE user_id = $user_id
-					AND user_id <> " . ANONYMOUS;
+					AND user_id <> " . GUEST_UID;
 			if ( !($result = $db->sql_query($sql)) )
 			{
 				$error = TRUE;
@@ -1729,7 +1729,7 @@ else if ( $submit || $refresh || $mode != '' )
 	//
 	// Send smilies to template
 	//
-	generate_smilies('inline', PAGE_PRIVMSGS);
+	generate_smilies('inline');
 
 	$privmsg_subject = preg_replace($html_entities_match, $html_entities_replace, $privmsg_subject);
 	$privmsg_subject = str_replace('"', '&quot;', $privmsg_subject);

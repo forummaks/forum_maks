@@ -2,7 +2,7 @@
 
 if (!defined('FT_ROOT')) die(basename(__FILE__));
 
-if ( empty($HTTP_GET_VARS[POST_USERS_URL]) || $HTTP_GET_VARS[POST_USERS_URL] == ANONYMOUS )
+if ( empty($HTTP_GET_VARS[POST_USERS_URL]) || $HTTP_GET_VARS[POST_USERS_URL] == GUEST_UID )
 {
 	message_die(GENERAL_MESSAGE, $lang['No_user_id_specified']);
 }

@@ -1,4 +1,6 @@
 <?php
+define('IN_FORUM', true);
+define('FT_SCRIPT', 'download');
 define('FT_ROOT', './');
 require(FT_ROOT . 'common.php');
 
@@ -108,7 +110,7 @@ function send_file_to_browser($attachment, $upload_dir)
 //
 // Start Session Management
 //
-$userdata = session_pagestart($user_ip, PAGE_INDEX);
+$userdata = session_pagestart($user_ip);
 init_userprefs($userdata);
 
 if (!$download_id)
@@ -194,38 +196,6 @@ if (!$authorised)
 {
 	message_die(GENERAL_MESSAGE, $lang['Sorry_auth_view_attach']);
 }
-
-//
-// Get Information on currently allowed Extensions
-//
-$sql = "SELECT e.extension, g.download_mode
-	FROM " . EXTENSION_GROUPS_TABLE . " g, " . EXTENSIONS_TABLE . " e
-	WHERE (g.allow_group = 1) AND (g.group_id = e.group_id)";
-
-if ( !($result = $db->sql_query($sql)) )
-{
-	message_die(GENERAL_ERROR, 'Could not query Allowed Extensions.', '', __LINE__, __FILE__, $sql);
-}
-
-$rows = $db->sql_fetchrowset($result);
-$num_rows = $db->num_rows($result);
-
-for ($i = 0; $i < $num_rows; $i++)
-{
-	$extension = strtolower(trim($rows[$i]['extension']));
-	$allowed_extensions[] = $extension;
-	$download_mode[$extension] = $rows[$i]['download_mode'];
-}
-
-//
-// disallowed ?
-//
-if ( (!in_array($attachment['extension'], $allowed_extensions)) && ($userdata['user_level'] != ADMIN) )
-{
-	message_die(GENERAL_MESSAGE, sprintf($lang['Extension_disabled_after_posting'], $attachment['extension']));
-}
-
-$download_mode = intval($download_mode[$attachment['extension']]);
 
 if ($thumbnail)
 {

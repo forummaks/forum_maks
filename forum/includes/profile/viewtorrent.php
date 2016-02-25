@@ -2,7 +2,7 @@
 
 if (!defined('IN_PROFILE')) die(basename(__FILE__));
 
-if (!$profiledata['user_id'] || $profiledata['user_id'] == ANONYMOUS)
+if (!$profiledata['user_id'] || $profiledata['user_id'] == GUEST_UID)
 {
 	message_die(GENERAL_ERROR, 'Invalid user_id');
 }

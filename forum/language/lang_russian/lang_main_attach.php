@@ -1,27 +1,4 @@
 <?php
-/***************************************************************************
- *                            lang_main_attach.php [English]
- *                              -------------------
- *     begin                : Thu Feb 07 2002
- *     copyright            : (C) 2002 Meik Sievertsen
- *     email                : acyd.burn@gmx.de
- *
- *     $Id: lang_main_attach.php,v 1.27 2003/01/16 11:11:56 acydburn Exp $
- *
- ****************************************************************************/
-
-/***************************************************************************
- *
- *   This program is free software; you can redistribute it and/or modify
- *   it under the terms of the GNU General Public License as published by
- *   the Free Software Foundation; either version 2 of the License, or
- *   (at your option) any later version.
- *
- ***************************************************************************/
-
-//
-// Attachment Mod Main Language Variables
-//
 
 // Auth Related Entries
 $lang['Rules_attach_can'] = 'Вы <b>можете</b> прикреплять файлы к сообщениям';

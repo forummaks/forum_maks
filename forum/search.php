@@ -1,6 +1,7 @@
 <?php
 unset($_GET['highlight'], $_GET['highlight']);
 
+define('FT_SCRIPT', 'search');
 define('FT_ROOT', './');
 require(FT_ROOT . 'common.php');
 require(FT_ROOT . 'includes/bbcode.php');
@@ -9,7 +10,7 @@ require(FT_ROOT . 'includes/functions_search.php');
 //
 // Start session management
 //
-$userdata = session_pagestart($user_ip, PAGE_SEARCH);
+$userdata = session_pagestart($user_ip);
 init_userprefs($userdata);
 //
 // End session management
@@ -41,7 +42,7 @@ else
 if ( isset($HTTP_POST_VARS['search_author']) || isset($HTTP_GET_VARS['search_author']))
 {
 	$search_author = ( isset($HTTP_POST_VARS['search_author']) ) ? $HTTP_POST_VARS['search_author'] : $HTTP_GET_VARS['search_author'];
-	$search_author = phpbb_clean_username($search_author);
+	$search_author = clean_username($search_author);
 }
 else
 {
@@ -180,9 +181,9 @@ if ($search_id == 'dl' || isset($_GET['dl_search']))
 	{
 		$dl_uid = intval($_GET['dl_uid']);
 
-		if ($dl_uid == ANONYMOUS)
+		if ($dl_uid == GUEST_UID)
 		{
-			message_die(GENERAL_ERROR, 'Anonymous ??');
+			message_die(GENERAL_ERROR, 'GUEST_UID ??');
 		}
 
 		$sql = 'SELECT username FROM '. USERS_TABLE ."
@@ -1160,9 +1161,9 @@ else if ( $search_keywords != '' || $search_author != '' || $search_id )
 
 				}
 
-				$poster = ( $searchset[$i]['user_id'] != ANONYMOUS ) ? '<a href="' . append_sid("profile.php?mode=viewprofile&amp;" . POST_USERS_URL . "=" . $searchset[$i]['user_id']) . '">' : '';
-				$poster .= ( $searchset[$i]['user_id'] != ANONYMOUS ) ? $searchset[$i]['username'] : ( ( $searchset[$i]['post_username'] != "" ) ? $searchset[$i]['post_username'] : $lang['Guest'] );
-				$poster .= ( $searchset[$i]['user_id'] != ANONYMOUS ) ? '</a>' : '';
+				$poster = ( $searchset[$i]['user_id'] != GUEST_UID ) ? '<a href="' . append_sid("profile.php?mode=viewprofile&amp;" . POST_USERS_URL . "=" . $searchset[$i]['user_id']) . '">' : '';
+				$poster .= ( $searchset[$i]['user_id'] != GUEST_UID ) ? $searchset[$i]['username'] : ( ( $searchset[$i]['post_username'] != "" ) ? $searchset[$i]['post_username'] : $lang['Guest'] );
+				$poster .= ( $searchset[$i]['user_id'] != GUEST_UID ) ? '</a>' : '';
 
 				if ( $userdata['session_logged_in'] && $searchset[$i]['post_time'] > $userdata['user_lastvisit'] )
 				{
@@ -1418,16 +1419,16 @@ else if ( $search_keywords != '' || $search_author != '' || $search_id )
 				}
 
 
-				$topic_author = ( $searchset[$i]['user_id'] != ANONYMOUS ) ? '<a href="' . append_sid("profile.php?mode=viewprofile&amp;" . POST_USERS_URL . '=' . $searchset[$i]['user_id']) . '">' : '';
-				$topic_author .= ( $searchset[$i]['user_id'] != ANONYMOUS ) ? $searchset[$i]['username'] : ( ( $searchset[$i]['post_username'] != '' ) ? $searchset[$i]['post_username'] : $lang['Guest'] );
+				$topic_author = ( $searchset[$i]['user_id'] != GUEST_UID ) ? '<a href="' . append_sid("profile.php?mode=viewprofile&amp;" . POST_USERS_URL . '=' . $searchset[$i]['user_id']) . '">' : '';
+				$topic_author .= ( $searchset[$i]['user_id'] != GUEST_UID ) ? $searchset[$i]['username'] : ( ( $searchset[$i]['post_username'] != '' ) ? $searchset[$i]['post_username'] : $lang['Guest'] );
 
-				$topic_author .= ( $searchset[$i]['user_id'] != ANONYMOUS ) ? '</a>' : '';
+				$topic_author .= ( $searchset[$i]['user_id'] != GUEST_UID ) ? '</a>' : '';
 
 				$first_post_time = create_date($ft_cfg['default_dateformat'], $searchset[$i]['topic_time'], $ft_cfg['board_timezone']);
 
 				$last_post_time = create_date($ft_cfg['default_dateformat'], $searchset[$i]['post_time'], $ft_cfg['board_timezone']);
 
-				$last_post_author = ( $searchset[$i]['id2'] == ANONYMOUS ) ? ( ($searchset[$i]['post_username2'] != '' ) ? $searchset[$i]['post_username2'] . ' ' : $lang['Guest'] . ' ' ) : '<a href="' . append_sid("profile.$phpEx?mode=viewprofile&amp;" . POST_USERS_URL . '='  . $searchset[$i]['id2']) . '">' . $searchset[$i]['user2'] . '</a>';
+				$last_post_author = ( $searchset[$i]['id2'] == GUEST_UID ) ? ( ($searchset[$i]['post_username2'] != '' ) ? $searchset[$i]['post_username2'] . ' ' : $lang['Guest'] . ' ' ) : '<a href="' . append_sid("profile.$phpEx?mode=viewprofile&amp;" . POST_USERS_URL . '='  . $searchset[$i]['id2']) . '">' . $searchset[$i]['user2'] . '</a>';
 
 				$last_post_url = '<a href="' . append_sid("viewtopic.php?"  . POST_POST_URL . '=' . $searchset[$i]['topic_last_post_id']) . '#' . $searchset[$i]['topic_last_post_id'] . '"><img src="' . $images['icon_latest_reply'] . '" alt="' . $lang['View_latest_post'] . '" title="' . $lang['View_latest_post'] . '" border="0" width="18" height="9" /></a>';
 

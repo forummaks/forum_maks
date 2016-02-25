@@ -1,10 +1,12 @@
 <?php
+define('IN_FORUM', true);
+define('FT_SCRIPT', 'memberlist');
 define('FT_ROOT', './');
 require(FT_ROOT . 'common.php');
 //
 // Start session management
 //
-$userdata = session_pagestart($user_ip, PAGE_VIEWMEMBERS);
+$userdata = session_pagestart($user_ip);
 init_userprefs($userdata);
 //
 // End session management
@@ -106,7 +108,7 @@ switch( $mode )
 }
 $sql = "SELECT username, user_id, user_viewemail, user_posts, user_regdate, user_from, user_website, user_email, user_icq, user_avatar, user_avatar_type, user_allowavatar
 	FROM " . USERS_TABLE . "
-	WHERE user_id <> " . ANONYMOUS . "
+	WHERE user_id <> " . GUEST_UID . "
 	ORDER BY $order_by";
 if( !($result = $db->sql_query($sql)) )
 {
@@ -123,7 +125,7 @@ if ( $row = $db->sql_fetchrow($result) )
 		$joined = create_date($lang['DATE_FORMAT'], $row['user_regdate'], $ft_cfg['board_timezone']);
 		$posts = ( $row['user_posts'] ) ? $row['user_posts'] : 0;
 		$poster_avatar = '';
-		if ( $row['user_avatar_type'] && $user_id != ANONYMOUS && $row['user_allowavatar'] )
+		if ( $row['user_avatar_type'] && $user_id != GUEST_UID && $row['user_allowavatar'] )
 		{
 			switch( $row['user_avatar_type'] )
 			{
@@ -204,7 +206,7 @@ if ( $mode != 'topten' || $ft_cfg['topics_per_page'] < 10 )
 {
 	$sql = "SELECT count(*) AS total
 		FROM " . USERS_TABLE . "
-		WHERE user_id <> " . ANONYMOUS;
+		WHERE user_id <> " . GUEST_UID;
 	if ( !($result = $db->sql_query($sql)) )
 	{
 		message_die(GENERAL_ERROR, 'Error getting total users', '', __LINE__, __FILE__, $sql);

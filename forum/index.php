@@ -1,5 +1,7 @@
 <?php
 
+define('IN_FORUM',   true);
+define('FT_SCRIPT', 'index');
 define('FT_ROOT', './');
 require(FT_ROOT . 'common.php');
 
@@ -8,7 +10,7 @@ define('LAST_TOPIC_MAX_LEN', 30);
 //
 // Start session management
 //
-$userdata = session_pagestart($user_ip, PAGE_INDEX);
+$userdata = session_pagestart($user_ip);
 init_userprefs($userdata);
 //
 // End session management
@@ -41,7 +43,7 @@ if( $mark_read == 'forums' )
 	$session_id = $userdata['session_id'];
 	$current_time = time();
 
-	if ($user_id != ANONYMOUS)
+	if ($user_id != GUEST_UID)
 	{
 		$sql = 'UPDATE ' . SESSIONS_TABLE . " SET
 				session_start = $current_time,
@@ -404,7 +406,7 @@ if ($cat_forums)
 
 				$last_post = $last_post_time . '<br />';
 
-				$last_post .= ($forum_data['user_id'] == ANONYMOUS) ? (($forum_data['post_username']) ? $forum_data['post_username'] .' ' : $lang['Guest'] .' ' ) : '<a href="'. append_sid("profile.php?mode=viewprofile&amp;". POST_USERS_URL .'='. $forum_data['user_id']) .'">'. $forum_data['username'] .'</a> ';
+				$last_post .= ($forum_data['user_id'] == GUEST_UID) ? (($forum_data['post_username']) ? $forum_data['post_username'] .' ' : $lang['Guest'] .' ' ) : '<a href="'. append_sid("profile.php?mode=viewprofile&amp;". POST_USERS_URL .'='. $forum_data['user_id']) .'">'. $forum_data['username'] .'</a> ';
 
 				$last_post .= '<a href="'. append_sid("viewtopic.php?". POST_POST_URL .'='. $forum_data['forum_last_post_id']) .'#'. $forum_data['forum_last_post_id'] .'"><img src="'. $images['icon_latest_reply'] .'" border="0" width="18" height="9" alt="'. $lang['View_latest_post'] .'" title="'. $lang['View_latest_post'] .'" /></a>';
 			}
@@ -441,7 +443,7 @@ if ($cat_forums)
 			//flt
 			if ($forum_data['forum_last_post_id'])
 			{
-				if ($forum_data['user_id'] == ANONYMOUS)
+				if ($forum_data['user_id'] == GUEST_UID)
 				{
 					$last_post_uname = ($forum_data['post_username']) ? $forum_data['post_username'] : $lang['Guest'];
 				}
@@ -455,12 +457,12 @@ if ($cat_forums)
 					'SHOW_LAST_TOPIC'     => SHOW_FORUM_LAST_TOPIC,
 					'LAST_TOPIC_HREF'     => append_sid("viewtopic.php?". POST_TOPIC_URL .'='. $forum_data['last_topic_id']),
 					'LAST_TOPIC_TIP'      => $forum_data['last_topic_title'],
-					'LAST_TOPIC_TITLE'    => short_str($forum_data['last_topic_title'], LAST_TOPIC_MAX_LEN),
+					'LAST_TOPIC_TITLE'    => str_short($forum_data['last_topic_title'], LAST_TOPIC_MAX_LEN),
 
 					'LAST_POST_TIME'      => create_date(LAST_POST_DATE_FORMAT, $forum_data['post_time'], $ft_cfg['board_timezone']),
 					'LAST_POST_HREF'      => append_sid("viewtopic.php?". POST_POST_URL .'='. $forum_data['forum_last_post_id']) .'#'. $forum_data['forum_last_post_id'],
 					'LAST_POST_USER_NAME' => $last_post_uname,
-					'LAST_POST_USER_HREF' => ($forum_data['user_id'] != ANONYMOUS) ? append_sid("profile.php?mode=viewprofile&amp;". POST_USERS_URL .'='. $forum_data['user_id']) : '',
+					'LAST_POST_USER_HREF' => ($forum_data['user_id'] != GUEST_UID) ? append_sid("profile.php?mode=viewprofile&amp;". POST_USERS_URL .'='. $forum_data['user_id']) : '',
 					'ICON_LATEST_REPLY'   => $images['icon_latest_reply']
 				));
 			}

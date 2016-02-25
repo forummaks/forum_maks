@@ -91,7 +91,7 @@ $tor_reged = ($tracker_status) ? TRUE : FALSE;
 $show_peers = ($ft_cfg['bt_show_peers']) ? TRUE : FALSE;
 
 $locked = ($forum_topic_data['forum_status'] == FORUM_LOCKED || $forum_topic_data['topic_status'] == TOPIC_LOCKED) ? TRUE : FALSE;
-$tor_auth = ($userdata['user_id'] != ANONYMOUS && (($userdata['user_id'] == $poster_id && !$locked) || $is_auth['auth_mod'])) ? TRUE : FALSE;
+$tor_auth = ($userdata['user_id'] != GUEST_UID && (($userdata['user_id'] == $poster_id && !$locked) || $is_auth['auth_mod'])) ? TRUE : FALSE;
 
 $tor_auth_reg = ($tor_auth && $forum_topic_data['allow_reg_tracker'] && $post_id == $forum_topic_data['topic_first_post_id']) ? TRUE : FALSE;
 $tor_auth_del = ($tor_auth && $tor_reged) ? TRUE : FALSE;
@@ -364,7 +364,7 @@ else
 					$sp_up_tot[$x] += $peer['speed_up'];
 					$sp_down_tot[$x] += $peer['speed_down'];
 
-					$guest      = ($peer['user_id'] == ANONYMOUS) ? TRUE : FALSE;
+					$guest      = ($peer['user_id'] == GUEST_UID) ? TRUE : FALSE;
 					$p_max_up   = ($guest) ? $peer['uploaded'] : max($peer['t_up_total'], $peer['uploaded']);
 					$p_max_down = ($guest) ? $peer['downloaded'] : max($peer['t_down_total'], $peer['downloaded']);
 
@@ -423,7 +423,7 @@ else
 
 			foreach ($peers as $pid => $peer)
 			{
-				if ($s_mode == 'count' || $peer['user_id'] == ANONYMOUS)
+				if ($s_mode == 'count' || $peer['user_id'] == GUEST_UID)
 				{
 					$u_prof_href = '#';
 				}
@@ -432,7 +432,7 @@ else
 					$u_prof_href = append_sid("profile.php?mode=viewprofile&amp;u=". $peer['user_id']) .'#torrent';
 				}
 
-				if (isset($peer['user_id']) && $peer['user_id'] == ANONYMOUS)
+				if (isset($peer['user_id']) && $peer['user_id'] == GUEST_UID)
 				{
 					$peer['username'] = 'Guest';
 				}
@@ -440,7 +440,7 @@ else
 				// Full details mode
 				if ($s_mode == 'full')
 				{
-					$guest = ($peer['user_id'] == ANONYMOUS) ? TRUE : FALSE;
+					$guest = ($peer['user_id'] == GUEST_UID) ? TRUE : FALSE;
 					// peer max/current up/down
 					$p_max_up   = ($guest) ? $peer['uploaded'] : max($peer['t_up_total'], $peer['uploaded']);
 					$p_max_down = ($guest) ? $peer['downloaded'] : max($peer['t_down_total'], $peer['downloaded']);

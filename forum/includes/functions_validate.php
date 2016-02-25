@@ -8,7 +8,7 @@ function validate_username($username)
 
 	// Remove doubled up spaces
 	$username = preg_replace('#\s+#', ' ', trim($username));
-	$username = phpbb_clean_username($username);
+	$username = clean_username($username);
 
 	$sql = "SELECT username
 		FROM " . USERS_TABLE . "

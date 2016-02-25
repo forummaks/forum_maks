@@ -1,9 +1,21 @@
-<br />
-<div align="center"><span class="copyright"><br />{ADMIN_LINK}<br />
-Powered by <a href="http://www.phpbb.com/" target="_phpbb" class="copyright">phpBB</a> &copy; 2001, 2005 phpBB Group<!-- //bt -->, {TP_INFO}<!-- //bt end -->, {MODIFIED_BY}<br />{TRANSLATION_INFO}</span></div>
-		</td>
-	</tr>
-</table>
+	</div><!--/main_content_wrap-->
+	</td><!--/main_content-->
+	
+	<!--sidebar2-->
+	<!--/sidebar2-->
+	
+	</tr></table>
+	</div>
+	<!--/page_content-->
+	
+	<!--page_footer-->
+	<div id="page_footer">
+		<div class="clear"></div>
 
-</body>
-</html>
+		<br /><br />
+		<div align="center"><span class="copyright">{ADMIN_LINK}</div>
+	</div>
+	<!--/page_footer -->
+	
+	</div>
+	<!--/page_container -->

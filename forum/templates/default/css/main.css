@@ -110,6 +110,155 @@ a:hover { text-decoration: underline; color : #DD6900; }
 .p-body tr { background: #ECECEC; }
 .p-body tr:hover { background: #DEE3E7; }
 
+/* ================================================================ *
+     Page header
+ * ================================================================ */
+/* ---------------------------------- *
+     TopMenu, Quick Login, PM Info, Loguot..
+ * ---------------------------------- */
+.topmenu {
+	background: #eff0f3; border: 1px solid #CFD4D8;
+	margin: 3px 4px 0; padding: 0 3px; overflow: hidden;
+}
+.topmenu a:link, .topmenu a:visited { text-decoration: none; }
+.topmenu td { padding: 4px; font-size: 11px; white-space: nowrap; }
+.new-pm { background: #FFD9B2 !important; border-top-color: #FFD9B2 !important; border-bottom-color: #FFAA51 !important; }
+.new-pm-link { color: #993300 !important; font-weight: bold; }
+.new-pm-link:hover { color: #591D00 !important; }
+/* ---------------------------------- *
+     Logo
+ * ---------------------------------- */
+#logo { padding: 2px 4px; min-height: 75px; }
+	#logo h1 {
+		margin: 0 300px 0 0; padding-top: 6px;
+		font-size: 42px; font-variant: small-caps;
+	}
+	#logo h6 {
+		margin: 0 300px 0 0; padding-top: 1px; padding-bottom: 3px;
+		font-size: 14px; font-variant: small-caps;
+	}
+	#logo img {
+		padding: 7px 7px 6px 5px;
+	}
+/* ---------------------------------- *
+     Main navigation
+ * ---------------------------------- */
+#main-nav {
+	padding: 4px 10px; margin: 0;
+	border: solid #C3CBD1; border-width: 0 0 1px 0; background: #eff0f3;
+	}
+	#main-nav b { padding: 0 4px 0 1px; }
+	#main-nav a { color: #444; text-decoration: none; }
+	#main-nav a:hover, #main-nav a:active {
+		text-decoration: none !important; color: #000000;
+	}
+/* ---------------------------------- *
+     Latest News
+ * ---------------------------------- */
+#latest_news { margin-bottom: 8px; }
+	#latest_news table {
+		border-collapse: collapse;
+	}
+	#latest_news h3 { padding: 0 0 3px 0; color: #333333; }
+	#latest_news td { vertical-align: top; }
+	.news_date {
+		float: right; padding: 1px 8px 1px;
+		white-space: nowrap; font-family: "Courier New",Courier,monospace;
+		color: #333333; background: #F2F2F2; border: 1px solid #B4B4B4;
+	}
+	.news_title {
+		padding: 3px 8px 2px; margin-bottom: 2px;
+		background: transparent url(../images/hr400_ltr_gradient.jpg) no-repeat left top;
+	}
+	#latest_news a { text-decoration: none; color: #000000; }
+	#latest_news .new a { color: #A52A2A; font-weight: bold; }
+/* ---------------------------------- *
+    Search input
+ * ---------------------------------- */
+#search-text {
+	background: white; border: 1px solid silver;
+	padding: 1px; width: 300px;
+}
+@media screen and (max-width: 1200px) {
+	#search-text { width: 180px; }
+}
+#search-text:hover {
+	border: 1px solid #aaaaaa;
+}
+#search-text:focus {
+	border: 1px solid #aaaaaa;
+}
+/* ================================================================ *
+     Page content
+ * ================================================================ */
+/* ---------------------------------- *
+     Sidebar 1
+ * ---------------------------------- */
+#sidebar1 {
+	margin-top: -8px; width: 210px; padding: 0 6px 0 3px; vertical-align: top;
+}
+#sidebar1 h3 {
+	padding: 0 0 4px 0; margin: 8px 0 2px 0;
+	color: #333333; text-indent: 0.5em;
+	background: transparent url(../images/hr200_ltr_gradient.jpg) no-repeat left bottom;
+}
+#sidebar1 h3 a { color: #333333; }
+#sidebar1 h5 { padding: 2px 4px 5px; }
+#sidebar1 ul { margin: 6px 0 0 10px; }
+#sidebar1 li { margin-bottom: 2px; margin-left: 14px; }
+#sidebar1 a  { text-decoration: none; color: #005A88; }
+/* ---------------------------------- *
+     Sidebar 2
+ * ---------------------------------- */
+#sidebar2 {
+	margin-top: -8px; width: 210px; padding: 0 6px 0 3px; vertical-align: top;
+}
+#sidebar2 h3 {
+	padding: 0 0 4px 0; margin: 0 0 2px 0;
+	color: #333333; text-indent: 0.5em;
+	background: transparent url(../images/hr200_ltr_gradient.jpg) no-repeat left bottom;
+}
+#sidebar2 h3 a { color: #333333; }
+#sidebar2 h5 { padding: 2px 4px 5px; }
+#sidebar2 ul { margin: 6px 0 0 10px; }
+#sidebar2 li { margin-bottom: 2px; margin-left: 14px; }
+#sidebar2 a  { text-decoration: none; color: #005A88; }
+/* User ratio */
+#user_ratio {
+	padding: 1px 6px 0 0; font-size: 11px;
+}
+#user_ratio td {
+	padding: 1px 6px 1px 6px ; font-size: 11px;
+}
+#tr_main_cats {}             /* Main tracker categories list */
+#tr_main_cats ul {
+	list-style-image: url(../images/arrow1.gif);
+}
+#tr_main_cats li {
+	margin-bottom: 3px; margin-left: 11px; font-size: 11px; font-weight: bold; line-height: 110%;
+}
+#author-rel a { color: #800000; }
+/* ================================================================ *
+     Main content
+ * ================================================================ */
+#infobox-wrap { width: 740px; }
+#infobox-body { background: #FFFFFF; color: #000000; padding: 1em; height: 300px; overflow: auto; border: 1px inset #000000; }
+#infobox-body p { margin-top: 1em; margin-bottom: 1em; }
+
+#gr-mem-list ul { margin: 2px 4px; }
+#gr-mem-list li { margin-bottom: 2px; }
+a.selfMod, a.selfMod:visited { color: #0000FF; }
+
+.view-message { border: 1px #A5AFB4 solid; padding: 4px; margin: 6px; overflow: auto; }
+.birthday  { margin: 3px 0; padding: 2px 4px;  max-height: 200px; overflow: auto;}
+td.topic_id { cursor: pointer; }
+
+table.mod_ip    { background: #F9F9F9; border: 1px solid #A5AFB4; border-collapse: separate;}
+table.mod_ip td { padding: 2px 5px; white-space: normal; font-size: 11px; }
+table.mod_ip div { max-height: 150px;  overflow: auto;}
+
+/**  Старый шаблон  **/
+
 /*
   This is for the table cell above the Topics, Post & Last posts on the index.php page
   By default this is the fading out gradiated silver background.
@@ -361,43 +510,6 @@ input.mainoption, input.liteoption, input.button {
 	background: #FAFAFA url('images/button.gif') repeat-x top left;
 }
 */
-
-/* Main navigation */
-#main_nav {
-	padding: 2px 10px; margin: 0 0px;
-	border: solid #CFD4D8; border-width: 1px 0; background: #CFD4D8;
-	}
-	#main_nav b { padding: 0 4px 0 1px; }
-	#main_nav a { color: #535F62; text-decoration: none; }
-	#main_nav a:hover, #main_nav a:active {
-		text-decoration: none !important; color: #000000;
-	}
-
-/* TopMenu, Quick Login, PM Info, Loguot.. */
-.topmenu {
-	background: #EFEFEF; border: solid #CFD4D8; border-width: 1px 0px;
-	margin: 11px 1px 0; padding: 0 8px;
-}
-.topmenu a:link 
-.topmenu a:visited { text-decoration: none; }
-.topmenu a:hover { text-decoration: underline; }
-.topmenu td { padding: 4px 0px 4px 0px; font-size: 11px; white-space: nowrap; }
-
-/* Latest News */ 
-#latest_news        { margin-bottom: 8px; } 
-#latest_news table  { border-collapse: collapse; } 
-#latest_news h3     { padding: 0 0 3px 0; color: #333333; } 
-#latest_news td     { vertical-align: top; } 
-.news_date          { float: right; padding: 1px 8px 1px; white-space: nowrap; font-family: "Courier New",Courier,monospace; color: #333333; background: #F2F2F2; border: 1px solid #B4B4B4; } 
-.news_title         { padding: 3px 8px 2px; margin-bottom: 2px; background: transparent url(../images/hr400_ltr_gradient.jpg) no-repeat left top; }
-#latest_news a      { color: #000000; text-decoration: none; }
-#latest_news a:hover { text-decoration: underline; } 
-#latest_news .new a { color: #A52A2A; font-weight: bold; }
-
-#news               { margin: 0 auto; padding: 8px; border: 1px solid #DCDCDC; width: 280px; }
-#news .head         { font-size: 11px; font-weight: bold; line-height: 15px; }
-#news .head a       { text-decoration: underline; }
-#news .desc         { font-size: 11px; padding: 2px 0 2px; }
 
 /* Spoiler */
 .spoiler-wrap {

@@ -1,4 +1,5 @@
 <?php
+define('FT_SCRIPT', 'uacp');
 define('FT_ROOT', './');
 require(FT_ROOT . 'common.php');
 

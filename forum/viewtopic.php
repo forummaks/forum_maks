@@ -10,6 +10,8 @@ define('SHOW_BOT_NICK', FALSE);
 
 unset($_GET['highlight'], $_GET['highlight']);
 
+define('IN_FORUM', true);
+define('FT_SCRIPT', 'topic');
 define('FT_ROOT', './');
 require(FT_ROOT . 'common.php');
 require(FT_ROOT . 'includes/bbcode.php');
@@ -145,7 +147,7 @@ $forum_id = intval($forum_topic_data['forum_id']);
 //
 // Start session management
 //
-$userdata = session_pagestart($user_ip, $forum_id);
+$userdata = session_pagestart($user_ip);
 init_userprefs($userdata);
 //
 // End session management
@@ -762,18 +764,18 @@ if (!$db->sql_query($sql)) {
 //
 for ($i = 0; $i < $total_posts; $i++) {
     $poster_id = $postrow[$i]['user_id'];
-    $poster = ($poster_id == ANONYMOUS) ? $lang['Guest'] : $postrow[$i]['username'];
+    $poster = ($poster_id == GUEST_UID) ? $lang['Guest'] : $postrow[$i]['username'];
 
     $post_date = create_date($ft_cfg['default_dateformat'], $postrow[$i]['post_time'], $ft_cfg['board_timezone']);
 
-    $poster_posts = ($postrow[$i]['user_id'] != ANONYMOUS) ? $lang['Posts'] . ': ' . $postrow[$i]['user_posts'] : '';
+    $poster_posts = ($postrow[$i]['user_id'] != GUEST_UID) ? $lang['Posts'] . ': ' . $postrow[$i]['user_posts'] : '';
 
-    $poster_from = ($postrow[$i]['user_from'] && $postrow[$i]['user_id'] != ANONYMOUS) ? $lang['Location'] . ': ' . $postrow[$i]['user_from'] : '';
+    $poster_from = ($postrow[$i]['user_from'] && $postrow[$i]['user_id'] != GUEST_UID) ? $lang['Location'] . ': ' . $postrow[$i]['user_from'] : '';
 
-    $poster_joined = ($postrow[$i]['user_id'] != ANONYMOUS) ? $lang['Joined'] . ': ' . create_date($lang['DATE_FORMAT'], $postrow[$i]['user_regdate'], $ft_cfg['board_timezone']) : '';
+    $poster_joined = ($postrow[$i]['user_id'] != GUEST_UID) ? $lang['Joined'] . ': ' . create_date($lang['DATE_FORMAT'], $postrow[$i]['user_regdate'], $ft_cfg['board_timezone']) : '';
 
     $poster_avatar = '';
-    if ($postrow[$i]['user_avatar_type'] && $poster_id != ANONYMOUS && $postrow[$i]['user_allowavatar']) {
+    if ($postrow[$i]['user_avatar_type'] && $poster_id != GUEST_UID && $postrow[$i]['user_allowavatar']) {
         switch ($postrow[$i]['user_avatar_type']) {
             case USER_AVATAR_UPLOAD:
                 $poster_avatar = ($ft_cfg['allow_avatar_upload']) ? '<img src="' . $ft_cfg['avatar_path'] . '/' . $postrow[$i]['user_avatar'] . '" alt="" border="0" />' : '';
@@ -805,7 +807,7 @@ for ($i = 0; $i < $total_posts; $i++) {
     //
     $poster_rank = '';
     $rank_image = '';
-    if ($postrow[$i]['user_id'] == ANONYMOUS) {
+    if ($postrow[$i]['user_id'] == GUEST_UID) {
     } else if ($postrow[$i]['user_rank']) {
         for ($j = 0; $j < count($ranksrow); $j++) {
             if ($postrow[$i]['user_rank'] == $ranksrow[$j]['rank_id'] && $ranksrow[$j]['rank_special']) {
@@ -825,14 +827,14 @@ for ($i = 0; $i < $total_posts; $i++) {
     //
     // Handle anon users posting with usernames
     //
-    if ($poster_id == ANONYMOUS && $postrow[$i]['post_username'] != '') {
+    if ($poster_id == GUEST_UID && $postrow[$i]['post_username'] != '') {
         $poster = $postrow[$i]['post_username'];
         $poster_rank = $lang['Guest'];
     }
 
     $temp_url = '';
 
-    if ($poster_id != ANONYMOUS) {
+    if ($poster_id != GUEST_UID) {
         $temp_url = append_sid("profile.php?mode=viewprofile&amp;" . POST_USERS_URL . "=$poster_id");
         $profile_img = '<a href="' . $temp_url . '"><img src="' . $images['icon_profile'] . '" alt="' . $lang['Read_profile'] . '" title="' . $lang['Read_profile'] . '" border="0" /></a>';
         $profile = '<a class="txtb" href="' . $temp_url . '">' . $lang['Read_profile_txtb'] . '</a>&nbsp;';

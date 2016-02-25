@@ -1,38 +1,4 @@
 <?php
-/***************************************************************************
- *                            lang_main.php [English]
- *                              -------------------
- *     begin                : Sat Dec 16 2000
- *     copyright            : (C) 2001 The phpBB Group
- *     email                : support@phpbb.com
- *
- *     $Id: lang_main.php,v 1.85.2.16 2005/05/06 20:50:13 acydburn Exp $
- *
- ****************************************************************************/
-
-/***************************************************************************
- *
- *   This program is free software; you can redistribute it and/or modify
- *   it under the terms of the GNU General Public License as published by
- *   the Free Software Foundation; either version 2 of the License, or
- *   (at your option) any later version.
- *
- ***************************************************************************/
-
-//
-// CONTRIBUTORS:
-//	 Add your details here if wanted, e.g. Name, username, email address, website
-// 2002-08-27  Philip M. White        - fixed many grammar problems
-//
-
-//
-// The format of this file is ---> $lang['message'] = 'text';
-//
-// You should also try to set a locale and a character encoding (plus direction). The encoding and direction
-// will be sent to the template. The locale may or may not work, it's dependent on OS support and the syntax
-// varies ... give it your best guess!
-//
-
 $lang['ENCODING'] = 'iso-8859-1';
 $lang['DIRECTION'] = 'ltr';
 $lang['LEFT'] = 'left';
@@ -730,7 +696,7 @@ $lang['User_is_member_group'] = 'User is already a member of this group';
 $lang['Group_type_updated'] = 'Successfully updated group type.';
 
 $lang['Could_not_add_user'] = 'The user you selected does not exist.';
-$lang['Could_not_anon_user'] = 'You cannot make Anonymous a group member.';
+$lang['Could_not_anon_user'] = 'You cannot make GUEST_UID a group member.';
 
 $lang['Confirm_unsub'] = 'Are you sure you want to unsubscribe from this group?';
 $lang['Confirm_unsub_pending'] = 'Your subscription to this group has not yet been approved; are you sure you want to unsubscribe?';
@@ -811,7 +777,7 @@ $lang['Sorry_auth_delete'] = 'Sorry, but only %s can delete posts in this forum.
 $lang['Sorry_auth_vote'] = 'Sorry, but only %s can vote in polls in this forum.';
 
 // These replace the %s in the above strings
-$lang['Auth_Anonymous_Users'] = '<b>anonymous users</b>';
+$lang['Auth_guest_uid_Users'] = '<b>GUEST_UID users</b>';
 $lang['Auth_Registered_Users'] = '<b>registered users</b>';
 $lang['Auth_Users_granted_access'] = '<b>users granted special access</b>';
 $lang['Auth_Moderators'] = '<b>moderators</b>';

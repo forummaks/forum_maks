@@ -1,5 +1,6 @@
 <?php
 
+define('FT_SCRIPT', 'stats');
 define('FT_ROOT', './');
 require(FT_ROOT . 'common.php');
 

@@ -1,4 +1,6 @@
 <?php
+define('IN_FORUM', true);
+define('FT_SCRIPT', 'posting');
 define('FT_ROOT', './');
 require(FT_ROOT . 'common.php');
 require(FT_ROOT . 'includes/bbcode.php');
@@ -55,14 +57,14 @@ if ( $mode == 'topicreview' )
 }
 else if ( $mode == 'smilies' )
 {
-	generate_smilies('window', PAGE_POSTING);
+	generate_smilies('window');
 	exit;
 }
 
 //
 // Start session management
 //
-$userdata = session_pagestart($user_ip, PAGE_POSTING);
+$userdata = session_pagestart($user_ip);
 init_userprefs($userdata);
 //
 // End session management
@@ -356,7 +358,7 @@ if ( !$ft_cfg['allow_html'] )
 }
 else
 {
-	$html_on = ( $submit || $refresh ) ? ( ( !empty($HTTP_POST_VARS['disable_html']) ) ? 0 : TRUE ) : ( ( $userdata['user_id'] == ANONYMOUS ) ? $ft_cfg['allow_html'] : $userdata['user_allowhtml'] );
+	$html_on = ( $submit || $refresh ) ? ( ( !empty($HTTP_POST_VARS['disable_html']) ) ? 0 : TRUE ) : ( ( $userdata['user_id'] == GUEST_UID ) ? $ft_cfg['allow_html'] : $userdata['user_allowhtml'] );
 }
 
 if ( !$ft_cfg['allow_bbcode'] )
@@ -365,7 +367,7 @@ if ( !$ft_cfg['allow_bbcode'] )
 }
 else
 {
-	$bbcode_on = ( $submit || $refresh ) ? ( ( !empty($HTTP_POST_VARS['disable_bbcode']) ) ? 0 : TRUE ) : ( ( $userdata['user_id'] == ANONYMOUS ) ? $ft_cfg['allow_bbcode'] : $userdata['user_allowbbcode'] );
+	$bbcode_on = ( $submit || $refresh ) ? ( ( !empty($HTTP_POST_VARS['disable_bbcode']) ) ? 0 : TRUE ) : ( ( $userdata['user_id'] == GUEST_UID ) ? $ft_cfg['allow_bbcode'] : $userdata['user_allowbbcode'] );
 }
 
 if ( !$ft_cfg['allow_smilies'] )
@@ -374,7 +376,7 @@ if ( !$ft_cfg['allow_smilies'] )
 }
 else
 {
-	$smilies_on = ( $submit || $refresh ) ? ( ( !empty($HTTP_POST_VARS['disable_smilies']) ) ? 0 : TRUE ) : ( ( $userdata['user_id'] == ANONYMOUS ) ? $ft_cfg['allow_smilies'] : $userdata['user_allowsmile'] );
+	$smilies_on = ( $submit || $refresh ) ? ( ( !empty($HTTP_POST_VARS['disable_smilies']) ) ? 0 : TRUE ) : ( ( $userdata['user_id'] == GUEST_UID ) ? $ft_cfg['allow_smilies'] : $userdata['user_allowsmile'] );
 }
 
 if ( ($submit || $refresh) && $is_auth['auth_read'])
@@ -403,7 +405,7 @@ else
 	}
 }
 
-$attach_sig = ( $submit || $refresh ) ? ( ( !empty($HTTP_POST_VARS['attach_sig']) ) ? TRUE : 0 ) : ( ( $userdata['user_id'] == ANONYMOUS ) ? 0 : $userdata['user_attachsig'] );
+$attach_sig = ( $submit || $refresh ) ? ( ( !empty($HTTP_POST_VARS['attach_sig']) ) ? TRUE : 0 ) : ( ( $userdata['user_id'] == GUEST_UID ) ? 0 : $userdata['user_attachsig'] );
 //upt
 $update_post_time = (isset($_POST['update_post_time'])) ? TRUE : FALSE;
 //upt end
@@ -454,7 +456,7 @@ if ($userdata['session_logged_in'] && ($submit || $preview || $mode == 'quote' |
 			}
 			for ($i=0, $cnt=count($rowset); $i < $cnt; $i++)
 			{
-				if ($rowset[$i]['poster_id'] == ANONYMOUS)
+				if ($rowset[$i]['poster_id'] == GUEST_UID)
 				{
 					$new_post_username = (!$rowset[$i]['post_username']) ? $lang['Guest'] : $rowset[$i]['post_username'];
 				}
@@ -942,7 +944,7 @@ else
 		}
 		else
 		{
-			$username = ( $post_info['user_id'] == ANONYMOUS && !empty($post_info['post_username']) ) ? $post_info['post_username'] : '';
+			$username = ( $post_info['user_id'] == GUEST_UID && !empty($post_info['post_username']) ) ? $post_info['post_username'] : '';
 		}
 	}
 }
@@ -994,7 +996,7 @@ else
 	$smilies_status = $lang['Smilies_are_OFF'];
 }
 
-if( !$userdata['session_logged_in'] || ( $mode == 'editpost' && $post_info['poster_id'] == ANONYMOUS ) )
+if( !$userdata['session_logged_in'] || ( $mode == 'editpost' && $post_info['poster_id'] == GUEST_UID ) )
 {
 	$template->assign_block_vars('switch_username_select', array());
 }
@@ -1004,7 +1006,7 @@ if( !$userdata['session_logged_in'] || ( $mode == 'editpost' && $post_info['post
 //
 if ( $userdata['session_logged_in'] && $is_auth['auth_read'] )
 {
-	if ( $mode != 'editpost' || ( $mode == 'editpost' && $post_info['poster_id'] != ANONYMOUS ) )
+	if ( $mode != 'editpost' || ( $mode == 'editpost' && $post_info['poster_id'] != GUEST_UID ) )
 	{
 		$template->assign_block_vars('switch_notify_checkbox', array());
 	}

@@ -7,7 +7,7 @@ $template->set_filenames(array(
 );
 
 $template->assign_vars(array(
-	'PHPBB_VERSION' => ($userdata['user_level'] == ADMIN && $userdata['user_id'] != ANONYMOUS) ? '2' . $ft_cfg['version'] : '',
+	'PHPBB_VERSION' => ($userdata['user_level'] == ADMIN && $userdata['user_id'] != GUEST_UID) ? '2' . $ft_cfg['version'] : '',
 	'TRANSLATION_INFO' => @$lang['TRANSLATION_INFO'])
 );
 

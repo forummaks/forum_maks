@@ -2,7 +2,7 @@
 
 if (!defined('FT_ROOT')) die(basename(__FILE__));
 
-function session_begin($user_id, $user_ip, $page_id, $auto_create = 0, $enable_autologin = 0, $admin = 0)
+function session_begin($user_id, $user_ip, $auto_create = 0, $enable_autologin = 0, $admin = 0)
 {
 	global $db, $ft_cfg;
 	global $HTTP_COOKIE_VARS, $HTTP_GET_VARS, $SID;
@@ -31,7 +31,6 @@ function session_begin($user_id, $user_ip, $page_id, $auto_create = 0, $enable_a
 		$session_id = '';
 	}
 
-	$page_id = (int) $page_id;
 	$last_visit = 0;
 	$current_time = time();
 	$expiry_time = $current_time - $ft_cfg['session_length'];
@@ -49,7 +48,7 @@ function session_begin($user_id, $user_ip, $page_id, $auto_create = 0, $enable_a
 
 	$userdata = $db->sql_fetchrow($result);
 
-	if ( $user_id != ANONYMOUS )
+	if ( $user_id != GUEST_UID )
 	{
 		$auto_login_key = $userdata['user_password'];
 
@@ -66,12 +65,12 @@ function session_begin($user_id, $user_ip, $page_id, $auto_create = 0, $enable_a
 				}
 				else
 				{
-					// No match; don't login, set as anonymous user
+					// No match; don't login, set as GUEST_UID user
 					$login = 0;
 					$enable_autologin = 0;
-					$user_id = $userdata['user_id'] = ANONYMOUS;
+					$user_id = $userdata['user_id'] = GUEST_UID;
 
-					$sql = 'SELECT * FROM ' . USERS_TABLE . ' WHERE user_id = ' . ANONYMOUS;
+					$sql = 'SELECT * FROM ' . USERS_TABLE . ' WHERE user_id = ' . GUEST_UID;
 					$result = $db->sql_query($sql);
 					$userdata = $db->sql_fetchrow($result);
 					$db->sql_freeresult($result);
@@ -79,12 +78,12 @@ function session_begin($user_id, $user_ip, $page_id, $auto_create = 0, $enable_a
 			}
 			else
 			{
-				// Autologin is not set. Don't login, set as anonymous user
+				// Autologin is not set. Don't login, set as GUEST_UID user
 				$login = 0;
 				$enable_autologin = 0;
-				$user_id = $userdata['user_id'] = ANONYMOUS;
+				$user_id = $userdata['user_id'] = GUEST_UID;
 
-				$sql = 'SELECT * FROM ' . USERS_TABLE . ' WHERE user_id = ' . ANONYMOUS;
+				$sql = 'SELECT * FROM ' . USERS_TABLE . ' WHERE user_id = ' . GUEST_UID;
 				$result = $db->sql_query($sql);
 				$userdata = $db->sql_fetchrow($result);
 				$db->sql_freeresult($result);
@@ -110,7 +109,7 @@ function session_begin($user_id, $user_ip, $page_id, $auto_create = 0, $enable_a
 		FROM " . BANLIST_TABLE . "
 		WHERE ban_ip IN ('" . $user_ip_parts[1] . $user_ip_parts[2] . $user_ip_parts[3] . $user_ip_parts[4] . "', '" . $user_ip_parts[1] . $user_ip_parts[2] . $user_ip_parts[3] . "ff', '" . $user_ip_parts[1] . $user_ip_parts[2] . "ffff', '" . $user_ip_parts[1] . "ffffff')
 			OR ban_userid = $user_id";
-	if ( $user_id != ANONYMOUS )
+	if ( $user_id != GUEST_UID )
 	{
 		$sql .= " OR ban_email LIKE '" . str_replace("\'", "''", $userdata['user_email']) . "'
 			OR ban_email LIKE '" . substr(str_replace("\'", "''", $userdata['user_email']), strpos(str_replace("\'", "''", $userdata['user_email']), "@")) . "'";
@@ -132,7 +131,7 @@ function session_begin($user_id, $user_ip, $page_id, $auto_create = 0, $enable_a
 	// Create or update the session
 	//
 	$sql = "UPDATE " . SESSIONS_TABLE . "
-		SET session_user_id = $user_id, session_start = $current_time, session_time = $current_time, session_page = $page_id, session_logged_in = $login, session_admin = $admin
+		SET session_user_id = $user_id, session_start = $current_time, session_time = $current_time, session_logged_in = $login, session_admin = $admin
 		WHERE session_id = '" . $session_id . "'
 			AND session_ip = '$user_ip'";
 	if ( !$db->sql_query($sql) || !$db->affected_rows() )
@@ -142,22 +141,22 @@ function session_begin($user_id, $user_ip, $page_id, $auto_create = 0, $enable_a
 		$session_id = md5(uniqid(mt_rand(), true));
 
 		$sql = "INSERT INTO " . SESSIONS_TABLE . "
-			(session_id, session_user_id, session_start, session_time, session_ip, session_page, session_logged_in, session_admin)
-			VALUES ('$session_id', $user_id, $current_time, $current_time, '$user_ip', $page_id, $login, $admin)";
+			(session_id, session_user_id, session_start, session_time, session_ip, session_logged_in, session_admin)
+			VALUES ('$session_id', $user_id, $current_time, $current_time, '$user_ip', $login, $admin)";
 		if ( !$db->sql_query($sql) )
 		{
 			message_die(CRITICAL_ERROR, 'Error creating new session', '', __LINE__, __FILE__, $sql);
 		}
 	}
 
-	if ( $user_id != ANONYMOUS )
+	if ( $user_id != GUEST_UID )
 	{// ( $userdata['user_session_time'] > $expiry_time && $auto_create ) ? $userdata['user_lastvisit'] : (
 		$last_visit = ( $userdata['user_session_time'] > 0 ) ? $userdata['user_session_time'] : $current_time;
 
 		if (!$admin)
 		{
 			$sql = "UPDATE " . USERS_TABLE . "
-				SET user_session_time = $current_time, user_session_page = $page_id, user_lastvisit = $last_visit
+				SET user_session_time = $current_time, user_lastvisit = $last_visit
 				WHERE user_id = $user_id";
 			if ( !$db->sql_query($sql) )
 			{
@@ -175,7 +174,6 @@ function session_begin($user_id, $user_ip, $page_id, $auto_create = 0, $enable_a
 	$userdata['session_ip'] = $user_ip;
 	$userdata['session_user_id'] = $user_id;
 	$userdata['session_logged_in'] = $login;
-	$userdata['session_page'] = $page_id;
 	$userdata['session_start'] = $current_time;
 	$userdata['session_time'] = $current_time;
 	$userdata['session_admin'] = $admin;
@@ -192,7 +190,7 @@ function session_begin($user_id, $user_ip, $page_id, $auto_create = 0, $enable_a
 // Checks for a given user session, tidies session table and updates user
 // sessions at each page refresh
 //
-function session_pagestart($user_ip, $thispage_id)
+function session_pagestart($user_ip)
 {
 	global $db, $lang, $ft_cfg;
 	global $HTTP_COOKIE_VARS, $HTTP_GET_VARS, $SID;
@@ -223,8 +221,6 @@ function session_pagestart($user_ip, $thispage_id)
 	{
 		$session_id = '';
 	}
-
-	$thispage_id = (int) $thispage_id;
 
 	//
 	// Does a session exist?
@@ -272,17 +268,17 @@ function session_pagestart($user_ip, $thispage_id)
 					$update_admin = (!defined('IN_ADMIN') && $current_time - $userdata['session_time'] > ($ft_cfg['session_length']+60)) ? ', session_admin = 0' : '';
 
 					$sql = "UPDATE " . SESSIONS_TABLE . "
-						SET session_time = $current_time, session_page = $thispage_id$update_admin
+						SET session_time = $current_time$update_admin
 						WHERE session_id = '" . $userdata['session_id'] . "'";
 					if ( !$db->sql_query($sql) )
 					{
 						message_die(CRITICAL_ERROR, 'Error updating sessions table', '', __LINE__, __FILE__, $sql);
 					}
 
-					if ( $userdata['user_id'] != ANONYMOUS )
+					if ( $userdata['user_id'] != GUEST_UID )
 					{
 						$sql = "UPDATE " . USERS_TABLE . "
-							SET user_session_time = $current_time, user_session_page = $thispage_id
+							SET user_session_time = $current_time
 							WHERE user_id = " . $userdata['user_id'];
 						if ( !$db->sql_query($sql) )
 						{
@@ -315,7 +311,7 @@ function session_pagestart($user_ip, $thispage_id)
 	// If we reach here then no (valid) session exists. So we'll create a new one,
 	// using the cookie user_id if available to pull basic user prefs.
 	//
-	$user_id = ( isset($sessiondata['userid']) ) ? intval($sessiondata['userid']) : ANONYMOUS;
+	$user_id = ( isset($sessiondata['userid']) ) ? intval($sessiondata['userid']) : GUEST_UID;
 
 	if ( !($userdata = session_begin($user_id, $user_ip, $thispage_id, TRUE)) )
 	{

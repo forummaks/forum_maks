@@ -1,4 +1,6 @@
 <?php
+define('IN_FORUM',   true);
+define('FT_SCRIPT', 'login');
 define('IN_LOGIN', true);
 define('FT_ROOT', './');
 require(FT_ROOT . 'common.php');
@@ -6,7 +8,7 @@ require(FT_ROOT . 'common.php');
 //
 // Set page ID for session management
 //
-$userdata = session_pagestart($user_ip, PAGE_LOGIN);
+$userdata = session_pagestart($user_ip);
 init_userprefs($userdata);
 //
 // End session management
@@ -26,7 +28,7 @@ if( isset($HTTP_POST_VARS['login']) || isset($HTTP_GET_VARS['login']) || isset($
 {
 	if( ( isset($HTTP_POST_VARS['login']) || isset($HTTP_GET_VARS['login']) ) && (!$userdata['session_logged_in'] || isset($HTTP_POST_VARS['admin'])) )
 	{
-		$username = isset($HTTP_POST_VARS['username']) ? phpbb_clean_username($HTTP_POST_VARS['username']) : '';
+		$username = isset($HTTP_POST_VARS['username']) ? clean_username($HTTP_POST_VARS['username']) : '';
 		$password = isset($HTTP_POST_VARS['password']) ? $HTTP_POST_VARS['password'] : '';
 
 		$sql = "SELECT user_id, username, user_password, user_active, user_level
@@ -50,7 +52,7 @@ if( isset($HTTP_POST_VARS['login']) || isset($HTTP_GET_VARS['login']) || isset($
 					$autologin = ( isset($HTTP_POST_VARS['autologin']) ) ? TRUE : 0;
 
 					$admin = (isset($HTTP_POST_VARS['admin'])) ? 1 : 0;
-					$session_id = session_begin($row['user_id'], $user_ip, PAGE_INDEX, FALSE, $autologin, $admin);
+					$session_id = session_begin($row['user_id'], $user_ip, FALSE, $autologin, $admin);
 
 					if( $session_id )
 					{
@@ -155,7 +157,7 @@ else
 
 					for($i = 1; $i < count($forward_match); $i++)
 					{
-						if( !ereg("sid=", $forward_match[$i]) )
+						if( !preg_match("sid=", $forward_match[$i]) )
 						{
 							if( $forward_page != '' )
 							{
@@ -177,7 +179,7 @@ else
 			$forward_page = '';
 		}
 
-		$username = ( $userdata['user_id'] != ANONYMOUS ) ? $userdata['username'] : '';
+		$username = ( $userdata['user_id'] != GUEST_UID ) ? $userdata['username'] : '';
 
 		$s_hidden_fields = '<input type="hidden" name="redirect" value="' . $forward_page . '" />';
 		$s_hidden_fields .= (isset($HTTP_GET_VARS['admin'])) ? '<input type="hidden" name="admin" value="1" />' : '';

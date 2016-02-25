@@ -3,12 +3,10 @@
 if (!defined('FT_ROOT')) die(basename(__FILE__));
 
 $template->assign_vars(array('SHOW_ONLINE_LIST' => TRUE));
-$user_forum_sql = ( !empty($forum_id) ) ? "AND s.session_page = " . intval($forum_id) : '';
 $sql = "SELECT u.username, u.user_id, u.user_allow_viewonline, u.user_level, s.session_logged_in, s.session_ip
 	FROM ".USERS_TABLE." u, ".SESSIONS_TABLE." s
 	WHERE u.user_id = s.session_user_id
 		AND s.session_time >= ".( time() - 300 ) . "
-		$user_forum_sql
 	ORDER BY u.username ASC, s.session_ip ASC";
 if( !($result = $db->sql_query($sql)) )
 {

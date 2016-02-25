@@ -3,16 +3,15 @@
 if (!defined('FT_ROOT')) die(basename(__FILE__));
 
 /**
- * Adds commas every three numbers from the right of the period to a given
- * number (www.sitellite.org).
+ * Adds commas between every group of thousands
  *
- * @param string
+ * @param $number
+ *
  * @return string
  */
-function commify ($number = '') {
-	$number = strrev ($number);
-	$number = preg_replace ("/(\d\d\d)(?=\d)(?!\d*\.)/", "\\1,", $number);
-	return strrev ($number);
+function commify ($number) 
+{
+	return number_format($number);
 }
 
 //bt
@@ -197,7 +196,7 @@ function select_get_val ($key, &$val, $options_ary, $default, $num = TRUE)
  * @param bool $strip
  */
  
- function set_var (&$result, $var, $type, $multibyte = false, $strip = true)
+function set_var (&$result, $var, $type, $multibyte = false, $strip = true)
 {
 	settype($var, $type);
 	$result = $var;
@@ -348,27 +347,30 @@ function unesc ($x)
 	return $x;
 }
 
-function short_str ($text, $max_text_len, $space = ' ')
+function str_short ($text, $max_length, $space = ' ')
 {
-	if (strlen($text) > $max_text_len)
+	if ($max_length && mb_strlen($text, 'UTF-8') > $max_length)
 	{
-		$text = substr(trim($text), 0, $max_text_len);
+		$text = mb_substr($text, 0, $max_length, 'UTF-8');
 
-		if ($last_space_pos = $max_text_len - intval(strpos(strrev($text), $space)))
+		if ($last_space_pos = $max_length - intval(strpos(strrev($text), $space)))
 		{
-			if ($last_space_pos > round($max_text_len * 3/4))
+			if ($last_space_pos > round($max_length * 3/4))
 			{
 				$last_space_pos--;
-				$text = substr($text, 0, $last_space_pos);
+				$text = mb_substr($text, 0, $last_space_pos, 'UTF-8');
 			}
 		}
+		$text .= '...';
+		$text = preg_replace('!&#?(\w+)?;?(\w{1,5})?\.\.\.$!', '...', $text);
+	}
 
-		return $text .'...';
-	}
-	else
-	{
-		return $text;
-	}
+	return $text;
+}
+
+function wbr ($text, $max_word_length = HTML_WBR_LENGTH)
+{
+	return preg_replace("/([\w\->;:.,~!?(){}@#$%^*\/\\\\]{". $max_word_length ."})/ui", '$1<wbr>', $text);
 }
 
 function bt_sql_esc ($x)
@@ -386,13 +388,13 @@ function get_db_stat($mode)
 		case 'usercount':
 			$sql = "SELECT COUNT(user_id) AS total
 				FROM " . USERS_TABLE . "
-				WHERE user_id <> " . ANONYMOUS;
+				WHERE user_id <> " . GUEST_UID;
 			break;
 
 		case 'newestuser':
 			$sql = "SELECT user_id, username
 				FROM " . USERS_TABLE . "
-				WHERE user_id <> " . ANONYMOUS . "
+				WHERE user_id <> " . GUEST_UID . "
 				ORDER BY user_id DESC
 				LIMIT 1";
 			break;
@@ -430,38 +432,35 @@ function get_db_stat($mode)
 	return false;
 }
 
-// added at phpBB 2.0.11 to properly format the username
-function phpbb_clean_username($username)
+function clean_username ($username)
 {
-	$username = substr(htmlspecialchars(str_replace("\'", "'", trim($username))), 0, 25);
-	$username = phpbb_rtrim($username, "\\");
+	$username = mb_substr(htmlspecialchars(str_replace("\'", "'", trim($username))), 0, 25, 'UTF-8');
+	$username = ft_rtrim($username, "\\");
 	$username = str_replace("'", "\'", $username);
 
 	return $username;
 }
 
-// added at phpBB 2.0.12 to fix a bug in PHP 4.3.10 (only supporting charlist in php >= 4.1.0)
-function phpbb_rtrim($str, $charlist = false)
+function ft_ltrim ($str, $charlist = false)
+{
+	if ($charlist === false)
+	{
+		return ltrim($str);
+	}
+
+	$str = ltrim($str, $charlist);
+
+	return $str;
+}
+
+function ft_rtrim ($str, $charlist = false)
 {
 	if ($charlist === false)
 	{
 		return rtrim($str);
 	}
 
-	$php_version = explode('.', PHP_VERSION);
-
-	// php version < 4.1.0
-	if ((int) $php_version[0] < 4 || ((int) $php_version[0] == 4 && (int) $php_version[1] < 1))
-	{
-		while ($str{strlen($str)-1} == $charlist)
-		{
-			$str = substr($str, 0, strlen($str)-1);
-		}
-	}
-	else
-	{
-		$str = rtrim($str, $charlist);
-	}
+	$str = rtrim($str, $charlist);
 
 	return $str;
 }
@@ -475,7 +474,7 @@ function get_userdata($user, $force_str = false)
 
 	if (!is_numeric($user) || $force_str)
 	{
-		$user = phpbb_clean_username($user);
+		$user = clean_username($user);
 	}
 	else
 	{
@@ -485,7 +484,7 @@ function get_userdata($user, $force_str = false)
 	$sql = "SELECT *
 		FROM " . USERS_TABLE . "
 		WHERE ";
-	$sql .= ( ( is_integer($user) ) ? "user_id = $user" : "username = '" .  $user . "'" ) . " AND user_id <> " . ANONYMOUS;
+	$sql .= ( ( is_integer($user) ) ? "user_id = $user" : "username = '" .  $user . "'" ) . " AND user_id <> " . GUEST_UID;
 	if ( !($result = $db->sql_query($sql)) )
 	{
 		message_die(GENERAL_ERROR, 'Tried obtaining data for a non-existent user', '', __LINE__, __FILE__, $sql);
@@ -633,7 +632,7 @@ function init_userprefs($userdata)
 	global $template, $lang;
 	global $nav_links;
 
-	if ( $userdata['user_id'] != ANONYMOUS )
+	if ( $userdata['user_id'] != GUEST_UID )
 	{
 		if ( !empty($userdata['user_lang']))
 		{
@@ -674,7 +673,7 @@ function init_userprefs($userdata)
 	//
 	if ( !$ft_cfg['override_user_style'] )
 	{
-		if ( $userdata['user_id'] != ANONYMOUS && $userdata['user_style'] > 0 )
+		if ( $userdata['user_id'] != GUEST_UID && $userdata['user_style'] > 0 )
 		{
 			if ( $theme = setup_style($userdata['user_style']) )
 			{
@@ -719,7 +718,7 @@ function setup_style()
 	$tpl_dir_name = defined('IN_ADMIN') ? 'default'   : basename($ft_cfg['tpl_name']);
 	$stylesheet   = defined('IN_ADMIN') ? 'main.css'  : basename($ft_cfg['link_css']);
 
-	if (!ANONYMOUS && !empty($userdata['tpl_name']))
+	if (!GUEST_UID && !empty($userdata['tpl_name']))
 	{
 		foreach ($ft_cfg['templates'] as $folder => $name)
 		{
@@ -949,7 +948,7 @@ function message_die($msg_code, $msg_text = '', $msg_title = '', $err_line = '',
 	// Get SQL error if we are debugging. Do this as soon as possible to prevent
 	// subsequent queries from overwriting the status of sql_error()
 	//
-	if ( DEBUG && ( $msg_code == GENERAL_ERROR || $msg_code == CRITICAL_ERROR ) )
+	if (( $msg_code == GENERAL_ERROR || $msg_code == CRITICAL_ERROR ) )
 	{
 		$sql_error = $db->sql_error();
 
@@ -973,7 +972,7 @@ function message_die($msg_code, $msg_text = '', $msg_title = '', $err_line = '',
 
 	if( empty($userdata) && ( $msg_code == GENERAL_MESSAGE || $msg_code == GENERAL_ERROR ) )
 	{
-		$userdata = session_pagestart($user_ip, PAGE_INDEX);
+		$userdata = session_pagestart($user_ip);
 		init_userprefs($userdata);
 	}
 
@@ -1068,7 +1067,7 @@ function message_die($msg_code, $msg_text = '', $msg_title = '', $err_line = '',
 	// prevents debug info being output for general messages should DEBUG be
 	// set TRUE by accident (preventing confusion for the end user!)
 	//
-	if ( DEBUG && ( $msg_code == GENERAL_ERROR || $msg_code == CRITICAL_ERROR ) )
+	if (( $msg_code == GENERAL_ERROR || $msg_code == CRITICAL_ERROR ) )
 	{
 		if ( $debug_text != '' )
 		{

@@ -33,7 +33,7 @@ define('INC_TR_DB_INIT',    TR_INC_PATH .'tr_db.php');
 
 // misc
 define('TR_GZIP_LEVEL', 7);
-define('ANONYMOUS',    -1);
+define('GUEST_UID',    -1);
 
 // rating limits
 define('TR_RATING_LIMITS', TRUE);

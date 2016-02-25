@@ -367,7 +367,6 @@ function display_upload_attach_box_limits($user_id, $group_id = 0)
 	}
 
 	$attachments = new attach_posting();
-	$attachments->PAGE = PAGE_INDEX;
 
 	// Get the assigned Quota Limit. For Groups, we are directly getting the value, because this Quota can change from user to user.
 	if ($group_id)
@@ -532,31 +531,4 @@ function display_upload_attach_box_limits($user_id, $group_id = 0)
 		'UPLOAD_LIMIT_PERCENT' => $upload_limit_pct,
 		'PERCENT_FULL' => $l_box_size_status)
 	);
-}
-
-//
-// Function responsible for viewonline (within viewonline.php and the admin index page)
-//
-// added directly after the switch statement
-// viewonline.php:
-//		perform_attach_pageregister($row['session_page']);
-// admin/index.php:
-//		perform_attach_pageregister($onlinerow_reg[$i]['user_session_page'], TRUE);
-//		perform_attach_pageregister($onlinerow_guest[$i]['session_page'], TRUE);
-//
-function perform_attach_pageregister($session_page, $in_admin = false)
-{
-	global $location, $location_url, $lang;
-
-	switch ($session_page)
-	{
-		case (PAGE_UACP):
-			$location = $lang['User_acp_title'];
-			$location_url = ($in_admin) ? "index.php?pane=right" : "index.php";
-			break;
-		case (PAGE_RULES):
-			$location = $lang['Rules_page'];
-			$location_url = ($in_admin) ? "index.php?pane=right" : "index.php";
-			break;
-	}
 }

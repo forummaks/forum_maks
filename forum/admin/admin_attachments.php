@@ -165,31 +165,6 @@ while ($row = $db->sql_fetchrow($result))
 
 		if ($config_name == 'max_filesize')
 		{
-			$old_size = $attach_config[$config_name];
-			$new_size = $new_attach[$config_name];
-
-			if ($old_size != $new_size)
-			{
-				//
-				// See, if we have a similar value of old_size in Mime Groups. If so, update these values.
-				//
-				$sql = 'UPDATE ' . EXTENSION_GROUPS_TABLE . '
-				SET max_filesize = ' . $new_size . '
-				WHERE max_filesize = ' . $old_size;
-
-				if ( !($result_2 = $db->sql_query($sql)) )
-				{
-					message_die(GENERAL_ERROR, 'Could not update Extension Group informations', '', __LINE__, __FILE__, $sql);
-				}
-
-			}
-
-			$sql = "UPDATE " . ATTACH_CONFIG_TABLE . "
-			SET	config_value = '" . str_replace("\'", "''", $new_attach[$config_name]) . "'
-			WHERE config_name = '$config_name'";
-		}
-		else
-		{
 			$sql = "UPDATE " . ATTACH_CONFIG_TABLE . "
 			SET	config_value = '" . str_replace("\'", "''", $new_attach[$config_name]) . "'
 			WHERE config_name = '$config_name'";
@@ -792,43 +767,6 @@ if ($mode == 'cats')
 	$template->set_filenames(array(
 		'body' => 'admin/attach_cat_body.tpl')
 	);
-
-	$s_assigned_group_images = $lang['None'];
-	$s_assigned_group_streams = $lang['None'];
-	$s_assigned_group_flash = $lang['None'];
-
-	$sql = "SELECT group_name, cat_id
-	FROM " . EXTENSION_GROUPS_TABLE . "
-	WHERE cat_id > 0
-	ORDER BY cat_id";
-
-	$s_assigned_group_images = array();
-	$s_assigned_group_streams = array();
-	$s_assigned_group_flash = array();
-
-	if ( !($result = $db->sql_query($sql)) )
-	{
-		message_die(GENERAL_ERROR, 'Could not get Group Names from ' . EXTENSION_GROUPS_TABLE, '', __LINE__, __FILE__, $sql);
-	}
-
-	$row = $db->sql_fetchrowset($result);
-
-	for ($i = 0; $i < count($row); $i++)
-	{
-		if ($row[$i]['cat_id'] == IMAGE_CAT)
-		{
-			$s_assigned_group_images[] = $row[$i]['group_name'];
-		}
-		else if ($row[$i]['cat_id'] == STREAM_CAT)
-		{
-			$s_assigned_group_streams[] = $row[$i]['group_name'];
-		}
-		else if ($row[$i]['cat_id'] == SWF_CAT)
-		{
-			$s_assigned_group_flash[] = $row[$i]['group_name'];
-		}
-	}
-
 	$display_inlined_yes = ( $new_attach['img_display_inlined'] != '0' ) ? 'checked="checked"' : '';
 	$display_inlined_no = ( $new_attach['img_display_inlined'] == '0' ) ? 'checked="checked"' : '';
 
