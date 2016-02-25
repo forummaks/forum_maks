@@ -409,7 +409,7 @@ function thumbnail_exists($filename)
 //
 function physical_filename_already_stored($filename)
 {
-	global $db;
+	
 
 	if ($filename == '')
 	{
@@ -421,12 +421,12 @@ function physical_filename_already_stored($filename)
 		WHERE physical_filename = '" . str_replace("'", "''", basename($filename)) . "'
 		LIMIT 1";
 
-	if (!($result = $db->sql_query($sql)))
+	if (!($result = DB()->sql_query($sql)))
 	{
 		message_die(GENERAL_ERROR, 'Could not get attachment information for filename: ' . $filename, '', __LINE__, __FILE__, $sql);
 	}
 
-	return ($db->num_rows($result) == 0) ? false : true;
+	return (DB()->num_rows($result) == 0) ? false : true;
 }
 
 //
@@ -434,7 +434,7 @@ function physical_filename_already_stored($filename)
 //
 function attachment_exists_db($post_id, $page = 0)
 {
-	global $db;
+	
 
 	if ($page == PAGE_PRIVMSGS)
 	{
@@ -450,12 +450,12 @@ function attachment_exists_db($post_id, $page = 0)
 		WHERE $sql_id = $post_id
 		LIMIT 1";
 
-	if ( !($result = $db->sql_query($sql)) )
+	if ( !($result = DB()->sql_query($sql)) )
 	{
 		message_die(GENERAL_ERROR, 'Could not get attachment informations for specific posts', '', __LINE__, __FILE__, $sql);
 	}
 
-	if (($db->num_rows($result)) > 0)
+	if ((DB()->num_rows($result)) > 0)
 	{
 		return true;
 	}
@@ -470,7 +470,7 @@ function attachment_exists_db($post_id, $page = 0)
 //
 function get_attachments_from_post($post_id_array)
 {
-	global $db, $attach_config;
+	global  $attach_config;
 
 	$attachments = array();
 
@@ -502,18 +502,18 @@ function get_attachments_from_post($post_id_array)
 			AND a.attach_id = d.attach_id
 		ORDER BY d.filetime $display_order";
 
-	if ( !($result = $db->sql_query($sql)) )
+	if ( !($result = DB()->sql_query($sql)) )
 	{
 		message_die(GENERAL_ERROR, 'Could not get Attachment Informations for post number ' . $post_id_array, '', __LINE__, __FILE__, $sql);
 	}
 
-	if ( ($db->num_rows($result)) == 0 )
+	if ( (DB()->num_rows($result)) == 0 )
 	{
 		return $attachments;
 	}
 
-	$attachments = $db->sql_fetchrowset($result);
-	$db->sql_freeresult($result);
+	$attachments = DB()->sql_fetchrowset($result);
+	DB()->sql_freeresult($result);
 
 	return $attachments;
 }
@@ -523,7 +523,7 @@ function get_attachments_from_post($post_id_array)
 //
 function get_attachments_from_pm($privmsgs_id_array)
 {
-	global $db, $attach_config;
+	global  $attach_config;
 
 	$attachments = array();
 
@@ -555,18 +555,18 @@ function get_attachments_from_pm($privmsgs_id_array)
 			AND a.attach_id = d.attach_id
 		ORDER BY d.filetime $display_order";
 
-	if ( !($result = $db->sql_query($sql)) )
+	if ( !($result = DB()->sql_query($sql)) )
 	{
 		message_die(GENERAL_ERROR, 'Could not get Attachment Informations for private message number ' . $privmsgs_id_array, '', __LINE__, __FILE__, $sql);
 	}
 
-	if ( ($db->num_rows($result)) == 0 )
+	if ( (DB()->num_rows($result)) == 0 )
 	{
 		return $attachments;
 	}
 
-	$attachments = $db->sql_fetchrowset($result);
-	$db->sql_freeresult($result);
+	$attachments = DB()->sql_fetchrowset($result);
+	DB()->sql_freeresult($result);
 
 	return $attachments;
 }
@@ -576,24 +576,24 @@ function get_attachments_from_pm($privmsgs_id_array)
 //
 function get_total_attach_filesize($attach_ids)
 {
-	global $db;
+	
 
 	$sql = 'SELECT filesize
 		FROM ' . ATTACHMENTS_DESC_TABLE . "
 		WHERE attach_id IN ($attach_ids)";
 
-	if ( !($result = $db->sql_query($sql)) )
+	if ( !($result = DB()->sql_query($sql)) )
 	{
 		message_die(GENERAL_ERROR, 'Could not query Total Filesize', '', __LINE__, __FILE__, $sql);
 	}
 
 	$total_filesize = 0;
 
-	while ($row = $db->sql_fetchrow($result))
+	while ($row = DB()->sql_fetchrow($result))
 	{
 		$total_filesize += (int) $row['filesize'];
 	}
-	$db->sql_freeresult($result);
+	DB()->sql_freeresult($result);
 
 	return $total_filesize;
 }
@@ -603,7 +603,7 @@ function get_total_attach_filesize($attach_ids)
 //
 function get_total_attach_pm_filesize($direction, $user_id)
 {
-	global $db;
+	
 
 	if ($direction != 'from_user' && $direction != 'to_user')
 	{
@@ -620,25 +620,25 @@ function get_total_attach_pm_filesize($direction, $user_id)
 			AND a.privmsgs_id <> 0 AND a.privmsgs_id = p.privmsgs_id
 			AND p.privmsgs_type <> " . PRIVMSGS_SENT_MAIL;
 
-	if ( !($result = $db->sql_query($sql)) )
+	if ( !($result = DB()->sql_query($sql)) )
 	{
 		message_die(GENERAL_ERROR, 'Could not query Attachment Informations', '', __LINE__, __FILE__, $sql);
 	}
 
 	$pm_filesize_total = 0;
 	$attach_id = array();
-	$num_rows = $db->num_rows($result);
+	$num_rows = DB()->num_rows($result);
 
 	if ($num_rows == 0)
 	{
 		return $pm_filesize_total;
 	}
 
-	while ($row = $db->sql_fetchrow($result))
+	while ($row = DB()->sql_fetchrow($result))
 	{
 		$attach_id[] = $row['attach_id'];
 	}
-	$db->sql_freeresult($result);
+	DB()->sql_freeresult($result);
 
 	$pm_filesize_total = get_total_attach_filesize(implode(', ', $attach_id));
 	return $pm_filesize_total;
@@ -660,7 +660,7 @@ function prune_attachments($sql_post)
 //
 function attachment_sync_topic($topic_id)
 {
-	global $db;
+	
 
 	if (!$topic_id)
 	{
@@ -672,14 +672,14 @@ function attachment_sync_topic($topic_id)
 		WHERE topic_id = $topic_id
 		GROUP BY post_id";
 
-	if ( !($result = $db->sql_query($sql)) )
+	if ( !($result = DB()->sql_query($sql)) )
 	{
 		message_die(GENERAL_ERROR, 'Couldn\'t select Post ID\'s', '', __LINE__, __FILE__, $sql);
 	}
 
-	$post_list = $db->sql_fetchrowset($result);
-	$num_posts = $db->num_rows($result);
-	$db->sql_freeresult($result);
+	$post_list = DB()->sql_fetchrowset($result);
+	$num_posts = DB()->num_rows($result);
+	DB()->sql_freeresult($result);
 
 	if ($num_posts == 0)
 	{
@@ -705,16 +705,16 @@ function attachment_sync_topic($topic_id)
 		WHERE post_id IN ($post_id_sql)
 		LIMIT 1";
 
-	if ( !($result = $db->sql_query($sql)) )
+	if ( !($result = DB()->sql_query($sql)) )
 	{
 		message_die(GENERAL_ERROR, 'Couldn\'t select Attachment ID\'s', '', __LINE__, __FILE__, $sql);
 	}
 
-	$set_id = ($db->num_rows($result) == 0) ? 0 : 1;
+	$set_id = (DB()->num_rows($result) == 0) ? 0 : 1;
 
 	$sql = 'UPDATE ' . TOPICS_TABLE . " SET topic_attachment = $set_id WHERE topic_id = $topic_id";
 
-	if ( !($db->sql_query($sql)) )
+	if ( !(DB()->sql_query($sql)) )
 	{
 		message_die(GENERAL_ERROR, 'Couldn\'t update Topics Table', '', __LINE__, __FILE__, $sql);
 	}
@@ -726,16 +726,16 @@ function attachment_sync_topic($topic_id)
 			WHERE post_id = ' . $post_ids[$i] . '
 			LIMIT 1';
 
-		if ( !($result = $db->sql_query($sql)) )
+		if ( !($result = DB()->sql_query($sql)) )
 		{
 			message_die(GENERAL_ERROR, 'Couldn\'t select Attachment ID\'s', '', __LINE__, __FILE__, $sql);
 		}
 
-		$set_id = ( $db->num_rows($result) == 0) ? 0 : 1;
+		$set_id = ( DB()->num_rows($result) == 0) ? 0 : 1;
 
 		$sql = 'UPDATE ' . POSTS_TABLE . " SET post_attachment = $set_id WHERE post_id = {$post_ids[$i]}";
 
-		if ( !($db->sql_query($sql)) )
+		if ( !(DB()->sql_query($sql)) )
 		{
 			message_die(GENERAL_ERROR, 'Couldn\'t update Posts Table', '', __LINE__, __FILE__, $sql);
 		}
@@ -777,7 +777,7 @@ function delete_extension($filename)
 //
 function user_in_group($user_id, $group_id)
 {
-	global $db;
+	
 
 	if (empty($user_id) || empty($group_id))
 	{
@@ -792,12 +792,12 @@ function user_in_group($user_id, $group_id)
 			AND g.group_id = $group_id)
 		LIMIT 1";
 
-	if ( !($result = $db->sql_query($sql)) )
+	if ( !($result = DB()->sql_query($sql)) )
 	{
 		message_die(GENERAL_ERROR, 'Could not get User Group', '', __LINE__, __FILE__, $sql);
 	}
 
-	if ($db->num_rows($result) == 0)
+	if (DB()->num_rows($result) == 0)
 	{
 		return false;
 	}

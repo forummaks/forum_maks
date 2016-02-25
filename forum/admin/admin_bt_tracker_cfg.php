@@ -83,7 +83,7 @@ if ($set_defaults && $confirm)
 			config_value = '$config_value'
 			WHERE config_name = '$config_name'";
 
-		if(!$db->sql_query($sql))
+		if(!DB()->sql_query($sql))
 		{
 			message_die(GENERAL_ERROR, "Failed to update configuration for $config_name", '', __LINE__, __FILE__, $sql);
 		}

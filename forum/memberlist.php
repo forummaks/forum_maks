@@ -110,11 +110,11 @@ $sql = "SELECT username, user_id, user_viewemail, user_posts, user_regdate, user
 	FROM " . USERS_TABLE . "
 	WHERE user_id <> " . GUEST_UID . "
 	ORDER BY $order_by";
-if( !($result = $db->sql_query($sql)) )
+if( !($result = DB()->sql_query($sql)) )
 {
 	message_die(GENERAL_ERROR, 'Could not query users', '', __LINE__, __FILE__, $sql);
 }
-if ( $row = $db->sql_fetchrow($result) )
+if ( $row = DB()->sql_fetchrow($result) )
 {
 	$i = 0;
 	do
@@ -199,24 +199,24 @@ if ( $row = $db->sql_fetchrow($result) )
 		);
 		$i++;
 	}
-	while ( $row = $db->sql_fetchrow($result) );
-	$db->sql_freeresult($result);
+	while ( $row = DB()->sql_fetchrow($result) );
+	DB()->sql_freeresult($result);
 }
 if ( $mode != 'topten' || $ft_cfg['topics_per_page'] < 10 )
 {
 	$sql = "SELECT count(*) AS total
 		FROM " . USERS_TABLE . "
 		WHERE user_id <> " . GUEST_UID;
-	if ( !($result = $db->sql_query($sql)) )
+	if ( !($result = DB()->sql_query($sql)) )
 	{
 		message_die(GENERAL_ERROR, 'Error getting total users', '', __LINE__, __FILE__, $sql);
 	}
-	if ( $total = $db->sql_fetchrow($result) )
+	if ( $total = DB()->sql_fetchrow($result) )
 	{
 		$total_members = $total['total'];
 		$pagination = generate_pagination("memberlist.php?mode=$mode&amp;order=$sort_order", $total_members, $ft_cfg['topics_per_page'], $start). '&nbsp;';
 	}
-	$db->sql_freeresult($result);
+	DB()->sql_freeresult($result);
 }
 else
 {

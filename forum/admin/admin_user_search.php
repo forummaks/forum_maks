@@ -17,18 +17,18 @@ if(!isset($HTTP_POST_VARS['dosearch'])&&!isset($HTTP_GET_VARS['dosearch']))
 					WHERE group_single_user = 0
 						ORDER BY group_name ASC";
 
-	if(!$result = $db->sql_query($sql))
+	if(!$result = DB()->sql_query($sql))
 	{
 		message_die(GENERAL_ERROR, 'Could not select group data', '', __LINE__, __FILE__, $sql);
 	}
 
 	$group_list = '';
 
-	if($db->num_rows($result) != 0)
+	if(DB()->num_rows($result) != 0)
 	{
 		$template->assign_block_vars('groups_exist', array());
 
-		while($row = $db->sql_fetchrow($result))
+		while($row = DB()->sql_fetchrow($result))
 		{
 			$group_list .= '<option value="'.$row['group_id'].'">'.strip_tags(htmlspecialchars($row['group_name'])).'</option>';
 		}
@@ -41,14 +41,14 @@ if(!isset($HTTP_POST_VARS['dosearch'])&&!isset($HTTP_GET_VARS['dosearch']))
 				FROM ( ". FORUMS_TABLE ." AS f INNER JOIN ". CATEGORIES_TABLE ." AS c ON c.cat_id = f.cat_id )
 				ORDER BY c.cat_order, f.forum_order ASC";
 
-	if(!$result = $db->sql_query($sql))
+	if(!$result = DB()->sql_query($sql))
 	{
 		message_die(GENERAL_ERROR, 'Could not select forum data', '', __LINE__, __FILE__, $sql);
 	}
 
 	$forums = array();
 
-	if($db->num_rows($result) != 0)
+	if(DB()->num_rows($result) != 0)
 	{
 		$template->assign_block_vars('forums_exist', array());
 
@@ -56,7 +56,7 @@ if(!isset($HTTP_POST_VARS['dosearch'])&&!isset($HTTP_GET_VARS['dosearch']))
 
 		$forums_list = '';
 
-		while($row = $db->sql_fetchrow($result))
+		while($row = DB()->sql_fetchrow($result))
 		{
 			if($row['cat_id'] != $last_cat_id)
 			{
@@ -581,24 +581,24 @@ else
 								AND ($where_sql)
 							GROUP BY poster_id";
 
-			if(!$result = $db->sql_query($sql))
+			if(!$result = DB()->sql_query($sql))
 			{
 				message_die(GENERAL_ERROR, "Could not count users", '', __LINE__, __FILE__, $sql);
 			}
 
-			if($db->num_rows($result)==0)
+			if(DB()->num_rows($result)==0)
 			{
 				message_die(GENERAL_MESSAGE, $lang['Search_no_results']);
 			}
 			else
 			{
-				$total_pages['total'] = $db->num_rows($result);
+				$total_pages['total'] = DB()->num_rows($result);
 
 				$total_sql = NULL;
 
 				$ip_users_sql = '';
 
-				while($row = $db->sql_fetchrow($result))
+				while($row = DB()->sql_fetchrow($result))
 				{
 					$ip_users_sql .= ( $ip_users_sql == '' ) ? $row['poster_id'] : ', '.$row['poster_id'];
 				}
@@ -675,17 +675,17 @@ else
 							WHERE group_id = $group_id
 								AND group_single_user = 0";
 
-			if(!$result = $db->sql_query($sql))
+			if(!$result = DB()->sql_query($sql))
 			{
 				message_die(GENERAL_ERROR, 'Could not select group data', '', __LINE__, __FILE__, $sql);
 			}
 
-			if($db->num_rows($result)==0)
+			if(DB()->num_rows($result)==0)
 			{
 				message_die(GENERAL_MESSAGE, $lang['Search_invalid_group']);
 			}
 
-			$group_name = $db->sql_fetchrow($result);
+			$group_name = DB()->sql_fetchrow($result);
 
 			$text = sprintf($lang['Search_for_group'], strip_tags(htmlspecialchars($group_name['group_name'])));
 
@@ -943,17 +943,17 @@ else
 							WHERE themes_id = ".$style_type;
 
 
-			if(!$result = $db->sql_query($sql))
+			if(!$result = DB()->sql_query($sql))
 			{
 				message_die(GENERAL_ERROR, 'Could not select style data', '', __LINE__, __FILE__, $sql);
 			}
 
-			if($db->num_rows($result)==0)
+			if(DB()->num_rows($result)==0)
 			{
 				message_die(GENERAL_MESSAGE, $lang['Search_invalid_style']);
 			}
 
-			$style_name = $db->sql_fetchrow($result);
+			$style_name = DB()->sql_fetchrow($result);
 
 			$text = sprintf($lang['Search_for_style'], strip_tags(htmlspecialchars($style_name['style_name'])));
 
@@ -975,17 +975,17 @@ else
 							WHERE forum_id = ".$moderators_forum;
 
 
-			if(!$result = $db->sql_query($sql))
+			if(!$result = DB()->sql_query($sql))
 			{
 				message_die(GENERAL_ERROR, 'Could not select forum data', '', __LINE__, __FILE__, $sql);
 			}
 
-			if($db->num_rows($result)==0)
+			if(DB()->num_rows($result)==0)
 			{
 				message_die(GENERAL_MESSAGE, $lang['Search_invalid_moderators']);
 			}
 
-			$forum_name = $db->sql_fetchrow($result);
+			$forum_name = DB()->sql_fetchrow($result);
 
 			$text = sprintf($lang['Search_for_moderators'], strip_tags(htmlspecialchars($forum_name['forum_name'])));
 
@@ -1151,12 +1151,12 @@ else
 
 	if(!is_null($total_sql))
 	{
-		if(!$result = $db->sql_query($total_sql))
+		if(!$result = DB()->sql_query($total_sql))
 		{
 			message_die(GENERAL_ERROR, "Could not count users", '', __LINE__, __FILE__, $total_sql);
 		}
 
-		$total_pages = $db->sql_fetchrow($result);
+		$total_pages = DB()->sql_fetchrow($result);
 
 		if($total_pages['total'] == 0)
 		{
@@ -1211,12 +1211,12 @@ else
 		'S_POST_ACTION' => append_sid("$base_url&sort=$sort&order=$order")
 	));
 
-	if(!$result = $db->sql_query($select_sql))
+	if(!$result = DB()->sql_query($select_sql))
 	{
 		message_die(GENERAL_ERROR, "Could not select user data", '', __LINE__, __FILE__, $select_sql);
 	}
 
-	$rowset = $db->sql_fetchrowset($result);
+	$rowset = DB()->sql_fetchrowset($result);
 
 	$users_sql = '';
 
@@ -1229,7 +1229,7 @@ else
 				FROM ".BANLIST_TABLE."
 					WHERE ban_userid IN ($users_sql)";
 
-	if(!$result = $db->sql_query($sql))
+	if(!$result = DB()->sql_query($sql))
 	{
 		message_die(GENERAL_ERROR, "Could not select banned data", '', __LINE__, __FILE__, $sql);
 	}
@@ -1238,7 +1238,7 @@ else
 
 	$banned = array();
 
-	while($row = $db->sql_fetchrow($result))
+	while($row = DB()->sql_fetchrow($result))
 	{
 		$banned[$row['user_id']] = true;
 	}

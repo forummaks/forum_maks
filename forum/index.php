@@ -52,7 +52,7 @@ if( $mark_read == 'forums' )
 				AND session_ip = '$user_ip'
 				AND session_user_id = $user_id";
 
-		if (!$db->sql_query($sql))
+		if (!DB()->sql_query($sql))
 		{
 			message_die(GENERAL_ERROR, 'Error updating session', '', __LINE__, __FILE__, $sql);
 		}
@@ -62,7 +62,7 @@ if( $mark_read == 'forums' )
 				user_lastvisit = $current_time
 			WHERE user_id = $user_id";
 
-		if (!$db->sql_query($sql))
+		if (!DB()->sql_query($sql))
 		{
 			message_die(GENERAL_ERROR, 'Error updating last visit time', '', __LINE__, __FILE__, $sql);
 		}
@@ -141,12 +141,12 @@ $sql = 'SELECT c.cat_title, f.*, p.post_time, p.post_username, u.username, u.use
 		LEFT JOIN '. TOPICS_TABLE .' t ON t.topic_last_post_id = f.forum_last_post_id
 	ORDER BY c.cat_order, f.cat_id, f.forum_order';
 
-if (!$result = $db->sql_query($sql))
+if (!$result = DB()->sql_query($sql))
 {
 	message_die(GENERAL_ERROR, 'Could not query forums information', '', __LINE__, __FILE__, $sql);
 }
 
-if ($rowset = $db->sql_fetchrowset($result))
+if ($rowset = DB()->sql_fetchrowset($result))
 {
 	foreach ($rowset as $rid => $row)
 	{
@@ -195,7 +195,7 @@ if ($rowset = $db->sql_fetchrowset($result))
 			}
 		}
 	}
-	$db->sql_freeresult($result);
+	DB()->sql_freeresult($result);
 	unset($rowset);
 }
 
@@ -214,17 +214,17 @@ if ($cat_forums)
 			AND u.user_id = ug.user_id
 		GROUP BY u.user_id, u.username, aa.forum_id
 		ORDER BY aa.forum_id, u.user_id";
-	if ( !($result = $db->sql_query($sql)) )
+	if ( !($result = DB()->sql_query($sql)) )
 	{
 		message_die(GENERAL_ERROR, 'Could not query forum moderator information', '', __LINE__, __FILE__, $sql);
 	}
 
 	$forum_moderators = array();
-	while( $row = $db->sql_fetchrow($result) )
+	while( $row = DB()->sql_fetchrow($result) )
 	{
 		$forum_moderators[$row['forum_id']][] = '<a class="gensmall" href="' . append_sid("profile.php?mode=viewprofile&amp;" . POST_USERS_URL . "=" . $row['user_id']) . '">' . $row['username'] . '</a>';
 	}
-	$db->sql_freeresult($result);
+	DB()->sql_freeresult($result);
 
 	$sql = "SELECT aa.forum_id, g.group_id, g.group_name
 		FROM " . AUTH_ACCESS_TABLE . " aa, " . USER_GROUP_TABLE . " ug, " . GROUPS_TABLE . " g
@@ -235,16 +235,16 @@ if ($cat_forums)
 			AND g.group_id = aa.group_id
 		GROUP BY g.group_id, g.group_name, aa.forum_id
 		ORDER BY aa.forum_id, g.group_id";
-	if ( !($result = $db->sql_query($sql)) )
+	if ( !($result = DB()->sql_query($sql)) )
 	{
 		message_die(GENERAL_ERROR, 'Could not query forum moderator information', '', __LINE__, __FILE__, $sql);
 	}
 
-	while( $row = $db->sql_fetchrow($result) )
+	while( $row = DB()->sql_fetchrow($result) )
 	{
 		$forum_moderators[$row['forum_id']][] = '<a class="gensmall" href="' . append_sid("groupcp.php?" . POST_GROUPS_URL . "=" . $row['group_id']) . '">' . $row['group_name'] . '</a>';
 	}
-	$db->sql_freeresult($result);
+	DB()->sql_freeresult($result);
 
 	//
 	// Start output of page
@@ -514,12 +514,12 @@ if ($ft_cfg['show_latest_news'] AND $news_forum_ids = $ft_cfg['latest_news_forum
 		AND t.topic_moved_id = 0
 		ORDER BY p.post_id DESC LIMIT $news_count";
 
-	if ( !$result = $db->sql_query($sql) )
+	if ( !$result = DB()->sql_query($sql) )
 	{
 		message_die(GENERAL_ERROR, "Could not fetch latest news information.", '', __LINE__, __FILE__, $sql);
 	}
 
-while ( $row = $db->sql_fetchrow($result) )
+while ( $row = DB()->sql_fetchrow($result) )
 	{	
 	$template->assign_block_vars('news', array(
 		'NEWS_TIME'       => create_date('d-M', $row['post_time'], $ft_cfg['board_timezone']),
@@ -544,7 +544,7 @@ while ( $row = $db->sql_fetchrow($result) )
    $sql = " SELECT COUNT(peer_id) AS peers, SUM(seeder) AS seeds
             FROM " . BT_TRACKER_TABLE . "
             WHERE  expire_time > $cur_time ";
-        if ($row = $db->sql_fetchrow($db->sql_query($sql)))
+        if ($row = DB()->sql_fetchrow(DB()->sql_query($sql)))
         {
             $peers = ($row['peers']) ? $row['peers'] : 0;
             $seeds = ($row['seeds']) ? $row['seeds'] : 0;
@@ -560,7 +560,7 @@ while ( $row = $db->sql_fetchrow($result) )
    //
       $sql = " SELECT COUNT(torrent_id) AS torrents, SUM(size) AS torrents_size
                FROM " . BT_TORRENTS_TABLE ;
-                  if ($row = $db->sql_fetchrow($db->sql_query($sql)))
+                  if ($row = DB()->sql_fetchrow(DB()->sql_query($sql)))
      					 {
                          $torrents = $row['torrents'];
                          $torrents_size  = humn_size($row['torrents_size']);
@@ -576,7 +576,7 @@ while ( $row = $db->sql_fetchrow($result) )
                 FROM " . BT_TRACKER_TABLE . " tr
                 LEFT JOIN " . BT_TORRENTS_TABLE. " tor ON tr.torrent_id = tor.torrent_id
                 WHERE tr.expire_time > $cur_time";
-                     if ($row = $db->sql_fetchrow($db->sql_query($sql)))
+                     if ($row = DB()->sql_fetchrow(DB()->sql_query($sql)))
      					 {
                            $torrents_act = ($row['active_torrents']) ? $row['active_torrents'] : 0 ;
                          }
@@ -590,7 +590,7 @@ while ( $row = $db->sql_fetchrow($result) )
 
       $sql = " SELECT SUM(u_up_total) AS up, SUM(u_down_total) AS down
                FROM " . BT_USERS_TABLE ;
-                   if ($row = $db->sql_fetchrow($db->sql_query($sql)))
+                   if ($row = DB()->sql_fetchrow(DB()->sql_query($sql)))
      					 {
                             $up = humn_size($row['up']);
                             $down = humn_size($row['down']);

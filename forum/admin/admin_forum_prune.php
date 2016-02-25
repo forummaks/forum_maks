@@ -42,13 +42,13 @@ $sql = "SELECT f.*
 	WHERE c.cat_id = f.cat_id
 	$forum_sql
 	ORDER BY c.cat_order ASC, f.forum_order ASC";
-if( !($result = $db->sql_query($sql)) )
+if( !($result = DB()->sql_query($sql)) )
 {
 	message_die(GENERAL_ERROR, 'Could not obtain list of forums for pruning', '', __LINE__, __FILE__, $sql);
 }
 
 $forum_rows = array();
-while( $row = $db->sql_fetchrow($result) )
+while( $row = DB()->sql_fetchrow($result) )
 {
 	$forum_rows[] = $row;
 }

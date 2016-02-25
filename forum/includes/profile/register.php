@@ -145,11 +145,11 @@ if (
 	$sql = "SELECT config_value
 		FROM " . CONFIG_TABLE . "
 		WHERE config_name = 'default_dateformat'";
-	if ( !($result = $db->sql_query($sql)) )
+	if ( !($result = DB()->sql_query($sql)) )
 	{
 		message_die(GENERAL_ERROR, 'Could not select default dateformat', '', __LINE__, __FILE__, $sql);
 	}
-	$row = $db->sql_fetchrow($result);
+	$row = DB()->sql_fetchrow($result);
 	$ft_cfg['default_dateformat'] = $row['config_value'];
 	$user_dateformat = ( !empty($HTTP_POST_VARS['dateformat']) ) ? trim(htmlspecialchars($HTTP_POST_VARS['dateformat'])) : $ft_cfg['default_dateformat'];
 
@@ -246,12 +246,12 @@ if ( isset($HTTP_POST_VARS['submit']) )
 				$sql = "SELECT user_password
 					FROM " . USERS_TABLE . "
 					WHERE user_id = $user_id";
-				if ( !($result = $db->sql_query($sql)) )
+				if ( !($result = DB()->sql_query($sql)) )
 				{
 					message_die(GENERAL_ERROR, 'Could not obtain user_password information', '', __LINE__, __FILE__, $sql);
 				}
 
-				$row = $db->sql_fetchrow($result);
+				$row = DB()->sql_fetchrow($result);
 
 				if ( $row['user_password'] != md5($cur_password) )
 				{
@@ -292,12 +292,12 @@ if ( isset($HTTP_POST_VARS['submit']) )
 			$sql = "SELECT user_password
 				FROM " . USERS_TABLE . "
 				WHERE user_id = $user_id";
-			if ( !($result = $db->sql_query($sql)) )
+			if ( !($result = DB()->sql_query($sql)) )
 			{
 				message_die(GENERAL_ERROR, 'Could not obtain user_password information', '', __LINE__, __FILE__, $sql);
 			}
 
-			$row = $db->sql_fetchrow($result);
+			$row = DB()->sql_fetchrow($result);
 
 			if ( $row['user_password'] != md5($cur_password) )
 			{
@@ -427,7 +427,7 @@ if ( isset($HTTP_POST_VARS['submit']) )
 			$sql = "UPDATE " . USERS_TABLE . "
 				SET " . $username_sql . $passwd_sql . "user_email = '" . str_replace("\'", "''", $email) ."', user_icq = '" . str_replace("\'", "''", $icq) . "', user_website = '" . str_replace("\'", "''", $website) . "', user_occ = '" . str_replace("\'", "''", $occupation) . "', user_from = '" . str_replace("\'", "''", $location) . "', user_interests = '" . str_replace("\'", "''", $interests) . "', user_sig = '" . str_replace("\'", "''", $signature) . "', user_sig_bbcode_uid = '$signature_bbcode_uid', user_viewemail = $viewemail, user_attachsig = $attachsig, user_allowsmile = $allowsmilies, user_allowhtml = $allowhtml, user_allowbbcode = $allowbbcode, user_allow_viewonline = $allowviewonline, user_notify = $notifyreply, user_notify_pm = $notifypm, user_popup_pm = $popup_pm, user_timezone = $user_timezone, user_dateformat = '" . str_replace("\'", "''", $user_dateformat) . "', user_lang = '" . str_replace("\'", "''", $user_lang) . "', user_style = $user_style, user_active = $user_active, user_actkey = '" . str_replace("\'", "''", $user_actkey) . "'" . $avatar_sql . "
 				WHERE user_id = $user_id";
-			if ( !($result = $db->sql_query($sql)) )
+			if ( !($result = DB()->sql_query($sql)) )
 			{
 				message_die(GENERAL_ERROR, 'Could not update users table', '', __LINE__, __FILE__, $sql);
 			}
@@ -474,12 +474,12 @@ if ( isset($HTTP_POST_VARS['submit']) )
 		{
 			$sql = "SELECT MAX(user_id) AS total
 				FROM " . USERS_TABLE;
-			if ( !($result = $db->sql_query($sql)) )
+			if ( !($result = DB()->sql_query($sql)) )
 			{
 				message_die(GENERAL_ERROR, 'Could not obtain next user_id information', '', __LINE__, __FILE__, $sql);
 			}
 
-			if ( !($row = $db->sql_fetchrow($result)) )
+			if ( !($row = DB()->sql_fetchrow($result)) )
 			{
 				message_die(GENERAL_ERROR, 'Could not obtain next user_id information', '', __LINE__, __FILE__, $sql);
 			}
@@ -503,23 +503,23 @@ if ( isset($HTTP_POST_VARS['submit']) )
 				$sql .= "1, '')";
 			}
 
-			if ( !($result = $db->sql_query($sql, BEGIN_TRANSACTION)) )
+			if ( !($result = DB()->sql_query($sql, BEGIN_TRANSACTION)) )
 			{
 				message_die(GENERAL_ERROR, 'Could not insert data into users table', '', __LINE__, __FILE__, $sql);
 			}
 
 			$sql = "INSERT INTO " . GROUPS_TABLE . " (group_name, group_description, group_single_user, group_moderator)
 				VALUES ('', '', 1, 0)";
-			if ( !($result = $db->sql_query($sql)) )
+			if ( !($result = DB()->sql_query($sql)) )
 			{
 				message_die(GENERAL_ERROR, 'Could not insert data into groups table', '', __LINE__, __FILE__, $sql);
 			}
 
-			$group_id = $db->sql_nextid();
+			$group_id = DB()->sql_nextid();
 
 			$sql = "INSERT INTO " . USER_GROUP_TABLE . " (user_id, group_id, user_pending)
 				VALUES ($user_id, $group_id, 0)";
-			if( !($result = $db->sql_query($sql, END_TRANSACTION)) )
+			if( !($result = DB()->sql_query($sql, END_TRANSACTION)) )
 			{
 				message_die(GENERAL_ERROR, 'Could not insert data into user_group table', '', __LINE__, __FILE__, $sql);
 			}
@@ -596,12 +596,12 @@ if ( isset($HTTP_POST_VARS['submit']) )
 					FROM " . USERS_TABLE . "
 					WHERE user_level = " . ADMIN;
 
-				if ( !($result = $db->sql_query($sql)) )
+				if ( !($result = DB()->sql_query($sql)) )
 				{
 					message_die(GENERAL_ERROR, 'Could not select Administrators', '', __LINE__, __FILE__, $sql);
 				}
 
-				while ($row = $db->sql_fetchrow($result))
+				while ($row = DB()->sql_fetchrow($result))
 				{
 					$emailer->from($ft_cfg['board_email']);
 					$emailer->replyto($ft_cfg['board_email']);
@@ -619,7 +619,7 @@ if ( isset($HTTP_POST_VARS['submit']) )
 					$emailer->send();
 					$emailer->reset();
 				}
-				$db->sql_freeresult($result);
+				DB()->sql_freeresult($result);
 			}
 
 			$message = $message . '<br /><br />' . sprintf($lang['Click_return_index'],  '<a href="' . append_sid("index.php") . '">', '</a>');
@@ -957,12 +957,12 @@ if ($mode == 'editprofile' && $userdata['session_logged_in'])
 		FROM '. BT_USERS_TABLE .'
 		WHERE user_id = '. $userdata['user_id'];
 
-	if (!$result = $db->sql_query($sql))
+	if (!$result = DB()->sql_query($sql))
 	{
 		message_die(GENERAL_ERROR, 'Could not query users passkey', '', __LINE__, __FILE__, $sql);
 	}
 
-	$row = $db->sql_fetchrow($result);
+	$row = DB()->sql_fetchrow($result);
 	$curr_passkey = ($row['auth_key']) ? $row['auth_key'] : '';
 
 	$template->assign_vars(array(

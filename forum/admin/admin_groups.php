@@ -45,12 +45,12 @@ if ( isset($HTTP_POST_VARS['edit']) || isset($HTTP_POST_VARS['new']) )
 			FROM " . GROUPS_TABLE . "
 			WHERE group_single_user <> " . TRUE . "
 			AND group_id = $group_id";
-		if ( !($result = $db->sql_query($sql)) )
+		if ( !($result = DB()->sql_query($sql)) )
 		{
 			message_die(GENERAL_ERROR, 'Error getting group information', '', __LINE__, __FILE__, $sql);
 		}
 
-		if ( !($group_info = $db->sql_fetchrow($result)) )
+		if ( !($group_info = DB()->sql_fetchrow($result)) )
 		{
 			message_die(GENERAL_MESSAGE, $lang['Group_not_exist']);
 		}
@@ -79,12 +79,12 @@ if ( isset($HTTP_POST_VARS['edit']) || isset($HTTP_POST_VARS['new']) )
 		FROM " . USERS_TABLE . "
 		WHERE user_id <> " . GUEST_UID . "
 		ORDER BY username";
-	if ( !($result = $db->sql_query($sql)) )
+	if ( !($result = DB()->sql_query($sql)) )
 	{
 		message_die(GENERAL_ERROR, 'Could not obtain user info for moderator list', '', __LINE__, __FILE__, $sql);
 	}
 
-	while ( $row = $db->sql_fetchrow($result) )
+	while ( $row = DB()->sql_fetchrow($result) )
 	{
 		if ( $row['user_id'] == $group_info['group_moderator'] )
 		{
@@ -150,39 +150,39 @@ else if ( isset($HTTP_POST_VARS['group_update']) )
 		// Is Group moderating a forum ?
 		$sql = "SELECT auth_mod FROM " . AUTH_ACCESS_TABLE . "
 			WHERE group_id = " . $group_id;
-		if ( !($result = $db->sql_query($sql)) )
+		if ( !($result = DB()->sql_query($sql)) )
 		{
 			message_die(GENERAL_ERROR, 'Could not select auth_access', '', __LINE__, __FILE__, $sql);
 		}
 
-		$row = $db->sql_fetchrow($result);
+		$row = DB()->sql_fetchrow($result);
 		if (intval($row['auth_mod']) == 1)
 		{
 			// Yes, get the assigned users and update their Permission if they are no longer moderator of one of the forums
 			$sql = "SELECT user_id FROM " . USER_GROUP_TABLE . "
 				WHERE group_id = " . $group_id;
-			if ( !($result = $db->sql_query($sql)) )
+			if ( !($result = DB()->sql_query($sql)) )
 			{
 				message_die(GENERAL_ERROR, 'Could not select user_group', '', __LINE__, __FILE__, $sql);
 			}
 
-			$rows = $db->sql_fetchrowset($result);
+			$rows = DB()->sql_fetchrowset($result);
 			for ($i = 0; $i < count($rows); $i++)
 			{
 				$sql = "SELECT g.group_id FROM " . AUTH_ACCESS_TABLE . " a, " . GROUPS_TABLE . " g, " . USER_GROUP_TABLE . " ug
 				WHERE (a.auth_mod = 1) AND (g.group_id = a.group_id) AND (a.group_id = ug.group_id) AND (g.group_id = ug.group_id)
 					AND (ug.user_id = " . intval($rows[$i]['user_id']) . ") AND (ug.group_id <> " . $group_id . ")";
-				if ( !($result = $db->sql_query($sql)) )
+				if ( !($result = DB()->sql_query($sql)) )
 				{
 					message_die(GENERAL_ERROR, 'Could not obtain moderator permissions', '', __LINE__, __FILE__, $sql);
 				}
 
-				if ($db->num_rows($result) == 0)
+				if (DB()->num_rows($result) == 0)
 				{
 					$sql = "UPDATE " . USERS_TABLE . " SET user_level = " . USER . "
 					WHERE user_level = " . MOD . " AND user_id = " . intval($rows[$i]['user_id']);
 
-					if ( !$db->sql_query($sql) )
+					if ( !DB()->sql_query($sql) )
 					{
 						message_die(GENERAL_ERROR, 'Could not update moderator permissions', '', __LINE__, __FILE__, $sql);
 					}
@@ -195,21 +195,21 @@ else if ( isset($HTTP_POST_VARS['group_update']) )
 		//
 		$sql = "DELETE FROM " . GROUPS_TABLE . "
 			WHERE group_id = " . $group_id;
-		if ( !$db->sql_query($sql) )
+		if ( !DB()->sql_query($sql) )
 		{
 			message_die(GENERAL_ERROR, 'Could not update group', '', __LINE__, __FILE__, $sql);
 		}
 
 		$sql = "DELETE FROM " . USER_GROUP_TABLE . "
 			WHERE group_id = " . $group_id;
-		if ( !$db->sql_query($sql) )
+		if ( !DB()->sql_query($sql) )
 		{
 			message_die(GENERAL_ERROR, 'Could not update user_group', '', __LINE__, __FILE__, $sql);
 		}
 
 		$sql = "DELETE FROM " . AUTH_ACCESS_TABLE . "
 			WHERE group_id = " . $group_id;
-		if ( !$db->sql_query($sql) )
+		if ( !DB()->sql_query($sql) )
 		{
 			message_die(GENERAL_ERROR, 'Could not update auth_access', '', __LINE__, __FILE__, $sql);
 		}
@@ -249,12 +249,12 @@ else if ( isset($HTTP_POST_VARS['group_update']) )
 				FROM " . GROUPS_TABLE . "
 				WHERE group_single_user <> " . TRUE . "
 				AND group_id = " . $group_id;
-			if ( !($result = $db->sql_query($sql)) )
+			if ( !($result = DB()->sql_query($sql)) )
 			{
 				message_die(GENERAL_ERROR, 'Error getting group information', '', __LINE__, __FILE__, $sql);
 			}
 
-			if( !($group_info = $db->sql_fetchrow($result)) )
+			if( !($group_info = DB()->sql_fetchrow($result)) )
 			{
 				message_die(GENERAL_MESSAGE, $lang['Group_not_exist']);
 			}
@@ -266,7 +266,7 @@ else if ( isset($HTTP_POST_VARS['group_update']) )
 					$sql = "DELETE FROM " . USER_GROUP_TABLE . "
 						WHERE user_id = " . $group_info['group_moderator'] . "
 							AND group_id = " . $group_id;
-					if ( !$db->sql_query($sql) )
+					if ( !DB()->sql_query($sql) )
 					{
 						message_die(GENERAL_ERROR, 'Could not update group moderator', '', __LINE__, __FILE__, $sql);
 					}
@@ -276,16 +276,16 @@ else if ( isset($HTTP_POST_VARS['group_update']) )
 					FROM " . USER_GROUP_TABLE . "
 					WHERE user_id = $group_moderator
 						AND group_id = $group_id";
-				if ( !($result = $db->sql_query($sql)) )
+				if ( !($result = DB()->sql_query($sql)) )
 				{
 					message_die(GENERAL_ERROR, 'Failed to obtain current group moderator info', '', __LINE__, __FILE__, $sql);
 				}
 
-				if ( !($row = $db->sql_fetchrow($result)) )
+				if ( !($row = DB()->sql_fetchrow($result)) )
 				{
 					$sql = "INSERT INTO " . USER_GROUP_TABLE . " (group_id, user_id, user_pending)
 						VALUES (" . $group_id . ", " . $group_moderator . ", 0)";
-					if ( !$db->sql_query($sql) )
+					if ( !DB()->sql_query($sql) )
 					{
 						message_die(GENERAL_ERROR, 'Could not update group moderator', '', __LINE__, __FILE__, $sql);
 					}
@@ -295,7 +295,7 @@ else if ( isset($HTTP_POST_VARS['group_update']) )
 			$sql = "UPDATE " . GROUPS_TABLE . "
 				SET group_type = $group_type, group_name = '" . str_replace("\'", "''", $group_name) . "', group_description = '" . str_replace("\'", "''", $group_description) . "', group_moderator = $group_moderator
 				WHERE group_id = $group_id";
-			if ( !$db->sql_query($sql) )
+			if ( !DB()->sql_query($sql) )
 			{
 				message_die(GENERAL_ERROR, 'Could not update group', '', __LINE__, __FILE__, $sql);
 			}
@@ -308,15 +308,15 @@ else if ( isset($HTTP_POST_VARS['group_update']) )
 		{
 			$sql = "INSERT INTO " . GROUPS_TABLE . " (group_type, group_name, group_description, group_moderator, group_single_user)
 				VALUES ($group_type, '" . str_replace("\'", "''", $group_name) . "', '" . str_replace("\'", "''", $group_description) . "', $group_moderator,	'0')";
-			if ( !$db->sql_query($sql) )
+			if ( !DB()->sql_query($sql) )
 			{
 				message_die(GENERAL_ERROR, 'Could not insert new group', '', __LINE__, __FILE__, $sql);
 			}
-			$new_group_id = $db->sql_nextid();
+			$new_group_id = DB()->sql_nextid();
 
 			$sql = "INSERT INTO " . USER_GROUP_TABLE . " (group_id, user_id, user_pending)
 				VALUES ($new_group_id, $group_moderator, 0)";
-			if ( !$db->sql_query($sql) )
+			if ( !DB()->sql_query($sql) )
 			{
 				message_die(GENERAL_ERROR, 'Could not insert new user-group info', '', __LINE__, __FILE__, $sql);
 			}
@@ -338,20 +338,20 @@ else
 		FROM " . GROUPS_TABLE . "
 		WHERE group_single_user <> " . TRUE . "
 		ORDER BY group_name";
-	if ( !($result = $db->sql_query($sql)) )
+	if ( !($result = DB()->sql_query($sql)) )
 	{
 		message_die(GENERAL_ERROR, 'Could not obtain group list', '', __LINE__, __FILE__, $sql);
 	}
 
 	$select_list = '';
-	if ( $row = $db->sql_fetchrow($result) )
+	if ( $row = DB()->sql_fetchrow($result) )
 	{
 		$select_list .= '<select name="' . POST_GROUPS_URL . '">';
 		do
 		{
 			$select_list .= '<option value="' . $row['group_id'] . '">' . $row['group_name'] . '</option>';
 		}
-		while ( $row = $db->sql_fetchrow($result) );
+		while ( $row = DB()->sql_fetchrow($result) );
 		$select_list .= '</select>';
 	}
 

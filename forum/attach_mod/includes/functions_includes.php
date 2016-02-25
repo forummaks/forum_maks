@@ -143,7 +143,7 @@ function attach_build_auth_levels($is_auth, &$s_auth_can)
 //
 function attachment_quota_settings($admin_mode, $submit = FALSE, $mode)
 {
-	global $template, $db, $HTTP_POST_VARS, $HTTP_GET_VARS, $lang, $lang, $attach_config;
+	global $template,  $HTTP_POST_VARS, $HTTP_GET_VARS, $lang, $lang, $attach_config;
 
 	if (!intval($attach_config['allow_ftp_upload']))
 	{
@@ -206,7 +206,7 @@ function attachment_quota_settings($admin_mode, $submit = FALSE, $mode)
 		$sql = 'SELECT quota_limit_id, quota_type FROM ' . QUOTA_TABLE . "
 			WHERE user_id = $user_id";
 
-		if( !($result = $db->sql_query($sql)) )
+		if( !($result = DB()->sql_query($sql)) )
 		{
 			message_die(GENERAL_ERROR, 'Unable to get Quota Settings', '', __LINE__, __FILE__, $sql);
 		}
@@ -214,7 +214,7 @@ function attachment_quota_settings($admin_mode, $submit = FALSE, $mode)
 		$pm_quota = 0;
 		$upload_quota = 0;
 
-		if ($row = $db->sql_fetchrow($result))
+		if ($row = DB()->sql_fetchrow($result))
 		{
 			do
 			{
@@ -227,7 +227,7 @@ function attachment_quota_settings($admin_mode, $submit = FALSE, $mode)
 					$pm_quota = $row['quota_limit_id'];
 				}
 			}
-			while ($row = $db->sql_fetchrow($result));
+			while ($row = DB()->sql_fetchrow($result));
 		}
 		else
 		{
@@ -236,7 +236,7 @@ function attachment_quota_settings($admin_mode, $submit = FALSE, $mode)
 			$pm_quota = $attach_config['default_pm_quota'];
 
 		}
-		$db->sql_freeresult($result);
+		DB()->sql_freeresult($result);
 
 		$template->assign_vars(array(
 			'S_SELECT_UPLOAD_QUOTA'		=> quota_limit_select('user_upload_quota', $upload_quota),
@@ -275,14 +275,14 @@ function attachment_quota_settings($admin_mode, $submit = FALSE, $mode)
 		$sql = 'SELECT quota_limit_id, quota_type FROM ' . QUOTA_TABLE . "
 			WHERE group_id = $group_id";
 
-		if( !($result = $db->sql_query($sql)) )
+		if( !($result = DB()->sql_query($sql)) )
 		{
 			message_die(GENERAL_ERROR, 'Unable to get Quota Settings', '', __LINE__, __FILE__, $sql);
 		}
 
 		$pm_quota = $upload_quota = 0;
 
-		if ($row = $db->sql_fetchrow($result))
+		if ($row = DB()->sql_fetchrow($result))
 		{
 			do
 			{
@@ -295,7 +295,7 @@ function attachment_quota_settings($admin_mode, $submit = FALSE, $mode)
 					$pm_quota = $row['quota_limit_id'];
 				}
 			}
-			while ($row = $db->sql_fetchrow($result));
+			while ($row = DB()->sql_fetchrow($result));
 		}
 		else
 		{
@@ -303,7 +303,7 @@ function attachment_quota_settings($admin_mode, $submit = FALSE, $mode)
 			$upload_quota = $attach_config['default_upload_quota'];
 			$pm_quota = $attach_config['default_pm_quota'];
 		}
-		$db->sql_freeresult($result);
+		DB()->sql_freeresult($result);
 
 		$template->assign_vars(array(
 			'S_SELECT_UPLOAD_QUOTA'	=> quota_limit_select('group_upload_quota', $upload_quota),
@@ -340,7 +340,7 @@ function attachment_quota_settings($admin_mode, $submit = FALSE, $mode)
 //
 function display_upload_attach_box_limits($user_id, $group_id = 0)
 {
-	global $attach_config, $ft_cfg, $lang, $db, $template, $userdata, $profiledata;
+	global $attach_config, $ft_cfg, $lang,  $template, $userdata, $profiledata;
 
 	if (intval($attach_config['disable_mod']))
 	{
@@ -378,20 +378,20 @@ function display_upload_attach_box_limits($user_id, $group_id = 0)
 				AND (q.quota_limit_id = l.quota_limit_id)
 			LIMIT 1';
 
-		if ( !($result = $db->sql_query($sql)) )
+		if ( !($result = DB()->sql_query($sql)) )
 		{
 			message_die(GENERAL_ERROR, 'Could not get Group Quota', '', __LINE__, __FILE__, $sql);
 		}
 
-		if ($db->num_rows($result) > 0)
+		if (DB()->num_rows($result) > 0)
 		{
-			$row = $db->sql_fetchrow($result);
+			$row = DB()->sql_fetchrow($result);
 			$attach_config['upload_filesize_limit'] = intval($row['quota_limit']);
-			$db->sql_freeresult($result);
+			DB()->sql_freeresult($result);
 		}
 		else
 		{
-			$db->sql_freeresult($result);
+			DB()->sql_freeresult($result);
 
 			// Set Default Quota Limit
 			$quota_id = intval($attach_config['default_upload_quota']);
@@ -407,21 +407,21 @@ function display_upload_attach_box_limits($user_id, $group_id = 0)
 					WHERE quota_limit_id = $quota_id
 					LIMIT 1";
 
-				if ( !($result = $db->sql_query($sql)) )
+				if ( !($result = DB()->sql_query($sql)) )
 				{
 					message_die(GENERAL_ERROR, 'Could not get Quota Limit', '', __LINE__, __FILE__, $sql);
 				}
 
-				if ($db->num_rows($result) > 0)
+				if (DB()->num_rows($result) > 0)
 				{
-					$row = $db->sql_fetchrow($result);
+					$row = DB()->sql_fetchrow($result);
 					$attach_config['upload_filesize_limit'] = $row['quota_limit'];
 				}
 				else
 				{
 					$attach_config['upload_filesize_limit'] = $attach_config['attachment_quota'];
 				}
-				$db->sql_freeresult($result);
+				DB()->sql_freeresult($result);
 			}
 		}
 	}
@@ -477,14 +477,14 @@ function display_upload_attach_box_limits($user_id, $group_id = 0)
 			AND privmsgs_id = 0
 		GROUP BY attach_id";
 
-	if ( !($result = $db->sql_query($sql)) )
+	if ( !($result = DB()->sql_query($sql)) )
 	{
 		message_die(GENERAL_ERROR, 'Couldn\'t query attachments', '', __LINE__, __FILE__, $sql);
 	}
 
-	$attach_ids = $db->sql_fetchrowset($result);
-	$num_attach_ids = $db->num_rows($result);
-	$db->sql_freeresult($result);
+	$attach_ids = DB()->sql_fetchrowset($result);
+	$num_attach_ids = DB()->num_rows($result);
+	DB()->sql_freeresult($result);
 	$attach_id = array();
 
 	for ($j = 0; $j < $num_attach_ids; $j++)

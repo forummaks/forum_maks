@@ -248,12 +248,12 @@ if ($search_id)
 			AND search_id = $search_id
 		LIMIT 1";
 
-	if (!$result = $db->sql_query($sql))
+	if (!$result = DB()->sql_query($sql))
 	{
 		message_die(GENERAL_ERROR, 'Could not obtain torrent search results', '', __LINE__, __FILE__, $sql);
 	}
 
-	if ($row = $db->sql_fetchrow($result))
+	if ($row = DB()->sql_fetchrow($result))
 	{
 		$prev_set     = unserialize($row['search_settings']);
 		$tor_list_sql = $row['search_array'];
@@ -279,14 +279,14 @@ $sql = 'SELECT c.cat_id, c.cat_title, f.forum_id, f.forum_name, f.forum_parent
 		$ignore_forum_sql
 	ORDER BY c.cat_order, f.cat_id, f.forum_order";
 
-if (!$result = $db->sql_query($sql))
+if (!$result = DB()->sql_query($sql))
 {
 	message_die(GENERAL_ERROR, 'Could not query cat/forum info', '', __LINE__, __FILE__, $sql);
 }
 
-if ($rowset = @$db->sql_fetchrowset($result))
+if ($rowset = @DB()->sql_fetchrowset($result))
 {
-	$db->sql_freeresult($result);
+	DB()->sql_freeresult($result);
 	$template->assign_vars(array('SHOW_SEARCH_OPT' => TRUE));
 
 	foreach ($rowset as $rid => $row)
@@ -502,7 +502,7 @@ if ($forum_val && $allowed_forums_sql)
 			WHERE user_id = $user_id
 			LIMIT 1";
 
-		if (!$result = $db->sql_query($sql))
+		if (!$result = DB()->sql_query($sql))
 		{
 			message_die(GENERAL_ERROR, 'Could not update torrent search settings', '', __LINE__, __FILE__, $sql);
 		}
@@ -615,7 +615,7 @@ if ($forum_val && $allowed_forums_sql)
 			$limit
 		";
 
-		if (!$result = $db->sql_query($sql))
+		if (!$result = DB()->sql_query($sql))
 		{
 			if (!$def)
 			{
@@ -627,9 +627,9 @@ if ($forum_val && $allowed_forums_sql)
 			}
 		}
 
-		if ($tor_rows = @$db->sql_fetchrowset($result))
+		if ($tor_rows = @DB()->sql_fetchrowset($result))
 		{
-			$db->sql_freeresult($result);
+			DB()->sql_freeresult($result);
 			$tor_list_ary = array();
 
 			foreach ($tor_rows as $rid => $row)
@@ -657,7 +657,7 @@ if ($forum_val && $allowed_forums_sql)
 					$sql = 'DELETE FROM '. BT_SEARCH_TABLE ."
 						WHERE added < $clean_exp_time";
 
-					if (!$db->sql_query($sql))
+					if (!DB()->sql_query($sql))
 					{
 						message_die(GENERAL_ERROR, 'Could not clean torrents search results table', '', __LINE__, __FILE__, $sql);
 					}
@@ -666,7 +666,7 @@ if ($forum_val && $allowed_forums_sql)
 							config_value = $current_time
 						WHERE config_name = 'bt_search_tbl_last_clean'";
 
-					if (!$db->sql_query($sql))
+					if (!DB()->sql_query($sql))
 					{
 						message_die(GENERAL_ERROR, 'Could not update bt_search_tbl_last_clean in board config table', '', __LINE__, __FILE__, $sql);
 					}
@@ -681,7 +681,7 @@ if ($forum_val && $allowed_forums_sql)
 
 				$sql = 'REPLACE INTO '. BT_SEARCH_TABLE ." ($columns) VALUES ($values)";
 
-				if (!$db->sql_query($sql))
+				if (!DB()->sql_query($sql))
 				{
 					message_die(GENERAL_ERROR, 'Could not insert torrents search results', '', __LINE__, __FILE__, $sql);
 				}
@@ -747,18 +747,18 @@ if ($forum_val && $allowed_forums_sql)
 			$group_sql
 		";
 
-		if (!$result = $db->sql_query($sql))
+		if (!$result = DB()->sql_query($sql))
 		{
 			message_die(GENERAL_ERROR, 'Could not query torrents information', '', __LINE__, __FILE__, $sql);
 		}
 
-		if (!$tor_rows = @$db->sql_fetchrowset($result))
+		if (!$tor_rows = @DB()->sql_fetchrowset($result))
 		{
 			$template->assign_block_vars('tor_not_found', array('L_NO_MATCH' => $lang['No_match']));
 		}
 		else
 		{
-			$db->sql_freeresult($result);
+			DB()->sql_freeresult($result);
 			$torrents_sql = $topics_sql = array();
 
 			foreach ($tor_rows as $rid => $row)
@@ -781,14 +781,14 @@ if ($forum_val && $allowed_forums_sql)
 						AND expire_time > $current_time
 					GROUP BY torrent_id";
 
-				if (!$result = $db->sql_query($sql))
+				if (!$result = DB()->sql_query($sql))
 				{
 					message_die(GENERAL_ERROR, 'Could not obtain peers information', '', __LINE__, __FILE__, $sql);
 				}
 
-				if ($peers_info = @$db->sql_fetchrowset($result))
+				if ($peers_info = @DB()->sql_fetchrowset($result))
 				{
-					$db->sql_freeresult($result);
+					DB()->sql_freeresult($result);
 
 					foreach ($peers_info as $rid => $row)
 					{
@@ -812,14 +812,14 @@ if ($forum_val && $allowed_forums_sql)
 						AND dl.user_id = $user_id
 						AND dl.topic_id = tor.topic_id";
 
-				if (!$result = $db->sql_query($sql))
+				if (!$result = DB()->sql_query($sql))
 				{
 					message_die(GENERAL_ERROR, 'Could not obtain DL status information', '', __LINE__, __FILE__, $sql);
 				}
 
-				if ($dl_info = @$db->sql_fetchrowset($result))
+				if ($dl_info = @DB()->sql_fetchrowset($result))
 				{
-					$db->sql_freeresult($result);
+					DB()->sql_freeresult($result);
 
 					foreach ($dl_info as $rid => $row)
 					{

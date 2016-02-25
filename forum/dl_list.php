@@ -86,7 +86,7 @@ if ($mode == 'dl_delete' && $topic_id)
 			FROM '. TOPICS_TABLE ."
 				WHERE topic_id = $topic_id";
 
-		if (!$row = $db->sql_fetchrow($db->sql_query($sql)))
+		if (!$row = DB()->sql_fetchrow(DB()->sql_query($sql)))
 		{
 			message_die(GENERAL_ERROR, 'Could not obtain forum_id for this topic', '', __LINE__, __FILE__, $sql);
 		}
@@ -170,7 +170,7 @@ if ($topics && ($mode == 'set_dl_status' || $mode == 'set_topics_dl_status'))
 		$sql .= ($i != ($cnt - 1)) ? ', ' : '';
 	}
 
-	if (!$db->sql_query($sql))
+	if (!DB()->sql_query($sql))
 	{
 		message_die(GENERAL_ERROR, "Could not insert user_id for DL-List", '', __LINE__, __FILE__, $sql);
 	}

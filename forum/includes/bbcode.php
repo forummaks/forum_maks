@@ -816,15 +816,15 @@ function smilies_pass($message)
 
 	if (!isset($orig))
 	{
-		global $db, $ft_cfg;
+		global  $ft_cfg;
 		$orig = $repl = array();
 
 		$sql = 'SELECT * FROM ' . SMILIES_TABLE;
-		if( !$result = $db->sql_query($sql) )
+		if( !$result = DB()->sql_query($sql) )
 		{
 			message_die(GENERAL_ERROR, "Couldn't obtain smilies data", "", __LINE__, __FILE__, $sql);
 		}
-		$smilies = $db->sql_fetchrowset($result);
+		$smilies = DB()->sql_fetchrowset($result);
 
 		if (count($smilies))
 		{

@@ -4,7 +4,7 @@ if (!defined('FT_ROOT')) die(basename(__FILE__));
 
 function auth($type, $forum_id, $userdata, $f_access = '')
 {
-	global $db, $lang;
+	global  $lang;
 
 	switch( $type )
 	{
@@ -76,20 +76,20 @@ function auth($type, $forum_id, $userdata, $f_access = '')
 		$sql = "SELECT a.forum_id, $a_sql
 			FROM " . FORUMS_TABLE . " a
 			$forum_match_sql";
-		if ( !($result = $db->sql_query($sql)) )
+		if ( !($result = DB()->sql_query($sql)) )
 		{
 			message_die(GENERAL_ERROR, 'Failed obtaining forum access control lists', '', __LINE__, __FILE__, $sql);
 		}
 
 		$sql_fetchrow = ( $forum_id != AUTH_LIST_ALL ) ? 'sql_fetchrow' : 'sql_fetchrowset';
 
-		if ( !($f_access = $db->$sql_fetchrow($result)) )
+		if ( !($f_access = DB()->$sql_fetchrow($result)) )
 		{
-			$db->sql_freeresult($result);
+			DB()->sql_freeresult($result);
 			return array();
 		}
 
-		$db->sql_freeresult($result);
+		DB()->sql_freeresult($result);
 	}
 
 	//
@@ -108,12 +108,12 @@ function auth($type, $forum_id, $userdata, $f_access = '')
 				AND ug.user_pending = 0
 				AND a.group_id = ug.group_id
 				$forum_match_sql";
-		if ( !($result = $db->sql_query($sql)) )
+		if ( !($result = DB()->sql_query($sql)) )
 		{
 			message_die(GENERAL_ERROR, 'Failed obtaining forum access control lists', '', __LINE__, __FILE__, $sql);
 		}
 
-		if ( $row = $db->sql_fetchrow($result) )
+		if ( $row = DB()->sql_fetchrow($result) )
 		{
 			do
 			{
@@ -126,9 +126,9 @@ function auth($type, $forum_id, $userdata, $f_access = '')
 					$u_access[$row['forum_id']][] = $row;
 				}
 			}
-			while( $row = $db->sql_fetchrow($result) );
+			while( $row = DB()->sql_fetchrow($result) );
 		}
-		$db->sql_freeresult($result);
+		DB()->sql_freeresult($result);
 	}
 
 	$is_admin = ( $userdata['user_level'] == ADMIN && $userdata['session_logged_in'] ) ? TRUE : 0;

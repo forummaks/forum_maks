@@ -4,14 +4,14 @@ if (!defined('FT_ROOT')) die(basename(__FILE__));
 
 function get_config_ary ($config_table)
 {
-	global $db;
+	
 
 	$cfg = array();
 
 	$sql = "SELECT *
 		FROM $config_table";
 
-	if (!$rowset = @$db->sql_fetchrowset($db->sql_query($sql)))
+	if (!$rowset = @DB()->sql_fetchrowset(DB()->sql_query($sql)))
 	{
 		message_die(GENERAL_ERROR, 'Could not query config information', '', __LINE__, __FILE__, $sql);
 	}
@@ -26,14 +26,14 @@ function get_config_ary ($config_table)
 
 function update_table_bool ($table_name, $key, $field_name, $field_def_val)
 {
-	global $db;
+	
 
 	// Clear current status
 	$sql = "UPDATE $table_name
 		SET $field_name = $field_def_val
 		WHERE 1";
 
-	if (!$result = $db->sql_query($sql))
+	if (!$result = DB()->sql_query($sql))
 	{
 		message_die(GENERAL_ERROR, "Could not update $table_name", '', __LINE__, __FILE__, $sql);
 	}
@@ -55,7 +55,7 @@ function update_table_bool ($table_name, $key, $field_name, $field_def_val)
 				SET $field_name = 1
 				WHERE $key IN($in_sql)";
 
-			if (!$result = $db->sql_query($sql))
+			if (!$result = DB()->sql_query($sql))
 			{
 				message_die(GENERAL_ERROR, "Could not update $table_name", '', __LINE__, __FILE__, $sql);
 			}
@@ -121,7 +121,7 @@ function set_tpl_vars_lang ($default_cfg)
 
 function update_config_table ($table_name, $default_cfg, $cfg, $type)
 {
-	global $db;
+	
 
 	foreach ($default_cfg as $config_name => $config_value)
 	{
@@ -148,7 +148,7 @@ function update_config_table ($table_name, $default_cfg, $cfg, $type)
 				config_value = $config_value
 				WHERE config_name = '$config_name'";
 
-			if(!$db->sql_query($sql))
+			if(!DB()->sql_query($sql))
 			{
 				message_die(GENERAL_ERROR, "Failed to update configuration for $config_name", '', __LINE__, __FILE__, $sql);
 			}

@@ -310,7 +310,7 @@ function request_var ($var_name, $default, $multibyte = false, $cookie = false)
 
 function get_username ($user_id)
 {
-	global $db, $sql;
+	global  $sql;
 
 	$user_id = intval($user_id);
 
@@ -319,21 +319,21 @@ function get_username ($user_id)
 		WHERE user_id = $user_id
 		LIMIT 1";
 
-	$row = $db->sql_fetchrow($db->sql_query($sql));
+	$row = DB()->sql_fetchrow(DB()->sql_query($sql));
 
 	return $row['username'];
 }
 
 function get_user_id ($username)
 {
-	global $db, $sql;
+	global  $sql;
 
 	$sql = 'SELECT user_id
 		FROM '. USERS_TABLE ."
 		WHERE username = '$username'
 		LIMIT 1";
 
-	$row = $db->sql_fetchrow($db->sql_query($sql));
+	$row = DB()->sql_fetchrow(DB()->sql_query($sql));
 
 	return $row['user_id'];
 }
@@ -381,7 +381,7 @@ function bt_sql_esc ($x)
 
 function get_db_stat($mode)
 {
-	global $db;
+	
 
 	switch( $mode )
 	{
@@ -406,12 +406,12 @@ function get_db_stat($mode)
 			break;
 	}
 
-	if ( !($result = $db->sql_query($sql)) )
+	if ( !($result = DB()->sql_query($sql)) )
 	{
 		return false;
 	}
 
-	$row = $db->sql_fetchrow($result);
+	$row = DB()->sql_fetchrow($result);
 
 	switch ( $mode )
 	{
@@ -470,7 +470,7 @@ function ft_rtrim ($str, $charlist = false)
 //
 function get_userdata($user, $force_str = false)
 {
-	global $db;
+	
 
 	if (!is_numeric($user) || $force_str)
 	{
@@ -485,18 +485,18 @@ function get_userdata($user, $force_str = false)
 		FROM " . USERS_TABLE . "
 		WHERE ";
 	$sql .= ( ( is_integer($user) ) ? "user_id = $user" : "username = '" .  $user . "'" ) . " AND user_id <> " . GUEST_UID;
-	if ( !($result = $db->sql_query($sql)) )
+	if ( !($result = DB()->sql_query($sql)) )
 	{
 		message_die(GENERAL_ERROR, 'Tried obtaining data for a non-existent user', '', __LINE__, __FILE__, $sql);
 	}
 
-	return ( $row = $db->sql_fetchrow($result) ) ? $row : false;
+	return ( $row = DB()->sql_fetchrow($result) ) ? $row : false;
 }
 
 //sf - add [, $return_forums_ary = FALSE]
 function make_jumpbox($action, $match_forum_id = 0, $return_forums_ary = FALSE)
 {
-	global $template, $userdata, $lang, $db, $nav_links, $SID;
+	global $template, $userdata, $lang,  $nav_links, $SID;
 
 //	$is_auth = auth(AUTH_VIEW, AUTH_LIST_ALL, $userdata);
 
@@ -505,13 +505,13 @@ function make_jumpbox($action, $match_forum_id = 0, $return_forums_ary = FALSE)
 		WHERE f.cat_id = c.cat_id
 		GROUP BY c.cat_id, c.cat_title, c.cat_order
 		ORDER BY c.cat_order";
-	if ( !($result = $db->sql_query($sql)) )
+	if ( !($result = DB()->sql_query($sql)) )
 	{
 		message_die(GENERAL_ERROR, "Couldn't obtain category list.", "", __LINE__, __FILE__, $sql);
 	}
 
 	$category_rows = array();
-	while ( $row = $db->sql_fetchrow($result) )
+	while ( $row = DB()->sql_fetchrow($result) )
 	{
 		$category_rows[] = $row;
 	}
@@ -521,7 +521,7 @@ function make_jumpbox($action, $match_forum_id = 0, $return_forums_ary = FALSE)
 		$sql = "SELECT *
 			FROM " . FORUMS_TABLE . "
 			ORDER BY cat_id, forum_order";
-		if ( !($result = $db->sql_query($sql)) )
+		if ( !($result = DB()->sql_query($sql)) )
 		{
 			message_die(GENERAL_ERROR, 'Could not obtain forums information', '', __LINE__, __FILE__, $sql);
 		}
@@ -529,7 +529,7 @@ function make_jumpbox($action, $match_forum_id = 0, $return_forums_ary = FALSE)
 		$boxstring = '<select name="' . POST_FORUM_URL . '" onchange="if(this.options[this.selectedIndex].value != -1){ forms[\'jumpbox\'].submit() }"><option value="-1">' . $lang['Select_forum'] . '</option>';
 
 		$forum_rows = array();
-		while ( $row = $db->sql_fetchrow($result) )
+		while ( $row = DB()->sql_fetchrow($result) )
 		{
 			$forum_rows[] = $row;
 		}
@@ -903,26 +903,26 @@ function phpbb_preg_quote($str, $delimiter)
 //
 function obtain_word_list(&$orig_word, &$replacement_word)
 {
-	global $db;
+	
 
 	//
 	// Define censored word matches
 	//
 	$sql = "SELECT word, replacement
 		FROM  " . WORDS_TABLE;
-	if( !($result = $db->sql_query($sql)) )
+	if( !($result = DB()->sql_query($sql)) )
 	{
 		message_die(GENERAL_ERROR, 'Could not get censored words from database', '', __LINE__, __FILE__, $sql);
 	}
 
-	if ( $row = $db->sql_fetchrow($result) )
+	if ( $row = DB()->sql_fetchrow($result) )
 	{
 		do
 		{
 			$orig_word[] = '#\b(' . str_replace('\*', '\w*?', phpbb_preg_quote($row['word'], '#')) . ')\b#i';
 			$replacement_word[] = $row['replacement'];
 		}
-		while ( $row = $db->sql_fetchrow($result) );
+		while ( $row = DB()->sql_fetchrow($result) );
 	}
 
 	return true;
@@ -930,7 +930,7 @@ function obtain_word_list(&$orig_word, &$replacement_word)
 
 function message_die($msg_code, $msg_text = '', $msg_title = '', $err_line = '', $err_file = '', $sql = '')
 {
-	global $db, $template, $ft_cfg, $theme, $lang, $nav_links, $gen_simple_header, $images;
+	global  $template, $ft_cfg, $theme, $lang, $nav_links, $gen_simple_header, $images;
 	global $userdata, $user_ip, $session_length;
 	global $starttime;
 
@@ -950,7 +950,7 @@ function message_die($msg_code, $msg_text = '', $msg_title = '', $err_line = '',
 	//
 	if (( $msg_code == GENERAL_ERROR || $msg_code == CRITICAL_ERROR ) )
 	{
-		$sql_error = $db->sql_error();
+		$sql_error = DB()->sql_error();
 
 		$debug_text = '';
 

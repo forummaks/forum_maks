@@ -38,12 +38,12 @@ $sql = 'SELECT *
 	FROM '. BT_USERS_TABLE ."
 	WHERE user_id = $profile_user_id";
 
-if (!$result = $db->sql_query($sql))
+if (!$result = DB()->sql_query($sql))
 {
 	message_die(GENERAL_ERROR, 'Could not query users torrent profile information', '', __LINE__, __FILE__, $sql);
 }
 
-$user_tor_info = $db->sql_fetchrow($result);
+$user_tor_info = DB()->sql_fetchrow($result);
 
 $total_uploaded   = (@$user_tor_info['u_up_total']) ? $user_tor_info['u_up_total'] : 0;
 $total_downloaded = (@$user_tor_info['u_down_total']) ? $user_tor_info['u_down_total'] : 0;
@@ -70,8 +70,8 @@ $template->assign_vars(array(
 $sql = "SELECT torrent_id
 		FROM " . BT_TRACKER_TABLE . " 
 		WHERE user_id = " . $profile_user_id ;
-$result = $db->sql_query($sql) or message_die(GENERAL_ERROR, 'Cant query affected torrents', '', __LINE__, __FILE__, $sql);
-while($row = $db->sql_fetchrow($result))	
+$result = DB()->sql_query($sql) or message_die(GENERAL_ERROR, 'Cant query affected torrents', '', __LINE__, __FILE__, $sql);
+while($row = DB()->sql_fetchrow($result))	
 {
 	$affected_torrents[] = $row['torrent_id'];
 }
@@ -101,8 +101,8 @@ if ($affected_count = count($affected_torrents))
 						$affected_torrents
 			
 			 ORDER BY f.forum_name, t.topic_title ";
-	$result = $db->sql_query($sql) or message_die(GENERAL_ERROR, 'Could not query ', '', __LINE__, __FILE__, $sql);
-	while($row = $db->sql_fetchrow($result))
+	$result = DB()->sql_query($sql) or message_die(GENERAL_ERROR, 'Could not query ', '', __LINE__, __FILE__, $sql);
+	while($row = DB()->sql_fetchrow($result))
 	{
 		$leech_cnt[$row['torrent_id']] = 0;
 		$unsorted[] = $row;

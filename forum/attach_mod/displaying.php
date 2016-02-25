@@ -138,7 +138,7 @@ function display_post_attachments($post_id, $switch_attachment)
 //
 function init_display_post_attachments($switch_attachment)
 {
-	global $attach_config, $db, $is_auth, $template, $lang, $postrow, $total_posts, $attachments, $forum_row, $forum_topic_data;
+	global $attach_config,  $is_auth, $template, $lang, $postrow, $total_posts, $attachments, $forum_row, $forum_topic_data;
 
 	if (empty($forum_topic_data) && !empty($forum_row))
 	{
@@ -336,7 +336,7 @@ function init_display_review_attachments($is_auth)
 //
 function display_attachments_preview($attachment_list, $attachment_filesize_list, $attachment_filename_list, $attachment_comment_list, $attachment_extension_list, $attachment_thumbnail_list)
 {
-	global $attach_config, $is_auth, $allowed_extensions, $lang, $userdata, $display_categories, $upload_dir, $upload_icons, $template, $db, $theme;
+	global $attach_config, $is_auth, $allowed_extensions, $lang, $userdata, $display_categories, $upload_dir, $upload_icons, $template,  $theme;
 
 	if (count($attachment_list) != 0)
 	{
@@ -563,7 +563,7 @@ function display_attachments_preview($attachment_list, $attachment_filesize_list
 //
 function display_attachments($post_id)
 {
-	global $template, $upload_dir, $userdata, $allowed_extensions, $display_categories, $download_modes, $db, $lang, $attachments, $upload_icons, $attach_config;
+	global $template, $upload_dir, $userdata, $allowed_extensions, $display_categories, $download_modes,  $lang, $attachments, $upload_icons, $attach_config;
 
 	$num_attachments = count($attachments['_' . $post_id]);
 
@@ -727,7 +727,7 @@ function display_attachments($post_id)
 					SET download_count = download_count + 1
 					WHERE attach_id = ' . $attachments['_' . $post_id][$i]['attach_id'];
 
-					if ( !($db->sql_query($sql)) )
+					if ( !(DB()->sql_query($sql)) )
 					{
 						message_die(GENERAL_ERROR, 'Couldn\'t update attachment download count.', '', __LINE__, __FILE__, $sql);
 					}
@@ -798,7 +798,7 @@ function display_attachments($post_id)
 				SET download_count = download_count + 1
 				WHERE attach_id = ' . $attachments['_' . $post_id][$i]['attach_id'];
 
-				if ( !($db->sql_query($sql)) )
+				if ( !(DB()->sql_query($sql)) )
 				{
 					message_die(GENERAL_ERROR, 'Couldn\'t update attachment download count', '', __LINE__, __FILE__, $sql);
 				}
@@ -832,7 +832,7 @@ function display_attachments($post_id)
 				SET download_count = download_count + 1
 				WHERE attach_id = ' . $attachments['_' . $post_id][$i]['attach_id'];
 
-				if ( !($db->sql_query($sql)) )
+				if ( !(DB()->sql_query($sql)) )
 				{
 					message_die(GENERAL_ERROR, 'Couldn\'t update attachment download count', '', __LINE__, __FILE__, $sql);
 				}

@@ -282,12 +282,12 @@ if ($submit_change && $view == 'attachments')
 	FROM " . ATTACHMENTS_DESC_TABLE . "
 	ORDER BY attach_id";
 
-	if ( !($result = $db->sql_query($sql)) )
+	if ( !($result = DB()->sql_query($sql)) )
 	{
 		message_die(GENERAL_ERROR, 'Couldn\'t get Attachment informations', '', __LINE__, __FILE__, $sql);
 	}
 
-	while ( $attachrow = $db->sql_fetchrow($result) )
+	while ( $attachrow = DB()->sql_fetchrow($result) )
 	{
 		if ( isset($attachments['_' . $attachrow['attach_id']]) )
 		{
@@ -297,7 +297,7 @@ if ($submit_change && $view == 'attachments')
 				SET comment = '" . $attachments['_' . $attachrow['attach_id']]['comment'] . "', download_count = " . intval($attachments['_' . $attachrow['attach_id']]['download_count']) . "
 				WHERE attach_id = " . $attachrow['attach_id'];
 
-				if (!$db->sql_query($sql))
+				if (!DB()->sql_query($sql))
 				{
 					message_die(GENERAL_ERROR, 'Couldn\'t update Attachments Informations', '', __LINE__, __FILE__, $sql);
 				}
@@ -334,12 +334,12 @@ if ($view == 'stats')
 	$sql = "SELECT count(*) AS total
 	FROM " . ATTACHMENTS_DESC_TABLE;
 
-	if ( !($result = $db->sql_query($sql)) )
+	if ( !($result = DB()->sql_query($sql)) )
 	{
 		message_die(GENERAL_ERROR, 'Error getting total attachments', '', __LINE__, __FILE__, $sql);
 	}
 
-	$total = $db->sql_fetchrow($result);
+	$total = DB()->sql_fetchrow($result);
 	$number_of_attachments = $total['total'];
 
 	$sql = "SELECT post_id
@@ -347,48 +347,48 @@ if ($view == 'stats')
 	WHERE post_id <> 0
 	GROUP BY post_id";
 
-	if ( !($result = $db->sql_query($sql)) )
+	if ( !($result = DB()->sql_query($sql)) )
 	{
 		message_die(GENERAL_ERROR, 'Error getting total posts', '', __LINE__, __FILE__, $sql);
 	}
 
-	$number_of_posts = $db->num_rows($result);
+	$number_of_posts = DB()->num_rows($result);
 
 	$sql = "SELECT privmsgs_id
 	FROM " . ATTACHMENTS_TABLE . "
 	WHERE privmsgs_id <> 0
 	GROUP BY privmsgs_id";
 
-	if ( !($result = $db->sql_query($sql)) )
+	if ( !($result = DB()->sql_query($sql)) )
 	{
 		message_die(GENERAL_ERROR, 'Error getting total private messages', '', __LINE__, __FILE__, $sql);
 	}
 
-	$number_of_pms = $db->num_rows($result);
+	$number_of_pms = DB()->num_rows($result);
 
 	$sql = "SELECT p.topic_id
 	FROM " . ATTACHMENTS_TABLE . " a, " . POSTS_TABLE . " p
 	WHERE a.post_id = p.post_id
 	GROUP BY p.topic_id";
 
-	if ( !($result = $db->sql_query($sql)) )
+	if ( !($result = DB()->sql_query($sql)) )
 	{
 		message_die(GENERAL_ERROR, 'Error getting total topics', '', __LINE__, __FILE__, $sql);
 	}
 
-	$number_of_topics = $db->num_rows($result);
+	$number_of_topics = DB()->num_rows($result);
 
 	$sql = "SELECT user_id_1
 	FROM " . ATTACHMENTS_TABLE . "
 	WHERE (post_id <> 0)
 	GROUP BY user_id_1";
 
-	if ( !($result = $db->sql_query($sql)) )
+	if ( !($result = DB()->sql_query($sql)) )
 	{
 		message_die(GENERAL_ERROR, 'Error getting total users', '', __LINE__, __FILE__, $sql);
 	}
 
-	$number_of_users = $db->num_rows($result);
+	$number_of_users = DB()->num_rows($result);
 
 	$template->assign_vars(array(
 		'L_STATISTIC' => $lang['Statistic'],
@@ -427,13 +427,13 @@ if ($view == 'search')
 	WHERE f.cat_id = c.cat_id
 	ORDER BY c.cat_id, f.forum_order";
 
-	if ( !($result = $db->sql_query($sql)) )
+	if ( !($result = DB()->sql_query($sql)) )
 	{
 		message_die(GENERAL_ERROR, 'Could not obtain forum_name/forum_id', '', __LINE__, __FILE__, $sql);
 	}
 
 	$s_forums = '';
-	while ($row = $db->sql_fetchrow($result))
+	while ($row = DB()->sql_fetchrow($result))
 	{ //sf
 		$s_forums .= '<option value="' . $row['forum_id'] . '">' . (($row['forum_parent']) ? SF_SEL_SPACER : '') . $row['forum_name'] . '</option>';
 
@@ -525,13 +525,13 @@ if ($view == 'username')
 		$sql .= ' ' . $order_by;
 	}
 
-	if ( !($result = $db->sql_query($sql)) )
+	if ( !($result = DB()->sql_query($sql)) )
 	{
 		message_die(GENERAL_ERROR, 'Couldn\'t query attachments', '', __LINE__, __FILE__, $sql);
 	}
 
-	$members = $db->sql_fetchrowset($result);
-	$num_members = $db->num_rows($result);
+	$members = DB()->sql_fetchrowset($result);
+	$num_members = DB()->num_rows($result);
 
 	if ( $num_members > 0 )
 	{
@@ -545,13 +545,13 @@ if ($view == 'username')
 			WHERE (user_id_1 = " . intval($members[$i]['user_id']) . ")
 			GROUP BY attach_id";
 
-			if ( !($result = $db->sql_query($sql)) )
+			if ( !($result = DB()->sql_query($sql)) )
 			{
 				message_die(GENERAL_ERROR, 'Couldn\'t query attachments', '', __LINE__, __FILE__, $sql);
 			}
 
-			$attach_ids = $db->sql_fetchrowset($result);
-			$num_attach_ids = $db->num_rows($result);
+			$attach_ids = DB()->sql_fetchrowset($result);
+			$num_attach_ids = DB()->num_rows($result);
 			$attach_id = array();
 
 			for ($j = 0; $j < $num_attach_ids; $j++)
@@ -566,12 +566,12 @@ if ($view == 'username')
 			FROM " . ATTACHMENTS_DESC_TABLE . "
 			WHERE attach_id IN (" . implode(', ', $attach_id) . ")";
 
-			if ( !($result = $db->sql_query($sql)) )
+			if ( !($result = DB()->sql_query($sql)) )
 			{
 				message_die(GENERAL_ERROR, 'Couldn\'t query attachments', '', __LINE__, __FILE__, $sql);
 			}
 
-			$row = $db->sql_fetchrow($result);
+			$row = DB()->sql_fetchrow($result);
 			$members[$i]['total_size'] = (int) $row['total_size'];
 		}
 
@@ -602,12 +602,12 @@ if ($view == 'username')
 	FROM " . ATTACHMENTS_TABLE . "
 	GROUP BY user_id_1";
 
-	if ( !($result = $db->sql_query($sql)) )
+	if ( !($result = DB()->sql_query($sql)) )
 	{
 		message_die(GENERAL_ERROR, 'Error getting total users', '', __LINE__, __FILE__, $sql);
 	}
 
-	$total_rows = $db->num_rows($result);
+	$total_rows = DB()->num_rows($result);
 }
 
 //
@@ -656,12 +656,12 @@ if ($view == 'attachments')
 		FROM " . USERS_TABLE . "
 		WHERE user_id = " . intval($uid);
 
-		if ( !($result = $db->sql_query($sql)) )
+		if ( !($result = DB()->sql_query($sql)) )
 		{
 			message_die(GENERAL_ERROR, 'Error getting username', '', __LINE__, __FILE__, $sql);
 		}
 
-		$row = $db->sql_fetchrow($result);
+		$row = DB()->sql_fetchrow($result);
 		$username = $row['username'];
 
 		$s_hidden = '<input type="hidden" name="u_id" value="' . intval($uid) . '">';
@@ -678,13 +678,13 @@ if ($view == 'attachments')
 		WHERE user_id_1 = " . intval($uid) . "
 		GROUP BY attach_id";
 
-		if ( !($result = $db->sql_query($sql)) )
+		if ( !($result = DB()->sql_query($sql)) )
 		{
 			message_die(GENERAL_ERROR, 'Couldn\'t query attachments', '', __LINE__, __FILE__, $sql);
 		}
 
-		$attach_ids = $db->sql_fetchrowset($result);
-		$num_attach_ids = $db->num_rows($result);
+		$attach_ids = DB()->sql_fetchrowset($result);
+		$num_attach_ids = DB()->num_rows($result);
 
 		if ($num_attach_ids == 0)
 		{
@@ -722,13 +722,13 @@ if ($view == 'attachments')
 
 	if (!$search_based)
 	{
-		if ( !($result = $db->sql_query($sql)) )
+		if ( !($result = DB()->sql_query($sql)) )
 		{
 			message_die(GENERAL_ERROR, 'Couldn\'t query attachments', '', __LINE__, __FILE__, $sql);
 		}
 
-		$attachments = $db->sql_fetchrowset($result);
-		$num_attach = $db->num_rows($result);
+		$attachments = DB()->sql_fetchrowset($result);
+		$num_attach = DB()->num_rows($result);
 	}
 
 	if (count($attachments) > 0)
@@ -756,13 +756,13 @@ if ($view == 'attachments')
 			FROM " . ATTACHMENTS_TABLE . "
 			WHERE attach_id = " . intval($attachments[$i]['attach_id']);
 
-			if ( !($result = $db->sql_query($sql)) )
+			if ( !($result = DB()->sql_query($sql)) )
 			{
 				message_die(GENERAL_ERROR, 'Couldn\'t query attachments', '', __LINE__, __FILE__, $sql);
 			}
 
-			$ids = $db->sql_fetchrowset($result);
-			$num_ids = $db->num_rows($result);
+			$ids = DB()->sql_fetchrowset($result);
+			$num_ids = DB()->num_rows($result);
 
 			for ($j = 0; $j < $num_ids; $j++)
 			{
@@ -773,12 +773,12 @@ if ($view == 'attachments')
 					WHERE p.post_id = " . intval($ids[$j]['post_id']) . " AND p.topic_id = t.topic_id
 					GROUP BY t.topic_id, t.topic_title";
 
-					if ( !($result = $db->sql_query($sql)) )
+					if ( !($result = DB()->sql_query($sql)) )
 					{
 						message_die(GENERAL_ERROR, 'Couldn\'t query topic', '', __LINE__, __FILE__, $sql);
 					}
 
-					$row = $db->sql_fetchrow($result);
+					$row = DB()->sql_fetchrow($result);
 					$post_title = $row['topic_title'];
 
 					if (strlen($post_title) > 32)
@@ -827,12 +827,12 @@ if ($view == 'attachments')
 		{
 			$sql = "SELECT attach_id FROM " . ATTACHMENTS_DESC_TABLE;
 
-			if ( !($result = $db->sql_query($sql)) )
+			if ( !($result = DB()->sql_query($sql)) )
 			{
 				message_die(GENERAL_ERROR, 'Could not query Attachment Description Table', '', __LINE__, __FILE__, $sql);
 			}
 
-			$total_rows = $db->num_rows($result);
+			$total_rows = DB()->num_rows($result);
 		}
 	}
 }

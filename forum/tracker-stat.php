@@ -21,7 +21,7 @@ foreach ($times as $t)
 $sql = 'SELECT COUNT(*) AS p_all
 	FROM '. BT_TRACKER_TABLE;
 
-if ($row = $db->sql_fetchrow($db->sql_query($sql)))
+if ($row = DB()->sql_fetchrow(DB()->sql_query($sql)))
 {
 	$p_all = $row['p_all'];
 }
@@ -30,7 +30,7 @@ if ($row = $db->sql_fetchrow($db->sql_query($sql)))
 $sql = 'SELECT COUNT(DISTINCT torrent_id) AS torrents
 	FROM '. BT_TRACKER_TABLE;
 
-if ($row = $db->sql_fetchrow($db->sql_query($sql)))
+if ($row = DB()->sql_fetchrow(DB()->sql_query($sql)))
 {
 	$tor = $row['torrents'];
 }
@@ -40,7 +40,7 @@ $sql = 'SELECT COUNT(*) AS p_active
 		FROM '. BT_TRACKER_TABLE ."
 		WHERE expire_time > $current_time";
 
-if ($row = $db->sql_fetchrow($db->sql_query($sql)))
+if ($row = DB()->sql_fetchrow(DB()->sql_query($sql)))
 {
 	$p_active = $row['p_active'];
 }
@@ -54,7 +54,7 @@ foreach ($times as $t)
 		FROM '. BT_TRACKER_TABLE ."
 		WHERE update_time > $where_time";
 
-	if ($row = $db->sql_fetchrow($db->sql_query($sql)))
+	if ($row = DB()->sql_fetchrow(DB()->sql_query($sql)))
 	{
 		$p_last[$t] = $row['peers'];
 	}
@@ -72,6 +72,6 @@ echo "<tr><td align=center> active torrents </td><td align=center> <b>$tor</b> <
 
 echo '</table>';
 
-$db->sql_close();
+DB()->sql_close();
 
 exit;

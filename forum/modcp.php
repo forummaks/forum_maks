@@ -98,11 +98,11 @@ if ( !empty($topic_id) )
 		FROM " . TOPICS_TABLE . " t, " . FORUMS_TABLE . " f
 		WHERE t.topic_id = " . $topic_id . "
 			AND f.forum_id = t.forum_id";
-	if ( !($result = $db->sql_query($sql)) )
+	if ( !($result = DB()->sql_query($sql)) )
 	{
 		message_die(GENERAL_MESSAGE, 'Topic_post_not_exist');
 	}
-	$topic_row = $db->sql_fetchrow($result);
+	$topic_row = DB()->sql_fetchrow($result);
 
 	if (!$topic_row)
 	{
@@ -118,11 +118,11 @@ else if ( !empty($forum_id) )
 	$sql = "SELECT forum_name, forum_topics
 		FROM " . FORUMS_TABLE . "
 		WHERE forum_id = " . $forum_id;
-	if ( !($result = $db->sql_query($sql)) )
+	if ( !($result = DB()->sql_query($sql)) )
 	{
 		message_die(GENERAL_MESSAGE, 'Forum_not_exist');
 	}
-	$topic_row = $db->sql_fetchrow($result);
+	$topic_row = DB()->sql_fetchrow($result);
 
 	if (!$topic_row)
 	{
@@ -228,41 +228,41 @@ switch( $mode )
 				FROM " . TOPICS_TABLE . "
 				WHERE topic_id IN ($topic_id_sql)
 					AND forum_id = $forum_id";
-			if ( !($result = $db->sql_query($sql)) )
+			if ( !($result = DB()->sql_query($sql)) )
 			{
 				message_die(GENERAL_ERROR, 'Could not get topic id information', '', __LINE__, __FILE__, $sql);
 			}
 
 			$topic_id_sql = '';
-			while ($row = $db->sql_fetchrow($result))
+			while ($row = DB()->sql_fetchrow($result))
 			{
 				$topic_id_sql .= (($topic_id_sql != '') ? ', ' : '') . intval($row['topic_id']);
 			}
-			$db->sql_freeresult($result);
+			DB()->sql_freeresult($result);
 
 			$sql = "SELECT poster_id, COUNT(post_id) AS posts
 				FROM " . POSTS_TABLE . "
 				WHERE topic_id IN ($topic_id_sql)
 				GROUP BY poster_id";
-			if ( !($result = $db->sql_query($sql)) )
+			if ( !($result = DB()->sql_query($sql)) )
 			{
 				message_die(GENERAL_ERROR, 'Could not get poster id information', '', __LINE__, __FILE__, $sql);
 			}
 
 			$count_sql = array();
-			while ( $row = $db->sql_fetchrow($result) )
+			while ( $row = DB()->sql_fetchrow($result) )
 			{
 				$count_sql[] = "UPDATE " . USERS_TABLE . "
 					SET user_posts = user_posts - " . $row['posts'] . "
 					WHERE user_id = " . $row['poster_id'];
 			}
-			$db->sql_freeresult($result);
+			DB()->sql_freeresult($result);
 
 			if ( sizeof($count_sql) )
 			{
 				for($i = 0; $i < sizeof($count_sql); $i++)
 				{
-					if ( !$db->sql_query($count_sql[$i]) )
+					if ( !DB()->sql_query($count_sql[$i]) )
 					{
 						message_die(GENERAL_ERROR, 'Could not update user post count information', '', __LINE__, __FILE__, $sql);
 					}
@@ -272,32 +272,32 @@ switch( $mode )
 			$sql = "SELECT post_id
 				FROM " . POSTS_TABLE . "
 				WHERE topic_id IN ($topic_id_sql)";
-			if ( !($result = $db->sql_query($sql)) )
+			if ( !($result = DB()->sql_query($sql)) )
 			{
 				message_die(GENERAL_ERROR, 'Could not get post id information', '', __LINE__, __FILE__, $sql);
 			}
 
 			$post_id_sql = '';
-			while ( $row = $db->sql_fetchrow($result) )
+			while ( $row = DB()->sql_fetchrow($result) )
 			{
 				$post_id_sql .= ( ( $post_id_sql != '' ) ? ', ' : '' ) . intval($row['post_id']);
 			}
-			$db->sql_freeresult($result);
+			DB()->sql_freeresult($result);
 
 			$sql = "SELECT vote_id
 				FROM " . VOTE_DESC_TABLE . "
 				WHERE topic_id IN ($topic_id_sql)";
-			if ( !($result = $db->sql_query($sql)) )
+			if ( !($result = DB()->sql_query($sql)) )
 			{
 				message_die(GENERAL_ERROR, 'Could not get vote id information', '', __LINE__, __FILE__, $sql);
 			}
 
 			$vote_id_sql = '';
-			while ( $row = $db->sql_fetchrow($result) )
+			while ( $row = DB()->sql_fetchrow($result) )
 			{
 				$vote_id_sql .= ( ( $vote_id_sql != '' ) ? ', ' : '' ) . $row['vote_id'];
 			}
-			$db->sql_freeresult($result);
+			DB()->sql_freeresult($result);
 
 			//
 			// Got all required info so go ahead and start deleting everything
@@ -306,7 +306,7 @@ switch( $mode )
 				FROM " . TOPICS_TABLE . "
 				WHERE topic_id IN ($topic_id_sql)
 					OR topic_moved_id IN ($topic_id_sql)";
-			if ( !$db->sql_query($sql, BEGIN_TRANSACTION) )
+			if ( !DB()->sql_query($sql, BEGIN_TRANSACTION) )
 			{
 				message_die(GENERAL_ERROR, 'Could not delete topics', '', __LINE__, __FILE__, $sql);
 			}
@@ -314,7 +314,7 @@ switch( $mode )
 			//bt
 			$sql = 'DELETE FROM '. BT_USR_DL_STAT_TABLE ."
 				WHERE topic_id IN($topic_id_sql)";
-			if (!$db->sql_query($sql))
+			if (!DB()->sql_query($sql))
 			{
 				message_die(GENERAL_ERROR, 'Could not delete downloads', '', __LINE__, __FILE__, $sql);
 			}
@@ -325,7 +325,7 @@ switch( $mode )
 				$sql = "DELETE
 					FROM " . POSTS_TABLE . "
 					WHERE post_id IN ($post_id_sql)";
-				if ( !$db->sql_query($sql) )
+				if ( !DB()->sql_query($sql) )
 				{
 					message_die(GENERAL_ERROR, 'Could not delete posts', '', __LINE__, __FILE__, $sql);
 				}
@@ -333,7 +333,7 @@ switch( $mode )
 				$sql = "DELETE
 					FROM " . POSTS_TEXT_TABLE . "
 					WHERE post_id IN ($post_id_sql)";
-				if ( !$db->sql_query($sql) )
+				if ( !DB()->sql_query($sql) )
 				{
 					message_die(GENERAL_ERROR, 'Could not delete posts text', '', __LINE__, __FILE__, $sql);
 				}
@@ -348,7 +348,7 @@ switch( $mode )
 				$sql = "DELETE
 					FROM " . VOTE_DESC_TABLE . "
 					WHERE vote_id IN ($vote_id_sql)";
-				if ( !$db->sql_query($sql) )
+				if ( !DB()->sql_query($sql) )
 				{
 					message_die(GENERAL_ERROR, 'Could not delete vote descriptions', '', __LINE__, __FILE__, $sql);
 				}
@@ -356,7 +356,7 @@ switch( $mode )
 				$sql = "DELETE
 					FROM " . VOTE_RESULTS_TABLE . "
 					WHERE vote_id IN ($vote_id_sql)";
-				if ( !$db->sql_query($sql) )
+				if ( !DB()->sql_query($sql) )
 				{
 					message_die(GENERAL_ERROR, 'Could not delete vote results', '', __LINE__, __FILE__, $sql);
 				}
@@ -364,7 +364,7 @@ switch( $mode )
 				$sql = "DELETE
 					FROM " . VOTE_USERS_TABLE . "
 					WHERE vote_id IN ($vote_id_sql)";
-				if ( !$db->sql_query($sql) )
+				if ( !DB()->sql_query($sql) )
 				{
 					message_die(GENERAL_ERROR, 'Could not delete vote users', '', __LINE__, __FILE__, $sql);
 				}
@@ -373,7 +373,7 @@ switch( $mode )
 			$sql = "DELETE
 				FROM " . TOPICS_WATCH_TABLE . "
 				WHERE topic_id IN ($topic_id_sql)";
-			if ( !$db->sql_query($sql, END_TRANSACTION) )
+			if ( !DB()->sql_query($sql, END_TRANSACTION) )
 			{
 				message_die(GENERAL_ERROR, 'Could not delete watched post list', '', __LINE__, __FILE__, $sql);
 			}
@@ -460,17 +460,17 @@ switch( $mode )
 
 			$sql = 'SELECT forum_id FROM ' . FORUMS_TABLE . '
 				WHERE forum_id = ' . $new_forum_id;
-			if ( !($result = $db->sql_query($sql)) )
+			if ( !($result = DB()->sql_query($sql)) )
 			{
 				message_die(GENERAL_ERROR, 'Could not select from forums table', '', __LINE__, __FILE__, $sql);
 			}
 
-			if (!$db->sql_fetchrow($result))
+			if (!DB()->sql_fetchrow($result))
 			{
 				message_die(GENERAL_MESSAGE, 'New forum does not exist');
 			}
 
-			$db->sql_freeresult($result);
+			DB()->sql_freeresult($result);
 
 			if ( $new_forum_id != $old_forum_id )
 			{
@@ -487,13 +487,13 @@ switch( $mode )
 					WHERE topic_id IN ($topic_list)
 						AND forum_id = $old_forum_id
 						AND topic_status <> " . TOPIC_MOVED;
-				if ( !($result = $db->sql_query($sql, BEGIN_TRANSACTION)) )
+				if ( !($result = DB()->sql_query($sql, BEGIN_TRANSACTION)) )
 				{
 					message_die(GENERAL_ERROR, 'Could not select from topic table', '', __LINE__, __FILE__, $sql);
 				}
 
-				$row = $db->sql_fetchrowset($result);
-				$db->sql_freeresult($result);
+				$row = DB()->sql_fetchrowset($result);
+				DB()->sql_freeresult($result);
 
 				//bt
 				// Update users DL-status 'update_time'
@@ -514,7 +514,7 @@ switch( $mode )
 						WHERE topic_id IN($dl_topics_sql)
 							AND user_status IN(". DL_STATUS_WILL .','. DL_STATUS_DOWN .')';
 
-					if (!$db->sql_query($sql))
+					if (!DB()->sql_query($sql))
 					{
 						message_die(GENERAL_ERROR, 'Could not update users DL-status', '', __LINE__, __FILE__, $sql);
 					}
@@ -530,7 +530,7 @@ switch( $mode )
 						// Insert topic in the old forum that indicates that the forum has moved.
 						$sql = "INSERT INTO " . TOPICS_TABLE . " (forum_id, topic_title, topic_poster, topic_time, topic_status, topic_type, topic_vote, topic_views, topic_replies, topic_first_post_id, topic_last_post_id, topic_moved_id)
 							VALUES ($old_forum_id, '" . addslashes(str_replace("\'", "''", $row[$i]['topic_title'])) . "', '" . str_replace("\'", "''", $row[$i]['topic_poster']) . "', " . $row[$i]['topic_time'] . ", " . TOPIC_MOVED . ", " . POST_NORMAL . ", " . $row[$i]['topic_vote'] . ", " . $row[$i]['topic_views'] . ", " . $row[$i]['topic_replies'] . ", " . $row[$i]['topic_first_post_id'] . ", " . $row[$i]['topic_last_post_id'] . ", $topic_id)";
-						if ( !$db->sql_query($sql) )
+						if ( !DB()->sql_query($sql) )
 						{
 							message_die(GENERAL_ERROR, 'Could not insert shadow topic', '', __LINE__, __FILE__, $sql);
 						}
@@ -539,7 +539,7 @@ switch( $mode )
 					$sql = "UPDATE " . TOPICS_TABLE . "
 						SET forum_id = $new_forum_id
 						WHERE topic_id = $topic_id";
-					if ( !$db->sql_query($sql) )
+					if ( !DB()->sql_query($sql) )
 					{
 						message_die(GENERAL_ERROR, 'Could not update old topic', '', __LINE__, __FILE__, $sql);
 					}
@@ -547,7 +547,7 @@ switch( $mode )
 					$sql = "UPDATE " . POSTS_TABLE . "
 						SET forum_id = $new_forum_id
 						WHERE topic_id = $topic_id";
-					if ( !$db->sql_query($sql) )
+					if ( !DB()->sql_query($sql) )
 					{
 						message_die(GENERAL_ERROR, 'Could not update post topic ids', '', __LINE__, __FILE__, $sql);
 					}
@@ -677,7 +677,7 @@ switch( $mode )
 			WHERE topic_id IN ($topic_id_sql)
 				AND forum_id = $forum_id
 				AND topic_moved_id = 0";
-		if ( !($result = $db->sql_query($sql)) )
+		if ( !($result = DB()->sql_query($sql)) )
 		{
 			message_die(GENERAL_ERROR, 'Could not update topics table', '', __LINE__, __FILE__, $sql);
 		}
@@ -722,7 +722,7 @@ switch( $mode )
 			WHERE topic_id IN ($topic_id_sql)
 				AND forum_id = $forum_id
 				AND topic_moved_id = 0";
-		if ( !($result = $db->sql_query($sql)) )
+		if ( !($result = DB()->sql_query($sql)) )
 		{
 			message_die(GENERAL_ERROR, 'Could not update topics table', '', __LINE__, __FILE__, $sql);
 		}
@@ -773,7 +773,7 @@ switch( $mode )
 				AND forum_id = $forum_id
 				AND topic_moved_id = 0";
 
-		if (!$result = $db->sql_query($sql))
+		if (!$result = DB()->sql_query($sql))
 		{
 			message_die(GENERAL_ERROR, 'Could not update topics table', '', __LINE__, __FILE__, $sql);
 		}
@@ -841,7 +841,7 @@ switch( $mode )
 						AND topic_id = $topic_id
 						AND forum_id = $forum_id";
 
-				if (!$rowset = @$db->sql_fetchrowset($db->sql_query($sql)))
+				if (!$rowset = @DB()->sql_fetchrowset(DB()->sql_query($sql)))
 				{
 					message_die(GENERAL_ERROR, 'Could not get post id information', '', __LINE__, __FILE__, $sql);
 				}
@@ -861,12 +861,12 @@ switch( $mode )
 				FROM " . POSTS_TABLE . "
 				WHERE post_id IN ($post_id_sql)
 				ORDER BY post_time ASC";
-			if (!($result = $db->sql_query($sql)))
+			if (!($result = DB()->sql_query($sql)))
 			{
 				message_die(GENERAL_ERROR, 'Could not get post information', '', __LINE__, __FILE__, $sql);
 			}
 
-			if ($row = $db->sql_fetchrow($result))
+			if ($row = DB()->sql_fetchrow($result))
 			{
 				$first_poster = $row['poster_id'];
 				$topic_id = $row['topic_id'];
@@ -879,7 +879,7 @@ switch( $mode )
 					$user_id_sql .= (($user_id_sql != '') ? ', ' : '') . intval($row['poster_id']);
 					$post_id_sql .= (($post_id_sql != '') ? ', ' : '') . intval($row['post_id']);;
 				}
-				while ($row = $db->sql_fetchrow($result));
+				while ($row = DB()->sql_fetchrow($result));
 
 				$post_subject = trim(htmlspecialchars($HTTP_POST_VARS['subject']));
 				if (empty($post_subject))
@@ -892,26 +892,26 @@ switch( $mode )
 
 				$sql = 'SELECT forum_id FROM ' . FORUMS_TABLE . '
 					WHERE forum_id = ' . $new_forum_id;
-				if ( !($result = $db->sql_query($sql)) )
+				if ( !($result = DB()->sql_query($sql)) )
 				{
 					message_die(GENERAL_ERROR, 'Could not select from forums table', '', __LINE__, __FILE__, $sql);
 				}
 
-				if (!$db->sql_fetchrow($result))
+				if (!DB()->sql_fetchrow($result))
 				{
 					message_die(GENERAL_MESSAGE, 'New forum does not exist');
 				}
 
-				$db->sql_freeresult($result);
+				DB()->sql_freeresult($result);
 
 				$sql  = "INSERT INTO " . TOPICS_TABLE . " (topic_title, topic_poster, topic_time, forum_id, topic_status, topic_type)
 					VALUES ('" . str_replace("\'", "''", $post_subject) . "', $first_poster, " . $topic_time . ", $new_forum_id, " . TOPIC_UNLOCKED . ", " . POST_NORMAL . ")";
-				if (!($db->sql_query($sql, BEGIN_TRANSACTION)))
+				if (!(DB()->sql_query($sql, BEGIN_TRANSACTION)))
 				{
 					message_die(GENERAL_ERROR, 'Could not insert new topic', '', __LINE__, __FILE__, $sql);
 				}
 
-				$new_topic_id = $db->sql_nextid();
+				$new_topic_id = DB()->sql_nextid();
 
 				// Update topic watch table, switch users whose posts
 				// have moved, over to watching the new topic
@@ -919,7 +919,7 @@ switch( $mode )
 					SET topic_id = $new_topic_id
 					WHERE topic_id = $topic_id
 						AND user_id IN ($user_id_sql)";
-				if (!$db->sql_query($sql))
+				if (!DB()->sql_query($sql))
 				{
 					message_die(GENERAL_ERROR, 'Could not update topics watch table', '', __LINE__, __FILE__, $sql);
 				}
@@ -929,7 +929,7 @@ switch( $mode )
 				$sql = 	"UPDATE " . POSTS_TABLE . "
 					SET topic_id = $new_topic_id, forum_id = $new_forum_id
 					WHERE $sql_where";
-				if (!$db->sql_query($sql, END_TRANSACTION))
+				if (!DB()->sql_query($sql, END_TRANSACTION))
 				{
 					message_die(GENERAL_ERROR, 'Could not update posts table', '', __LINE__, __FILE__, $sql);
 				}
@@ -977,26 +977,26 @@ switch( $mode )
 				WHERE post_id IN($post_id_sql)
 				GROUP BY poster_id";
 
-			if (!$result = $db->sql_query($sql, BEGIN_TRANSACTION))
+			if (!$result = DB()->sql_query($sql, BEGIN_TRANSACTION))
 			{
 				message_die(GENERAL_ERROR, 'Could not get poster id information', '', __LINE__, __FILE__, $sql);
 			}
 
 			$count_sql = array();
 
-			while ($row = $db->sql_fetchrow($result))
+			while ($row = DB()->sql_fetchrow($result))
 			{
 				$count_sql[] = 'UPDATE '. USERS_TABLE ." SET
 						user_posts = user_posts - {$row['posts']}
 					WHERE user_id = {$row['poster_id']}";
 			}
-			$db->sql_freeresult($result);
+			DB()->sql_freeresult($result);
 
 			if ($count_sql)
 			{
 				foreach ($count_sql as $sql)
 				{
-					if (!$db->sql_query($sql))
+					if (!DB()->sql_query($sql))
 					{
 						message_die(GENERAL_ERROR, 'Could not update user post count information', '', __LINE__, __FILE__, $sql);
 					}
@@ -1006,7 +1006,7 @@ switch( $mode )
 			$sql = 'DELETE FROM '. POSTS_TABLE ."
 				WHERE post_id IN($post_id_sql)";
 
-			if (!$db->sql_query($sql))
+			if (!DB()->sql_query($sql))
 			{
 				message_die(GENERAL_ERROR, 'Could not delete posts', '', __LINE__, __FILE__, $sql);
 			}
@@ -1014,7 +1014,7 @@ switch( $mode )
 			$sql = 'DELETE FROM '. POSTS_TEXT_TABLE ."
 				WHERE post_id IN($post_id_sql)";
 
-			if (!$db->sql_query($sql, END_TRANSACTION))
+			if (!DB()->sql_query($sql, END_TRANSACTION))
 			{
 				message_die(GENERAL_ERROR, 'Could not delete posts text', '', __LINE__, __FILE__, $sql);
 			}
@@ -1049,16 +1049,16 @@ switch( $mode )
 					AND p.poster_id = u.user_id
 					AND p.post_id = pt.post_id
 				ORDER BY p.post_time ASC";
-			if ( !($result = $db->sql_query($sql)) )
+			if ( !($result = DB()->sql_query($sql)) )
 			{
 				message_die(GENERAL_ERROR, 'Could not get topic/post information', '', __LINE__, __FILE__, $sql);
 			}
 
 			$s_hidden_fields = '<input type="hidden" name="sid" value="' . $userdata['session_id'] . '" /><input type="hidden" name="' . POST_FORUM_URL . '" value="' . $forum_id . '" /><input type="hidden" name="' . POST_TOPIC_URL . '" value="' . $topic_id . '" /><input type="hidden" name="mode" value="split" />';
 
-			if( ( $total_posts = $db->num_rows($result) ) > 0 )
+			if( ( $total_posts = DB()->num_rows($result) ) > 0 )
 			{
-				$postrow = $db->sql_fetchrowset($result);
+				$postrow = DB()->sql_fetchrowset($result);
 
 				$template->assign_vars(array(
 					'L_SPLIT_TOPIC' => $lang['Split_Topic'],
@@ -1196,12 +1196,12 @@ switch( $mode )
 			FROM " . POSTS_TABLE . "
 			WHERE post_id = $post_id
 				AND forum_id = $forum_id";
-		if ( !($result = $db->sql_query($sql)) )
+		if ( !($result = DB()->sql_query($sql)) )
 		{
 			message_die(GENERAL_ERROR, 'Could not get poster IP information', '', __LINE__, __FILE__, $sql);
 		}
 
-		if ( !($post_row = $db->sql_fetchrow($result)) )
+		if ( !($post_row = DB()->sql_fetchrow($result)) )
 		{
 			message_die(GENERAL_MESSAGE, $lang['No_such_post']);
 		}
@@ -1234,12 +1234,12 @@ switch( $mode )
 			WHERE poster_id = $poster_id
 			GROUP BY poster_ip
 			ORDER BY " . (( SQL_LAYER == 'msaccess' ) ? 'COUNT(*)' : 'postings' ) . " DESC";
-		if ( !($result = $db->sql_query($sql)) )
+		if ( !($result = DB()->sql_query($sql)) )
 		{
 			message_die(GENERAL_ERROR, 'Could not get IP information for this user', '', __LINE__, __FILE__, $sql);
 		}
 
-		if ( $row = $db->sql_fetchrow($result) )
+		if ( $row = DB()->sql_fetchrow($result) )
 		{
 			$i = 0;
 			do
@@ -1265,7 +1265,7 @@ switch( $mode )
 
 				$i++;
 			}
-			while ( $row = $db->sql_fetchrow($result) );
+			while ( $row = DB()->sql_fetchrow($result) );
 		}
 
 		//
@@ -1277,12 +1277,12 @@ switch( $mode )
 				AND p.poster_ip = '" . $post_row['poster_ip'] . "'
 			GROUP BY u.user_id, u.username
 			ORDER BY " . (( SQL_LAYER == 'msaccess' ) ? 'COUNT(*)' : 'postings' ) . " DESC";
-		if ( !($result = $db->sql_query($sql)) )
+		if ( !($result = DB()->sql_query($sql)) )
 		{
 			message_die(GENERAL_ERROR, 'Could not get posters information based on IP', '', __LINE__, __FILE__, $sql);
 		}
 
-		if ( $row = $db->sql_fetchrow($result) )
+		if ( $row = DB()->sql_fetchrow($result) )
 		{
 			$i = 0;
 			do
@@ -1302,7 +1302,7 @@ switch( $mode )
 
 				$i++;
 			}
-			while ( $row = $db->sql_fetchrow($result) );
+			while ( $row = DB()->sql_fetchrow($result) );
 		}
 
 		$template->pparse('viewip');
@@ -1352,12 +1352,12 @@ switch( $mode )
 				AND p.post_id = t.topic_last_post_id
 			ORDER BY t.topic_type DESC, p.post_time DESC
 			LIMIT $start, " . $ft_cfg['topics_per_page'];
-		if ( !($result = $db->sql_query($sql)) )
+		if ( !($result = DB()->sql_query($sql)) )
 		{
 	   		message_die(GENERAL_ERROR, 'Could not obtain topic information', '', __LINE__, __FILE__, $sql);
 		}
 
-		while ( $row = $db->sql_fetchrow($result) )
+		while ( $row = DB()->sql_fetchrow($result) )
 		{
 			$topic_title = '';
 

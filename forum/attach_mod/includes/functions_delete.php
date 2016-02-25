@@ -4,7 +4,7 @@ if (!defined('FT_ROOT')) die(basename(__FILE__));
 
 function delete_attachment($post_id_array = 0, $attach_id_array = 0, $page = 0, $user_id = 0)
 {
-	global $db;
+	
 
 	//
 	// Generate Array, if it's not an array
@@ -51,23 +51,23 @@ function delete_attachment($post_id_array = 0, $attach_id_array = 0, $page = 0, 
 				WHERE attach_id IN (' . implode(', ', $attach_id_array) . ")
 			GROUP BY $p_id";
 
-		if ( !($result = $db->sql_query($sql)) )
+		if ( !($result = DB()->sql_query($sql)) )
 		{
 			message_die(GENERAL_ERROR, 'Could not select ids', '', __LINE__, __FILE__, $sql);
 		}
 
-		$num_post_list = $db->num_rows($result);
+		$num_post_list = DB()->num_rows($result);
 
 		if ($num_post_list == 0)
 		{
 			return;
 		}
 
-		while ($row = $db->sql_fetchrow($result))
+		while ($row = DB()->sql_fetchrow($result))
 		{
 			$post_id_array[] = intval($row[$p_id]);
 		}
-		$db->sql_freeresult($result);
+		DB()->sql_freeresult($result);
 	}
 
 	if (!is_array($post_id_array))
@@ -120,23 +120,23 @@ function delete_attachment($post_id_array = 0, $attach_id_array = 0, $page = 0, 
 			FROM ' . ATTACHMENTS_TABLE . " $whereclause
 			GROUP BY attach_id";
 
-		if ( !($result = $db->sql_query($sql)) )
+		if ( !($result = DB()->sql_query($sql)) )
 		{
 			message_die(GENERAL_ERROR, 'Could not select Attachment Ids', '', __LINE__, __FILE__, $sql);
 		}
 
-		$num_attach_list = $db->num_rows($result);
+		$num_attach_list = DB()->num_rows($result);
 
 		if ($num_attach_list == 0)
 		{
 			return;
 		}
 
-		while ($row = $db->sql_fetchrow($result))
+		while ($row = DB()->sql_fetchrow($result))
 		{
 			$attach_id_array[] = (int) $row['attach_id'];
 		}
-		$db->sql_freeresult($result);
+		DB()->sql_freeresult($result);
 	}
 
 	if (!is_array($attach_id_array))
@@ -173,12 +173,12 @@ function delete_attachment($post_id_array = 0, $attach_id_array = 0, $page = 0, 
 			$sql = 'SELECT privmsgs_id, privmsgs_type, privmsgs_to_userid, privmsgs_from_userid
 				FROM ' . PRIVMSGS_TABLE . '
 				WHERE privmsgs_id IN (' . implode(', ', $post_id_array) . ')';
-			if ( !($result = $db->sql_query($sql)) )
+			if ( !($result = DB()->sql_query($sql)) )
 			{
 				message_die(GENERAL_ERROR, 'Couldn\'t get Privmsgs Type', '', __LINE__, __FILE__, $sql);
 			}
 
-			while ($row = $db->sql_fetchrow($result))
+			while ($row = DB()->sql_fetchrow($result))
 			{
 				$privmsgs_type = $row['privmsgs_type'];
 
@@ -211,7 +211,7 @@ function delete_attachment($post_id_array = 0, $attach_id_array = 0, $page = 0, 
 					}
 				}
 			}
-			$db->sql_freeresult($result);
+			DB()->sql_freeresult($result);
 			$post_id_array = $post_id_array_2;
 		}
 	}
@@ -224,7 +224,7 @@ function delete_attachment($post_id_array = 0, $attach_id_array = 0, $page = 0, 
 		WHERE attach_id IN (' . implode(', ', $attach_id_array) . ")
 			AND $sql_id IN (" . implode(', ', $post_id_array) . ')';
 
-	if ( !($db->sql_query($sql)) )
+	if ( !(DB()->sql_query($sql)) )
 	{
 		message_die(GENERAL_ERROR, $lang['Error_deleted_attachments'], '', __LINE__, __FILE__, $sql);
 	}
@@ -235,7 +235,7 @@ function delete_attachment($post_id_array = 0, $attach_id_array = 0, $page = 0, 
 		$sql = 'DELETE FROM '. BT_TORRENTS_TABLE .'
 			WHERE attach_id IN('. implode(',', $attach_id_array) .')';
 
-		if (!$db->sql_query($sql))
+		if (!DB()->sql_query($sql))
 		{
 			message_die(GENERAL_ERROR, $lang['Error_deleted_attachments'], '', __LINE__, __FILE__, $sql);
 		}
@@ -243,7 +243,7 @@ function delete_attachment($post_id_array = 0, $attach_id_array = 0, $page = 0, 
 		$sql = 'DELETE FROM '. BT_TOR_DL_STAT_TABLE .'
 			WHERE attach_id IN('. implode(',', $attach_id_array) .')';
 
-		if (!$db->sql_query($sql))
+		if (!DB()->sql_query($sql))
 		{
 			message_die(GENERAL_ERROR, $lang['Error_deleted_attachments'], '', __LINE__, __FILE__, $sql);
 		}
@@ -256,26 +256,26 @@ function delete_attachment($post_id_array = 0, $attach_id_array = 0, $page = 0, 
 			FROM ' . ATTACHMENTS_TABLE . '
 				WHERE attach_id = ' . $attach_id_array[$i];
 
-		if ( !($result = $db->sql_query($sql)) )
+		if ( !($result = DB()->sql_query($sql)) )
 		{
 			message_die(GENERAL_ERROR, 'Could not select Attachment Ids', '', __LINE__, __FILE__, $sql);
 		}
 
-		if ($db->num_rows($result) == 0)
+		if (DB()->num_rows($result) == 0)
 		{
 			$sql = 'SELECT attach_id, physical_filename, thumbnail
 				FROM ' . ATTACHMENTS_DESC_TABLE . '
 				WHERE attach_id = ' . $attach_id_array[$i];
 
-			if ( !($result = $db->sql_query($sql)) )
+			if ( !($result = DB()->sql_query($sql)) )
 			{
 				message_die(GENERAL_ERROR, 'Couldn\'t query attach description table', '', __LINE__, __FILE__, $sql);
 			}
 
-			if ( $db->num_rows($result) != 0)
+			if ( DB()->num_rows($result) != 0)
 			{
-				$attachments = $db->sql_fetchrowset($result);
-				$num_attach = $db->num_rows($result);
+				$attachments = DB()->sql_fetchrowset($result);
+				$num_attach = DB()->num_rows($result);
 
 				//
 				// delete attachments
@@ -291,7 +291,7 @@ function delete_attachment($post_id_array = 0, $attach_id_array = 0, $page = 0, 
 					$sql = 'DELETE FROM ' . ATTACHMENTS_DESC_TABLE . '
 						WHERE attach_id = ' . $attachments[$j]['attach_id'];
 
-					if ( !($db->sql_query($sql)) )
+					if ( !(DB()->sql_query($sql)) )
 					{
 						message_die(GENERAL_ERROR, $lang['Error_deleted_attachments'], '', __LINE__, __FILE__, $sql);
 					}
@@ -311,17 +311,17 @@ function delete_attachment($post_id_array = 0, $attach_id_array = 0, $page = 0, 
 				FROM ' . ATTACHMENTS_TABLE . '
 				WHERE privmsgs_id = ' . $post_id_array[$i];
 
-			if ( !($result = $db->sql_query($sql)) )
+			if ( !($result = DB()->sql_query($sql)) )
 			{
 				message_die(GENERAL_ERROR, 'Couldn\'t query Attachments Table', '', __LINE__, __FILE__, $sql);
 			}
 
-			if ($db->num_rows($result) == 0)
+			if (DB()->num_rows($result) == 0)
 			{
 				$sql = 'UPDATE ' . PRIVMSGS_TABLE . ' SET privmsgs_attachment = 0
 					WHERE privmsgs_id = ' . $post_id_array[$i];
 
-				if ( !($result = $db->sql_query($sql)) )
+				if ( !($result = DB()->sql_query($sql)) )
 				{
 					message_die(GENERAL_ERROR, 'Couldn\'t update Private Message Attachment Switch', '', __LINE__, __FILE__, $sql);
 				}
@@ -335,15 +335,15 @@ function delete_attachment($post_id_array = 0, $attach_id_array = 0, $page = 0, 
 			WHERE post_id IN (' . implode(', ', $post_id_array) . ')
 			GROUP BY topic_id';
 
-		if ( !($result = $db->sql_query($sql)) )
+		if ( !($result = DB()->sql_query($sql)) )
 		{
 			message_die(GENERAL_ERROR, 'Couldn\'t select Topic ID', '', __LINE__, __FILE__, $sql);
 		}
 
-		while ($row = $db->sql_fetchrow($result))
+		while ($row = DB()->sql_fetchrow($result))
 		{
 			attachment_sync_topic($row['topic_id']);
 		}
-		$db->sql_freeresult($result);
+		DB()->sql_freeresult($result);
 	}
 }

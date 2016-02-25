@@ -8,7 +8,7 @@ $sql = "SELECT u.username, u.user_id, u.user_allow_viewonline, u.user_level, s.s
 	WHERE u.user_id = s.session_user_id
 		AND s.session_time >= ".( time() - 300 ) . "
 	ORDER BY u.username ASC, s.session_ip ASC";
-if( !($result = $db->sql_query($sql)) )
+if( !($result = DB()->sql_query($sql)) )
 {
 	message_die(GENERAL_ERROR, 'Could not obtain user/online information', '', __LINE__, __FILE__, $sql);
 }
@@ -19,7 +19,7 @@ $userlist_visible = array();
 $prev_user_id = 0;
 $prev_user_ip = $prev_session_ip = '';
 
-while( $row = $db->sql_fetchrow($result) )
+while( $row = DB()->sql_fetchrow($result) )
 {
 	// User is logged in and therefor not a guest
 	if ( $row['session_logged_in'] )
@@ -69,7 +69,7 @@ while( $row = $db->sql_fetchrow($result) )
 
 	$prev_session_ip = $row['session_ip'];
 }
-$db->sql_freeresult($result);
+DB()->sql_freeresult($result);
 
 if ( empty($online_userlist) )
 {
@@ -87,7 +87,7 @@ if ( $total_online_users > $ft_cfg['record_online_users'])
 	$sql = "UPDATE " . CONFIG_TABLE . "
 		SET config_value = '$total_online_users'
 		WHERE config_name = 'record_online_users'";
-	if ( !$db->sql_query($sql) )
+	if ( !DB()->sql_query($sql) )
 	{
 		message_die(GENERAL_ERROR, 'Could not update online user record (nr of users)', '', __LINE__, __FILE__, $sql);
 	}
@@ -95,7 +95,7 @@ if ( $total_online_users > $ft_cfg['record_online_users'])
 	$sql = "UPDATE " . CONFIG_TABLE . "
 		SET config_value = '" . $ft_cfg['record_online_date'] . "'
 		WHERE config_name = 'record_online_date'";
-	if ( !$db->sql_query($sql) )
+	if ( !DB()->sql_query($sql) )
 	{
 		message_die(GENERAL_ERROR, 'Could not update online user record (date)', '', __LINE__, __FILE__, $sql);
 	}

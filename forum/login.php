@@ -34,12 +34,12 @@ if( isset($HTTP_POST_VARS['login']) || isset($HTTP_GET_VARS['login']) || isset($
 		$sql = "SELECT user_id, username, user_password, user_active, user_level
 			FROM " . USERS_TABLE . "
 			WHERE username = '" . str_replace("\\'", "''", $username) . "'";
-		if ( !($result = $db->sql_query($sql)) )
+		if ( !($result = DB()->sql_query($sql)) )
 		{
 			message_die(GENERAL_ERROR, 'Error in obtaining userdata', '', __LINE__, __FILE__, $sql);
 		}
 
-		if( $row = $db->sql_fetchrow($result) )
+		if( $row = DB()->sql_fetchrow($result) )
 		{
 			if( $row['user_level'] != ADMIN && $ft_cfg['board_disable'] )
 			{

@@ -78,7 +78,7 @@ function topic_shadow_make_drop_box($prefix = 'mode')
 
 function ts_id_2_name($id, $mode = 'user')
 {
-	global $db;
+	
 
 	if ($id == '')
 	{
@@ -92,11 +92,11 @@ function ts_id_2_name($id, $mode = 'user')
 			$sql = 'SELECT username FROM ' . USERS_TABLE . "
 	   			WHERE user_id = $id";
 
-			if(!$result = $db->sql_query($sql))
+			if(!$result = DB()->sql_query($sql))
 			{
 				message_die(GENERAL_ERROR, 'Err', '', __LINE__, __FILE__, $sql);
 			}
-			$row = $db->sql_fetchrow($result);
+			$row = DB()->sql_fetchrow($result);
 			return $row['username'];
 			break;
 		}
@@ -106,11 +106,11 @@ function ts_id_2_name($id, $mode = 'user')
 	   		   WHERE t.topic_id = $id
 			   AND t.forum_id = f.forum_id";
 
-			if(!$result = $db->sql_query($sql))
+			if(!$result = DB()->sql_query($sql))
 			{
 				message_die(GENERAL_ERROR, 'Err', '', __LINE__, __FILE__, $sql);
 			}
-			$row = $db->sql_fetchrow($result);
+			$row = DB()->sql_fetchrow($result);
 			return $row['forum_name'];
 			break;
 		}
@@ -158,14 +158,14 @@ if ($delete_all_before_date)
 	   WHERE topic_status = ' . TOPIC_MOVED . "
 	   AND topic_time < $set_time";
 
-	if(!$db->sql_query($sql))
+	if(!DB()->sql_query($sql))
 	{
 		message_die(GENERAL_ERROR, $lang['Error_Topics_Table'], '', __LINE__, __FILE__, $sql);
 	}
 	else
 	{
 		$status_message .= sprintf($lang['Del_Before_Date'], date("M-d-Y", $set_time));
-		$status_message .= (SQL_LAYER == 'db2' || SQL_LAYER == 'mysql' || SQL_LAYER == 'mysql4') ? sprintf($lang['Affected_Rows'], $db->sql_affectedrows()) : '';
+		$status_message .= (SQL_LAYER == 'db2' || SQL_LAYER == 'mysql' || SQL_LAYER == 'mysql4') ? sprintf($lang['Affected_Rows'], DB()->sql_affectedrows()) : '';
 		sync('all_forums');
 		$status_message .= sprintf($lang['Resync_Ran_On'], $lang['All_Forums']);
 	}
@@ -184,16 +184,16 @@ else
 				$sql = 'SELECT f.forum_id, f.forum_name, t.topic_title FROM ' . TOPICS_TABLE . ' t, ' . FORUMS_TABLE . " f
 			   		   WHERE t.topic_id = $topic_id
 			   		   AND t.forum_id = f.forum_id";
-				if (!$result = $db->sql_query($sql))
+				if (!$result = DB()->sql_query($sql))
 				{
 					message_die(GENERAL_ERROR, $lang['Error_Topics_Table'], '', __LINE__, __FILE__, $sql);
 				}
-				$forum_data_row = $db->sql_fetchrow($result);
+				$forum_data_row = DB()->sql_fetchrow($result);
 
 				$sql = 'DELETE FROM ' . TOPICS_TABLE . '
 		   			   WHERE topic_status = ' . TOPIC_MOVED . "
 					   AND topic_id = $topic_id";
-				if(!$db->sql_query($sql))
+				if(!DB()->sql_query($sql))
 				{
 					message_die(GENERAL_ERROR, $lang['Error_Topics_Table'], '', __LINE__, __FILE__, $sql);
 				}
@@ -259,11 +259,11 @@ $template->assign_vars(array(
 $sql = 'SELECT COUNT(topic_status) as count FROM ' . TOPICS_TABLE . '
    WHERE topic_status = ' . TOPIC_MOVED;
 
-if(!$result = $db->sql_query($sql))
+if(!$result = DB()->sql_query($sql))
 {
 	message_die(GENERAL_ERROR, $lang['Error_Topics_Table'], '', __LINE__, __FILE__, $sql);
 }
-$row = $db->sql_fetchrow($result);
+$row = DB()->sql_fetchrow($result);
 if ($row['count'] <= 0)
 {
 	$template->assign_block_vars('emptyrow', array());
@@ -275,13 +275,13 @@ else
    WHERE topic_status = ' . TOPIC_MOVED . "
    ORDER BY $mode $order";
 
-	if(!$result = $db->sql_query($sql))
+	if(!$result = DB()->sql_query($sql))
 	{
 		message_die(GENERAL_ERROR, $lang['Error_Topics_Table'], '', __LINE__, __FILE__, $sql);
 	}
 
 	$i = 0;
-	while ($messages = $db->sql_fetchrow($result))
+	while ($messages = DB()->sql_fetchrow($result))
 	{
 		$template->assign_block_vars('topicrow', array(
 		'ROW_CLASS' => (!($i % 2)) ? $theme['td_class1'] : $theme['td_class2'],

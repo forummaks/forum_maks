@@ -42,12 +42,12 @@ JOIN ".USERS_TABLE." u on u.user_id=btt.poster_id
 JOIN ".TOPICS_TABLE." t on t.topic_id=btt.topic_id
 JOIN ".FORUMS_TABLE." f on f.forum_id=t.forum_id
 WHERE btt.attach_id=$attach_id";
-if ( !($result = $db->sql_query($sql)) )
+if ( !($result = DB()->sql_query($sql)) )
 {
 	message_die(GENERAL_ERROR, 'Could not . . .', '', __LINE__, __FILE__, $sql);
 }
-$tor_data = $db->sql_fetchrow($result);
-$db->sql_freeresult($result);
+$tor_data = DB()->sql_fetchrow($result);
+DB()->sql_freeresult($result);
 
 $forum_id = $tor_data['forum_id'];
 $is_auth = array();
@@ -66,7 +66,7 @@ if ( isset($HTTP_POST_VARS['i_edited']) && $userdata['user_id']==$tor_data['post
 
 	$sql = "update ".BT_TORRENTS_TABLE." set topic_check_status=1, topic_check_date=$current_time
 	WHERE topic_id={$tor_data['topic_id']}";
-	if ( !$db->sql_query($sql) )
+	if ( !DB()->sql_query($sql) )
 	{
 		message_die(GENERAL_ERROR, 'Could not ... ', '', __LINE__, __FILE__, $sql);
 	}
@@ -84,7 +84,7 @@ if ( isset($HTTP_POST_VARS['topic_check_status']) || isset($HTTP_GET_VARS['topic
 	if ($topic_check_status >0 && $tor_data['topic_check_status']!=$topic_check_status)
 	{
 		$sql="UPDATE ".BT_TORRENTS_TABLE." SET topic_check_status=$topic_check_status, topic_check_uid=$user_id, topic_check_date=$current_time WHERE topic_id={$tor_data['topic_id']}";
-		if ( !($result = $db->sql_query($sql)) )
+		if ( !($result = DB()->sql_query($sql)) )
 		{
 			message_die(GENERAL_ERROR, 'Could not . . .', '', __LINE__, __FILE__, $sql);
 		}
@@ -133,7 +133,7 @@ if ( isset($HTTP_POST_VARS['topic_check_status']) || isset($HTTP_GET_VARS['topic
 				{
 					$duble_tid = ( isset($HTTP_POST_VARS['duble_tid']) ) ? intval($HTTP_POST_VARS['duble_tid']) : intval($HTTP_GET_VARS['duble_tid']);
 					$sql="UPDATE ".BT_TORRENTS_TABLE." SET topic_check_duble_tid=$duble_tid WHERE topic_id={$tor_data['topic_id']}";
-					if ( !($result = $db->sql_query($sql)) )
+					if ( !($result = DB()->sql_query($sql)) )
 					{
 						message_die(GENERAL_ERROR, 'Could not . . .', '', __LINE__, __FILE__, $sql);
 					}
@@ -144,7 +144,7 @@ if ( isset($HTTP_POST_VARS['topic_check_status']) || isset($HTTP_GET_VARS['topic
 					WHERE topic_id = {$tor_data['topic_id']} 
 						AND forum_id = $forum_id
 						AND topic_moved_id = 0";
-				if ( !($result = $db->sql_query($sql)) )
+				if ( !($result = DB()->sql_query($sql)) )
 				{
 					message_die(GENERAL_ERROR, 'Could not update topics table', '', __LINE__, __FILE__, $sql);
 				}

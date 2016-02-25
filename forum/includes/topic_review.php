@@ -4,7 +4,7 @@ if (!defined('FT_ROOT')) die(basename(__FILE__));
 
 function topic_review($topic_id, $is_inline_review)
 {
-	global $db, $ft_cfg, $template, $lang, $images, $theme;
+	global  $ft_cfg, $template, $lang, $images, $theme;
 	global $userdata, $user_ip;
 	global $orig_word, $replacement_word;
 	global $starttime;
@@ -26,16 +26,16 @@ function topic_review($topic_id, $is_inline_review)
 		$tmp = '';
 		attach_setup_viewtopic_auth($tmp, $sql);
 
-		if ( !($result = $db->sql_query($sql)) )
+		if ( !($result = DB()->sql_query($sql)) )
 		{
 			message_die(GENERAL_ERROR, 'Could not obtain topic information', '', __LINE__, __FILE__, $sql);
 		}
 
-		if ( !($forum_row = $db->sql_fetchrow($result)) )
+		if ( !($forum_row = DB()->sql_fetchrow($result)) )
 		{
 			message_die(GENERAL_MESSAGE, 'Topic_post_not_exist');
 		}
-		$db->sql_freeresult($result);
+		DB()->sql_freeresult($result);
 
 		$forum_id = $forum_row['forum_id'];
 		$topic_title = $forum_row['topic_title'];
@@ -94,7 +94,7 @@ function topic_review($topic_id, $is_inline_review)
 			AND p.post_id = pt.post_id
 		ORDER BY p.post_time DESC
 		LIMIT " . $ft_cfg['posts_per_page'];
-	if ( !($result = $db->sql_query($sql)) )
+	if ( !($result = DB()->sql_query($sql)) )
 	{
 		message_die(GENERAL_ERROR, 'Could not obtain post/user information', '', __LINE__, __FILE__, $sql);
 	}
@@ -105,7 +105,7 @@ function topic_review($topic_id, $is_inline_review)
 	// Okay, let's do the loop, yeah come on baby let's do the loop
 	// and it goes like this ...
 	//
-	if ( $row = $db->sql_fetchrow($result) )
+	if ( $row = DB()->sql_fetchrow($result) )
 	{
 		$mini_post_img = $images['icon_minipost'];
 		$mini_post_alt = $lang['Post'];
@@ -189,13 +189,13 @@ function topic_review($topic_id, $is_inline_review)
 
 			$i++;
 		}
-		while ( $row = $db->sql_fetchrow($result) );
+		while ( $row = DB()->sql_fetchrow($result) );
 	}
 	else
 	{
 		message_die(GENERAL_MESSAGE, 'Topic_post_not_exist', '', __LINE__, __FILE__, $sql);
 	}
-	$db->sql_freeresult($result);
+	DB()->sql_freeresult($result);
 
 	$template->assign_vars(array(
 		'L_AUTHOR' => $lang['Author'],

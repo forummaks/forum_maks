@@ -54,17 +54,17 @@ if ( $mode == 'edit' || $mode == 'save' && ( isset($HTTP_POST_VARS['username']) 
 				WHERE ug.user_id = $user_id
 					AND g.group_id = ug.group_id
 					AND g.group_single_user = 1";
-			if( !($result = $db->sql_query($sql)) )
+			if( !($result = DB()->sql_query($sql)) )
 			{
 				message_die(GENERAL_ERROR, 'Could not obtain group information for this user', '', __LINE__, __FILE__, $sql);
 			}
 
-			$row = $db->sql_fetchrow($result);
+			$row = DB()->sql_fetchrow($result);
 
 			$sql = "UPDATE " . POSTS_TABLE . "
 				SET poster_id = " . DELETED . ", post_username = '" . str_replace("\\'", "''", addslashes($this_userdata['username'])) . "'
 				WHERE poster_id = $user_id";
-			if( !$db->sql_query($sql) )
+			if( !DB()->sql_query($sql) )
 			{
 				message_die(GENERAL_ERROR, 'Could not update posts for this user', '', __LINE__, __FILE__, $sql);
 			}
@@ -72,7 +72,7 @@ if ( $mode == 'edit' || $mode == 'save' && ( isset($HTTP_POST_VARS['username']) 
 			$sql = "UPDATE " . TOPICS_TABLE . "
 				SET topic_poster = " . DELETED . "
 				WHERE topic_poster = $user_id";
-			if( !$db->sql_query($sql) )
+			if( !DB()->sql_query($sql) )
 			{
 				message_die(GENERAL_ERROR, 'Could not update topics for this user', '', __LINE__, __FILE__, $sql);
 			}
@@ -80,7 +80,7 @@ if ( $mode == 'edit' || $mode == 'save' && ( isset($HTTP_POST_VARS['username']) 
 			$sql = "UPDATE " . VOTE_USERS_TABLE . "
 				SET vote_user_id = " . DELETED . "
 				WHERE vote_user_id = $user_id";
-			if( !$db->sql_query($sql) )
+			if( !DB()->sql_query($sql) )
 			{
 				message_die(GENERAL_ERROR, 'Could not update votes for this user', '', __LINE__, __FILE__, $sql);
 			}
@@ -88,12 +88,12 @@ if ( $mode == 'edit' || $mode == 'save' && ( isset($HTTP_POST_VARS['username']) 
 			$sql = "SELECT group_id
 				FROM " . GROUPS_TABLE . "
 				WHERE group_moderator = $user_id";
-			if( !($result = $db->sql_query($sql)) )
+			if( !($result = DB()->sql_query($sql)) )
 			{
 				message_die(GENERAL_ERROR, 'Could not select groups where user was moderator', '', __LINE__, __FILE__, $sql);
 			}
 
-			while ( $row_group = $db->sql_fetchrow($result) )
+			while ( $row_group = DB()->sql_fetchrow($result) )
 			{
 				$group_moderator[] = $row_group['group_id'];
 			}
@@ -105,7 +105,7 @@ if ( $mode == 'edit' || $mode == 'save' && ( isset($HTTP_POST_VARS['username']) 
 				$sql = "UPDATE " . GROUPS_TABLE . "
 					SET group_moderator = " . $userdata['user_id'] . "
 					WHERE group_moderator IN ($update_moderator_id)";
-				if( !$db->sql_query($sql) )
+				if( !DB()->sql_query($sql) )
 				{
 					message_die(GENERAL_ERROR, 'Could not update group moderators', '', __LINE__, __FILE__, $sql);
 				}
@@ -113,61 +113,61 @@ if ( $mode == 'edit' || $mode == 'save' && ( isset($HTTP_POST_VARS['username']) 
 
 			$sql = "DELETE FROM " . USERS_TABLE . "
 				WHERE user_id = $user_id";
-			if( !$db->sql_query($sql) )
+			if( !DB()->sql_query($sql) )
 			{
 				message_die(GENERAL_ERROR, 'Could not delete user', '', __LINE__, __FILE__, $sql);
 			}
 
 			$sql = "DELETE FROM " . USER_GROUP_TABLE . "
 				WHERE user_id = $user_id";
-			if( !$db->sql_query($sql) )
+			if( !DB()->sql_query($sql) )
 			{
 				message_die(GENERAL_ERROR, 'Could not delete user from user_group table', '', __LINE__, __FILE__, $sql);
 			}
 
 			$sql = "DELETE FROM " . GROUPS_TABLE . "
 				WHERE group_id = " . $row['group_id'];
-			if( !$db->sql_query($sql) )
+			if( !DB()->sql_query($sql) )
 			{
 				message_die(GENERAL_ERROR, 'Could not delete group for this user', '', __LINE__, __FILE__, $sql);
 			}
 
 			$sql = "DELETE FROM " . AUTH_ACCESS_TABLE . "
 				WHERE group_id = " . $row['group_id'];
-			if( !$db->sql_query($sql) )
+			if( !DB()->sql_query($sql) )
 			{
 				message_die(GENERAL_ERROR, 'Could not delete group for this user', '', __LINE__, __FILE__, $sql);
 			}
 
 			$sql = "DELETE FROM " . TOPICS_WATCH_TABLE . "
 				WHERE user_id = $user_id";
-			if ( !$db->sql_query($sql) )
+			if ( !DB()->sql_query($sql) )
 			{
 				message_die(GENERAL_ERROR, 'Could not delete user from topic watch table', '', __LINE__, __FILE__, $sql);
 			}
 			//bt
 			$sql = 'DELETE FROM '. BT_TOR_DL_STAT_TABLE ."
 				WHERE user_id = $user_id";
-			if (!$db->sql_query($sql))
+			if (!DB()->sql_query($sql))
 			{
 				message_die(GENERAL_ERROR, "Could not delete user's torents stats", '', __LINE__, __FILE__, $sql);
 			}
 			$sql = 'UPDATE '. BT_TORRENTS_TABLE .' SET
 					poster_id = '. DELETED ."
 				WHERE poster_id = $user_id";
-			if (!$db->sql_query($sql))
+			if (!DB()->sql_query($sql))
 			{
 				message_die(GENERAL_ERROR, "Could not update torrents table", '', __LINE__, __FILE__, $sql);
 			}
 			$sql = 'DELETE FROM '. BT_USERS_TABLE ."
 				WHERE user_id = $user_id";
-			if (!$db->sql_query($sql))
+			if (!DB()->sql_query($sql))
 			{
 				message_die(GENERAL_ERROR, "Could not delete user's passkey", '', __LINE__, __FILE__, $sql);
 			}
 			$sql = 'DELETE FROM '. BT_USR_DL_STAT_TABLE ."
 				WHERE user_id = $user_id";
-			if (!$db->sql_query($sql))
+			if (!DB()->sql_query($sql))
 			{
 				message_die(GENERAL_ERROR, "Could not delete user's downloads stats", '', __LINE__, __FILE__, $sql);
 			}
@@ -175,7 +175,7 @@ if ( $mode == 'edit' || $mode == 'save' && ( isset($HTTP_POST_VARS['username']) 
 
 			$sql = "DELETE FROM " . BANLIST_TABLE . "
 				WHERE ban_userid = $user_id";
-			if ( !$db->sql_query($sql) )
+			if ( !DB()->sql_query($sql) )
 			{
 				message_die(GENERAL_ERROR, 'Could not delete user from banlist table', '', __LINE__, __FILE__, $sql);
 			}
@@ -194,13 +194,13 @@ if ( $mode == 'edit' || $mode == 'save' && ( isset($HTTP_POST_VARS['username']) 
 				)';
 			// DelUsrKeepPM end
 
-			if ( !($result = $db->sql_query($sql)) )
+			if ( !($result = DB()->sql_query($sql)) )
 			{
 				message_die(GENERAL_ERROR, 'Could not select all users private messages', '', __LINE__, __FILE__, $sql);
 			}
 
 			// This little bit of code directly from the private messaging section.
-			while ( $row_privmsgs = $db->sql_fetchrow($result) )
+			while ( $row_privmsgs = DB()->sql_fetchrow($result) )
 			{
 				$mark_list[] = $row_privmsgs['privmsgs_id'];
 			}
@@ -214,12 +214,12 @@ if ( $mode == 'edit' || $mode == 'save' && ( isset($HTTP_POST_VARS['username']) 
 				$delete_sql = "DELETE FROM " . PRIVMSGS_TABLE . "
 					WHERE privmsgs_id IN ($delete_sql_id)";
 
-				if ( !$db->sql_query($delete_sql) )
+				if ( !DB()->sql_query($delete_sql) )
 				{
 					message_die(GENERAL_ERROR, 'Could not delete private message info', '', __LINE__, __FILE__, $delete_sql);
 				}
 
-				if ( !$db->sql_query($delete_text_sql) )
+				if ( !DB()->sql_query($delete_text_sql) )
 				{
 					message_die(GENERAL_ERROR, 'Could not delete private message text', '', __LINE__, __FILE__, $delete_text_sql);
 				}
@@ -229,14 +229,14 @@ if ( $mode == 'edit' || $mode == 'save' && ( isset($HTTP_POST_VARS['username']) 
 			$sql = "UPDATE " . PRIVMSGS_TABLE . "
 				SET privmsgs_from_userid = " . DELETED . "
 				WHERE privmsgs_from_userid = $user_id";
-			if ( !$db->sql_query($sql) )
+			if ( !DB()->sql_query($sql) )
 			{
 				message_die(GENERAL_ERROR, 'Could not update private message info', '', __LINE__, __FILE__, $sql);
 			}
 			$sql = "UPDATE " . PRIVMSGS_TABLE . "
 				SET privmsgs_to_userid = " . DELETED . "
 				WHERE privmsgs_to_userid = $user_id";
-			if ( !$db->sql_query($sql) )
+			if ( !DB()->sql_query($sql) )
 			{
 				message_die(GENERAL_ERROR, 'Could not update private message info', '', __LINE__, __FILE__, $sql);
 			}
@@ -682,14 +682,14 @@ if ( $mode == 'edit' || $mode == 'save' && ( isset($HTTP_POST_VARS['username']) 
 				SET " . $username_sql . $passwd_sql . "user_email = '" . str_replace("\'", "''", $email) . "', user_icq = '" . str_replace("\'", "''", $icq) . "', user_website = '" . str_replace("\'", "''", $website) . "', user_occ = '" . str_replace("\'", "''", $occupation) . "', user_from = '" . str_replace("\'", "''", $location) . "', user_interests = '" . str_replace("\'", "''", $interests) . "', user_sig = '" . str_replace("\'", "''", $signature) . "', user_viewemail = $viewemail, user_attachsig = $attachsig, user_sig_bbcode_uid = '$signature_bbcode_uid', user_allowsmile = $allowsmilies, user_allowhtml = $allowhtml, user_allowavatar = $user_allowavatar, user_allowbbcode = $allowbbcode, user_allow_viewonline = $allowviewonline, user_notify = $notifyreply, user_allow_pm = $user_allowpm, user_notify_pm = $notifypm, user_popup_pm = $popuppm, user_lang = '" . str_replace("\'", "''", $user_lang) . "', user_style = $user_style, user_timezone = $user_timezone, user_dateformat = '" . str_replace("\'", "''", $user_dateformat) . "', user_active = $user_status, user_rank = $user_rank" . $avatar_sql . "
 				WHERE user_id = $user_id";
 
-			if( $result = $db->sql_query($sql) )
+			if( $result = DB()->sql_query($sql) )
 			{
 				if( isset($rename_user) )
 				{
 					$sql = "UPDATE " . GROUPS_TABLE . "
 						SET group_name = '".str_replace("\'", "''", $rename_user)."'
 						WHERE group_name = '".str_replace("'", "''", $this_userdata['username'] )."'";
-					if( !$result = $db->sql_query($sql) )
+					if( !$result = DB()->sql_query($sql) )
 					{
 						message_die(GENERAL_ERROR, 'Could not rename users group', '', __LINE__, __FILE__, $sql);
 					}
@@ -701,7 +701,7 @@ if ( $mode == 'edit' || $mode == 'save' && ( isset($HTTP_POST_VARS['username']) 
 					$sql = "DELETE FROM " . SESSIONS_TABLE . "
 						WHERE session_user_id = " . $user_id;
 
-					if ( !$db->sql_query($sql) )
+					if ( !DB()->sql_query($sql) )
 					{
 						message_die(GENERAL_ERROR, 'Error removing user session', '', __LINE__, __FILE__, $sql);
 					}
@@ -978,13 +978,13 @@ if ( $mode == 'edit' || $mode == 'save' && ( isset($HTTP_POST_VARS['username']) 
 		$sql = "SELECT * FROM " . RANKS_TABLE . "
 			WHERE rank_special = 1
 			ORDER BY rank_title";
-		if ( !($result = $db->sql_query($sql)) )
+		if ( !($result = DB()->sql_query($sql)) )
 		{
 			message_die(GENERAL_ERROR, 'Could not obtain ranks data', '', __LINE__, __FILE__, $sql);
 		}
 
 		$rank_select_box = '<option value="0">' . $lang['No_assigned_rank'] . '</option>';
-		while( $row = $db->sql_fetchrow($result) )
+		while( $row = DB()->sql_fetchrow($result) )
 		{
 			$rank = $row['rank_title'];
 			$rank_id = $row['rank_id'];

@@ -10,22 +10,22 @@ require_once(FT_ROOT . 'includes/functions_admin.php');
 
 function move($forum_id, $move_fid, $mode, $waits_days=0, $topic_id=0)
 {
-	global $db, $lang, $ft_cfg;
+	global  $lang, $ft_cfg;
 
 	// Before moving, lets try to clean up the invalid topic entries
 	$sql = 'SELECT topic_id FROM ' . TOPICS_TABLE . '
 		WHERE topic_last_post_id = 0';
-	if ( !($result = $db->sql_query($sql)) )
+	if ( !($result = DB()->sql_query($sql)) )
 	{
 		message_die(GENERAL_ERROR, 'Could not obtain lists of topics to sync', '', __LINE__, __FILE__, $sql);
 	}
 
-	while( $row = $db->sql_fetchrow($result) )
+	while( $row = DB()->sql_fetchrow($result) )
 	{
 		sync('topic', $row['topic_id']);
 	}
 
-	$db->sql_freeresult($result);
+	DB()->sql_freeresult($result);
 
 	switch ($mode)
 	{
@@ -42,7 +42,7 @@ function move($forum_id, $move_fid, $mode, $waits_days=0, $topic_id=0)
 		JOIN ".FORUMS_TABLE." f on f.forum_id=t.forum_id";
 	$sql.= $sql_where;
 
-	if ( !($result = $db->sql_query($sql)) )
+	if ( !($result = DB()->sql_query($sql)) )
 	{
 		message_die(GENERAL_ERROR, 'Could not obtain lists of topics to move', '', __LINE__, __FILE__, $sql);
 	}
@@ -50,14 +50,14 @@ function move($forum_id, $move_fid, $mode, $waits_days=0, $topic_id=0)
 	$sql_topics = '';
 	$i=0;
 	$send_pm_data=array();
-	while( $row = $db->sql_fetchrow($result) )
+	while( $row = DB()->sql_fetchrow($result) )
 	{
 		$sql_topics .= ( ( $sql_topics != '' ) ? ', ' : '' ) . $row['topic_id'];
 		$send_pm_data[$i]=$row;
 		$i++;
 
 	}
-	$db->sql_freeresult($result);
+	DB()->sql_freeresult($result);
 		
 	if( $sql_topics != '')
 	{
@@ -65,36 +65,36 @@ function move($forum_id, $move_fid, $mode, $waits_days=0, $topic_id=0)
 			FROM " . POSTS_TABLE . " 
 			WHERE forum_id = $forum_id 
 				AND topic_id IN ($sql_topics)";
-		if ( !($result = $db->sql_query($sql)) )
+		if ( !($result = DB()->sql_query($sql)) )
 		{
 			message_die(GENERAL_ERROR, 'Could not obtain list of posts to omove', '', __LINE__, __FILE__, $sql);
 		}
 
 		$sql_post = '';
-		while ( $row = $db->sql_fetchrow($result) )
+		while ( $row = DB()->sql_fetchrow($result) )
 		{
 			$sql_post .= ( ( $sql_post != '' ) ? ', ' : '' ) . $row['post_id'];
 		}
-		$db->sql_freeresult($result);
+		DB()->sql_freeresult($result);
 
 		if ( $sql_post != '' )
 		{
 
 			$sql = "update ".TOPICS_TABLE." set forum_id=$move_fid
 				WHERE topic_id IN ($sql_topics)";
-			if ( !$db->sql_query($sql) )
+			if ( !DB()->sql_query($sql) )
 			{
 				message_die(GENERAL_ERROR, 'Could not move topics during move', '', __LINE__, __FILE__, $sql);
 			}
-			$move_topics = $db->sql_affectedrows();
+			$move_topics = DB()->sql_affectedrows();
 
 			$sql = "update ".POSTS_TABLE." set forum_id=$move_fid
 				WHERE post_id IN ($sql_post)";
-			if ( !$db->sql_query($sql) )
+			if ( !DB()->sql_query($sql) )
 			{
 				message_die(GENERAL_ERROR, 'Could not move post during move', '', __LINE__, __FILE__, $sql);
 			}
-			$move_posts = $db->sql_affectedrows();
+			$move_posts = DB()->sql_affectedrows();
 			
 			if (in_array($mode, array(2, 3, 4)))
 			{			
@@ -103,7 +103,7 @@ function move($forum_id, $move_fid, $mode, $waits_days=0, $topic_id=0)
 					case 2:
 						$sql = "update ".BT_TORRENTS_TABLE." set topic_check_first_fid=0
 							WHERE topic_id IN ($sql_topics)";
-						if ( !$db->sql_query($sql) )
+						if ( !DB()->sql_query($sql) )
 						{
 							message_die(GENERAL_ERROR, 'Could not ... ', '', __LINE__, __FILE__, $sql);
 						}
@@ -112,7 +112,7 @@ function move($forum_id, $move_fid, $mode, $waits_days=0, $topic_id=0)
 					case 4:
 						$sql = "update ".BT_TORRENTS_TABLE." set topic_check_status=4, topic_check_first_fid=$forum_id
 							WHERE topic_id IN ($sql_topics)";
-						if ( !$db->sql_query($sql) )
+						if ( !DB()->sql_query($sql) )
 						{
 							message_die(GENERAL_ERROR, 'Could not ... ', '', __LINE__, __FILE__, $sql);
 						}
@@ -154,12 +154,12 @@ function move($forum_id, $move_fid, $mode, $waits_days=0, $topic_id=0)
 
 function topics_move($forum_id, $mode, $topic_id=0, $first_fid=0)
 {
-	global $db, $lang;
+	global  $lang;
 
 		$sql = "SELECT *
 			FROM ".TOPICS_MOVE_TABLE."
 			WHERE forum_id = $forum_id";
-		if ( !($result = $db->sql_query($sql)) )
+		if ( !($result = DB()->sql_query($sql)) )
 		{
 			message_die(GENERAL_ERROR, 'Could not read move table', '', __LINE__, __FILE__, $sql);
 		}
@@ -168,7 +168,7 @@ function topics_move($forum_id, $mode, $topic_id=0, $first_fid=0)
 	{
 		case 3:
 	
-		if ( $row = $db->sql_fetchrow($result) )
+		if ( $row = DB()->sql_fetchrow($result) )
 		{
 			if ( $row['check_freq'] && $row['waits_days'] )
 			{
@@ -186,7 +186,7 @@ function topics_move($forum_id, $mode, $topic_id=0, $first_fid=0)
 				$sql = "UPDATE " . FORUMS_TABLE . " 
 					SET move_next = $move_next 
 					WHERE forum_id = $forum_id";
-				if ( !$db->sql_query($sql) )
+				if ( !DB()->sql_query($sql) )
 				{
 					message_die(GENERAL_ERROR, 'Could not update forum table', '', __LINE__, __FILE__, $sql);
 				}
@@ -196,7 +196,7 @@ function topics_move($forum_id, $mode, $topic_id=0, $first_fid=0)
 		break;
 		case 4:
 			$move_fid=0;
-			if ( $row = $db->sql_fetchrow($result) )
+			if ( $row = DB()->sql_fetchrow($result) )
 			{
 				$move_fid=$row['move_fid'];	
 			}
@@ -207,7 +207,7 @@ function topics_move($forum_id, $mode, $topic_id=0, $first_fid=0)
 		break;
 		case 5:
 	
-		if ( $row = $db->sql_fetchrow($result) )
+		if ( $row = DB()->sql_fetchrow($result) )
 		{
 			if ( $row['recycle_check_freq'] && $row['recycle_waits_days'] )
 			{
@@ -225,7 +225,7 @@ function topics_move($forum_id, $mode, $topic_id=0, $first_fid=0)
 				$sql = "UPDATE " . FORUMS_TABLE . " 
 					SET recycle_move_next = $recycle_move_next 
 					WHERE forum_id = $forum_id";
-				if ( !$db->sql_query($sql) )
+				if ( !DB()->sql_query($sql) )
 				{
 					message_die(GENERAL_ERROR, 'Could not update forum table', '', __LINE__, __FILE__, $sql);
 				}

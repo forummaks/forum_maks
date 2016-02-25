@@ -5,7 +5,7 @@ if (!defined('FT_ROOT')) die(basename(__FILE__));
 // $topics = topic_id[,topic_id,topic_id ...]
 function get_dl_topics ($topics, $real_topics_dl_status)
 {
-	global $db;
+	
 
 	$dl_topics = array();
 
@@ -33,12 +33,12 @@ function get_dl_topics ($topics, $real_topics_dl_status)
 			AND user_status IN($dl_status)
 		ORDER BY topic_id";
 
-	if (!$result = $db->sql_query($sql))
+	if (!$result = DB()->sql_query($sql))
 	{
 		message_die(GENERAL_ERROR, 'Could not obtain DL topics data', '', __LINE__, __FILE__, $sql);
 	}
 
-	if ($rowset = @$db->sql_fetchrowset($result))
+	if ($rowset = @DB()->sql_fetchrowset($result))
 	{
 		for ($i=0, $cnt=count($rowset); $i < $cnt; $i++)
 		{
@@ -57,7 +57,7 @@ function get_dl_topics ($topics, $real_topics_dl_status)
 // $topics = topic_id[,topic_id,topic_id ...]
 function clear_dl_list ($topics)
 {
-	global $db;
+	
 
 	if (!$topics)
 	{
@@ -67,7 +67,7 @@ function clear_dl_list ($topics)
 	$sql = 'DELETE FROM '. BT_USR_DL_STAT_TABLE ."
 		WHERE topic_id IN($topics)";
 
-	if (!$db->sql_query($sql))
+	if (!DB()->sql_query($sql))
 	{
 		message_die(GENERAL_ERROR, 'Could not delete DL-List data for this topic', '', __LINE__, __FILE__, $sql);
 	}
@@ -81,7 +81,7 @@ function update_topics_dl_status ($topics, $event)
 	// disabled in version 0.3.5
 	return;
 
-	global $db;
+	
 
 	if (!$topics)
 	{
@@ -96,7 +96,7 @@ function update_topics_dl_status ($topics, $event)
 				topic_dl_status = '. TOPIC_DL_ST_DOWN ."
 			WHERE topic_id IN($topics)";
 
-		if (!$db->sql_query($sql))
+		if (!DB()->sql_query($sql))
 		{
 			message_die(GENERAL_ERROR, 'Could not update topics table', '', __LINE__, __FILE__, $sql);
 		}
@@ -110,7 +110,7 @@ function update_topics_dl_status ($topics, $event)
 				topic_dl_status = '. TOPIC_DL_ST_NONE ."
 			WHERE topic_id IN($topics)";
 
-		if (!$db->sql_query($sql))
+		if (!DB()->sql_query($sql))
 		{
 			message_die(GENERAL_ERROR, 'Could not update topics table', '', __LINE__, __FILE__, $sql);
 		}
@@ -131,7 +131,7 @@ function update_topics_dl_status ($topics, $event)
 				WHERE topic_id IN($topics)
 					$exclude_topics_active";
 
-			if (!$db->sql_query($sql))
+			if (!DB()->sql_query($sql))
 			{
 				message_die(GENERAL_ERROR, 'Could not update topics table', '', __LINE__, __FILE__, $sql);
 			}
@@ -148,7 +148,7 @@ function update_topics_dl_status ($topics, $event)
 					topic_dl_status = '. TOPIC_DL_ST_DOWN ."
 				WHERE topic_id IN($topics_active)";
 
-			if (!$db->sql_query($sql))
+			if (!DB()->sql_query($sql))
 			{
 				message_die(GENERAL_ERROR, 'Could not update topics table', '', __LINE__, __FILE__, $sql);
 			}
@@ -168,7 +168,7 @@ function update_topics_dl_status ($topics, $event)
 				WHERE topic_id IN($topics_complete)
 					$exclude_topics_active";
 
-			if (!$db->sql_query($sql))
+			if (!DB()->sql_query($sql))
 			{
 				message_die(GENERAL_ERROR, 'Could not update topics table', '', __LINE__, __FILE__, $sql);
 			}
@@ -187,7 +187,7 @@ function update_topics_dl_status ($topics, $event)
 				$exclude_topics_active
 				$exclude_topics_complete";
 
-		if (!$db->sql_query($sql))
+		if (!DB()->sql_query($sql))
 		{
 			message_die(GENERAL_ERROR, 'Could not update topics table', '', __LINE__, __FILE__, $sql);
 		}
@@ -202,7 +202,7 @@ function synch_dl_topics ($forum_id, $synch_type)
 	// disabled in version 0.3.5
 	return;
 
-	global $db, $ft_cfg;
+	global  $ft_cfg;
 
 	if (!$forum_id)
 	{
@@ -227,12 +227,12 @@ function synch_dl_topics ($forum_id, $synch_type)
 			ORDER BY t.topic_id DESC
 			LIMIT $dl_topics_limit";
 
-		if (!$result = $db->sql_query($sql))
+		if (!$result = DB()->sql_query($sql))
 		{
 			message_die(GENERAL_ERROR, 'Could not synchronize topics DL-status', '', __LINE__, __FILE__, $sql);
 		}
 
-		if ($rowset = @$db->sql_fetchrowset($result))
+		if ($rowset = @DB()->sql_fetchrowset($result))
 		{
 			for ($i=0; $i < count($rowset); $i++)
 			{
@@ -246,7 +246,7 @@ function synch_dl_topics ($forum_id, $synch_type)
 						AND user_status IN(". DL_STATUS_WILL .','. DL_STATUS_DOWN .")
 						AND update_time < $dl_expire_time";
 
-				if (!$db->sql_query($sql))
+				if (!DB()->sql_query($sql))
 				{
 					message_die(GENERAL_ERROR, "Could not delete expired users from DL-List", '', __LINE__, __FILE__, $sql);
 				}
@@ -260,7 +260,7 @@ function synch_dl_topics ($forum_id, $synch_type)
 			last_dl_topics_synch = '. time() ."
 		WHERE forum_id = $forum_id";
 
-	if (!$db->sql_query($sql))
+	if (!DB()->sql_query($sql))
 	{
 		message_die(GENERAL_ERROR, "Could not update last_dl_topics_synch in forums table", '', __LINE__, __FILE__, $sql);
 	}

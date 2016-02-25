@@ -9,13 +9,13 @@ require(FT_ROOT . 'includes/functions_selects.php');
 
 $sql = "SELECT *
 	FROM " . CONFIG_TABLE;
-if(!$result = $db->sql_query($sql))
+if(!$result = DB()->sql_query($sql))
 {
 	message_die(CRITICAL_ERROR, "Could not query config information in admin_board", "", __LINE__, __FILE__, $sql);
 }
 else
 {
-	while( $row = $db->sql_fetchrow($result) )
+	while( $row = DB()->sql_fetchrow($result) )
 	{
 		$config_name = $row['config_name'];
 		$config_value = $row['config_value'];
@@ -33,7 +33,7 @@ else
 			$sql = "UPDATE " . CONFIG_TABLE . " SET
 				config_value = '" . str_replace("\'", "''", $new[$config_name]) . "'
 				WHERE config_name = '$config_name'";
-			if( !$db->sql_query($sql) )
+			if( !DB()->sql_query($sql) )
 			{
 				message_die(GENERAL_ERROR, "Failed to update general configuration for $config_name", "", __LINE__, __FILE__, $sql);
 			}

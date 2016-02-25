@@ -24,13 +24,13 @@ function size_select($select_name, $size_compare)
 
 function quota_limit_select($select_name, $default_quota = 0)
 {
-	global $db, $lang;
+	global  $lang;
 
 	$sql = 'SELECT quota_limit_id, quota_desc
 		FROM ' . QUOTA_LIMITS_TABLE . '
 		ORDER BY quota_limit ASC';
 
-	if ( !($result = $db->sql_query($sql)) )
+	if ( !($result = DB()->sql_query($sql)) )
 	{
 		message_die(GENERAL_ERROR, "Couldn't query Quota Limits Table", "", __LINE__, __FILE__, $sql);
 	}
@@ -39,11 +39,11 @@ function quota_limit_select($select_name, $default_quota = 0)
 	$quota_name[0]['quota_limit_id'] = 0;
 	$quota_name[0]['quota_desc'] = $lang['Not_assigned'];
 
-	while ($row = $db->sql_fetchrow($result))
+	while ($row = DB()->sql_fetchrow($result))
 	{
 		$quota_name[] = $row;
 	}
-	$db->sql_freeresult($result);
+	DB()->sql_freeresult($result);
 
 	for ($i = 0; $i < sizeof($quota_name); $i++)
 	{
@@ -57,13 +57,13 @@ function quota_limit_select($select_name, $default_quota = 0)
 
 function default_quota_limit_select($select_name, $default_quota = 0)
 {
-	global $db, $lang;
+	global  $lang;
 
 	$sql = 'SELECT quota_limit_id, quota_desc
 		FROM ' . QUOTA_LIMITS_TABLE . '
 		ORDER BY quota_limit ASC';
 
-	if ( !($result = $db->sql_query($sql)) )
+	if ( !($result = DB()->sql_query($sql)) )
 	{
 		message_die(GENERAL_ERROR, "Couldn't query Quota Limits Table", "", __LINE__, __FILE__, $sql);
 	}
@@ -72,11 +72,11 @@ function default_quota_limit_select($select_name, $default_quota = 0)
 	$quota_name[0]['quota_limit_id'] = 0;
 	$quota_name[0]['quota_desc'] = $lang['No_quota_limit'];
 
-	while ($row = $db->sql_fetchrow($result))
+	while ($row = DB()->sql_fetchrow($result))
 	{
 		$quota_name[] = $row;
 	}
-	$db->sql_freeresult($result);
+	DB()->sql_freeresult($result);
 
 	for ($i = 0; $i < sizeof($quota_name); $i++)
 	{

@@ -37,19 +37,19 @@ function include_attach_lang()
 
 function get_config()
 {
-	global $db, $ft_cfg;
+	global  $ft_cfg;
 
 	$attach_config = array();
 
 	$sql = 'SELECT *
 		FROM ' . ATTACH_CONFIG_TABLE;
 
-	if ( !($result = $db->sql_query($sql)) )
+	if ( !($result = DB()->sql_query($sql)) )
 	{
 		message_die(GENERAL_ERROR, 'Could not query attachment information', '', __LINE__, __FILE__, $sql);
 	}
 
-	while ($row = $db->sql_fetchrow($result))
+	while ($row = DB()->sql_fetchrow($result))
 	{
 		$attach_config[$row['config_name']] = trim($row['config_value']);
 	}

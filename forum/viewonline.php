@@ -41,8 +41,8 @@ $template->assign_vars(array(
 //
 $sql = "SELECT forum_name, forum_id
 	FROM " . FORUMS_TABLE;
-if ($result = $db->sql_query($sql)) {
-    while ($row = $db->sql_fetchrow($result)) {
+if ($result = DB()->sql_query($sql)) {
+    while ($row = DB()->sql_fetchrow($result)) {
         $forum_data[$row['forum_id']] = $row['forum_name'];
     }
 } else {
@@ -63,7 +63,7 @@ $sql = "SELECT u.user_id, u.username, u.user_allow_viewonline, u.user_level, s.s
 	WHERE u.user_id = s.session_user_id
 		AND s.session_time >= " . (time() - 300) . "
 	ORDER BY u.username ASC, s.session_ip ASC";
-if (!($result = $db->sql_query($sql))) {
+if (!($result = DB()->sql_query($sql))) {
     message_die(GENERAL_ERROR, 'Could not obtain regd user/online information', '', __LINE__, __FILE__, $sql);
 }
 
@@ -76,7 +76,7 @@ $guest_counter = 0;
 $prev_user = 0;
 $prev_ip = '';
 
-while ($row = $db->sql_fetchrow($result)) {
+while ($row = DB()->sql_fetchrow($result)) {
     $view_online = false;
 
     if ($row['session_logged_in']) {

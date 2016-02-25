@@ -24,7 +24,7 @@ if( isset($HTTP_POST_VARS['add_name']) )
 	{
 		$sql = "INSERT INTO " . DISALLOW_TABLE . " (disallow_username)
 			VALUES('" . str_replace("\'", "''", $disallowed_user) . "')";
-		$result = $db->sql_query( $sql );
+		$result = DB()->sql_query( $sql );
 		if ( !$result )
 		{
 			message_die(GENERAL_ERROR, "Could not add disallowed user.", "",__LINE__, __FILE__, $sql);
@@ -42,7 +42,7 @@ else if( isset($HTTP_POST_VARS['delete_name']) )
 
 	$sql = "DELETE FROM " . DISALLOW_TABLE . "
 		WHERE disallow_id = $disallowed_id";
-	$result = $db->sql_query($sql);
+	$result = DB()->sql_query($sql);
 	if( !$result )
 	{
 		message_die(GENERAL_ERROR, "Couldn't removed disallowed user.", "",__LINE__, __FILE__, $sql);
@@ -59,13 +59,13 @@ else if( isset($HTTP_POST_VARS['delete_name']) )
 //
 $sql = "SELECT *
 	FROM " . DISALLOW_TABLE;
-$result = $db->sql_query($sql);
+$result = DB()->sql_query($sql);
 if( !$result )
 {
 	message_die(GENERAL_ERROR, "Couldn't get disallowed users.", "", __LINE__, __FILE__, $sql );
 }
 
-$disallowed = $db->sql_fetchrowset($result);
+$disallowed = DB()->sql_fetchrowset($result);
 
 //
 // Ok now generate the info for the template, which will be put out no matter

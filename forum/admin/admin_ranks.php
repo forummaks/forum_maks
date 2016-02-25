@@ -51,12 +51,12 @@ if( $mode != "" )
 
 			$sql = "SELECT * FROM " . RANKS_TABLE . "
 				WHERE rank_id = $rank_id";
-			if(!$result = $db->sql_query($sql))
+			if(!$result = DB()->sql_query($sql))
 			{
 				message_die(GENERAL_ERROR, "Couldn't obtain rank data", "", __LINE__, __FILE__, $sql);
 			}
 
-			$rank_info = $db->sql_fetchrow($result);
+			$rank_info = DB()->sql_fetchrow($result);
 			$s_hidden_fields .= '<input type="hidden" name="id" value="' . $rank_id . '" />';
 
 		}
@@ -141,7 +141,7 @@ if( $mode != "" )
 					SET user_rank = 0
 					WHERE user_rank = $rank_id";
 
-				if( !$result = $db->sql_query($sql) )
+				if( !$result = DB()->sql_query($sql) )
 				{
 					message_die(GENERAL_ERROR, $lang['No_update_ranks'], "", __LINE__, __FILE__, $sql);
 				}
@@ -160,7 +160,7 @@ if( $mode != "" )
 			$message = $lang['Rank_added'];
 		}
 
-		if( !$result = $db->sql_query($sql) )
+		if( !$result = DB()->sql_query($sql) )
 		{
 			message_die(GENERAL_ERROR, "Couldn't update/insert into ranks table", "", __LINE__, __FILE__, $sql);
 		}
@@ -190,7 +190,7 @@ if( $mode != "" )
 			$sql = "DELETE FROM " . RANKS_TABLE . "
 				WHERE rank_id = $rank_id";
 
-			if( !$result = $db->sql_query($sql) )
+			if( !$result = DB()->sql_query($sql) )
 			{
 				message_die(GENERAL_ERROR, "Couldn't delete rank data", "", __LINE__, __FILE__, $sql);
 			}
@@ -199,7 +199,7 @@ if( $mode != "" )
 				SET user_rank = 0
 				WHERE user_rank = $rank_id";
 
-			if( !$result = $db->sql_query($sql) )
+			if( !$result = DB()->sql_query($sql) )
 			{
 				message_die(GENERAL_ERROR, $lang['No_update_ranks'], "", __LINE__, __FILE__, $sql);
 			}
@@ -226,12 +226,12 @@ if( $mode != "" )
 
 		$sql = "SELECT * FROM " . RANKS_TABLE . "
 			ORDER BY rank_min, rank_title";
-		if( !$result = $db->sql_query($sql) )
+		if( !$result = DB()->sql_query($sql) )
 		{
 			message_die(GENERAL_ERROR, "Couldn't obtain ranks data", "", __LINE__, __FILE__, $sql);
 		}
 
-		$rank_rows = $db->sql_fetchrowset($result);
+		$rank_rows = DB()->sql_fetchrowset($result);
 		$rank_count = count($rank_rows);
 
 		$template->assign_vars(array(
@@ -284,13 +284,13 @@ else
 
 	$sql = "SELECT * FROM " . RANKS_TABLE . "
 		ORDER BY rank_min ASC, rank_special ASC";
-	if( !$result = $db->sql_query($sql) )
+	if( !$result = DB()->sql_query($sql) )
 	{
 		message_die(GENERAL_ERROR, "Couldn't obtain ranks data", "", __LINE__, __FILE__, $sql);
 	}
-	$rank_count = $db->num_rows($result);
+	$rank_count = DB()->num_rows($result);
 
-	$rank_rows = $db->sql_fetchrowset($result);
+	$rank_rows = DB()->sql_fetchrowset($result);
 
 	$template->assign_vars(array(
 		"L_RANKS_TITLE" => $lang['Ranks_title'],

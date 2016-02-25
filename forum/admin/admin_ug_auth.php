@@ -116,17 +116,17 @@ if ( isset($HTTP_POST_VARS['submit']) && ( ( $mode == 'user' && $user_id ) || ( 
 				AND ug.user_id = u.user_id
 				AND g.group_id = ug.group_id
 				AND g.group_single_user = " . TRUE;
-		if ( !($result = $db->sql_query($sql)) )
+		if ( !($result = DB()->sql_query($sql)) )
 		{
 			message_die(GENERAL_ERROR, 'Could not select info from user/user_group table', '', __LINE__, __FILE__, $sql);
 		}
 
-		$row = $db->sql_fetchrow($result);
+		$row = DB()->sql_fetchrow($result);
 
 		$group_id = $row['group_id'];
 		$user_level = $row['user_level'];
 
-		$db->sql_freeresult($result);
+		DB()->sql_freeresult($result);
 	}
 
 	//
@@ -142,7 +142,7 @@ if ( isset($HTTP_POST_VARS['submit']) && ( ( $mode == 'user' && $user_id ) || ( 
 			$sql = "UPDATE " . USERS_TABLE . "
 				SET user_level = " . ADMIN . "
 				WHERE user_id = $user_id";
-			if ( !($result = $db->sql_query($sql)) )
+			if ( !($result = DB()->sql_query($sql)) )
 			{
 				message_die(GENERAL_ERROR, 'Could not update user level', '', __LINE__, __FILE__, $sql);
 			}
@@ -150,7 +150,7 @@ if ( isset($HTTP_POST_VARS['submit']) && ( ( $mode == 'user' && $user_id ) || ( 
 			$sql = "DELETE FROM " . AUTH_ACCESS_TABLE . "
 				WHERE group_id = $group_id
 					AND auth_mod = 0";
-			if ( !($result = $db->sql_query($sql)) )
+			if ( !($result = DB()->sql_query($sql)) )
 			{
 				message_die(GENERAL_ERROR, "Couldn't delete auth access info", "", __LINE__, __FILE__, $sql);
 			}
@@ -162,7 +162,7 @@ if ( isset($HTTP_POST_VARS['submit']) && ( ( $mode == 'user' && $user_id ) || ( 
 			$sql = "UPDATE " . AUTH_ACCESS_TABLE . "
 				SET auth_view = 0, auth_read = 0, auth_post = 0, auth_reply = 0, auth_edit = 0, auth_delete = 0, auth_sticky = 0, auth_announce = 0
 				WHERE group_id = $group_id";
-			if ( !($result = $db->sql_query($sql)) )
+			if ( !($result = DB()->sql_query($sql)) )
 			{
 				message_die(GENERAL_ERROR, "Couldn't update auth access", "", __LINE__, __FILE__, $sql);
 			}
@@ -184,7 +184,7 @@ if ( isset($HTTP_POST_VARS['submit']) && ( ( $mode == 'user' && $user_id ) || ( 
 				$sql = "UPDATE " . AUTH_ACCESS_TABLE . "
 					SET auth_view = 0, auth_read = 0, auth_post = 0, auth_reply = 0, auth_edit = 0, auth_delete = 0, auth_sticky = 0, auth_announce = 0
 					WHERE group_id = $group_id";
-				if ( !($result = $db->sql_query($sql)) )
+				if ( !($result = DB()->sql_query($sql)) )
 				{
 					message_die(GENERAL_ERROR, 'Could not update auth access', '', __LINE__, __FILE__, $sql);
 				}
@@ -195,7 +195,7 @@ if ( isset($HTTP_POST_VARS['submit']) && ( ( $mode == 'user' && $user_id ) || ( 
 				$sql = "UPDATE " . USERS_TABLE . "
 					SET user_level = " . USER . "
 					WHERE user_id = $user_id";
-				if ( !($result = $db->sql_query($sql)) )
+				if ( !($result = DB()->sql_query($sql)) )
 				{
 					message_die(GENERAL_ERROR, 'Could not update user level', '', __LINE__, __FILE__, $sql);
 				}
@@ -230,30 +230,30 @@ if ( isset($HTTP_POST_VARS['submit']) && ( ( $mode == 'user' && $user_id ) || ( 
 				FROM " . CATEGORIES_TABLE . " c, " . FORUMS_TABLE . " f
 				WHERE f.cat_id = c.cat_id
 				ORDER BY c.cat_order, c.cat_id, f.forum_order";
-			if ( !($result = $db->sql_query($sql)) )
+			if ( !($result = DB()->sql_query($sql)) )
 			{
 				message_die(GENERAL_ERROR, "Couldn't obtain forum information", "", __LINE__, __FILE__, $sql);
 			}
 
 			$forum_access = array();
-			while( $row = $db->sql_fetchrow($result) )
+			while( $row = DB()->sql_fetchrow($result) )
 			{
 				$forum_access[] = $row;
 			}
-			$db->sql_freeresult($result);
+			DB()->sql_freeresult($result);
 
 			$sql = ( $mode == 'user' ) ? "SELECT aa.* FROM " . AUTH_ACCESS_TABLE . " aa, " . USER_GROUP_TABLE . " ug, " . GROUPS_TABLE. " g WHERE ug.user_id = $user_id AND g.group_id = ug.group_id AND aa.group_id = ug.group_id AND g.group_single_user = " . TRUE : "SELECT * FROM " . AUTH_ACCESS_TABLE . " WHERE group_id = $group_id";
-			if ( !($result = $db->sql_query($sql)) )
+			if ( !($result = DB()->sql_query($sql)) )
 			{
 				message_die(GENERAL_ERROR, "Couldn't obtain user/group permissions", "", __LINE__, __FILE__, $sql);
 			}
 
 			$auth_access = array();
-			while( $row = $db->sql_fetchrow($result) )
+			while( $row = DB()->sql_fetchrow($result) )
 			{
 				$auth_access[$row['forum_id']] = $row;
 			}
-			$db->sql_freeresult($result);
+			DB()->sql_freeresult($result);
 
 			$forum_auth_action = array();
 			$update_acl_status = array();
@@ -361,7 +361,7 @@ if ( isset($HTTP_POST_VARS['submit']) && ( ( $mode == 'user' && $user_id ) || ( 
 							WHERE group_id = $group_id
 								AND forum_id = $forum_id";
 					}
-					if( !($result = $db->sql_query($sql)) )
+					if( !($result = DB()->sql_query($sql)) )
 					{
 						message_die(GENERAL_ERROR, "Couldn't update private forum permissions", "", __LINE__, __FILE__, $sql);
 					}
@@ -373,7 +373,7 @@ if ( isset($HTTP_POST_VARS['submit']) && ( ( $mode == 'user' && $user_id ) || ( 
 				$sql = "DELETE FROM " . AUTH_ACCESS_TABLE . "
 					WHERE group_id = $group_id
 						AND forum_id IN ($delete_sql)";
-				if( !($result = $db->sql_query($sql)) )
+				if( !($result = DB()->sql_query($sql)) )
 				{
 					message_die(GENERAL_ERROR, "Couldn't delete permission entries", "", __LINE__, __FILE__, $sql);
 				}
@@ -394,17 +394,17 @@ if ( isset($HTTP_POST_VARS['submit']) && ( ( $mode == 'user' && $user_id ) || ( 
 				AND u.user_level NOT IN (" . MOD . ", " . ADMIN . ")
 			GROUP BY u.user_id
 			HAVING SUM(aa.auth_mod) > 0";
-		if ( !($result = $db->sql_query($sql)) )
+		if ( !($result = DB()->sql_query($sql)) )
 		{
 			message_die(GENERAL_ERROR, "Couldn't obtain user/group permissions", "", __LINE__, __FILE__, $sql);
 		}
 
 		$set_mod = '';
-		while( $row = $db->sql_fetchrow($result) )
+		while( $row = DB()->sql_fetchrow($result) )
 		{
 			$set_mod .= ( ( $set_mod != '' ) ? ', ' : '' ) . $row['user_id'];
 		}
-		$db->sql_freeresult($result);
+		DB()->sql_freeresult($result);
 
 		//
 		// Update user level to user for appropriate users
@@ -451,24 +451,24 @@ if ( isset($HTTP_POST_VARS['submit']) && ( ( $mode == 'user' && $user_id ) || ( 
 					HAVING SUM(aa.auth_mod) = 0";
 				break;
 		}
-		if ( !($result = $db->sql_query($sql)) )
+		if ( !($result = DB()->sql_query($sql)) )
 		{
 			message_die(GENERAL_ERROR, "Couldn't obtain user/group permissions", "", __LINE__, __FILE__, $sql);
 		}
 
 		$unset_mod = "";
-		while( $row = $db->sql_fetchrow($result) )
+		while( $row = DB()->sql_fetchrow($result) )
 		{
 			$unset_mod .= ( ( $unset_mod != '' ) ? ', ' : '' ) . $row['user_id'];
 		}
-		$db->sql_freeresult($result);
+		DB()->sql_freeresult($result);
 
 		if ( $set_mod != '' )
 		{
 			$sql = "UPDATE " . USERS_TABLE . "
 				SET user_level = " . MOD . "
 				WHERE user_id IN ($set_mod)";
-			if( !($result = $db->sql_query($sql)) )
+			if( !($result = DB()->sql_query($sql)) )
 			{
 				message_die(GENERAL_ERROR, "Couldn't update user level", "", __LINE__, __FILE__, $sql);
 			}
@@ -479,7 +479,7 @@ if ( isset($HTTP_POST_VARS['submit']) && ( ( $mode == 'user' && $user_id ) || ( 
 			$sql = "UPDATE " . USERS_TABLE . "
 				SET user_level = " . USER . "
 				WHERE user_id IN ($unset_mod)";
-			if( !($result = $db->sql_query($sql)) )
+			if( !($result = DB()->sql_query($sql)) )
 			{
 				message_die(GENERAL_ERROR, "Couldn't update user level", "", __LINE__, __FILE__, $sql);
 			}
@@ -487,14 +487,14 @@ if ( isset($HTTP_POST_VARS['submit']) && ( ( $mode == 'user' && $user_id ) || ( 
 
 		$sql = 'SELECT user_id FROM ' . USER_GROUP_TABLE . "
 			WHERE group_id = $group_id";
-		$result = $db->sql_query($sql);
+		$result = DB()->sql_query($sql);
 
 		$group_user = array();
-		while ($row = $db->sql_fetchrow($result))
+		while ($row = DB()->sql_fetchrow($result))
 		{
 			$group_user[$row['user_id']] = $row['user_id'];
 		}
-		$db->sql_freeresult($result);
+		DB()->sql_freeresult($result);
 
 		$sql = "SELECT ug.user_id, COUNT(auth_mod) AS is_auth_mod
 			FROM " . AUTH_ACCESS_TABLE . " aa, " . USER_GROUP_TABLE . " ug
@@ -502,26 +502,26 @@ if ( isset($HTTP_POST_VARS['submit']) && ( ( $mode == 'user' && $user_id ) || ( 
 				AND aa.group_id = ug.group_id
 				AND aa.auth_mod = 1
 			GROUP BY ug.user_id";
-		if ( !($result = $db->sql_query($sql)) )
+		if ( !($result = DB()->sql_query($sql)) )
 		{
 			message_die(GENERAL_ERROR, 'Could not obtain moderator status', '', __LINE__, __FILE__, $sql);
 		}
 
-		while ($row = $db->sql_fetchrow($result))
+		while ($row = DB()->sql_fetchrow($result))
 		{
 			if ($row['is_auth_mod'])
 			{
 				unset($group_user[$row['user_id']]);
 			}
 		}
-		$db->sql_freeresult($result);
+		DB()->sql_freeresult($result);
 
 		if (sizeof($group_user))
 		{
 			$sql = "UPDATE " . USERS_TABLE . "
 				SET user_level = " . USER . "
 				WHERE user_id IN (" . implode(', ', $group_user) . ") AND user_level = " . MOD;
-			if ( !($result = $db->sql_query($sql)) )
+			if ( !($result = DB()->sql_query($sql)) )
 			{
 				message_die(GENERAL_ERROR, 'Could not update user level', '', __LINE__, __FILE__, $sql);
 			}
@@ -549,17 +549,17 @@ else if ( ( $mode == 'user' && ( isset($HTTP_POST_VARS['username']) || $user_id 
 		FROM " . FORUMS_TABLE . " f, " . CATEGORIES_TABLE . " c
 		WHERE f.cat_id = c.cat_id
 		ORDER BY c.cat_order, f.forum_order ASC";
-	if ( !($result = $db->sql_query($sql)) )
+	if ( !($result = DB()->sql_query($sql)) )
 	{
 		message_die(GENERAL_ERROR, "Couldn't obtain forum information", "", __LINE__, __FILE__, $sql);
 	}
 
 	$forum_access = array();
-	while( $row = $db->sql_fetchrow($result) )
+	while( $row = DB()->sql_fetchrow($result) )
 	{
 		$forum_access[] = $row;
 	}
-	$db->sql_freeresult($result);
+	DB()->sql_freeresult($result);
 
 	if( empty($adv) )
 	{
@@ -583,31 +583,31 @@ else if ( ( $mode == 'user' && ( isset($HTTP_POST_VARS['username']) || $user_id 
 
 	$sql = "SELECT u.user_id, u.username, u.user_level, g.group_id, g.group_name, g.group_single_user, ug.user_pending FROM " . USERS_TABLE . " u, " . GROUPS_TABLE . " g, " . USER_GROUP_TABLE . " ug WHERE ";
 	$sql .= ( $mode == 'user' ) ? "u.user_id = $user_id AND ug.user_id = u.user_id AND g.group_id = ug.group_id" : "g.group_id = $group_id AND ug.group_id = g.group_id AND u.user_id = ug.user_id";
-	if ( !($result = $db->sql_query($sql)) )
+	if ( !($result = DB()->sql_query($sql)) )
 	{
 		message_die(GENERAL_ERROR, "Couldn't obtain user/group information", "", __LINE__, __FILE__, $sql);
 	}
 	$ug_info = array();
-	while( $row = $db->sql_fetchrow($result) )
+	while( $row = DB()->sql_fetchrow($result) )
 	{
 		$ug_info[] = $row;
 	}
-	$db->sql_freeresult($result);
+	DB()->sql_freeresult($result);
 
 	$sql = ( $mode == 'user' ) ? "SELECT aa.*, g.group_single_user FROM " . AUTH_ACCESS_TABLE . " aa, " . USER_GROUP_TABLE . " ug, " . GROUPS_TABLE. " g WHERE ug.user_id = $user_id AND g.group_id = ug.group_id AND aa.group_id = ug.group_id AND g.group_single_user = 1" : "SELECT * FROM " . AUTH_ACCESS_TABLE . " WHERE group_id = $group_id";
-	if ( !($result = $db->sql_query($sql)) )
+	if ( !($result = DB()->sql_query($sql)) )
 	{
 		message_die(GENERAL_ERROR, "Couldn't obtain user/group permissions", "", __LINE__, __FILE__, $sql);
 	}
 
 	$auth_access = array();
 	$auth_access_count = array();
-	while( $row = $db->sql_fetchrow($result) )
+	while( $row = DB()->sql_fetchrow($result) )
 	{
 		$auth_access[$row['forum_id']][] = $row;
 		$auth_access_count[$row['forum_id']]++;
 	}
-	$db->sql_freeresult($result);
+	DB()->sql_freeresult($result);
 
 	$is_admin = ( $mode == 'user' ) ? ( ( $ug_info[0]['user_level'] == ADMIN && $ug_info[0]['user_id'] != GUEST_UID ) ? 1 : 0 ) : 0;
 
@@ -934,20 +934,20 @@ else
 		$sql = "SELECT group_id, group_name
 			FROM " . GROUPS_TABLE . "
 			WHERE group_single_user <> " . TRUE;
-		if ( !($result = $db->sql_query($sql)) )
+		if ( !($result = DB()->sql_query($sql)) )
 		{
 			message_die(GENERAL_ERROR, "Couldn't get group list", "", __LINE__, __FILE__, $sql);
 		}
 
 		$select_list = '';
-		if ( $row = $db->sql_fetchrow($result) )
+		if ( $row = DB()->sql_fetchrow($result) )
 		{
 			$select_list = '<select name="' . POST_GROUPS_URL . '">';
 			do
 			{
 				$select_list .= '<option value="' . $row['group_id'] . '">' . $row['group_name'] . '</option>';
 			}
-			while ( $row = $db->sql_fetchrow($result) );
+			while ( $row = DB()->sql_fetchrow($result) );
 			$select_list .= '</select>';
 		}
 

@@ -37,7 +37,7 @@ class attach_pm extends attach_parent
 	//
 	function insert_attachment_pm($a_privmsgs_id)
 	{
-		global $db, $mode, $attach_config, $privmsg_sent_id, $userdata, $to_userdata;
+		global  $mode, $attach_config, $privmsg_sent_id, $userdata, $to_userdata;
 
 		//
 		// Insert Attachment ?
@@ -58,7 +58,7 @@ class attach_pm extends attach_parent
 					SET privmsgs_attachment = 1
 					WHERE privmsgs_id = " . $a_privmsgs_id;
 
-				if (!$db->sql_query($sql))
+				if (!DB()->sql_query($sql))
 				{
 					message_die(GENERAL_ERROR, 'Unable to update Private Message Table.', '', __LINE__, __FILE__, $sql);
 				}
@@ -71,7 +71,7 @@ class attach_pm extends attach_parent
 	//
 	function duplicate_attachment_pm($switch_attachment, $original_privmsg_id, $new_privmsg_id)
 	{
-		global $db, $privmsg, $folder;
+		global  $privmsg, $folder;
 
 		if ( ( $privmsg['privmsgs_type'] == PRIVMSGS_NEW_MAIL || $privmsg['privmsgs_type'] == PRIVMSGS_UNREAD_MAIL ) && $folder == 'inbox' && intval($switch_attachment) == 1)
 		{
@@ -79,22 +79,22 @@ class attach_pm extends attach_parent
 			FROM ' . ATTACHMENTS_TABLE . '
 			WHERE privmsgs_id = ' . $original_privmsg_id;
 
-			if ( !($result = $db->sql_query($sql)) )
+			if ( !($result = DB()->sql_query($sql)) )
 			{
 				message_die(GENERAL_ERROR, 'Couldn\'t query Attachment Table', '', __LINE__, __FILE__, $sql);
 			}
 
-			if ( ($db->num_rows($result)) > 0 )
+			if ( (DB()->num_rows($result)) > 0 )
 			{
-				$rows = $db->sql_fetchrowset($result);
-				$num_rows = $db->num_rows($result);
+				$rows = DB()->sql_fetchrowset($result);
+				$num_rows = DB()->num_rows($result);
 
 				for ($i = 0; $i < $num_rows; $i++)
 				{
 					$sql = 'INSERT INTO ' . ATTACHMENTS_TABLE . ' (attach_id, post_id, privmsgs_id, user_id_1, user_id_2) 
 					VALUES ( ' . $rows[$i]['attach_id'] . ', ' . $rows[$i]['post_id'] . ', ' . $new_privmsg_id . ', ' . $rows[$i]['user_id_1'] . ', ' . $rows[$i]['user_id_2'] . ')';
 
-					if ( !($result = $db->sql_query($sql)) )
+					if ( !($result = DB()->sql_query($sql)) )
 					{
 						message_die(GENERAL_ERROR, 'Couldn\'t store Attachment for sent Private Message', '', __LINE__, __FILE__, $sql);
 					}
@@ -104,7 +104,7 @@ class attach_pm extends attach_parent
 				SET privmsgs_attachment = 1
 				WHERE privmsgs_id = " . $new_privmsg_id;
 
-				if ( !($db->sql_query($sql)) )
+				if ( !(DB()->sql_query($sql)) )
 				{
 					message_die(GENERAL_ERROR, 'Unable to update Private Message Table.', '', __LINE__, __FILE__, $sql);
 				}
@@ -139,7 +139,7 @@ class attach_pm extends attach_parent
 	// 
 	function display_attach_box_limits()
 	{
-		global $folder, $attach_config, $ft_cfg, $template, $lang, $userdata, $db;
+		global $folder, $attach_config, $ft_cfg, $template, $lang, $userdata;
 
 		if (!$attach_config['allow_pm_attach'] && $userdata['user_level'] != ADMIN)
 		{
@@ -175,7 +175,7 @@ class attach_pm extends attach_parent
 	//
 	function privmsgs_attachment_mod($mode)
 	{
-		global $attach_config, $template, $lang, $userdata, $HTTP_POST_VARS, $db;
+		global $attach_config, $template, $lang, $userdata, $HTTP_POST_VARS;
 		global $confirm, $delete, $delete_all, $post_id, $privmsgs_id, $privmsg_id, $submit, $refresh, $mark_list, $folder;
 
 		if ($folder != 'outbox')

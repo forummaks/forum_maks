@@ -52,7 +52,7 @@ if ( (@$userdata['session_logged_in']) && (empty($gen_simple_header)) )
 			$sql = "UPDATE " . USERS_TABLE . "
 				SET user_last_privmsg = " . $userdata['user_lastvisit'] . "
 				WHERE user_id = " . $userdata['user_id'];
-			if ( !$db->sql_query($sql) )
+			if ( !DB()->sql_query($sql) )
 			{
 				message_die(GENERAL_ERROR, 'Could not update private message new/read time for user', '', __LINE__, __FILE__, $sql);
 			}
@@ -198,12 +198,12 @@ if ($ft_cfg['bt_show_dl_stat_on_index'] && $userdata['session_logged_in'])
       FROM '. BT_USERS_TABLE .'
       WHERE user_id = '. $userdata['user_id'];
 
-   if (!$result = $db->sql_query($sql))
+   if (!$result = DB()->sql_query($sql))
    {
       message_die(GENERAL_ERROR, 'Could not query ', '', __LINE__, __FILE__, $sql);
    }
 
-   $row = $db->sql_fetchrow($result);
+   $row = DB()->sql_fetchrow($result);
 
    $ul    = ($row['u_up_total']) ? $row['u_up_total'] : 0;
    $dl    = ($row['u_down_total']) ? $row['u_down_total'] : 0;

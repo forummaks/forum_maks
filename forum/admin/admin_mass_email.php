@@ -42,21 +42,21 @@ if ( isset($HTTP_POST_VARS['submit']) )
 	$group_id = intval($HTTP_POST_VARS[POST_GROUPS_URL]);
 
 	$sql = ( $group_id != -1 ) ? "SELECT u.user_email FROM " . USERS_TABLE . " u, " . USER_GROUP_TABLE . " ug WHERE ug.group_id = $group_id AND ug.user_pending <> " . TRUE . " AND u.user_id = ug.user_id" : "SELECT user_email FROM " . USERS_TABLE;
-	if ( !($result = $db->sql_query($sql)) )
+	if ( !($result = DB()->sql_query($sql)) )
 	{
 		message_die(GENERAL_ERROR, 'Could not select group members', '', __LINE__, __FILE__, $sql);
 	}
 
-	if ( $row = $db->sql_fetchrow($result) )
+	if ( $row = DB()->sql_fetchrow($result) )
 	{
 		$bcc_list = array();
 		do
 		{
 			$bcc_list[] = $row['user_email'];
 		}
-		while ( $row = $db->sql_fetchrow($result) );
+		while ( $row = DB()->sql_fetchrow($result) );
 
-		$db->sql_freeresult($result);
+		DB()->sql_freeresult($result);
 	}
 	else
 	{
@@ -134,19 +134,19 @@ if ( $error )
 $sql = "SELECT group_id, group_name
 	FROM ".GROUPS_TABLE . "
 	WHERE group_single_user <> 1";
-if ( !($result = $db->sql_query($sql)) )
+if ( !($result = DB()->sql_query($sql)) )
 {
 	message_die(GENERAL_ERROR, 'Could not obtain list of groups', '', __LINE__, __FILE__, $sql);
 }
 
 $select_list = '<select name = "' . POST_GROUPS_URL . '"><option value = "-1">' . $lang['All_users'] . '</option>';
-if ( $row = $db->sql_fetchrow($result) )
+if ( $row = DB()->sql_fetchrow($result) )
 {
 	do
 	{
 		$select_list .= '<option value = "' . $row['group_id'] . '">' . $row['group_name'] . '</option>';
 	}
-	while ( $row = $db->sql_fetchrow($result) );
+	while ( $row = DB()->sql_fetchrow($result) );
 }
 $select_list .= '</select>';
 

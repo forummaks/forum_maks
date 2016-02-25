@@ -172,9 +172,9 @@ elseif( isset($_GET['pane']) && $_GET['pane'] == 'right' )
 
 	// DB size ... MySQL only
 	$sql = "SELECT VERSION() AS mysql_version";
-	if ($result = $db->sql_query($sql))
+	if ($result = DB()->sql_query($sql))
 	{
-		$row = $db->sql_fetchrow($result);
+		$row = DB()->sql_fetchrow($result);
 		$version = $row['mysql_version'];
 		if (preg_match('/^(3\.23|4\.|5\.|10\.)/', $version))
 		{
@@ -183,9 +183,9 @@ elseif( isset($_GET['pane']) && $_GET['pane'] == 'right' )
 			foreach ($ft_cfg['database'] as $name => $row)
 			{
 				$sql = "SHOW TABLE STATUS FROM {$row[1]}";
-				if ($result = $db->sql_query($sql))
+				if ($result = DB()->sql_query($sql))
 				{
-					$tabledata_ary = $db->sql_fetchrowset($result);
+					$tabledata_ary = DB()->sql_fetchrowset($result);
 					$dbsize = 0;
 					for ($i = 0; $i < count($tabledata_ary); $i++)
 					{
@@ -229,28 +229,28 @@ elseif( isset($_GET['pane']) && $_GET['pane'] == 'right' )
 			AND u.user_id <> " . GUEST_UID . "
 			AND s.session_time >= " . ( time() - 300 ) . "
 		ORDER BY s.session_ip ASC, u.user_session_time DESC";
-	if(!$result = $db->sql_query($sql))
+	if(!$result = DB()->sql_query($sql))
 	{
 		message_die(GENERAL_ERROR, "Couldn't obtain regd user/online information.", "", __LINE__, __FILE__, $sql);
 	}
-	$onlinerow_reg = @$db->sql_fetchrowset($result);
+	$onlinerow_reg = @DB()->sql_fetchrowset($result);
 
 	$sql = "SELECT session_logged_in, session_time, session_ip, session_start
 		FROM " . SESSIONS_TABLE . "
 		WHERE session_logged_in = 0
 			AND session_time >= " . ( time() - 300 ) . "
 		ORDER BY session_ip ASC, session_time DESC";
-	if(!$result = $db->sql_query($sql))
+	if(!$result = DB()->sql_query($sql))
 	{
 		message_die(GENERAL_ERROR, "Couldn't obtain guest user/online information.", "", __LINE__, __FILE__, $sql);
 	}
-	$onlinerow_guest = @$db->sql_fetchrowset($result);
+	$onlinerow_guest = @DB()->sql_fetchrowset($result);
 
 	$sql = "SELECT forum_name, forum_id
 		FROM " . FORUMS_TABLE;
-	if($forums_result = $db->sql_query($sql))
+	if($forums_result = DB()->sql_query($sql))
 	{
-		while($forumsrow = $db->sql_fetchrow($forums_result))
+		while($forumsrow = DB()->sql_fetchrow($forums_result))
 		{
 			$forum_data[$forumsrow['forum_id']] = $forumsrow['forum_name'];
 		}
@@ -368,6 +368,6 @@ else
 
 	$template->pparse("body");
 
-	$db->sql_close();
+	DB()->sql_close();
 	exit;
 }

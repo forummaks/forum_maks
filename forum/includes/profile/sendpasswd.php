@@ -11,9 +11,9 @@ if ( isset($HTTP_POST_VARS['submit']) )
 		FROM " . USERS_TABLE . "
 		WHERE user_email = '" . str_replace("\'", "''", $email) . "'
 			AND username = '" . str_replace("\'", "''", $username) . "'";
-	if ( $result = $db->sql_query($sql) )
+	if ( $result = DB()->sql_query($sql) )
 	{
-		if ( $row = $db->sql_fetchrow($result) )
+		if ( $row = DB()->sql_fetchrow($result) )
 		{
 			if ( !$row['user_active'] )
 			{
@@ -32,7 +32,7 @@ if ( isset($HTTP_POST_VARS['submit']) )
 			$sql = "UPDATE " . USERS_TABLE . "
 				SET user_newpasswd = '" . md5($user_password) . "', user_actkey = '$user_actkey'
 				WHERE user_id = " . $row['user_id'];
-			if ( !$db->sql_query($sql) )
+			if ( !DB()->sql_query($sql) )
 			{
 				message_die(GENERAL_ERROR, 'Could not update new password information', '', __LINE__, __FILE__, $sql);
 			}

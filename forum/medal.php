@@ -35,11 +35,11 @@ $sql = " SELECT DISTINCT u.username, u.user_id, u.user_regdate, tr.user_id, tr.u
         WHERE bl.ban_userid Is Null
         ORDER BY u_up_total DESC
         LIMIT $medal_num_recent";
-if( !($result = $db->sql_query($sql)) )
+if( !($result = DB()->sql_query($sql)) )
 {
         message_die(GENERAL_ERROR, "Could not query users $sql", '', __LINE__, __FILE__, $sql);
 }
-if ( $row = $db->sql_fetchrow($result) )
+if ( $row = DB()->sql_fetchrow($result) )
 {
         $i = 0;
         do
@@ -65,8 +65,8 @@ if ( $row = $db->sql_fetchrow($result) )
                 );
                 $i++;
         }
-        while ( $row = $db->sql_fetchrow($result) );
-        $db->sql_freeresult($result);
+        while ( $row = DB()->sql_fetchrow($result) );
+        DB()->sql_freeresult($result);
 }
 
 $sql = " SELECT DISTINCT u.username, u.user_id, u.user_regdate, tr.user_id, tr.u_up_total, tr.u_bonus_total, tr.u_down_total AS u_down_total, bl.ban_userid
@@ -74,11 +74,11 @@ $sql = " SELECT DISTINCT u.username, u.user_id, u.user_regdate, tr.user_id, tr.u
         WHERE bl.ban_userid Is Null
         ORDER BY u_down_total DESC
         LIMIT $medal_num_recent";
-if( !($result = $db->sql_query($sql)) )
+if( !($result = DB()->sql_query($sql)) )
 {
         message_die(GENERAL_ERROR, "Could not query users $sql", '', __LINE__, __FILE__, $sql);
 }
-if ( $row = $db->sql_fetchrow($result) )
+if ( $row = DB()->sql_fetchrow($result) )
 {
         $i = 0;
         do
@@ -104,8 +104,8 @@ if ( $row = $db->sql_fetchrow($result) )
                 );
                 $i++;
         }
-        while ( $row = $db->sql_fetchrow($result) );
-        $db->sql_freeresult($result);
+        while ( $row = DB()->sql_fetchrow($result) );
+        DB()->sql_freeresult($result);
 }
 
 $sql = " SELECT DISTINCT u.username, u.user_id, u.user_regdate, tr.user_id, tr.u_up_total, tr.u_down_total, tr.u_bonus_total, (tr.u_up_total + tr.u_bonus_total)/tr.u_down_total AS rat, bl.ban_userid
@@ -115,11 +115,11 @@ $sql = " SELECT DISTINCT u.username, u.user_id, u.user_regdate, tr.user_id, tr.u
  
         ORDER BY rat DESC
         LIMIT $medal_num_recent";
-if( !($result = $db->sql_query($sql)) )
+if( !($result = DB()->sql_query($sql)) )
 {
         message_die(GENERAL_ERROR, "Could not query users $sql", '', __LINE__, __FILE__, $sql);
 }
-if ( $row = $db->sql_fetchrow($result) )
+if ( $row = DB()->sql_fetchrow($result) )
 {
         $i = 0;
         do
@@ -145,8 +145,8 @@ if ( $row = $db->sql_fetchrow($result) )
                 );
                 $i++;
         }
-        while ( $row = $db->sql_fetchrow($result) );
-        $db->sql_freeresult($result);
+        while ( $row = DB()->sql_fetchrow($result) );
+        DB()->sql_freeresult($result);
 }
 
 $sql = "SELECT count(uds.compl_count) AS complete, tor.*, t.*, u.username, u.user_id, f.forum_id, f.forum_name, cat.cat_id, cat.cat_title, t.topic_title, t.topic_id
@@ -161,11 +161,11 @@ $sql = "SELECT count(uds.compl_count) AS complete, tor.*, t.*, u.username, u.use
        GROUP BY uds.topic_id
        ORDER BY complete DESC
        LIMIT 10";
-if( !($result = $db->sql_query($sql)) )
+if( !($result = DB()->sql_query($sql)) )
 {
         message_die(GENERAL_ERROR, "Could not query torrent $sql", '', __LINE__, __FILE__, $sql);
 }
-if ( $row = $db->sql_fetchrow($result) )
+if ( $row = DB()->sql_fetchrow($result) )
 {
         $i = 0;
         do
@@ -195,8 +195,8 @@ if ( $row = $db->sql_fetchrow($result) )
                 );
                 $i++;
         }
-        while ( $row = $db->sql_fetchrow($result) );
-        $db->sql_freeresult($result);
+        while ( $row = DB()->sql_fetchrow($result) );
+        DB()->sql_freeresult($result);
 
 }
 

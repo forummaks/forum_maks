@@ -211,13 +211,11 @@ if (!defined('IN_TRACKER'))
 require(FT_ROOT . 'db/dbs.php');
 $DBS = new DBS($ft_cfg);
 
-$db = $DBS->get_db_obj($database_alias = 'database1');
-
-/*function DB ($db_alias = 'database1')
+function DB ($db_alias = 'database1')
 {
 	global $DBS;
 	return $DBS->get_db_obj($db_alias);
-}*/
+}
 
 function sql_dbg_enabled ()
 {
@@ -496,12 +494,12 @@ function log_request ($file = '', $prepend_str = false, $add_post = true)
 //
 $sql = "SELECT *
 	FROM " . CONFIG_TABLE;
-if( !($result = $db->sql_query($sql)) )
+if( !($result = DB()->sql_query($sql)) )
 {
 	message_die(CRITICAL_ERROR, "Could not query config information", "", __LINE__, __FILE__, $sql);
 }
 
-while ( $row = $db->sql_fetchrow($result) )
+while ( $row = DB()->sql_fetchrow($result) )
 {
 	$ft_cfg[$row['config_name']] = $row['config_value'];
 }

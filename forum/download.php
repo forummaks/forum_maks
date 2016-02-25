@@ -10,7 +10,7 @@ $thumbnail = get_var('thumb', 0);
 // Send file to browser
 function send_file_to_browser($attachment, $upload_dir)
 {
-	global $_SERVER, $HTTP_USER_AGENT, $HTTP_SERVER_VARS, $lang, $db, $attach_config;
+	global $_SERVER, $HTTP_USER_AGENT, $HTTP_SERVER_VARS, $lang,  $attach_config;
 
 	$filename = ($upload_dir == '') ? $attachment['physical_filename'] : $upload_dir . '/' . $attachment['physical_filename'];
 
@@ -128,19 +128,19 @@ $sql = 'SELECT at.*, btt.topic_check_status
    LEFT JOIN '.BT_TORRENTS_TABLE.' btt on btt.attach_id=at.attach_id
    WHERE at.attach_id = ' . $download_id;
 
-if (!($result = $db->sql_query($sql)))
+if (!($result = DB()->sql_query($sql)))
 {
 	message_die(GENERAL_ERROR, 'Could not query attachment informations', '', __LINE__, __FILE__, $sql);
 }
 
-if (!($attachment = $db->sql_fetchrow($result)))
+if (!($attachment = DB()->sql_fetchrow($result)))
 {
 	message_die(GENERAL_MESSAGE, $lang['Error_no_attachment']);
 }
 
 $attachment['physical_filename'] = basename($attachment['physical_filename']);
 
-$db->sql_freeresult($result);
+DB()->sql_freeresult($result);
 
 // get forum_id for attachment authorization or private message authorization
 $authorised = false;
@@ -149,13 +149,13 @@ $sql = 'SELECT *
 	FROM ' . ATTACHMENTS_TABLE . '
 	WHERE attach_id = ' . $attachment['attach_id'];
 
-if (!($result = $db->sql_query($sql)))
+if (!($result = DB()->sql_query($sql)))
 {
 	message_die(GENERAL_ERROR, 'Could not query attachment informations', '', __LINE__, __FILE__, $sql);
 }
 
-$auth_pages = $db->sql_fetchrowset($result);
-$num_auth_pages = $db->num_rows($result);
+$auth_pages = DB()->sql_fetchrowset($result);
+$num_auth_pages = DB()->num_rows($result);
 
 for ($i = 0; $i < $num_auth_pages && $authorised == false; $i++)
 {
@@ -165,12 +165,12 @@ for ($i = 0; $i < $num_auth_pages && $authorised == false; $i++)
 			FROM ' . POSTS_TABLE . '
 			WHERE post_id = ' . $auth_pages[$i]['post_id'];
 
-		if ( !($result = $db->sql_query($sql)) )
+		if ( !($result = DB()->sql_query($sql)) )
 		{
 			message_die(GENERAL_ERROR, 'Could not query post information', '', __LINE__, __FILE__, $sql);
 		}
 
-		$row = $db->sql_fetchrow($result);
+		$row = DB()->sql_fetchrow($result);
 
 		$forum_id = $row['forum_id'];
 
@@ -211,7 +211,7 @@ if (!$thumbnail)
 	SET download_count = download_count + 1
 	WHERE attach_id = ' . $attachment['attach_id'];
 
-	if (!$db->sql_query($sql))
+	if (!DB()->sql_query($sql))
 	{
 		message_die(GENERAL_ERROR, 'Couldn\'t update attachment download count', '', __LINE__, __FILE__, $sql);
 	}

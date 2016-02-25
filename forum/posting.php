@@ -216,10 +216,10 @@ switch ( $mode )
 		message_die(GENERAL_MESSAGE, $lang['No_valid_mode']);
 }
 
-if ( $result = $db->sql_query($sql) )
+if ( $result = DB()->sql_query($sql) )
 {
-	$post_info = $db->sql_fetchrow($result);
-	$db->sql_freeresult($result);
+	$post_info = DB()->sql_fetchrow($result);
+	DB()->sql_freeresult($result);
 
 	$forum_id = $post_info['forum_id'];
 	$forum_name = $post_info['forum_name'];
@@ -254,14 +254,14 @@ if ( $result = $db->sql_query($sql) )
 				WHERE vd.topic_id = $topic_id
 					AND vr.vote_id = vd.vote_id
 				ORDER BY vr.vote_option_id";
-			if ( !($result = $db->sql_query($sql)) )
+			if ( !($result = DB()->sql_query($sql)) )
 			{
 				message_die(GENERAL_ERROR, 'Could not obtain vote data for this topic', '', __LINE__, __FILE__, $sql);
 			}
 
 			$poll_options = array();
 			$poll_results_sum = 0;
-			if ( $row = $db->sql_fetchrow($result) )
+			if ( $row = DB()->sql_fetchrow($result) )
 			{
 				$poll_title = $row['vote_text'];
 				$poll_id = $row['vote_id'];
@@ -272,9 +272,9 @@ if ( $result = $db->sql_query($sql) )
 					$poll_options[$row['vote_option_id']] = $row['vote_option_text'];
 					$poll_results_sum += $row['vote_result'];
 				}
-				while ( $row = $db->sql_fetchrow($result) );
+				while ( $row = DB()->sql_fetchrow($result) );
 			}
-			$db->sql_freeresult($result);
+			DB()->sql_freeresult($result);
 
 			$post_data['edit_poll'] = ( ( !$poll_results_sum || $is_auth['auth_mod'] ) && $post_data['first_post'] ) ? true : 0;
 		}
@@ -391,13 +391,13 @@ else
 			FROM " . TOPICS_WATCH_TABLE . "
 			WHERE topic_id = $topic_id
 				AND user_id = " . $userdata['user_id'];
-		if ( !($result = $db->sql_query($sql)) )
+		if ( !($result = DB()->sql_query($sql)) )
 		{
 			message_die(GENERAL_ERROR, 'Could not obtain topic watch information', '', __LINE__, __FILE__, $sql);
 		}
 
-		$notify_user = ( $db->sql_fetchrow($result) ) ? TRUE : $userdata['user_notify'];
-		$db->sql_freeresult($result);
+		$notify_user = ( DB()->sql_fetchrow($result) ) ? TRUE : $userdata['user_notify'];
+		DB()->sql_freeresult($result);
 	}
 	else
 	{
@@ -435,14 +435,14 @@ if ($userdata['session_logged_in'] && ($submit || $preview || $mode == 'quote' |
 			ORDER BY p.post_time
 			LIMIT $snp_limit";
 
-		if (!$result = $db->sql_query($sql))
+		if (!$result = DB()->sql_query($sql))
 		{
 			message_die(GENERAL_ERROR, 'Could not obtain new posts information', '', __LINE__, __FILE__, $sql);
 		}
 
-		if ($rowset = @$db->sql_fetchrowset($result))
+		if ($rowset = @DB()->sql_fetchrowset($result))
 		{
-			$db->sql_freeresult($result);
+			DB()->sql_freeresult($result);
 
 			$topic_has_new_posts = TRUE;
 			$template->set_filenames(array('show_new_posts' => 'posting_show_new_posts.tpl'));
@@ -563,12 +563,12 @@ else if ( $mode == 'vote' )
 				AND vr.vote_id = vd.vote_id
 				AND vr.vote_option_id = $vote_option_id
 			GROUP BY vd.vote_id";
-		if ( !($result = $db->sql_query($sql)) )
+		if ( !($result = DB()->sql_query($sql)) )
 		{
 			message_die(GENERAL_ERROR, 'Could not obtain vote data for this topic', '', __LINE__, __FILE__, $sql);
 		}
 
-		if ( $vote_info = $db->sql_fetchrow($result) )
+		if ( $vote_info = DB()->sql_fetchrow($result) )
 		{
 			$vote_id = $vote_info['vote_id'];
 
@@ -576,25 +576,25 @@ else if ( $mode == 'vote' )
 				FROM " . VOTE_USERS_TABLE . "
 				WHERE vote_id = $vote_id
 					AND vote_user_id = " . $userdata['user_id'];
-			if ( !($result2 = $db->sql_query($sql)) )
+			if ( !($result2 = DB()->sql_query($sql)) )
 			{
 				message_die(GENERAL_ERROR, 'Could not obtain user vote data for this topic', '', __LINE__, __FILE__, $sql);
 			}
 
-			if ( !($row = $db->sql_fetchrow($result2)) )
+			if ( !($row = DB()->sql_fetchrow($result2)) )
 			{
 				$sql = "UPDATE " . VOTE_RESULTS_TABLE . "
 					SET vote_result = vote_result + 1
 					WHERE vote_id = $vote_id
 						AND vote_option_id = $vote_option_id";
-				if ( !$db->sql_query($sql, BEGIN_TRANSACTION) )
+				if ( !DB()->sql_query($sql, BEGIN_TRANSACTION) )
 				{
 					message_die(GENERAL_ERROR, 'Could not update poll result', '', __LINE__, __FILE__, $sql);
 				}
 
 				$sql = "INSERT INTO " . VOTE_USERS_TABLE . " (vote_id, vote_user_id, vote_user_ip)
 					VALUES ($vote_id, " . $userdata['user_id'] . ", '$user_ip')";
-				if ( !$db->sql_query($sql, END_TRANSACTION) )
+				if ( !DB()->sql_query($sql, END_TRANSACTION) )
 				{
 					message_die(GENERAL_ERROR, "Could not insert user_id for poll", "", __LINE__, __FILE__, $sql);
 				}
@@ -605,13 +605,13 @@ else if ( $mode == 'vote' )
 			{
 				$message = $lang['Already_voted'];
 			}
-			$db->sql_freeresult($result2);
+			DB()->sql_freeresult($result2);
 		}
 		else
 		{
 			$message = $lang['No_vote_option'];
 		}
-		$db->sql_freeresult($result);
+		DB()->sql_freeresult($result);
 
 		$template->assign_vars(array(
 			'META' => '<meta http-equiv="refresh" content="3;url=' . append_sid("viewtopic.php?" . POST_TOPIC_URL . "=$topic_id") . '">')

@@ -113,7 +113,7 @@ class emailer
 	// Send the mail out to the recipients set previously in var $this->address
 	function send()
 	{
-		global $ft_cfg, $lang, $db;
+		global $ft_cfg, $lang;
 
     	// Escape all quotes, else the eval will fail.
 		$this->msg = str_replace ("'", "\'", $this->msg);
@@ -196,7 +196,7 @@ class emailer
 				$sql = "UPDATE " . CONFIG_TABLE . "
 					SET config_value = '1'
 					WHERE config_name = 'sendmail_fix'";
-				if (!$db->sql_query($sql))
+				if (!DB()->sql_query($sql))
 				{
 					message_die(GENERAL_ERROR, 'Unable to update config table', '', __LINE__, __FILE__, $sql);
 				}

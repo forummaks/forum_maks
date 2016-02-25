@@ -189,7 +189,7 @@ if ($search_id == 'dl' || isset($_GET['dl_search']))
 		$sql = 'SELECT username FROM '. USERS_TABLE ."
 				WHERE user_id = $dl_uid";
 
-		if (!$row = $db->sql_fetchrow($db->sql_query($sql)))
+		if (!$row = DB()->sql_fetchrow(DB()->sql_query($sql)))
 		{
 			message_die(GENERAL_ERROR, "Invalid user_id ($dl_uid) or username", '', __LINE__, __FILE__, $sql);
 		}
@@ -291,19 +291,19 @@ else if ( $search_keywords != '' || $search_author != '' || $search_id )
 				$sql = "SELECT user_id
 					FROM " . USERS_TABLE . "
 					WHERE username LIKE '" . str_replace("\'", "''", $search_author) . "'";
-				if ( !($result = $db->sql_query($sql)) )
+				if ( !($result = DB()->sql_query($sql)) )
 				{
 					message_die(GENERAL_ERROR, "Couldn't obtain list of matching users (searching for: $search_author)", "", __LINE__, __FILE__, $sql);
 				}
 
 				$matching_userids = '';
-				if ( $row = $db->sql_fetchrow($result) )
+				if ( $row = DB()->sql_fetchrow($result) )
 				{
 					do
 					{
 						$matching_userids .= ( ( $matching_userids != '' ) ? ', ' : '' ) . $row['user_id'];
 					}
-					while( $row = $db->sql_fetchrow($result) );
+					while( $row = DB()->sql_fetchrow($result) );
 				}
 				else
 				{
@@ -320,17 +320,17 @@ else if ( $search_keywords != '' || $search_author != '' || $search_id )
 				}
 			}
 
-			if ( !($result = $db->sql_query($sql)) )
+			if ( !($result = DB()->sql_query($sql)) )
 			{
 				message_die(GENERAL_ERROR, 'Could not obtain matched posts list', '', __LINE__, __FILE__, $sql);
 			}
 
 			$search_ids = array();
-			while( $row = $db->sql_fetchrow($result) )
+			while( $row = DB()->sql_fetchrow($result) )
 			{
 				$search_ids[] = $row['post_id'];
 			}
-			$db->sql_freeresult($result);
+			DB()->sql_freeresult($result);
 
 			$total_match_count = count($search_ids);
 
@@ -398,13 +398,13 @@ else if ( $search_keywords != '' || $search_author != '' || $search_id )
 								WHERE post_text LIKE '$match_word'
 								$search_msg_only";
 						}
-						if ( !($result = $db->sql_query($sql)) )
+						if ( !($result = DB()->sql_query($sql)) )
 						{
 							message_die(GENERAL_ERROR, 'Could not obtain matched posts list', '', __LINE__, __FILE__, $sql);
 						}
 
 						$row = array();
-						while( $temp_row = $db->sql_fetchrow($result) )
+						while( $temp_row = DB()->sql_fetchrow($result) )
 						{
 							$row[$temp_row['post_id']] = 1;
 
@@ -436,7 +436,7 @@ else if ( $search_keywords != '' || $search_author != '' || $search_id )
 
 						$word_count++;
 
-						$db->sql_freeresult($result);
+						DB()->sql_freeresult($result);
 					}
 			}
 
@@ -582,16 +582,16 @@ else if ( $search_keywords != '' || $search_author != '' || $search_id )
 							GROUP BY p.topic_id";
 					}
 
-					if ( !($result = $db->sql_query($sql)) )
+					if ( !($result = DB()->sql_query($sql)) )
 					{
 						message_die(GENERAL_ERROR, 'Could not obtain topic ids', '', __LINE__, __FILE__, $sql);
 					}
 
-					while ($row = $db->sql_fetchrow($result))
+					while ($row = DB()->sql_fetchrow($result))
 					{
 						$search_ids[] = $row['topic_id'];
 					}
-					$db->sql_freeresult($result);
+					DB()->sql_freeresult($result);
 				}
 
 				$total_match_count = sizeof($search_ids);
@@ -650,16 +650,16 @@ else if ( $search_keywords != '' || $search_author != '' || $search_id )
 					$sql = "SELECT " . $select_sql . "
 						FROM $from_sql
 						WHERE $where_sql";
-					if ( !($result = $db->sql_query($sql)) )
+					if ( !($result = DB()->sql_query($sql)) )
 					{
 						message_die(GENERAL_ERROR, 'Could not obtain post ids', '', __LINE__, __FILE__, $sql);
 					}
 
-					while( $row = $db->sql_fetchrow($result) )
+					while( $row = DB()->sql_fetchrow($result) )
 					{
 						$search_ids[] = $row['post_id'];
 					}
-					$db->sql_freeresult($result);
+					DB()->sql_freeresult($result);
 				}
 
 				$total_match_count = count($search_ids);
@@ -692,17 +692,17 @@ else if ( $search_keywords != '' || $search_author != '' || $search_id )
 						AND dl.user_id = $dl_uid";
 			}
 
-			if (!$result = $db->sql_query($sql))
+			if (!$result = DB()->sql_query($sql))
 			{
 				message_die(GENERAL_ERROR, 'Could not obtain post ids', '', __LINE__, __FILE__, $sql);
 			}
 
 			$search_ids = array();
-			while ($row = $db->sql_fetchrow($result))
+			while ($row = DB()->sql_fetchrow($result))
 			{
 				$search_ids[] = $row['topic_id'];
 			}
-			$db->sql_freeresult($result);
+			DB()->sql_freeresult($result);
 
 			$total_match_count = count($search_ids);
 			if ($total_match_count <= $start) // No results for the selected page
@@ -735,17 +735,17 @@ else if ( $search_keywords != '' || $search_author != '' || $search_id )
 						AND topic_moved_id = 0";
 			}
 
-			if ( !($result = $db->sql_query($sql)) )
+			if ( !($result = DB()->sql_query($sql)) )
 			{
 				message_die(GENERAL_ERROR, 'Could not obtain post ids', '', __LINE__, __FILE__, $sql);
 			}
 
 			$search_ids = array();
-			while( $row = $db->sql_fetchrow($result) )
+			while( $row = DB()->sql_fetchrow($result) )
 			{
 				$search_ids[] = $row['topic_id'];
 			}
-			$db->sql_freeresult($result);
+			DB()->sql_freeresult($result);
 
 			$total_match_count = count($search_ids);
 
@@ -767,10 +767,10 @@ else if ( $search_keywords != '' || $search_author != '' || $search_id )
 		//
 		$sql = "SELECT session_id
 			FROM " . SESSIONS_TABLE;
-		if ( $result = $db->sql_query($sql) )
+		if ( $result = DB()->sql_query($sql) )
 		{
 			$delete_search_ids = array();
-			while( $row = $db->sql_fetchrow($result) )
+			while( $row = DB()->sql_fetchrow($result) )
 			{
 				$delete_search_ids[] = "'" . $row['session_id'] . "'";
 			}
@@ -779,7 +779,7 @@ else if ( $search_keywords != '' || $search_author != '' || $search_id )
 			{
 				$sql = "DELETE FROM " . SEARCH_TABLE . "
 					WHERE session_id NOT IN (" . implode(", ", $delete_search_ids) . ")";
-				if ( !$result = $db->sql_query($sql) )
+				if ( !$result = DB()->sql_query($sql) )
 				{
 					message_die(GENERAL_ERROR, 'Could not delete old search id sessions', '', __LINE__, __FILE__, $sql);
 				}
@@ -826,11 +826,11 @@ else if ( $search_keywords != '' || $search_author != '' || $search_id )
 		$sql = "UPDATE " . SEARCH_TABLE . "
 			SET search_id = $search_id, search_array = '" . str_replace("\'", "''", $result_array) . "'
 			WHERE session_id = '" . $userdata['session_id'] . "'";
-		if ( !($result = $db->sql_query($sql)) || !$db->sql_affectedrows() )
+		if ( !($result = DB()->sql_query($sql)) || !DB()->sql_affectedrows() )
 		{
 			$sql = "INSERT INTO " . SEARCH_TABLE . " (search_id, session_id, search_array)
 				VALUES($search_id, '" . $userdata['session_id'] . "', '" . str_replace("\'", "''", $result_array) . "')";
-			if ( !($result = $db->sql_query($sql)) )
+			if ( !($result = DB()->sql_query($sql)) )
 			{
 				message_die(GENERAL_ERROR, 'Could not insert search results', '', __LINE__, __FILE__, $sql);
 			}
@@ -845,12 +845,12 @@ else if ( $search_keywords != '' || $search_author != '' || $search_id )
 				FROM " . SEARCH_TABLE . "
 				WHERE search_id = $search_id
 					AND session_id = '". $userdata['session_id'] . "'";
-			if ( !($result = $db->sql_query($sql)) )
+			if ( !($result = DB()->sql_query($sql)) )
 			{
 				message_die(GENERAL_ERROR, 'Could not obtain search results', '', __LINE__, __FILE__, $sql);
 			}
 
-			if ( $row = $db->sql_fetchrow($result) )
+			if ( $row = DB()->sql_fetchrow($result) )
 			{
 				$search_data = unserialize($row['search_array']);
 				for($i = 0; $i < count($store_vars); $i++)
@@ -911,18 +911,18 @@ else if ( $search_keywords != '' || $search_author != '' || $search_id )
 		}
 		$sql .= " $sort_dir LIMIT $start, " . $per_page;
 
-		if ( !$result = $db->sql_query($sql) )
+		if ( !$result = DB()->sql_query($sql) )
 		{
 			message_die(GENERAL_ERROR, 'Could not obtain search results', '', __LINE__, __FILE__, $sql);
 		}
 
 		$searchset = array();
-		while( $row = $db->sql_fetchrow($result) )
+		while( $row = DB()->sql_fetchrow($result) )
 		{
 			$searchset[] = $row;
 		}
 
-		$db->sql_freeresult($result);
+		DB()->sql_freeresult($result);
 
 		//
 		// Define censored word matches
@@ -1514,7 +1514,7 @@ $sql = "SELECT c.cat_title, c.cat_id, f.forum_name, f.forum_id, f.forum_parent
 	FROM " . CATEGORIES_TABLE . " c, " . FORUMS_TABLE . " f
 	WHERE f.cat_id = c.cat_id
 	ORDER BY c.cat_order, c.cat_id, f.forum_order";
-$result = $db->sql_query($sql);
+$result = DB()->sql_query($sql);
 if ( !$result )
 {
 	message_die(GENERAL_ERROR, 'Could not obtain forum_name/forum_id', '', __LINE__, __FILE__, $sql);
@@ -1523,7 +1523,7 @@ if ( !$result )
 $is_auth_ary = auth(AUTH_READ, AUTH_LIST_ALL, $userdata);
 
 $s_forums = '';
-while( $row = $db->sql_fetchrow($result) )
+while( $row = DB()->sql_fetchrow($result) )
 {
 	if ( $is_auth_ary[$row['forum_id']]['auth_read'] )
 	{

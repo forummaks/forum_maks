@@ -25,9 +25,9 @@ if ( !$userdata['session_logged_in'] )
 $sql = "SELECT username, user_email, user_viewemail, user_lang
 	FROM " . USERS_TABLE . "
 	WHERE user_id = $user_id";
-if ( $result = $db->sql_query($sql) )
+if ( $result = DB()->sql_query($sql) )
 {
-	$row = $db->sql_fetchrow($result);
+	$row = DB()->sql_fetchrow($result);
 
 	$username = $row['username'];
 	$user_email = $row['user_email'];
@@ -69,7 +69,7 @@ if ( $result = $db->sql_query($sql) )
 				$sql = "UPDATE " . USERS_TABLE . "
 					SET user_emailtime = " . time() . "
 					WHERE user_id = " . $userdata['user_id'];
-				if ( $result = $db->sql_query($sql) )
+				if ( $result = DB()->sql_query($sql) )
 				{
 					require(FT_ROOT . 'includes/emailer.php');
 					$emailer = new emailer($ft_cfg['smtp_delivery']);

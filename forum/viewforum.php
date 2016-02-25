@@ -42,7 +42,7 @@ if ( !empty($forum_id) )
 	$sql = "SELECT *
 		FROM " . FORUMS_TABLE . "
 		WHERE forum_id = $forum_id";
-	if ( !($result = $db->sql_query($sql)) )
+	if ( !($result = DB()->sql_query($sql)) )
 	{
 		message_die(GENERAL_ERROR, 'Could not obtain forums information', '', __LINE__, __FILE__, $sql);
 	}
@@ -56,7 +56,7 @@ else
 // If the query doesn't return any rows this isn't a valid forum. Inform
 // the user.
 //
-if ( !($forum_row = $db->sql_fetchrow($result)) )
+if ( !($forum_row = DB()->sql_fetchrow($result)) )
 {
 	message_die(GENERAL_MESSAGE, 'Forum_not_exist');
 }
@@ -104,12 +104,12 @@ if ( $mark_read == 'topics' )
 		$sql = "SELECT MAX(post_time) AS last_post
 			FROM " . POSTS_TABLE . "
 			WHERE forum_id = $forum_id";
-		if ( !($result = $db->sql_query($sql)) )
+		if ( !($result = DB()->sql_query($sql)) )
 		{
 			message_die(GENERAL_ERROR, 'Could not obtain forums information', '', __LINE__, __FILE__, $sql);
 		}
 
-		if ( $row = $db->sql_fetchrow($result) )
+		if ( $row = DB()->sql_fetchrow($result) )
 		{
 			$tracking_forums = ( isset($HTTP_COOKIE_VARS[$ft_cfg['cookie_prefix'] . '_f']) ) ? unserialize($HTTP_COOKIE_VARS[$ft_cfg['cookie_prefix'] . '_f']) : array();
 			$tracking_topics = ( isset($HTTP_COOKIE_VARS[$ft_cfg['cookie_prefix'] . '_t']) ) ? unserialize($HTTP_COOKIE_VARS[$ft_cfg['cookie_prefix'] . '_t']) : array();
@@ -191,13 +191,13 @@ $sql = "SELECT u.user_id, u.username
 		AND u.user_id = ug.user_id
 	GROUP BY u.user_id, u.username
 	ORDER BY u.user_id";
-if ( !($result = $db->sql_query($sql)) )
+if ( !($result = DB()->sql_query($sql)) )
 {
 	message_die(GENERAL_ERROR, 'Could not query forum moderator information', '', __LINE__, __FILE__, $sql);
 }
 
 $moderators = array();
-while( $row = $db->sql_fetchrow($result) )
+while( $row = DB()->sql_fetchrow($result) )
 {
 	$moderators[] = '<a href="' . append_sid("profile.php?mode=viewprofile&amp;" . POST_USERS_URL . "=" . $row['user_id']) . '">' . $row['username'] . '</a>';
 }
@@ -212,12 +212,12 @@ $sql = "SELECT g.group_id, g.group_name
 		AND g.group_id = aa.group_id
 	GROUP BY g.group_id, g.group_name
 	ORDER BY g.group_id";
-if ( !($result = $db->sql_query($sql)) )
+if ( !($result = DB()->sql_query($sql)) )
 {
 	message_die(GENERAL_ERROR, 'Could not query forum moderator information', '', __LINE__, __FILE__, $sql);
 }
 
-while( $row = $db->sql_fetchrow($result) )
+while( $row = DB()->sql_fetchrow($result) )
 {
 	$moderators[] = '<a href="' . append_sid("groupcp.php?" . POST_GROUPS_URL . "=" . $row['group_id']) . '">' . $row['group_name'] . '</a>';
 }
@@ -245,11 +245,11 @@ if ( !empty($HTTP_POST_VARS['topicdays']) || !empty($HTTP_GET_VARS['topicdays'])
 			AND p.post_id = t.topic_last_post_id
 			AND p.post_time >= $min_topic_time";
 
-	if ( !($result = $db->sql_query($sql)) )
+	if ( !($result = DB()->sql_query($sql)) )
 	{
 		message_die(GENERAL_ERROR, 'Could not obtain limited topics count information', '', __LINE__, __FILE__, $sql);
 	}
-	$row = $db->sql_fetchrow($result);
+	$row = DB()->sql_fetchrow($result);
 
 	$topics_count = ( $row['forum_topics'] ) ? $row['forum_topics'] : 1;
 	$limit_topics_time = "AND p.post_time >= $min_topic_time";
@@ -289,20 +289,20 @@ $select_topic_days .= '</select>';
 //// 		AND p.poster_id = u2.user_id
 //// 		AND t.topic_type = " . POST_ANNOUNCE . "
 //// 	ORDER BY t.topic_last_post_id DESC ";
-//// if ( !($result = $db->sql_query($sql)) )
+//// if ( !($result = DB()->sql_query($sql)) )
 //// {
 ////    message_die(GENERAL_ERROR, 'Could not obtain topic information', '', __LINE__, __FILE__, $sql);
 //// }
 
 $topic_rowset = array();
 //// $total_announcements = 0;
-//// while( $row = $db->sql_fetchrow($result) )
+//// while( $row = DB()->sql_fetchrow($result) )
 //// {
 //// 	$topic_rowset[] = $row;
 //// 	$total_announcements++;
 //// }
 
-//// $db->sql_freeresult($result);
+//// DB()->sql_freeresult($result);
 
 //
 // Grab all the basic data (all topics except announcements)
@@ -351,19 +351,19 @@ $sql = "SELECT t.*, u.username, u.user_id, u2.username as user2, u2.user_id as i
 		$limit_topics_time
 	ORDER BY t.topic_type DESC, $sort_method $order_method, t.topic_last_post_id DESC
 	LIMIT $start, ".$ft_cfg['topics_per_page'];
-if ( !($result = $db->sql_query($sql)) )
+if ( !($result = DB()->sql_query($sql)) )
 {
    message_die(GENERAL_ERROR, 'Could not obtain topic information', '', __LINE__, __FILE__, $sql);
 }
 
 $total_topics = 0;
-while( $row = $db->sql_fetchrow($result) )
+while( $row = DB()->sql_fetchrow($result) )
 {
 	$topic_rowset[] = $row;
 	$total_topics++;
 }
 
-$db->sql_freeresult($result);
+DB()->sql_freeresult($result);
 
 //
 // Total topics ...
@@ -504,14 +504,14 @@ if ($total_topics && $forum_row['allow_reg_tracker'])
 		FROM '. BT_TORRENTS_TABLE ."
 		WHERE topic_id IN($topics_sql)";
 
-	if (!$result = $db->sql_query($sql))
+	if (!$result = DB()->sql_query($sql))
 	{
 		message_die(GENERAL_ERROR, 'Could not obtain torrents information', '', __LINE__, __FILE__, $sql);
 	}
 
-	if ($tor_info = @$db->sql_fetchrowset($result))
+	if ($tor_info = @DB()->sql_fetchrowset($result))
 	{
-		$db->sql_freeresult($result);
+		DB()->sql_freeresult($result);
 
 		foreach ($tor_info as $rid => $row)
 		{
@@ -528,14 +528,14 @@ if ($total_topics && $forum_row['allow_reg_tracker'])
 					AND tr.expire_time > $current_time
 				GROUP BY tr.torrent_id";
 
-			if (!$result = $db->sql_query($sql))
+			if (!$result = DB()->sql_query($sql))
 			{
 				message_die(GENERAL_ERROR, 'Could not obtain peers information', '', __LINE__, __FILE__, $sql);
 			}
 
-			if ($tr_info = @$db->sql_fetchrowset($result))
+			if ($tr_info = @DB()->sql_fetchrowset($result))
 			{
-				$db->sql_freeresult($result);
+				DB()->sql_freeresult($result);
 
 				foreach ($tr_info as $rid => $row)
 				{
@@ -904,14 +904,14 @@ if (!$forum_row['forum_parent'] && isset($forums_ary[$forum_id]['subforums']))
 			$ignore_forum_sql
 		ORDER BY f.cat_id, f.forum_order";
 
-	if (!$result = $db->sql_query($sql))
+	if (!$result = DB()->sql_query($sql))
 	{
 		message_die(GENERAL_ERROR, 'Could not query subforums information', '', __LINE__, __FILE__, $sql);
 	}
 
-	if ($rowset = @$db->sql_fetchrowset($result))
+	if ($rowset = @DB()->sql_fetchrowset($result))
 	{
-		$db->sql_freeresult($result);
+		DB()->sql_freeresult($result);
 
 		foreach ($rowset as $rid => $forum_data)
 		{

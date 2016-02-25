@@ -139,13 +139,13 @@ else
             WHERE btt.attach_id = '.$attach_id.'
             LIMIT 1';
 
-	if (!$result = $db->sql_query($sql))
+	if (!$result = DB()->sql_query($sql))
 	{
 		 message_die(GENERAL_ERROR, 'Could not obtain torrent information', '', __LINE__, __FILE__, $sql);
 	}
 
-	$tor_row = $db->sql_fetchrow($result);
-	$db->sql_freeresult($result);
+	$tor_row = DB()->sql_fetchrow($result);
+	DB()->sql_freeresult($result);
 
 	$tor_size = ($tor_row['size']) ? $tor_row['size'] : 0;
 	$tor_id   = $tor_row['torrent_id'];
@@ -243,11 +243,11 @@ else
 		AND expire_time > $current_time 
 		GROUP BY torrent_id";
 
-	if (!$result = $db->sql_query($sql)) 
+	if (!$result = DB()->sql_query($sql)) 
 	{ 
 		 message_die(GENERAL_ERROR, 'Could not obtain torrent information', '', __LINE__, __FILE__, $sql); 
 	} 
-	while( $row = $db->sql_fetchrow($result) ) 
+	while( $row = DB()->sql_fetchrow($result) ) 
 	{ 
 	$speed_up = humn_size($row['speed_up']).'/s';
 	$speed_down = humn_size($row['speed_down']).'/s';
@@ -334,15 +334,15 @@ else
 				LIMIT $show_peers_limit";
 		}
 
-		if (!$result = $db->sql_query($sql))
+		if (!$result = DB()->sql_query($sql))
 		{
 			 message_die(GENERAL_ERROR, 'Could not obtain peers information', '', __LINE__, __FILE__, $sql);
 		}
 
 		// Build peers table
-		if ($peers = @$db->sql_fetchrowset($result))
+		if ($peers = @DB()->sql_fetchrowset($result))
 		{
-			$db->sql_freeresult($result);
+			DB()->sql_freeresult($result);
 			$peers_cnt = count($peers);
 
 			$cnt = $tr = $sp_up = $sp_down = $sp_up_tot = $sp_down_tot = array();
@@ -620,7 +620,7 @@ else
 					FROM '. USERS_TABLE ."
 					WHERE user_id = $last_seeder_uid
 					LIMIT 1";
-				$last_seeder_name = ($row = @$db->sql_fetchrow($db->sql_query($sql))) ? '<b><a class="seed" href="'. append_sid("profile.php?mode=viewprofile&amp;". POST_USERS_URL .'='. $tor_row['last_seeder_uid']) .'">'. $row['username'] .'</a></b>' : '';
+				$last_seeder_name = ($row = @DB()->sql_fetchrow(DB()->sql_query($sql))) ? '<b><a class="seed" href="'. append_sid("profile.php?mode=viewprofile&amp;". POST_USERS_URL .'='. $tor_row['last_seeder_uid']) .'">'. $row['username'] .'</a></b>' : '';
 			}
 			$template->assign_vars(array('SEEDER_LAST_SEEN' => "Полный источник $last_seeder_name был: $last_seen_time"));
 		}

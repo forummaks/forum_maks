@@ -68,14 +68,14 @@ if ($show_dl_list)
 			LIMIT $dl_list_sql_limit";
 	}
 
-	if (!$result = $db->sql_query($sql))
+	if (!$result = DB()->sql_query($sql))
 	{
 		message_die(GENERAL_ERROR, 'Could not obtain download data for this topic', '', __LINE__, __FILE__, $sql);
 	}
 
-	if ($dl_info = @$db->sql_fetchrowset($result))
+	if ($dl_info = @DB()->sql_fetchrowset($result))
 	{
-		$db->sql_freeresult($result);
+		DB()->sql_freeresult($result);
 
 		if ($count_mode)
 		{
@@ -127,7 +127,7 @@ if ($show_dl_list)
 				WHERE topic_id = $topic_id
 					AND user_id IN($expired_users)";
 
-			if (!$db->sql_query($sql))
+			if (!DB()->sql_query($sql))
 			{
 				message_die(GENERAL_ERROR, 'Could not delete expired users from DL-List', '', __LINE__, __FILE__, $sql);
 			}

@@ -62,17 +62,17 @@ if (isset($HTTP_GET_VARS['view']) && empty($HTTP_GET_VARS[POST_POST_URL])) {
 				AND p.post_time >= " . $topic_last_read . "
 				LIMIT 1";
 
-                if (!($result = $db->sql_query($sql))) {
+                if (!($result = DB()->sql_query($sql))) {
                     message_die(GENERAL_ERROR, 'Could not obtain newer/older topic information', '', __LINE__, __FILE__, $sql);
                 }
 
-                if (!($row = $db->sql_fetchrow($result))) {
+                if (!($row = DB()->sql_fetchrow($result))) {
                     $sql = "SELECT topic_last_post_id as post_id FROM " . TOPICS_TABLE . " WHERE topic_id = " . intval($topic_id);
-                    if (!($result = $db->sql_query($sql))) {
+                    if (!($result = DB()->sql_query($sql))) {
                         message_die(GENERAL_ERROR, 'Could not obtain newer/older topic information', '', __LINE__, __FILE__, $sql);
                     }
 
-                    if (!($row = $db->sql_fetchrow($result))) {
+                    if (!($row = DB()->sql_fetchrow($result))) {
                         message_die(GENERAL_MESSAGE, 'No_new_posts_last_visit');
                     }
                 }
@@ -101,11 +101,11 @@ if (isset($HTTP_GET_VARS['view']) && empty($HTTP_GET_VARS[POST_POST_URL])) {
 				AND t.topic_last_post_id $sql_condition t2.topic_last_post_id
 			ORDER BY t.topic_last_post_id $sql_ordering
 			LIMIT 1";
-        if (!($result = $db->sql_query($sql))) {
+        if (!($result = DB()->sql_query($sql))) {
             message_die(GENERAL_ERROR, "Could not obtain newer/older topic information", '', __LINE__, __FILE__, $sql);
         }
 
-        if ($row = $db->sql_fetchrow($result)) {
+        if ($row = DB()->sql_fetchrow($result)) {
             $topic_id = intval($row['topic_id']);
         } else {
             $message = ($HTTP_GET_VARS['view'] == 'next') ? 'No_newer_topics' : 'No_older_topics';
@@ -134,11 +134,11 @@ $sql = "SELECT t.*, f.*" . $count_sql . "
 		$order_sql";
 attach_setup_viewtopic_auth($order_sql, $sql);
 
-if (!($result = $db->sql_query($sql))) {
+if (!($result = DB()->sql_query($sql))) {
     message_die(GENERAL_ERROR, "Could not obtain topic information", '', __LINE__, __FILE__, $sql);
 }
 
-if (!($forum_topic_data = $db->sql_fetchrow($result))) {
+if (!($forum_topic_data = DB()->sql_fetchrow($result))) {
     message_die(GENERAL_MESSAGE, 'Topic_post_not_exist');
 }
 
@@ -197,11 +197,11 @@ if ($userdata['session_logged_in']) {
 		FROM " . TOPICS_WATCH_TABLE . "
 		WHERE topic_id = $topic_id
 			AND user_id = " . $userdata['user_id'];
-    if (!($result = $db->sql_query($sql))) {
+    if (!($result = DB()->sql_query($sql))) {
         message_die(GENERAL_ERROR, "Could not obtain topic watch information", '', __LINE__, __FILE__, $sql);
     }
 
-    if ($row = $db->sql_fetchrow($result)) {
+    if ($row = DB()->sql_fetchrow($result)) {
         if (isset($HTTP_GET_VARS['unwatch'])) {
             if ($HTTP_GET_VARS['unwatch'] == 'topic') {
                 $is_watching_topic = 0;
@@ -210,7 +210,7 @@ if ($userdata['session_logged_in']) {
                 $sql = "DELETE $sql_priority FROM " . TOPICS_WATCH_TABLE . "
 					WHERE topic_id = $topic_id
 						AND user_id = " . $userdata['user_id'];
-                if (!($result = $db->sql_query($sql))) {
+                if (!($result = DB()->sql_query($sql))) {
                     message_die(GENERAL_ERROR, "Could not delete topic watch information", '', __LINE__, __FILE__, $sql);
                 }
             }
@@ -230,7 +230,7 @@ if ($userdata['session_logged_in']) {
 					SET notify_status = 0
 					WHERE topic_id = $topic_id
 						AND user_id = " . $userdata['user_id'];
-                if (!($result = $db->sql_query($sql))) {
+                if (!($result = DB()->sql_query($sql))) {
                     message_die(GENERAL_ERROR, "Could not update topic watch information", '', __LINE__, __FILE__, $sql);
                 }
             }
@@ -243,7 +243,7 @@ if ($userdata['session_logged_in']) {
                 $sql_priority = (SQL_LAYER == "mysql") ? "LOW_PRIORITY" : '';
                 $sql = "INSERT $sql_priority INTO " . TOPICS_WATCH_TABLE . " (user_id, topic_id, notify_status)
 					VALUES (" . $userdata['user_id'] . ", $topic_id, 0)";
-                if (!($result = $db->sql_query($sql))) {
+                if (!($result = DB()->sql_query($sql))) {
                     message_die(GENERAL_ERROR, "Could not insert topic watch information", '', __LINE__, __FILE__, $sql);
                 }
             }
@@ -286,11 +286,11 @@ if (!empty($HTTP_POST_VARS['postdays']) || !empty($HTTP_GET_VARS['postdays'])) {
 		WHERE t.topic_id = $topic_id
 			AND p.topic_id = t.topic_id
 			AND p.post_time >= $min_post_time";
-    if (!($result = $db->sql_query($sql))) {
+    if (!($result = DB()->sql_query($sql))) {
         message_die(GENERAL_ERROR, "Could not obtain limited topics count information", '', __LINE__, __FILE__, $sql);
     }
 
-    $total_replies = ($row = $db->sql_fetchrow($result)) ? intval($row['num_posts']) : 0;
+    $total_replies = ($row = DB()->sql_fetchrow($result)) ? intval($row['num_posts']) : 0;
 
     $limit_posts_time = "AND p.post_time >= $min_post_time ";
 
@@ -341,16 +341,16 @@ $sql = "SELECT u.username, u.user_id, u.user_posts, u.user_from, u.user_website,
 		AND u.user_id = p.poster_id
 	ORDER BY p.post_time $post_time_order
 	LIMIT $start, " . $ft_cfg['posts_per_page'];
-if (!($result = $db->sql_query($sql))) {
+if (!($result = DB()->sql_query($sql))) {
     message_die(GENERAL_ERROR, "Could not obtain post/user information.", '', __LINE__, __FILE__, $sql);
 }
 
 $postrow = array();
-if ($row = $db->sql_fetchrow($result)) {
+if ($row = DB()->sql_fetchrow($result)) {
     do {
         $postrow[] = $row;
-    } while ($row = $db->sql_fetchrow($result));
-    $db->sql_freeresult($result);
+    } while ($row = DB()->sql_fetchrow($result));
+    DB()->sql_freeresult($result);
 
     $total_posts = count($postrow);
 } else {
@@ -379,23 +379,23 @@ if ($resync) {
     require(FT_ROOT . 'includes/functions_admin.php');
     sync('topic', $topic_id);
 
-    $result = $db->sql_query('SELECT COUNT(post_id) AS total FROM ' . POSTS_TABLE . ' WHERE topic_id = ' . $topic_id);
-    $row = $db->sql_fetchrow($result);
+    $result = DB()->sql_query('SELECT COUNT(post_id) AS total FROM ' . POSTS_TABLE . ' WHERE topic_id = ' . $topic_id);
+    $row = DB()->sql_fetchrow($result);
     $total_replies = $row['total'];
 }
 
 $sql = "SELECT *
 	FROM " . RANKS_TABLE . "
 	ORDER BY rank_special, rank_min";
-if (!($result = $db->sql_query($sql))) {
+if (!($result = DB()->sql_query($sql))) {
     message_die(GENERAL_ERROR, "Could not obtain ranks information.", '', __LINE__, __FILE__, $sql);
 }
 
 $ranksrow = array();
-while ($row = $db->sql_fetchrow($result)) {
+while ($row = DB()->sql_fetchrow($result)) {
     $ranksrow[] = $row;
 }
-$db->sql_freeresult($result);
+DB()->sql_freeresult($result);
 
 //
 // Define censored word matches
@@ -633,12 +633,12 @@ if (!empty($forum_topic_data['topic_vote'])) {
 		WHERE vd.topic_id = $topic_id
 			AND vr.vote_id = vd.vote_id
 		ORDER BY vr.vote_option_id ASC";
-    if (!($result = $db->sql_query($sql))) {
+    if (!($result = DB()->sql_query($sql))) {
         message_die(GENERAL_ERROR, "Could not obtain vote data for this topic", '', __LINE__, __FILE__, $sql);
     }
 
-    if ($vote_info = $db->sql_fetchrowset($result)) {
-        $db->sql_freeresult($result);
+    if ($vote_info = DB()->sql_fetchrowset($result)) {
+        DB()->sql_freeresult($result);
         $vote_options = count($vote_info);
 
         $vote_id = $vote_info[0]['vote_id'];
@@ -648,12 +648,12 @@ if (!empty($forum_topic_data['topic_vote'])) {
 			FROM " . VOTE_USERS_TABLE . "
 			WHERE vote_id = $vote_id
 				AND vote_user_id = " . intval($userdata['user_id']);
-        if (!($result = $db->sql_query($sql))) {
+        if (!($result = DB()->sql_query($sql))) {
             message_die(GENERAL_ERROR, "Could not obtain user vote data for this topic", '', __LINE__, __FILE__, $sql);
         }
 
-        $user_voted = ($row = $db->sql_fetchrow($result)) ? TRUE : 0;
-        $db->sql_freeresult($result);
+        $user_voted = ($row = DB()->sql_fetchrow($result)) ? TRUE : 0;
+        DB()->sql_freeresult($result);
 
         if (isset($HTTP_GET_VARS['vote']) || isset($HTTP_POST_VARS['vote'])) {
             $view_result = (((isset($HTTP_GET_VARS['vote'])) ? $HTTP_GET_VARS['vote'] : $HTTP_POST_VARS['vote']) == 'viewresult') ? TRUE : 0;
@@ -754,7 +754,7 @@ init_display_post_attachments($forum_topic_data['topic_attachment']);
 $sql = "UPDATE " . TOPICS_TABLE . "
 	SET topic_views = topic_views + 1
 	WHERE topic_id = $topic_id";
-if (!$db->sql_query($sql)) {
+if (!DB()->sql_query($sql)) {
     message_die(GENERAL_ERROR, "Could not update topic views.", '', __LINE__, __FILE__, $sql);
 }
 
@@ -1182,11 +1182,11 @@ function utf8_to_win($string)
 
 //ищемс attach_id (с) fakka.
 @$sql = "select topic_first_post_id from " . TOPICS_TABLE . " where topic_id = " . $topic_id . " limit 1";
-if ($row = $db->sql_fetchrow($db->sql_query($sql))) {
+if ($row = DB()->sql_fetchrow(DB()->sql_query($sql))) {
     $post_id = $row['topic_first_post_id'];
 }
 @$sql = "select attach_id from " . ATTACHMENTS_TABLE . " where post_id = " . $post_id . " limit 1";
-if ($row = $db->sql_fetchrow($db->sql_query($sql))) {
+if ($row = DB()->sql_fetchrow(DB()->sql_query($sql))) {
     $attach_id = $row['attach_id'];
 }
 if (@$attach_id > 0) // чтоб небыло ошибки с простыми сообщени€ми

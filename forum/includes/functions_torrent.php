@@ -4,7 +4,7 @@ if (!defined('FT_ROOT')) die(basename(__FILE__));
 
 function get_torrent_info ($attach_id)
 {
-	global $db;
+	
 
 	$attach_id = intval($attach_id);
 
@@ -17,17 +17,17 @@ function get_torrent_info ($attach_id)
 			AND f.forum_id = p.forum_id
 		LIMIT 1";
 
-	if (!$result = $db->sql_query($sql))
+	if (!$result = DB()->sql_query($sql))
 	{
 		message_die(GENERAL_ERROR, 'Could not query torrent information', '', __LINE__, __FILE__, $sql);
 	}
 
-	if (!$torrent = $db->sql_fetchrow($result))
+	if (!$torrent = DB()->sql_fetchrow($result))
 	{
 		message_die(GENERAL_ERROR, 'Invalid attach_id');
 	}
 
-	$db->sql_freeresult($result);
+	DB()->sql_freeresult($result);
 
 	return $torrent;
 }
@@ -60,7 +60,7 @@ function torrent_auth_check ($forum_id, $poster_id)
 
 function tracker_unregister ($attach_id, $mode = '')
 {
-	global $db, $lang, $ft_cfg;
+	global  $lang, $ft_cfg;
 
 	$attach_id = intval($attach_id);
 	$torrent = array();
@@ -98,12 +98,12 @@ function tracker_unregister ($attach_id, $mode = '')
 				FROM '. BT_TORRENTS_TABLE ."
 				WHERE attach_id = $attach_id";
 
-			if (!$result = $db->sql_query($sql))
+			if (!$result = DB()->sql_query($sql))
 			{
 				message_die(GENERAL_ERROR, 'Could not query torrent information', '', __LINE__, __FILE__, $sql);
 			}
 
-			if ($row = $db->sql_fetchrow($result))
+			if ($row = DB()->sql_fetchrow($result))
 			{
 				$topic_id = $row['topic_id'];
 			}
@@ -116,7 +116,7 @@ function tracker_unregister ($attach_id, $mode = '')
 				WHERE topic_id = $topic_id
 				LIMIT 1";
 
-			if (!$result = $db->sql_query($sql))
+			if (!$result = DB()->sql_query($sql))
 			{
 				message_die(GENERAL_ERROR, 'Could not update topics table', '', __LINE__, __FILE__, $sql);
 			}
@@ -126,7 +126,7 @@ function tracker_unregister ($attach_id, $mode = '')
 	$sql = 'DELETE FROM '. BT_TORRENTS_TABLE ."
 		WHERE attach_id = $attach_id";
 
-	if (!$db->sql_query($sql))
+	if (!DB()->sql_query($sql))
 	{
 		message_die(GENERAL_ERROR, 'Could not delete torrent from torrents table', '', __LINE__, __FILE__, $sql);
 	}
@@ -134,7 +134,7 @@ function tracker_unregister ($attach_id, $mode = '')
 	$sql = 'DELETE FROM '. BT_TOR_DL_STAT_TABLE ."
 		WHERE attach_id = $attach_id";
 
-	if (!$db->sql_query($sql))
+	if (!DB()->sql_query($sql))
 	{
 		message_die(GENERAL_ERROR, 'Could not delete torrent dl-stat', '', __LINE__, __FILE__, $sql);
 	}
@@ -143,7 +143,7 @@ function tracker_unregister ($attach_id, $mode = '')
 			tracker_status = 0
 		WHERE attach_id = $attach_id";
 
-	if (!$db->sql_query($sql))
+	if (!DB()->sql_query($sql))
 	{
 		message_die(GENERAL_ERROR, 'Could not update torrent status', '', __LINE__, __FILE__, $sql);
 	}
@@ -186,7 +186,7 @@ function delete_torrent ($attach_id, $mode = '')
 
 function tracker_register ($attach_id, $mode = '')
 {
-	global $db, $template, $attach_config, $ft_cfg, $lang, $return_message;
+	global  $template, $attach_config, $ft_cfg, $lang, $return_message;
 	global $reg_mode;
 
 	$template->assign_vars(array('META' => ''));
@@ -305,9 +305,9 @@ function tracker_register ($attach_id, $mode = '')
 
 	$sql = 'INSERT INTO '. BT_TORRENTS_TABLE ." ($columns) VALUES ($values)";
 
-	if (!$db->sql_query($sql))
+	if (!DB()->sql_query($sql))
 	{
-		$sql_error = $db->sql_error();
+		$sql_error = DB()->sql_error();
 
 		if ($sql_error['code'] == 1062) // Duplicate entry
 		{
@@ -319,7 +319,7 @@ function tracker_register ($attach_id, $mode = '')
 
 /*
 	// Insert empty up/down "statistic record" for guests
-	$torrent_id = $db->sql_nextid();
+	$torrent_id = DB()->sql_nextid();
 	$guest_uid  = GUEST_UID;
 
 	$columns = 'torrent_id,  user_id,    attach_id, t_up_total, t_down_total';
@@ -327,7 +327,7 @@ function tracker_register ($attach_id, $mode = '')
 
 	$sql = 'INSERT INTO '. BT_TOR_DL_STAT_TABLE ." ($columns) VALUES ($values)";
 
-	if (!$db->sql_query($sql))
+	if (!DB()->sql_query($sql))
 	{
 		message_die(GENERAL_ERROR, 'Could not insert empty statistic record for guests', '', __LINE__, __FILE__, $sql);
 	}
@@ -339,7 +339,7 @@ function tracker_register ($attach_id, $mode = '')
 		WHERE attach_id = $attach_id
 		LIMIT 1";
 
-	if (!$db->sql_query($sql))
+	if (!DB()->sql_query($sql))
 	{
 		message_die(GENERAL_ERROR, 'Could not update torrent status', '', __LINE__, __FILE__, $sql);
 	}
@@ -352,7 +352,7 @@ function tracker_register ($attach_id, $mode = '')
 			WHERE topic_id = $topic_id
 			LIMIT 1";
 
-		if (!$result = $db->sql_query($sql))
+		if (!$result = DB()->sql_query($sql))
 		{
 			message_die(GENERAL_ERROR, 'Could not update topics table', '', __LINE__, __FILE__, $sql);
 		}
@@ -369,7 +369,7 @@ function tracker_register ($attach_id, $mode = '')
 
 function send_torrent_with_passkey ($filename)
 {
-	global $attachment, $auth_pages, $db, $userdata, $ft_cfg, $lang;
+	global $attachment, $auth_pages,  $userdata, $ft_cfg, $lang;
 
 	if (!$ft_cfg['bt_add_auth_key'] || $attachment['extension'] !== TORRENT_EXT || !$size = @filesize($filename))
 	{
@@ -386,7 +386,7 @@ function send_torrent_with_passkey ($filename)
 		WHERE config_name = 'auth_key_name'
 			OR  config_name = 'allow_guest_dl'";
 
-	if (!$rowset = @$db->sql_fetchrowset($db->sql_query($sql)))
+	if (!$rowset = @DB()->sql_fetchrowset(DB()->sql_query($sql)))
 	{
 		message_die(GENERAL_ERROR, 'Could not query tracker config', '', __LINE__, __FILE__, $sql);
 	}
@@ -431,12 +431,12 @@ function send_torrent_with_passkey ($filename)
 			AND u.user_id = $user_id
 		LIMIT 1";
 
-	if (!$result = $db->sql_query($sql))
+	if (!$result = DB()->sql_query($sql))
 	{
 		message_die(GENERAL_ERROR, 'Could not query information for this torrent', '', __LINE__, __FILE__, $sql);
 	}
 
-	$row = $db->sql_fetchrow($result);
+	$row = DB()->sql_fetchrow($result);
 
 	if (!$row['tracker_status'])
 	{
@@ -551,7 +551,7 @@ function send_torrent_with_passkey ($filename)
 
 function get_user_passkey ($user_id)
 {
-	global $db;
+	
 
 	$user_id = intval($user_id);
 
@@ -559,19 +559,19 @@ function get_user_passkey ($user_id)
 		FROM '. BT_USERS_TABLE ."
 		WHERE user_id = $user_id";
 
-	if (!$result = $db->sql_query($sql))
+	if (!$result = DB()->sql_query($sql))
 	{
 		message_die(GENERAL_ERROR, "Could not query user's auth_key", '', __LINE__, __FILE__, $sql);
 	}
 
-	$row = $db->sql_fetchrow($result);
+	$row = DB()->sql_fetchrow($result);
 
 	return $row['auth_key'];
 }
 
 function generate_passkey ($user_id, $new_user)
 {
-	global $db, $lang, $sql;
+	global  $lang, $sql;
 
 	$user_id = intval($user_id);
 
@@ -585,12 +585,12 @@ function generate_passkey ($user_id, $new_user)
 			FROM '. BT_USERS_TABLE ."
 			WHERE user_id = $user_id";
 
-		if (!$result = $db->sql_query($sql))
+		if (!$result = DB()->sql_query($sql))
 		{
 			message_die(GENERAL_ERROR, 'Could not query userdata for passkey', '', __LINE__, __FILE__, $sql);
 		}
 
-		$row = $db->sql_fetchrow($result);
+		$row = DB()->sql_fetchrow($result);
 
 		$u_up_total   = ($row['u_up_total']) ? $row['u_up_total'] : 0;
 		$u_down_total = ($row['u_down_total']) ? $row['u_down_total'] : 0;
@@ -603,12 +603,12 @@ function generate_passkey ($user_id, $new_user)
 			FROM '. USERS_TABLE ."
 			WHERE user_id = $user_id";
 
-		if (!$result = $db->sql_query($sql))
+		if (!$result = DB()->sql_query($sql))
 		{
 			message_die(GENERAL_ERROR, 'Could not query userdata for passkey', '', __LINE__, __FILE__, $sql);
 		}
 
-		$row = $db->sql_fetchrow($result);
+		$row = DB()->sql_fetchrow($result);
 
 		if (!$row['user_allow_passkey'])
 		{
@@ -620,7 +620,7 @@ function generate_passkey ($user_id, $new_user)
 		WHERE user_id = $user_id
 		LIMIT 1";
 
-	if (!$db->sql_query($sql))
+	if (!DB()->sql_query($sql))
 	{
 		message_die(GENERAL_ERROR, 'Could not delete current passkey', '', __LINE__, __FILE__, $sql);
 	}
@@ -634,7 +634,7 @@ function generate_passkey ($user_id, $new_user)
 
 		$sql = 'INSERT INTO '. BT_USERS_TABLE ." ($columns) VALUES ($values)";
 
-		if ($db->sql_query($sql))
+		if (DB()->sql_query($sql))
 		{
 			define ('AUTH_KEY_INSERT_OK', 1);
 			break;
@@ -646,7 +646,7 @@ function generate_passkey ($user_id, $new_user)
 
 function get_registered_torrents ($id, $mode)
 {
-	global $db;
+	
 
 	$field = ($mode == 'topic') ? 'topic_id' : 'post_id';
 
@@ -654,12 +654,12 @@ function get_registered_torrents ($id, $mode)
 		FROM '. BT_TORRENTS_TABLE ."
 		WHERE $field = $id";
 
-	if (!$result = $db->sql_query($sql))
+	if (!$result = DB()->sql_query($sql))
 	{
 		message_die(GENERAL_ERROR, 'Could not query torrent id', '', __LINE__, __FILE__, $sql);
 	}
 
-	if ($rowset = @$db->sql_fetchrowset($result))
+	if ($rowset = @DB()->sql_fetchrowset($result))
 	{
 		return $rowset;
 	}

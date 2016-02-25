@@ -4,7 +4,7 @@ if (!defined('FT_ROOT')) die(basename(__FILE__));
 
 function session_begin($user_id, $user_ip, $auto_create = 0, $enable_autologin = 0, $admin = 0)
 {
-	global $db, $ft_cfg;
+	global  $ft_cfg;
 	global $HTTP_COOKIE_VARS, $HTTP_GET_VARS, $SID;
 
 	$cookiename = $ft_cfg['cookie_prefix'];
@@ -41,12 +41,12 @@ function session_begin($user_id, $user_ip, $auto_create = 0, $enable_autologin =
 	$sql = "SELECT *
 		FROM " . USERS_TABLE . "
 		WHERE user_id = $user_id";
-	if ( !($result = $db->sql_query($sql)) )
+	if ( !($result = DB()->sql_query($sql)) )
 	{
 		message_die(CRITICAL_ERROR, 'Could not obtain lastvisit data from user table', '', __LINE__, __FILE__, $sql);
 	}
 
-	$userdata = $db->sql_fetchrow($result);
+	$userdata = DB()->sql_fetchrow($result);
 
 	if ( $user_id != GUEST_UID )
 	{
@@ -71,9 +71,9 @@ function session_begin($user_id, $user_ip, $auto_create = 0, $enable_autologin =
 					$user_id = $userdata['user_id'] = GUEST_UID;
 
 					$sql = 'SELECT * FROM ' . USERS_TABLE . ' WHERE user_id = ' . GUEST_UID;
-					$result = $db->sql_query($sql);
-					$userdata = $db->sql_fetchrow($result);
-					$db->sql_freeresult($result);
+					$result = DB()->sql_query($sql);
+					$userdata = DB()->sql_fetchrow($result);
+					DB()->sql_freeresult($result);
 				}
 			}
 			else
@@ -84,9 +84,9 @@ function session_begin($user_id, $user_ip, $auto_create = 0, $enable_autologin =
 				$user_id = $userdata['user_id'] = GUEST_UID;
 
 				$sql = 'SELECT * FROM ' . USERS_TABLE . ' WHERE user_id = ' . GUEST_UID;
-				$result = $db->sql_query($sql);
-				$userdata = $db->sql_fetchrow($result);
-				$db->sql_freeresult($result);
+				$result = DB()->sql_query($sql);
+				$userdata = DB()->sql_fetchrow($result);
+				DB()->sql_freeresult($result);
 			}
 		}
 		else
@@ -114,12 +114,12 @@ function session_begin($user_id, $user_ip, $auto_create = 0, $enable_autologin =
 		$sql .= " OR ban_email LIKE '" . str_replace("\'", "''", $userdata['user_email']) . "'
 			OR ban_email LIKE '" . substr(str_replace("\'", "''", $userdata['user_email']), strpos(str_replace("\'", "''", $userdata['user_email']), "@")) . "'";
 	}
-	if ( !($result = $db->sql_query($sql)) )
+	if ( !($result = DB()->sql_query($sql)) )
 	{
 		message_die(CRITICAL_ERROR, 'Could not obtain ban information', '', __LINE__, __FILE__, $sql);
 	}
 
-	if ( $ban_info = $db->sql_fetchrow($result) )
+	if ( $ban_info = DB()->sql_fetchrow($result) )
 	{
 		if ( $ban_info['ban_ip'] || $ban_info['ban_userid'] || $ban_info['ban_email'] )
 		{
@@ -134,7 +134,7 @@ function session_begin($user_id, $user_ip, $auto_create = 0, $enable_autologin =
 		SET session_user_id = $user_id, session_start = $current_time, session_time = $current_time, session_logged_in = $login, session_admin = $admin
 		WHERE session_id = '" . $session_id . "'
 			AND session_ip = '$user_ip'";
-	if ( !$db->sql_query($sql) || !$db->affected_rows() )
+	if ( !DB()->sql_query($sql) || !DB()->affected_rows() )
 	{
 		list($sec, $usec) = explode(' ', microtime());
 		mt_srand((float) $sec + ((float) $usec * 100000));
@@ -143,7 +143,7 @@ function session_begin($user_id, $user_ip, $auto_create = 0, $enable_autologin =
 		$sql = "INSERT INTO " . SESSIONS_TABLE . "
 			(session_id, session_user_id, session_start, session_time, session_ip, session_logged_in, session_admin)
 			VALUES ('$session_id', $user_id, $current_time, $current_time, '$user_ip', $login, $admin)";
-		if ( !$db->sql_query($sql) )
+		if ( !DB()->sql_query($sql) )
 		{
 			message_die(CRITICAL_ERROR, 'Error creating new session', '', __LINE__, __FILE__, $sql);
 		}
@@ -158,7 +158,7 @@ function session_begin($user_id, $user_ip, $auto_create = 0, $enable_autologin =
 			$sql = "UPDATE " . USERS_TABLE . "
 				SET user_session_time = $current_time, user_lastvisit = $last_visit
 				WHERE user_id = $user_id";
-			if ( !$db->sql_query($sql) )
+			if ( !DB()->sql_query($sql) )
 			{
 				message_die(CRITICAL_ERROR, 'Error updating last visit time', '', __LINE__, __FILE__, $sql);
 			}
@@ -192,7 +192,7 @@ function session_begin($user_id, $user_ip, $auto_create = 0, $enable_autologin =
 //
 function session_pagestart($user_ip)
 {
-	global $db, $lang, $ft_cfg;
+	global  $lang, $ft_cfg;
 	global $HTTP_COOKIE_VARS, $HTTP_GET_VARS, $SID;
 
 	$cookiename = $ft_cfg['cookie_prefix'];
@@ -235,12 +235,12 @@ function session_pagestart($user_ip)
 			FROM " . SESSIONS_TABLE . " s, " . USERS_TABLE . " u
 			WHERE s.session_id = '$session_id'
 				AND u.user_id = s.session_user_id";
-		if ( !($result = $db->sql_query($sql)) )
+		if ( !($result = DB()->sql_query($sql)) )
 		{
 			message_die(CRITICAL_ERROR, 'Error doing DB query userdata row fetch', '', __LINE__, __FILE__, $sql);
 		}
 
-		$userdata = $db->sql_fetchrow($result);
+		$userdata = DB()->sql_fetchrow($result);
 
 		//
 		// Did the session exist in the DB?
@@ -270,7 +270,7 @@ function session_pagestart($user_ip)
 					$sql = "UPDATE " . SESSIONS_TABLE . "
 						SET session_time = $current_time$update_admin
 						WHERE session_id = '" . $userdata['session_id'] . "'";
-					if ( !$db->sql_query($sql) )
+					if ( !DB()->sql_query($sql) )
 					{
 						message_die(CRITICAL_ERROR, 'Error updating sessions table', '', __LINE__, __FILE__, $sql);
 					}
@@ -280,7 +280,7 @@ function session_pagestart($user_ip)
 						$sql = "UPDATE " . USERS_TABLE . "
 							SET user_session_time = $current_time
 							WHERE user_id = " . $userdata['user_id'];
-						if ( !$db->sql_query($sql) )
+						if ( !DB()->sql_query($sql) )
 						{
 							message_die(CRITICAL_ERROR, 'Error updating sessions table', '', __LINE__, __FILE__, $sql);
 						}
@@ -293,7 +293,7 @@ function session_pagestart($user_ip)
 					$sql = "DELETE FROM " . SESSIONS_TABLE . "
 						WHERE session_time < $expiry_time
 							AND session_id <> '$session_id'";
-					if ( !$db->sql_query($sql) )
+					if ( !DB()->sql_query($sql) )
 					{
 						message_die(CRITICAL_ERROR, 'Error clearing sessions table', '', __LINE__, __FILE__, $sql);
 					}
@@ -329,7 +329,7 @@ function session_pagestart($user_ip)
 //
 function session_end($session_id, $user_id)
 {
-	global $db, $lang, $ft_cfg;
+	global  $lang, $ft_cfg;
 	global $HTTP_COOKIE_VARS, $HTTP_GET_VARS, $SID;
 
 	$cookiename = $ft_cfg['cookie_prefix'];
@@ -364,7 +364,7 @@ function session_end($session_id, $user_id)
 	$sql = "DELETE FROM " . SESSIONS_TABLE . "
 		WHERE session_id = '$session_id'
 			AND session_user_id = $user_id";
-	if ( !$db->sql_query($sql) )
+	if ( !DB()->sql_query($sql) )
 	{
 		message_die(CRITICAL_ERROR, 'Error removing user session', '', __LINE__, __FILE__, $sql);
 	}

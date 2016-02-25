@@ -25,18 +25,6 @@ $ft_cfg['database'] = array(
 
 $ft_cfg['database_alias'] = array(
 //	'alias'  => 'srv_name'
-#	db1
-	'log'    => 'database1', // BB_LOG
-	'search' => 'database1', // BB_TOPIC_SEARCH
-	'sres'   => 'database1', // BB_BT_USER_SETTINGS, BB_SEARCH_RESULTS
-	'u_ses'  => 'database1', // BB_USER_SES, BB_USER_LASTVISIT
-#	db2
-	'dls'    => 'database1', // BB_BT_DLS_*
-	'ip'     => 'database1', // BB_POSTS_IP
-	'ut'     => 'database1', // BB_TOPICS_USER_POSTED
-#	db3
-	'pm'     => 'database1', // BB_PRIVMSGS, BB_PRIVMSGS_TEXT
-	'pt'     => 'database1', // BB_POSTS_TEXT
 );
 
 // Server

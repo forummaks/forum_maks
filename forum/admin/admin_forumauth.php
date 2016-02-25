@@ -108,7 +108,7 @@ if( isset($HTTP_POST_VARS['submit']) )
 
 		if ( $sql != '' )
 		{
-			if ( !$db->sql_query($sql) )
+			if ( !DB()->sql_query($sql) )
 			{
 				message_die(GENERAL_ERROR, 'Could not update auth table', '', __LINE__, __FILE__, $sql);
 			}
@@ -136,13 +136,13 @@ $sql = "SELECT f.*
 	WHERE c.cat_id = f.cat_id
 	$forum_sql
 	ORDER BY c.cat_order ASC, f.forum_order ASC";
-if ( !($result = $db->sql_query($sql)) )
+if ( !($result = DB()->sql_query($sql)) )
 {
 	message_die(GENERAL_ERROR, "Couldn't obtain forum list", "", __LINE__, __FILE__, $sql);
 }
 
-$forum_rows = $db->sql_fetchrowset($result);
-$db->sql_freeresult($result);
+$forum_rows = DB()->sql_fetchrowset($result);
+DB()->sql_freeresult($result);
 
 if( empty($forum_id) )
 {

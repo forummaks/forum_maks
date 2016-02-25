@@ -150,10 +150,10 @@ if (sizeof($delete_id_list) > 0)
 			WHERE attach_id = ' . intval($delete_id_list[$i]) . '
 				AND (user_id_1 = ' . intval($profiledata['user_id']) . '
 					OR user_id_2 = ' . intval($profiledata['user_id']) . ')';
-		$result = $db->sql_query($sql);
+		$result = DB()->sql_query($sql);
 		if ($result)
 		{
-			$row = $db->sql_fetchrow($result);
+			$row = DB()->sql_fetchrow($result);
 			if ($row['post_id'] != 0)
 			{
 				delete_attachment(0, intval($delete_id_list[$i]));
@@ -248,13 +248,13 @@ $sql = "SELECT attach_id
 	WHERE user_id_1 = " . intval($profiledata['user_id']) . " OR user_id_2 = " . intval($profiledata['user_id']) . "
 	GROUP BY attach_id";
 		
-if ( !($result = $db->sql_query($sql)) )
+if ( !($result = DB()->sql_query($sql)) )
 {
 	message_die(GENERAL_ERROR, 'Couldn\'t query attachments', '', __LINE__, __FILE__, $sql);
 }
 		
-$attach_ids = $db->sql_fetchrowset($result);
-$num_attach_ids = $db->num_rows($result);
+$attach_ids = DB()->sql_fetchrowset($result);
+$num_attach_ids = DB()->num_rows($result);
 $total_rows = $num_attach_ids;
 
 if ($num_attach_ids > 0)
@@ -271,13 +271,13 @@ if ($num_attach_ids > 0)
 		WHERE a.attach_id IN (" . implode(', ', $attach_id) . ") " .
 		$order_by;
 		
-	if ( !($result = $db->sql_query($sql)) )
+	if ( !($result = DB()->sql_query($sql)) )
 	{
 		message_die(GENERAL_ERROR, "Couldn't query attachments", '', __LINE__, __FILE__, $sql);
 	}
 
-	$attachments = $db->sql_fetchrowset($result);
-	$num_attach = $db->num_rows($result);
+	$attachments = DB()->sql_fetchrowset($result);
+	$num_attach = DB()->num_rows($result);
 }
 else
 {
@@ -298,13 +298,13 @@ if (count($attachments) > 0)
 			FROM " . ATTACHMENTS_TABLE . "
 			WHERE attach_id = " . (int) $attachments[$i]['attach_id'];
 
-		if ( !($result = $db->sql_query($sql)) )
+		if ( !($result = DB()->sql_query($sql)) )
 		{
 			message_die(GENERAL_ERROR, 'Couldn\'t query attachments', '', __LINE__, __FILE__, $sql);
 		}
 
-		$ids = $db->sql_fetchrowset($result);
-		$num_ids = $db->num_rows($result);
+		$ids = DB()->sql_fetchrowset($result);
+		$num_ids = DB()->num_rows($result);
 
 		for ($j = 0; $j < $num_ids; $j++)
 		{
@@ -315,12 +315,12 @@ if (count($attachments) > 0)
 					WHERE p.post_id = " . (int) $ids[$j]['post_id'] . " AND p.topic_id = t.topic_id
 					GROUP BY t.topic_id, t.topic_title";
 
-				if ( !($result = $db->sql_query($sql)) )
+				if ( !($result = DB()->sql_query($sql)) )
 				{
 					message_die(GENERAL_ERROR, 'Couldn\'t query topic', '', __LINE__, __FILE__, $sql);
 				}
 
-				$row = $db->sql_fetchrow($result);
+				$row = DB()->sql_fetchrow($result);
 				$post_title = $row['topic_title'];
 
 				if (strlen($post_title) > 32)
@@ -340,14 +340,14 @@ if (count($attachments) > 0)
 					FROM " . PRIVMSGS_TABLE . "
 					WHERE privmsgs_id = " . (int) $ids[$j]['privmsgs_id'];
 
-				if ( !($result = $db->sql_query($sql)) )
+				if ( !($result = DB()->sql_query($sql)) )
 				{
 					message_die(GENERAL_ERROR, 'Couldn\'t get Privmsgs Type', '', __LINE__, __FILE__, $sql);
 				}
 
-				if ($db->num_rows($result) != 0)
+				if (DB()->num_rows($result) != 0)
 				{
-					$row = $db->sql_fetchrow($result);
+					$row = DB()->sql_fetchrow($result);
 					$privmsgs_type = $row['privmsgs_type'];
 								
 					if (($privmsgs_type == PRIVMSGS_READ_MAIL) || ($privmsgs_type == PRIVMSGS_NEW_MAIL) || ($privmsgs_type == PRIVMSGS_UNREAD_MAIL))

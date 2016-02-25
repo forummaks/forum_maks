@@ -16,16 +16,16 @@ if (!$profiledata)
 $sql = "SELECT *
 	FROM " . RANKS_TABLE . "
 	ORDER BY rank_special, rank_min";
-if ( !($result = $db->sql_query($sql)) )
+if ( !($result = DB()->sql_query($sql)) )
 {
 	message_die(GENERAL_ERROR, 'Could not obtain ranks information', '', __LINE__, __FILE__, $sql);
 }
 $ranksrow = array();
-while ( $row = $db->sql_fetchrow($result) )
+while ( $row = DB()->sql_fetchrow($result) )
 {
 	$ranksrow[] = $row;
 }
-$db->sql_freeresult($result);
+DB()->sql_freeresult($result);
 //
 // Output page header and profile_view template
 //

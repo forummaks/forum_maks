@@ -4,7 +4,7 @@ if (!defined('FT_ROOT')) die(basename(__FILE__));
 
 function process_quota_settings($mode, $id, $quota_type, $quota_limit_id = 0)
 {
-	global $db;
+	
 
 	if ($mode == 'user')
 	{
@@ -22,12 +22,12 @@ function process_quota_settings($mode, $id, $quota_type, $quota_limit_id = 0)
 				WHERE user_id = $id
 					AND quota_type = $quota_type";
 
-			if( !($result = $db->sql_query($sql)) )
+			if( !($result = DB()->sql_query($sql)) )
 			{
 				message_die(GENERAL_ERROR, 'Could not get Entry', '', __LINE__, __FILE__, $sql);
 			}
 
-			if ($db->num_rows($result) == 0)
+			if (DB()->num_rows($result) == 0)
 			{
 				$sql = 'INSERT INTO ' . QUOTA_TABLE . " (user_id, group_id, quota_type, quota_limit_id) 
 					VALUES ($id, 0, $quota_type, $quota_limit_id)";
@@ -41,7 +41,7 @@ function process_quota_settings($mode, $id, $quota_type, $quota_limit_id = 0)
 			}
 		}
 	
-		if( !($result = $db->sql_query($sql)) )
+		if( !($result = DB()->sql_query($sql)) )
 		{
 			message_die(GENERAL_ERROR, 'Unable to update quota Settings', '', __LINE__, __FILE__, $sql);
 		}
@@ -55,7 +55,7 @@ function process_quota_settings($mode, $id, $quota_type, $quota_limit_id = 0)
 				WHERE group_id = $id 
 					AND quota_type = $quota_type";
 
-			if( !($result = $db->sql_query($sql)) )
+			if( !($result = DB()->sql_query($sql)) )
 			{
 				message_die(GENERAL_ERROR, 'Unable to delete quota Settings', '', __LINE__, __FILE__, $sql);
 			}
@@ -68,12 +68,12 @@ function process_quota_settings($mode, $id, $quota_type, $quota_limit_id = 0)
 				WHERE group_id = $id 
 					AND quota_type = $quota_type";
 
-			if( !($result = $db->sql_query($sql)) )
+			if( !($result = DB()->sql_query($sql)) )
 			{
 				message_die(GENERAL_ERROR, 'Could not get Entry', '', __LINE__, __FILE__, $sql);
 			}
 
-			if ($db->num_rows($result) == 0)
+			if (DB()->num_rows($result) == 0)
 			{
 				$sql = 'INSERT INTO ' . QUOTA_TABLE . " (user_id, group_id, quota_type, quota_limit_id) 
 					VALUES (0, $id, $quota_type, $quota_limit_id)";
@@ -84,7 +84,7 @@ function process_quota_settings($mode, $id, $quota_type, $quota_limit_id = 0)
 					WHERE group_id = $id AND quota_type = $quota_type";
 			}
 	
-			if (!$db->sql_query($sql))
+			if (!DB()->sql_query($sql))
 			{
 				message_die(GENERAL_ERROR, 'Unable to update quota Settings', '', __LINE__, __FILE__, $sql);
 			}
@@ -152,7 +152,7 @@ function sort_multi_array ($sort_array, $key, $sort_order, $pre_string_sort = 0)
 //
 function entry_exists($attach_id)
 {
-	global $db;
+	
 
 	if (empty($attach_id))
 	{
@@ -163,13 +163,13 @@ function entry_exists($attach_id)
 		FROM ' . ATTACHMENTS_TABLE . '
 		WHERE attach_id = ' . intval($attach_id);
 
-	if( !$db->sql_query($sql) )
+	if( !DB()->sql_query($sql) )
 	{
 		message_die(GENERAL_ERROR, 'Could not get Entry', '', __LINE__, __FILE__, $sql);
 	}
 
-	@$ids = $db->sql_fetchrowset($result);
-	@$num_ids = $db->num_rows($result);
+	@$ids = DB()->sql_fetchrowset($result);
+	@$num_ids = DB()->num_rows($result);
 
 	$exists = false;
 	
@@ -188,17 +188,17 @@ function entry_exists($attach_id)
 				WHERE privmsgs_id = ' . intval($ids[$i]['privmsgs_id']);
 		}
 
-		if (!$db->sql_query($sql))
+		if (!DB()->sql_query($sql))
 		{
 			message_die(GENERAL_ERROR, 'Could not get Entry', '', __LINE__, __FILE__, $sql);
 		}
 	
-		if (($db->num_rows($result)) > 0)
+		if ((DB()->num_rows($result)) > 0)
 		{
 			$exists = true;
 			break;
 		}
-		$db->sql_freeresult($result);
+		DB()->sql_freeresult($result);
 	}
 
 	return $exists;
@@ -357,7 +357,7 @@ function get_formatted_dirsize()
 //
 function search_attachments($order_by, &$total_rows)
 {
-	global $db, $HTTP_POST_VARS, $HTTP_GET_VARS, $lang;
+	global  $HTTP_POST_VARS, $HTTP_GET_VARS, $lang;
 	
 	$where_sql = array();
 
@@ -387,19 +387,19 @@ function search_attachments($order_by, &$total_rows)
 			FROM ' . USERS_TABLE . "
 			WHERE username LIKE '$search_author'";
 
-		if ( !($result = $db->sql_query($sql)) )
+		if ( !($result = DB()->sql_query($sql)) )
 		{
 			message_die(GENERAL_ERROR, 'Couldn\'t obtain list of matching users (searching for: ' . $search_author . ')', '', __LINE__, __FILE__, $sql);
 		}
 
 		$matching_userids = '';
-		if ( $row = $db->sql_fetchrow($result) )
+		if ( $row = DB()->sql_fetchrow($result) )
 		{
 			do
 			{
 				$matching_userids .= (($matching_userids != '') ? ', ' : '') . intval($row['user_id']);
 			}
-			while ($row = $db->sql_fetchrow($result));
+			while ($row = DB()->sql_fetchrow($result));
 		}
 		else
 		{
@@ -486,25 +486,25 @@ function search_attachments($order_by, &$total_rows)
 
 	$sql .= $order_by; 
 
-	if (!($result = $db->sql_query($sql)))
+	if (!($result = DB()->sql_query($sql)))
 	{
 		message_die(GENERAL_ERROR, 'Couldn\'t query attachments', '', __LINE__, __FILE__, $sql);
 	}
 
-	$attachments = $db->sql_fetchrowset($result);
-	$num_attach = $db->num_rows($result);
+	$attachments = DB()->sql_fetchrowset($result);
+	$num_attach = DB()->num_rows($result);
 
 	if ($num_attach == 0)
 	{
 		message_die(GENERAL_MESSAGE, $lang['No_attach_search_match']);
 	}
 
-	if ( !($result = $db->sql_query($total_rows_sql)) )
+	if ( !($result = DB()->sql_query($total_rows_sql)) )
 	{
 		message_die(GENERAL_ERROR, 'Could not query attachments', '', __LINE__, __FILE__, $sql);
 	}
 
-	$total_rows = $db->num_rows($result);
+	$total_rows = DB()->num_rows($result);
 		
 	return $attachments;
 }

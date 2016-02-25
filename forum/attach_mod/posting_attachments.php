@@ -59,7 +59,7 @@ class attach_parent
 	//
 	function get_quota_limits($userdata_quota, $user_id = 0)
 	{
-		global $attach_config, $db;
+		global $attach_config;
 
 		$priority = 'user;group';
 
@@ -92,14 +92,14 @@ class attach_parent
 				$sql = "SELECT u.group_id FROM " . USER_GROUP_TABLE . " u, " . GROUPS_TABLE . " g
 				WHERE (g.group_single_user = 0) AND (u.group_id = g.group_id) AND (u.user_id = " . $user_id . ")";
 
-				if ( !($result = $db->sql_query($sql)) )
+				if ( !($result = DB()->sql_query($sql)) )
 				{
 					message_die(GENERAL_ERROR, 'Could not get User Group', '', __LINE__, __FILE__, $sql);
 				}
 
-				if ($db->num_rows($result) > 0)
+				if (DB()->num_rows($result) > 0)
 				{
-					$rows = $db->sql_fetchrowset($result);
+					$rows = DB()->sql_fetchrowset($result);
 					$group_id = array();
 
 					for ($j = 0; $j < count($rows); $j++)
@@ -111,14 +111,14 @@ class attach_parent
 					WHERE (q.group_id IN (" . implode(',', $group_id) . ")) AND (q.group_id <> 0) AND (q.quota_type = " . $quota_type . ")
 					AND (q.quota_limit_id = l.quota_limit_id) ORDER BY l.quota_limit DESC LIMIT 1";
 
-					if ( !($result = $db->sql_query($sql)) )
+					if ( !($result = DB()->sql_query($sql)) )
 					{
 						message_die(GENERAL_ERROR, 'Could not get Group Quota', '', __LINE__, __FILE__, $sql);
 					}
 
-					if ($db->num_rows($result) > 0)
+					if (DB()->num_rows($result) > 0)
 					{
-						$row = $db->sql_fetchrow($result);
+						$row = DB()->sql_fetchrow($result);
 						$attach_config[$limit_type] = $row['quota_limit'];
 						$found = TRUE;
 					}
@@ -134,14 +134,14 @@ class attach_parent
 				WHERE (q.user_id = " . $user_id . ") AND (q.user_id <> 0) AND (q.quota_type = " . $quota_type . ")
 				AND (q.quota_limit_id = l.quota_limit_id) LIMIT 1";
 
-				if ( !($result = $db->sql_query($sql)) )
+				if ( !($result = DB()->sql_query($sql)) )
 				{
 					message_die(GENERAL_ERROR, 'Could not get User Quota', '', __LINE__, __FILE__, $sql);
 				}
 
-				if ($db->num_rows($result) > 0)
+				if (DB()->num_rows($result) > 0)
 				{
-					$row = $db->sql_fetchrow($result);
+					$row = DB()->sql_fetchrow($result);
 					$attach_config[$limit_type] = $row['quota_limit'];
 					$found = TRUE;
 				}
@@ -162,14 +162,14 @@ class attach_parent
 				$sql = "SELECT quota_limit FROM " . QUOTA_LIMITS_TABLE . "
 				WHERE quota_limit_id = " . $quota_id . " LIMIT 1";
 
-				if ( !($result = $db->sql_query($sql)) )
+				if ( !($result = DB()->sql_query($sql)) )
 				{
 					message_die(GENERAL_ERROR, 'Could not get Default Quota Limit', '', __LINE__, __FILE__, $sql);
 				}
 
-				if ($db->num_rows($result) > 0)
+				if (DB()->num_rows($result) > 0)
 				{
-					$row = $db->sql_fetchrow($result);
+					$row = DB()->sql_fetchrow($result);
 					$attach_config[$limit_type] = $row['quota_limit'];
 				}
 				else
@@ -194,7 +194,7 @@ class attach_parent
 	//
 	function handle_attachments($mode)
 	{
-		global $is_auth, $attach_config, $refresh, $HTTP_POST_VARS, $post_id, $submit, $preview, $error, $error_msg, $lang, $template, $userdata, $db;
+		global $is_auth, $attach_config, $refresh, $HTTP_POST_VARS, $post_id, $submit, $preview, $error, $error_msg, $lang, $template, $userdata;
 
 		//
 		// ok, what shall we do ;)
@@ -434,7 +434,7 @@ class attach_parent
 								SET thumbnail = 0
 								WHERE attach_id = " . $actual_id_list[$i];
 
-								if ( !($db->sql_query($sql)) )
+								if ( !(DB()->sql_query($sql)) )
 								{
 									message_die(GENERAL_ERROR, 'Unable to update ' . ATTACHMENTS_DESC_TABLE . ' Table.', '', __LINE__, __FILE__, $sql);
 								}
@@ -492,12 +492,12 @@ class attach_parent
 						$sql = "SELECT physical_filename, comment, thumbnail FROM " . ATTACHMENTS_DESC_TABLE . "
 						WHERE attach_id = " . $attachment_id;
 
-						if ( !($result = $db->sql_query($sql)) )
+						if ( !($result = DB()->sql_query($sql)) )
 						{
 							message_die(GENERAL_ERROR, 'Unable to select old Attachment Entry.', '', __LINE__, __FILE__, $sql);
 						}
 
-						if ($db->num_rows($result) != 1)
+						if (DB()->num_rows($result) != 1)
 						{
 							$error = TRUE;
 							if(!empty($error_msg))
@@ -507,7 +507,7 @@ class attach_parent
 							$error_msg .= $lang['Error_missing_old_entry'];
 						}
 
-						$row = $db->sql_fetchrow($result);
+						$row = DB()->sql_fetchrow($result);
 						$comment = ( trim($this->file_comment) == '' ) ? trim($row['comment']) : trim($this->file_comment);
 						$comment = addslashes($comment);
 
@@ -516,7 +516,7 @@ class attach_parent
 						SET physical_filename = '" . str_replace("'", "''", basename($this->attach_filename)) . "', real_filename = '" . str_replace("'", "''", basename($this->filename)) . "', comment = '" . str_replace("'", "''", $comment) . "', extension = '" . str_replace("'", "''", $this->extension) . "', mimetype = '" . str_replace("'", "''", $this->type) . "', filesize = " . $this->filesize . ", filetime = " . $this->filetime . ", thumbnail = " . $this->thumbnail . "
 						WHERE attach_id = " . (int) $attachment_id;
 
-						if ( !($db->sql_query($sql)) )
+						if ( !(DB()->sql_query($sql)) )
 						{
 							message_die(GENERAL_ERROR, 'Unable to update the Attachment.', '', __LINE__, __FILE__, $sql);
 						}
@@ -596,7 +596,7 @@ class attach_parent
 	//
 	function do_insert_attachment($mode, $message_type, $message_id)
 	{
-		global $db, $upload_dir;
+		global  $upload_dir;
 
 		if (intval($message_id) < 0)
 		{
@@ -641,7 +641,7 @@ class attach_parent
 					SET comment = '" . trim($this->attachment_comment_list[$i]) . "'
 					WHERE attach_id = " . $this->attachment_id_list[$i];
 
-					if ( !($db->sql_query($sql)) )
+					if ( !(DB()->sql_query($sql)) )
 					{
 						message_die(GENERAL_ERROR, 'Unable to update the File Comment.', '', __LINE__, __FILE__, $sql);
 					}
@@ -655,12 +655,12 @@ class attach_parent
 					$sql = "INSERT INTO " . ATTACHMENTS_DESC_TABLE . " (physical_filename, real_filename, comment, extension, mimetype, filesize, filetime, thumbnail)
 					VALUES ( '" . str_replace("'", "''", basename($this->attachment_list[$i])) . "', '" . str_replace("'", "''", basename($this->attachment_filename_list[$i])) . "', '" . trim($this->attachment_comment_list[$i]) . "', '" . $this->attachment_extension_list[$i] . "', '" . $this->attachment_mimetype_list[$i] . "', " . $this->attachment_filesize_list[$i] . ", " . $this->attachment_filetime_list[$i] . ", " . $this->attachment_thumbnail_list[$i] . ")";
 
-					if ( !($db->sql_query($sql)) )
+					if ( !(DB()->sql_query($sql)) )
 					{
 						message_die(GENERAL_ERROR, 'Couldn\'t store Attachment.<br />Your ' . $message_type . ' has been stored.', '', __LINE__, __FILE__, $sql);
 					}
 
-					$attach_id = $db->sql_nextid();
+					$attach_id = DB()->sql_nextid();
 
 					//bt
 					if ($this->attachment_extension_list[$i] === TORRENT_EXT && !defined('TORRENT_ATTACH_ID'))
@@ -671,7 +671,7 @@ class attach_parent
 
 					$sql = 'INSERT INTO ' . ATTACHMENTS_TABLE . ' (attach_id, post_id, privmsgs_id, user_id_1, user_id_2) VALUES (' . $attach_id . ', ' . $post_id . ', ' . $privmsgs_id . ', ' . $user_id_1 . ', ' . $user_id_2 . ')';
 
-					if ( !($db->sql_query($sql)) )
+					if ( !(DB()->sql_query($sql)) )
 					{
 						message_die(GENERAL_ERROR, 'Couldn\'t store Attachment.<br />Your ' . $message_type . ' has been stored.', '', __LINE__, __FILE__, $sql);
 					}
@@ -694,17 +694,17 @@ class attach_parent
 				//
 				// Inform the user that his post has been created, but nothing is attached
 				//
-				if ( !($db->sql_query($sql)) )
+				if ( !(DB()->sql_query($sql)) )
 				{
 					message_die(GENERAL_ERROR, 'Couldn\'t store Attachment.<br />Your ' . $message_type . ' has been stored.', '', __LINE__, __FILE__, $sql);
 				}
 
-				$attach_id = $db->sql_nextid();
+				$attach_id = DB()->sql_nextid();
 
 				$sql = 'INSERT INTO ' . ATTACHMENTS_TABLE . ' (attach_id, post_id, privmsgs_id, user_id_1, user_id_2)
 				VALUES (' . $attach_id . ', ' . $post_id . ', ' . $privmsgs_id . ', ' . $user_id_1 . ', ' . $user_id_2 . ')';
 
-				if ( !($db->sql_query($sql)) )
+				if ( !(DB()->sql_query($sql)) )
 				{
 					message_die(GENERAL_ERROR, 'Couldn\'t store Attachment.<br />Your ' . $message_type . ' has been stored.', '', __LINE__, __FILE__, $sql);
 				}
@@ -717,7 +717,7 @@ class attach_parent
 	//
 	function display_attachment_bodies()
 	{
-		global $attach_config, $db, $is_auth, $lang, $mode, $template, $upload_dir, $userdata, $HTTP_POST_VARS, $forum_id;
+		global $attach_config,  $is_auth, $lang, $mode, $template, $upload_dir, $userdata, $HTTP_POST_VARS, $forum_id;
 
 		//
 		// Choose what to display
@@ -891,7 +891,7 @@ class attach_parent
 	//
 	function upload_attachment()
 	{
-		global $HTTP_POST_FILES, $db, $HTTP_POST_VARS, $error, $error_msg, $lang, $attach_config, $userdata, $upload_dir, $forum_id;
+		global $HTTP_POST_FILES,  $HTTP_POST_VARS, $error, $error_msg, $lang, $attach_config, $userdata, $upload_dir, $forum_id;
 
 
 		$this->post_attach = ($this->filename != '') ? TRUE : FALSE;
@@ -1155,12 +1155,12 @@ class attach_parent
 			{
 				$sql = 'SELECT sum(filesize) as total FROM ' . ATTACHMENTS_DESC_TABLE;
 
-				if ( !($result = $db->sql_query($sql)) )
+				if ( !($result = DB()->sql_query($sql)) )
 				{
 					message_die(GENERAL_ERROR, 'Could not query total filesize', '', __LINE__, __FILE__, $sql);
 				}
 
-				$row = $db->sql_fetchrow($result);
+				$row = DB()->sql_fetchrow($result);
 				$total_filesize = $row['total'];
 
 				if (($total_filesize + $this->filesize) > $attach_config['attachment_quota'])
@@ -1187,13 +1187,13 @@ class attach_parent
 					WHERE (user_id_1 = " . $userdata['user_id'] . ") AND (privmsgs_id = 0)
 					GROUP BY attach_id";
 
-					if ( !($result = $db->sql_query($sql)) )
+					if ( !($result = DB()->sql_query($sql)) )
 					{
 						message_die(GENERAL_ERROR, 'Couldn\'t query attachments', '', __LINE__, __FILE__, $sql);
 					}
 
-					$attach_ids = $db->sql_fetchrowset($result);
-					$num_attach_ids = $db->num_rows($result);
+					$attach_ids = DB()->sql_fetchrowset($result);
+					$num_attach_ids = DB()->num_rows($result);
 					$attach_id = array();
 
 					for ($i = 0; $i < $num_attach_ids; $i++)
@@ -1210,12 +1210,12 @@ class attach_parent
 						FROM " . ATTACHMENTS_DESC_TABLE . "
 						WHERE attach_id IN (" . implode(', ', $attach_id) . ")";
 
-						if ( !($result = $db->sql_query($sql)) )
+						if ( !($result = DB()->sql_query($sql)) )
 						{
 							message_die(GENERAL_ERROR, 'Could not query total filesize', '', __LINE__, __FILE__, $sql);
 						}
 
-						$row = $db->sql_fetchrow($result);
+						$row = DB()->sql_fetchrow($result);
 						$total_filesize = $row['total'];
 					}
 					else
@@ -1391,7 +1391,7 @@ class attach_posting extends attach_parent
 	//
 	function insert_attachment($post_id)
 	{
-		global $db, $is_auth, $mode, $userdata, $error, $error_msg;
+		global  $is_auth, $mode, $userdata, $error, $error_msg;
 
 		//
 		// Insert Attachment ?
@@ -1407,7 +1407,7 @@ class attach_posting extends attach_parent
 				SET post_attachment = 1
 				WHERE post_id = " . $post_id;
 
-				if ( !($db->sql_query($sql)) )
+				if ( !(DB()->sql_query($sql)) )
 				{
 					message_die(GENERAL_ERROR, 'Unable to update Posts Table.', '', __LINE__, __FILE__, $sql);
 				}
@@ -1415,18 +1415,18 @@ class attach_posting extends attach_parent
 				$sql = "SELECT topic_id FROM " . POSTS_TABLE . "
 				WHERE post_id = " . $post_id;
 
-				if ( !($result = $db->sql_query($sql)) )
+				if ( !($result = DB()->sql_query($sql)) )
 				{
 					message_die(GENERAL_ERROR, 'Unable to select Posts Table.', '', __LINE__, __FILE__, $sql);
 				}
 
-				$row = $db->sql_fetchrow($result);
+				$row = DB()->sql_fetchrow($result);
 
 				$sql = "UPDATE " . TOPICS_TABLE . "
 				SET topic_attachment = 1
 				WHERE topic_id = " . $row['topic_id'];
 
-				if ( !($db->sql_query($sql)) )
+				if ( !(DB()->sql_query($sql)) )
 				{
 					message_die(GENERAL_ERROR, 'Unable to update Topics Table.', '', __LINE__, __FILE__, $sql);
 				}
