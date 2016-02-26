@@ -27,6 +27,36 @@ $ft_cfg['database_alias'] = array(
 //	'alias'  => 'srv_name'
 );
 
+// Cache
+$ft_cfg['cache']['pconnect'] = true;
+$ft_cfg['cache']['db_dir']   = realpath(FT_ROOT) .'/cache/filecache/';
+$ft_cfg['cache']['prefix']   = 'ft_';  // Префикс кеша ('ft_')
+$ft_cfg['cache']['memcache'] = array(
+	'host'         => '127.0.0.1',
+	'port'         => 11211,
+	'pconnect'     => true,
+	'con_required' => true,
+);
+$ft_cfg['cache']['redis']  = array(
+	'host'         => '127.0.0.1',
+	'port'         => 6379,
+	'con_required' => true,
+);
+
+// Available cache types: memcache, sqlite, redis, apc, xcache (default of filecache)
+# name => array( (string) type, (array) cfg )
+$ft_cfg['cache']['engines'] = array(
+	'ft_cache'      => array('filecache', array()),
+	'ft_config'     => array('filecache', array()),
+	'session_cache' => array('filecache', array()),
+	'ft_cap_sid'    => array('filecache', array()),
+	'ft_login_err'  => array('filecache', array()),
+);
+
+// Datastore
+// Available datastore types: memcache, sqlite, redis, apc, xcache  (default filecache)
+$ft_cfg['datastore_type'] = 'filecache';
+
 // Server
 $ft_cfg['server_name'] = $domain_name;                                                     // The domain name from which this board runs
 $ft_cfg['server_port'] = (!empty($_SERVER['SERVER_PORT'])) ? $_SERVER['SERVER_PORT'] : 80; // The port your server is running on

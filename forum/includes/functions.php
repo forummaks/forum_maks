@@ -338,6 +338,41 @@ function get_user_id ($username)
 	return $row['user_id'];
 }
 
+function ft_get_config ($table, $from_db = false, $update_cache = true)
+{
+	if ($from_db OR !$cfg = CACHE('ft_config')->get("config_{$table}"))
+	{
+		$cfg = array();
+		foreach (DB()->fetch_rowset("SELECT * FROM $table") as $row)
+		{
+			$cfg[$row['config_name']] = $row['config_value'];
+		}
+		if ($update_cache)
+		{
+			CACHE('ft_config')->set("config_{$table}", $cfg);
+		}
+	}
+	return $cfg;
+}
+
+function ft_update_config ($params, $table = CONFIG_TABLE)
+{
+	$updates = array();
+	foreach ($params as $name => $val)
+	{
+		$updates[] = array(
+			'config_name'  => $name,
+			'config_value' => $val,
+		);
+	}
+	$updates = DB()->build_array('MULTI_INSERT', $updates);
+
+	DB()->query("REPLACE INTO $table $updates");
+
+	// Update cache
+	ft_get_config($table, true, true);
+}
+
 function unesc ($x)
 {
 	if (get_magic_quotes_gpc())

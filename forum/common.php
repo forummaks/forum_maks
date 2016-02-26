@@ -198,12 +198,6 @@ define('DL_STATUS_CANCEL',     3);
 define('GUEST_UID', -1);
 define('BOT_UID', -746);
 
-// Board init
-if (!defined('IN_TRACKER'))
-{
-	require(FT_ROOT . 'includes/init_ft.php');
-}
-
 /**
  * Database
  */
@@ -215,6 +209,75 @@ function DB ($db_alias = 'database1')
 {
 	global $DBS;
 	return $DBS->get_db_obj($db_alias);
+}
+
+/**
+ * Cache
+ */
+// Main cache class
+require(INC_DIR . 'cache/common.php');
+// Main datastore class
+require(INC_DIR . 'datastore/common.php');
+
+// Core CACHE class
+require(FT_ROOT . 'db/caches.php');
+$CACHES = new CACHES($ft_cfg);
+
+function CACHE ($cache_name)
+{
+	global $CACHES;
+	return $CACHES->get_cache_obj($cache_name);
+}
+
+// Common cache classes
+require(INC_DIR . 'cache/memcache.php');
+require(INC_DIR . 'cache/sqlite.php');
+require(INC_DIR . 'cache/redis.php');
+require(INC_DIR . 'cache/apc.php');
+require(INC_DIR . 'cache/xcache.php');
+require(INC_DIR . 'cache/file.php');
+
+/**
+* Datastore
+*/
+// Common datastore classes
+require(INC_DIR . 'datastore/memcache.php');
+require(INC_DIR . 'datastore/sqlite.php');
+require(INC_DIR . 'datastore/redis.php');
+require(INC_DIR . 'datastore/apc.php');
+require(INC_DIR . 'datastore/xcache.php');
+require(INC_DIR . 'datastore/file.php');
+
+// Initialize datastore
+switch ($ft_cfg['datastore_type'])
+{
+	case 'memcache':
+		$datastore = new datastore_memcache($ft_cfg['cache']['memcache'], $ft_cfg['cache']['prefix']);
+		break;
+
+	case 'sqlite':
+		$default_cfg = array(
+			'db_file_path' => $ft_cfg['cache']['db_dir'] .'datastore.sqlite.db',
+			'pconnect'     => true,
+			'con_required' => true,
+		);
+		$datastore = new datastore_sqlite($default_cfg, $ft_cfg['cache']['prefix']);
+		break;
+
+	case 'redis':
+		$datastore = new datastore_redis($ft_cfg['cache']['redis'], $ft_cfg['cache']['prefix']);
+		break;
+
+	case 'apc':
+		$datastore = new datastore_apc($ft_cfg['cache']['prefix']);
+		break;
+
+	case 'xcache':
+		$datastore = new datastore_xcache($ft_cfg['cache']['prefix']);
+		break;
+
+	case 'filecache':
+		default: $datastore = new datastore_file($ft_cfg['cache']['db_dir'] . 'datastore/', $ft_cfg['cache']['prefix']);
 }
 
 function sql_dbg_enabled ()
@@ -487,28 +550,11 @@ function log_request ($file = '', $prepend_str = false, $add_post = true)
 }
 
 */
-//
-// Setup forum wide options, if this fails
-// then we output a CRITICAL_ERROR since
-// basic forum information is not available
-//
-$sql = "SELECT *
-	FROM " . CONFIG_TABLE;
-if( !($result = DB()->sql_query($sql)) )
-{
-	message_die(CRITICAL_ERROR, "Could not query config information", "", __LINE__, __FILE__, $sql);
-}
 
-while ( $row = DB()->sql_fetchrow($result) )
+// Board init
+if (defined('IN_FORUM'))
 {
-	$ft_cfg[$row['config_name']] = $row['config_value'];
+	require(INC_DIR . 'init_ft.php');
 }
 
 require(FT_ROOT . 'attach_mod/attachment_mod.php');
-//
-// Show 'Board is disabled' message if needed.
-//
-if( $ft_cfg['board_disable'] && !defined("IN_ADMIN") && !defined("IN_LOGIN") )
-{
-	message_die(GENERAL_MESSAGE, 'Board_disable', 'Information');
-}

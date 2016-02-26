@@ -169,7 +169,6 @@ define('ATTACHMENTS_TABLE', 			'ft_attachments');
 define('QUOTA_TABLE',  					'ft_attach_quota');
 define('QUOTA_LIMITS_TABLE',  			'ft_quota_limits');
 define('TOPICS_MOVE_TABLE', 			'ft_topics_move');
-define('CONFIRM_TABLE',					'ft_confirm');
 define('AUTH_ACCESS_TABLE', 			'ft_auth_access');
 define('BANLIST_TABLE',					'ft_banlist');
 define('CATEGORIES_TABLE', 				'ft_categories');
@@ -353,10 +352,17 @@ function make_url ($path = '')
 	return FULL_URL . preg_replace('#^\/?(.*?)\/?$#', '\1', $path);
 }
 
-require(FT_ROOT . 'includes/functions.php');
-require(FT_ROOT . 'includes/sessions.php');
-require(FT_ROOT . 'includes/auth.php');
-require(FT_ROOT . 'includes/template.php');
+require(INC_DIR . 'functions.php');
+require(INC_DIR . 'sessions.php');
+require(INC_DIR . 'auth.php');
+require(INC_DIR . 'template.php');
 require(FT_ROOT . 'db/mysql.php');
 
 define('SQL_LAYER', 'mysql');
+
+$ft_cfg = array_merge(ft_get_config(CONFIG_TABLE), $ft_cfg);
+
+if( $ft_cfg['board_disable'] && !defined("IN_ADMIN") && !defined("IN_LOGIN") )
+{
+	message_die(GENERAL_MESSAGE, 'Board_disable', 'Information');
+}
