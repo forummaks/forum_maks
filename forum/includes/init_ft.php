@@ -212,6 +212,21 @@ define('SHOW_PEERS_NAMES',     2);
 define('SHOW_PEERS_FULL',      3);
 //bt end
 
+define('PAGE_HEADER', INC_DIR .'page_header.php');
+define('PAGE_FOOTER', INC_DIR .'page_tail.php');
+
+define('CAT_URL',      'index.php?c=');
+define('DOWNLOAD_URL', 'download.php?t=');
+define('FORUM_URL',    'viewforum.php?f=');
+define('GROUP_URL',    'groupcp.php?g=');
+define('LOGIN_URL',    $ft_cfg['login_url']);
+define('MODCP_URL',    'modcp.php?f=');
+define('PM_URL',       $ft_cfg['pm_url']);
+define('POST_URL',     'viewtopic.php?p=');
+define('POSTING_URL',  $ft_cfg['posting_url']);
+define('PROFILE_URL',  'profile.php?mode=viewprofile&amp;u=');
+define('TOPIC_URL',    'viewtopic.php?t=');
+
 //upt
 define('UPD_LAST_POST_HOUR_ACTIVE', 3600*3);
 //upt end

@@ -310,32 +310,79 @@ function request_var ($var_name, $default, $multibyte = false, $cookie = false)
 
 function get_username ($user_id)
 {
-	global  $sql;
-
-	$user_id = intval($user_id);
-
-	$sql = 'SELECT username
-		FROM '. USERS_TABLE ."
-		WHERE user_id = $user_id
-		LIMIT 1";
-
-	$row = DB()->sql_fetchrow(DB()->sql_query($sql));
-
-	return $row['username'];
+	if (empty($user_id))
+	{
+		return is_array($user_id) ? array() : false;
+	}
+	if (is_array($user_id))
+	{
+		$usernames = array();
+		foreach (DB()->fetch_rowset("SELECT user_id, username FROM ". USERS_TABLE ." WHERE user_id IN(". get_id_csv($user_id) .")") as $row)
+		{
+			$usernames[$row['user_id']] = $row['username'];
+		}
+		return $usernames;
+	}
+	else
+	{
+		$row = DB()->fetch_row("SELECT username FROM ". USERS_TABLE ." WHERE user_id = $user_id LIMIT 1");
+		return $row['username'];
+	}
 }
 
 function get_user_id ($username)
 {
-	global  $sql;
-
-	$sql = 'SELECT user_id
-		FROM '. USERS_TABLE ."
-		WHERE username = '$username'
-		LIMIT 1";
-
-	$row = DB()->sql_fetchrow(DB()->sql_query($sql));
-
+	if (empty($username)) return false;
+	$row = DB()->fetch_row("SELECT user_id FROM ". USERS_TABLE ." WHERE username = '". DB()->escape($username) ."' LIMIT 1");
 	return $row['user_id'];
+}
+
+function get_bt_userdata ($user_id)
+{
+	if (!$btu = CACHE('ft_cache')->get('btu_' . $user_id))
+	{
+		$btu = DB()->fetch_row("
+			SELECT bt.*, SUM(tr.speed_up) AS speed_up, SUM(tr.speed_down) AS speed_down
+			FROM      ". BT_USERS_TABLE   ." bt
+			LEFT JOIN ". BT_TRACKER_TABLE ." tr ON (bt.user_id = tr.user_id)
+			WHERE bt.user_id = ". (int) $user_id ."
+			GROUP BY bt.user_id
+			LIMIT 1
+		");
+		CACHE('ft_cache')->set('btu_' . $user_id, $btu, 300);
+	}
+	return $btu;
+}
+
+function get_bt_ratio ($btu)
+{
+	return
+		(!empty($btu['u_down_total']) && $btu['u_down_total'] > MIN_DL_FOR_RATIO)
+			? round((($btu['u_up_total'] + $btu['u_bonus_total']) / $btu['u_down_total']), 2)
+			: null
+		;
+}
+
+function show_bt_userdata ($user_id)
+{
+	global $lang, $template;
+
+	$btu = get_bt_userdata($user_id);
+
+	$template->assign_vars(array(
+		'SHOW_BT_USERDATA' => true,
+		'UP_TOTAL'         => humn_size($btu['u_up_total']),
+		'UP_BONUS'         => humn_size($btu['u_bonus_total']),
+		'DOWN_TOTAL'       => humn_size($btu['u_down_total']),
+		'DOWN_TOTAL_BYTES' => $btu['u_down_total'],
+		'USER_RATIO'       => get_bt_ratio($btu),
+		'MIN_DL_FOR_RATIO' => humn_size(MIN_DL_FOR_RATIO),
+		'MIN_DL_BYTES'     => MIN_DL_FOR_RATIO,
+		'AUTH_KEY'         => ($btu['auth_key']) ? $btu['auth_key'] : $lang['NONE'],
+
+		'SPEED_UP'         => humn_size($btu['speed_up'], 0, 'KB') .'/s',
+		'SPEED_DOWN'       => humn_size($btu['speed_down'], 0, 'KB') .'/s',
+	));
 }
 
 function ft_get_config ($table, $from_db = false, $update_cache = true)
@@ -500,32 +547,51 @@ function ft_rtrim ($str, $charlist = false)
 	return $str;
 }
 
-//
 // Get Userdata, $user can be username or user_id. If force_str is true, the username will be forced.
-//
-function get_userdata($user, $force_str = false)
+function get_userdata($u, $force_name = false, $allow_guest = false)
 {
-	
+	if (!$u) return false;
 
-	if (!is_numeric($user) || $force_str)
+	if (intval($u) == GUEST_UID && $allow_guest)
 	{
-		$user = clean_username($user);
+		if ($u_data = CACHE('ft_cache')->get('guest_userdata'))
+		{
+			return $u_data;
+		}
+	}
+
+	$u_data = array();
+	$name_search = false;
+	$exclude_anon_sql = (!$allow_guest) ? "AND user_id != ". GUEST_UID : '';
+
+	if ($force_name || !is_numeric($u))
+	{
+		$name_search = true;
+		$where_sql = "WHERE username = '". DB()->escape(clean_username($u)) ."'";
 	}
 	else
 	{
-		$user = intval($user);
+		$where_sql = "WHERE user_id = ". (int) $u;
 	}
 
-	$sql = "SELECT *
-		FROM " . USERS_TABLE . "
-		WHERE ";
-	$sql .= ( ( is_integer($user) ) ? "user_id = $user" : "username = '" .  $user . "'" ) . " AND user_id <> " . GUEST_UID;
-	if ( !($result = DB()->sql_query($sql)) )
+	$sql = "SELECT * FROM ". USERS_TABLE ." $where_sql $exclude_anon_sql LIMIT 1";
+
+	if (!$u_data = DB()->fetch_row($sql))
 	{
-		message_die(GENERAL_ERROR, 'Tried obtaining data for a non-existent user', '', __LINE__, __FILE__, $sql);
+		if (!is_int($u) && !$name_search)
+		{
+			$where_sql = "WHERE username = '". DB()->escape(clean_username($u)) ."'";
+			$sql = "SELECT * FROM ". USERS_TABLE ." $where_sql $exclude_anon_sql LIMIT 1";
+			$u_data = DB()->fetch_row($sql);
+		}
 	}
 
-	return ( $row = DB()->sql_fetchrow($result) ) ? $row : false;
+	if ($u_data['user_id'] == GUEST_UID)
+	{
+		CACHE('ft_cache')->set('guest_userdata', $u_data);
+	}
+
+	return $u_data;
 }
 
 //sf - add [, $return_forums_ary = FALSE]
@@ -931,33 +997,26 @@ function phpbb_preg_quote($str, $delimiter)
 	return $text;
 }
 
-//
 // Obtain list of naughty words and build preg style replacement arrays for use by the
 // calling script, note that the vars are passed as references this just makes it easier
 // to return both sets of arrays
-//
 function obtain_word_list(&$orig_word, &$replacement_word)
 {
-	
+	global $ft_cfg;
 
-	//
-	// Define censored word matches
-	//
-	$sql = "SELECT word, replacement
-		FROM  " . WORDS_TABLE;
-	if( !($result = DB()->sql_query($sql)) )
+	if (!$ft_cfg['use_word_censor']) return false;
+
+	if (!$sql = CACHE('ft_cache')->get('censored'))
 	{
-		message_die(GENERAL_ERROR, 'Could not get censored words from database', '', __LINE__, __FILE__, $sql);
+		$sql = DB()->fetch_rowset("SELECT word, replacement FROM ". WORDS_TABLE);
+		if(!$sql) $sql = array(array('word' => 1, 'replacement' => 1));
+		CACHE('ft_cache')->set('censored', $sql, 7200);
 	}
 
-	if ( $row = DB()->sql_fetchrow($result) )
+	foreach($sql as $row)
 	{
-		do
-		{
-			$orig_word[] = '#\b(' . str_replace('\*', '\w*?', phpbb_preg_quote($row['word'], '#')) . ')\b#i';
-			$replacement_word[] = $row['replacement'];
-		}
-		while ( $row = DB()->sql_fetchrow($result) );
+		$orig_word[] = '#(?<![\p{Nd}\p{L}_])(' . str_replace('\*', '[\p{Nd}\p{L}_]*?', preg_quote($row['word'], '#')) . ')(?![\p{Nd}\p{L}_])#iu';
+		$replacement_word[] = $row['replacement'];
 	}
 
 	return true;
@@ -1155,7 +1214,19 @@ function message_die($msg_code, $msg_text = '', $msg_title = '', $err_line = '',
 
 function phpbb_realpath($path)
 {
-	return (!@function_exists('realpath') || !@realpath(FT_ROOT . 'includes/functions.php')) ? $path : @realpath($path);
+	return (!@function_exists('realpath') || !@realpath(INC_DIR . 'functions.php')) ? $path : @realpath($path);
+}
+
+function login_redirect ($url = '')
+{
+	redirect(LOGIN_URL . '?redirect='. (($url) ? $url : (isset($_SERVER['REQUEST_URI']) ? $_SERVER['REQUEST_URI'] : '/')));
+}
+
+function meta_refresh ($url, $time = 5)
+{
+	global $template;
+
+	$template->assign_var('META', '<meta http-equiv="refresh" content="' . $time . ';url=' . $url . '" />');
 }
 
 function redirect($url)
@@ -1192,9 +1263,6 @@ function redirect($url)
 	exit;
 }
 
-//-- mod : topic display order ---------------------------------------------------------------------
-//-- add
-// build a list of the sortable fields or return field name
 function get_forum_display_sort_option($selected_row=0, $action='list', $list='sort')
 {
 	global $lang;
@@ -1236,4 +1304,19 @@ function get_forum_display_sort_option($selected_row=0, $action='list', $list='s
 	}
 	return $res;
 }
-//-- fin mod : topic display order -----------------------------------------------------------------
+
+// $ids - array(id1,id2,..) or (string) id
+function get_id_csv ($ids)
+{
+	$ids = array_values((array) $ids);
+	array_deep($ids, 'intval', 'one-dimensional');
+	return (string) join(',', $ids);
+}
+
+// $ids - array(id1,id2,..) or (string) id1,id2,..
+function get_id_ary ($ids)
+{
+	$ids = is_string($ids) ? explode(',', $ids) : array_values((array) $ids);
+	array_deep($ids, 'intval', 'one-dimensional');
+	return (array) $ids;
+}

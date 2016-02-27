@@ -144,6 +144,7 @@ if (!function_exists('json_encode')) die('Json_encode not installed');
 
 // Misc
 define('MEM_USAGE', function_exists('memory_get_usage'));
+$ft_cfg['use_word_censor'] = true;
 
 $ft_cfg['mem_on_start'] = (MEM_USAGE) ? memory_get_usage() : 0;
 

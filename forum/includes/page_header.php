@@ -4,6 +4,7 @@ if (!defined('FT_ROOT')) die(basename(__FILE__));
 if (defined('PAGE_HEADER_SENT')) return;
 
 // Parse and show the overall page header
+
 global $page_cfg, $userdata, $ads, $ft_cfg, $template, $lang, $images;
 
 if ( @$userdata['session_logged_in'] )
@@ -19,27 +20,37 @@ else
 
 $s_last_visit = ( @$userdata['session_logged_in'] ) ? create_date($ft_cfg['default_dateformat'], $userdata['user_lastvisit'], $ft_cfg['board_timezone']) : '';
 
-//
-// Get basic (usernames + totals) online
-// situation
-//
-$logged_visible_online = 0;
-$logged_hidden_online = 0;
-$guests_online = 0;
-$online_userlist = '';
-$l_online_users = '';
-
-$template->assign_vars(array('SHOW_ONLINE_LIST' => FALSE));
-
-if (defined('SHOW_ONLINE') && $userdata['session_logged_in'] /* && $userdata['user_level'] > USER */)
+if (defined('SHOW_ONLINE') && SHOW_ONLINE)
 {
-	require_once(FT_ROOT .'includes/show_online_list.php');
+	$online_full = !empty($_REQUEST['online_full']);
+	$online_list = ($online_full) ? 'online_'.$userdata['user_lang'] : 'online_short_'.$userdata['user_lang'];
+
+	${$online_list} = array(
+		'stat'     => '',
+		'userlist' => '',
+		'cnt'      => '',
+	);
+
+	if ($userdata['session_logged_in']) // Временная строка $userdata['session_logged_in']
+	{
+		$template->assign_var('SHOW_ONLINE_LIST');
+
+		if (!${$online_list} = CACHE('ft_cache')->get($online_list))
+		{
+			require(INC_DIR .'show_online_list.php');
+		}
+	}
+
+	$template->assign_vars(array(
+		'TOTAL_USERS_ONLINE'  => ${$online_list}['stat'],
+		'LOGGED_IN_USER_LIST' => ${$online_list}['userlist'],
+		'USERS_ONLINE_COUNTS' => ${$online_list}['cnt'],
+		'RECORD_USERS'        => sprintf($lang['RECORD_ONLINE_USERS'], $ft_cfg['record_online_users'], create_date($ft_cfg['default_dateformat'], $ft_cfg['record_online_date'], $ft_cfg['board_timezone'])),
+	));
 }
 
-//
 // Obtain number of new private messages
 // if user is logged in
-//
 if ( (@$userdata['session_logged_in']) && (empty($gen_simple_header)) )
 {
 	if ( $userdata['user_new_privmsg'] )
@@ -107,9 +118,6 @@ $template->assign_vars(array(
 	'PAGE_TITLE' 		 => (isset($page_title)) ? $page_title : '',
 	'LAST_VISIT_DATE' 	 => sprintf($lang['You_last_visit'], $s_last_visit),
 	'CURRENT_TIME' 		 => sprintf($lang['Current_time'], create_date($ft_cfg['default_dateformat'], time(), $ft_cfg['board_timezone'])),
-	'TOTAL_USERS_ONLINE' => $l_online_users,
-	'LOGGED_IN_USER_LIST' => $online_userlist,
-	'RECORD_USERS' 		 => sprintf($lang['Record_online_users'], $ft_cfg['record_online_users'], create_date($ft_cfg['default_dateformat'], $ft_cfg['record_online_date'], $ft_cfg['board_timezone'])),
 	'PRIVATE_MESSAGE_INFO' => $l_privmsgs_text,
 	'PRIVATE_MESSAGE_INFO_UNREAD' => $l_privmsgs_text_unread,
 	'PRIVATE_MESSAGE_NEW_FLAG' => $s_privmsg_new,

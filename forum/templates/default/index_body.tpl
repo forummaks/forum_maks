@@ -96,7 +96,18 @@
 </tr>
 <tr>
 	<td class="row1" align="center" valign="middle" rowspan="3"><img src="templates/default/images/whosonline.gif" alt="{L_WHO_IS_ONLINE}" /></td>
-	<td class="row1" align="left" width="100%"><div class="genmed" style="padding-bottom: 10px;"><!-- IF SHOW_ONLINE_LIST -->{TOTAL_USERS_ONLINE}<!-- ENDIF --><br /><br /><!-- IF SHOW_ONLINE_LIST -->{LOGGED_IN_USER_LIST}<!-- ENDIF --></div></td>
+	<td class="row1" align="left" width="100%"><div class="genmed" style="line-height: 16px;">
+			<p>{TOTAL_USERS_ONLINE}</p>
+			<p>{RECORD_USERS}</p>
+			<!-- IF SHOW_ONLINE_LIST -->
+			<a name="online"></a>
+			<div id="online_userlist" style="margin-top: 4px;">{LOGGED_IN_USER_LIST}</div>
+
+			<div class="hr1" style="margin: 5px 0 4px;"></div>
+			<p id="online_time">{L_ONLINE_EXPLAIN}</p>
+			<!-- ENDIF -->
+		</div>
+	</td>
 </tr>
 <tr>
     <td class="row1" align="right" width="100%">

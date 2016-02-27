@@ -313,7 +313,7 @@ function session_pagestart($user_ip)
 	//
 	$user_id = ( isset($sessiondata['userid']) ) ? intval($sessiondata['userid']) : GUEST_UID;
 
-	if ( !($userdata = session_begin($user_id, $user_ip, $thispage_id, TRUE)) )
+	if ( !($userdata = session_begin($user_id, $user_ip, TRUE)) )
 	{
 		message_die(CRITICAL_ERROR, 'Error creating user session', '', __LINE__, __FILE__, $sql);
 	}

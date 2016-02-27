@@ -102,7 +102,13 @@ $lang['Hidden_user_total'] = 'скрытых: %d и ';
 $lang['Guest_users_zero_total'] = 'гостей: 0)</i>';
 $lang['Guest_users_total'] = 'гостей: %d)</i>';
 $lang['Guest_user_total'] = 'гостей: %d)</i>';
-$lang['Record_online_users'] = 'Рекорд посещаемости: <b>%s</b> <i>(%s)</i>'; // first %s = number of users, second %s is the date.
+
+// Global Header strings
+$lang['REGISTERED_USERS'] = 'Зарегистрированные пользователи:';
+$lang['BROWSING_FORUM'] = 'Сейчас этот форум просматривают:';
+$lang['ONLINE_USERS'] = 'Сейчас на форуме <b>%1$d</b> посетителей: %2$d зарегистрированных и %3$d гостей';
+$lang['RECORD_ONLINE_USERS'] = 'Больше всего посетителей (<b>%s</b>) здесь было %s'; // first %s = number of users, second %s is the date.
+
 
 $lang['Admin_online_color'] = '%sАдминистратор%s';
 $lang['Mod_online_color'] = '%sМодератор%s';

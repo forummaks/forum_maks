@@ -1,7 +1,6 @@
 <?php
 define('IN_PROFILE', true);
 define('FT_SCRIPT', 'profile');
-define('IN_PROFILE', true);
 define('FT_ROOT', './');
 require(FT_ROOT . 'common.php');
 

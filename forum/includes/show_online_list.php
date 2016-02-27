@@ -2,158 +2,144 @@
 
 if (!defined('FT_ROOT')) die(basename(__FILE__));
 
-$template->assign_vars(array('SHOW_ONLINE_LIST' => TRUE));
-$sql = "SELECT u.username, u.user_id, u.user_allow_viewonline, u.user_level, s.session_logged_in, s.session_ip
-	FROM ".USERS_TABLE." u, ".SESSIONS_TABLE." s
-	WHERE u.user_id = s.session_user_id
-		AND s.session_time >= ".( time() - 300 ) . "
-	ORDER BY u.username ASC, s.session_ip ASC";
-if( !($result = DB()->sql_query($sql)) )
+global $lang;
+
+// Obtain user/online information
+$logged_online = $guests_online = 0;
+$time_online = TIMENOW - 300;
+#	$time_online = 0;
+
+$ulist = array(
+	ADMIN        => array(),
+	MOD          => array(),
+	USER         => array(),
+);
+$users_cnt = array(
+	'admin'        => 0,
+	'mod'          => 0,
+	'ignore_load'  => 0,
+	'user'         => 0,
+	'guest'        => 0,
+);
+$online = $online_short = array('userlist' => '');
+
+$sql = "
+	SELECT
+		u.username, u.user_id, u.user_rank, u.user_level,
+		s.session_logged_in, s.session_ip, (s.session_time - s.session_start) AS ses_len, COUNT(s.session_id) AS sessions, COUNT(DISTINCT s.session_ip) AS ips
+	FROM ". SESSIONS_TABLE ." s, ". USERS_TABLE ." u
+	WHERE s.session_time > $time_online
+		AND u.user_id = s.session_user_id
+	GROUP BY s.session_user_id
+	ORDER BY u.username
+";
+
+foreach (DB()->fetch_rowset($sql) as $u)
 {
-	message_die(GENERAL_ERROR, 'Could not obtain user/online information', '', __LINE__, __FILE__, $sql);
-}
-
-$userlist_ary = array();
-$userlist_visible = array();
-
-$prev_user_id = 0;
-$prev_user_ip = $prev_session_ip = '';
-
-while( $row = DB()->sql_fetchrow($result) )
-{
-	// User is logged in and therefor not a guest
-	if ( $row['session_logged_in'] )
+	if ($u['session_logged_in'])
 	{
-		// Skip multiple sessions for one user
-		if ( $row['user_id'] != $prev_user_id )
+		$stat = array();
+		$name = $u['username'];
+		$level = $u['user_level'];
+
+		if ($level == ADMIN)
 		{
-			$style_color = '';
-			if ( $row['user_level'] == ADMIN )
-			{
-				$row['username'] = '<b>' . $row['username'] . '</b>';
-				$style_color = 'class="colorAdmin"';
-			}
-			else if ( $row['user_level'] == MOD )
-			{
-				$row['username'] = '<b>' . $row['username'] . '</b>';
-				$style_color = 'class="colorMod"';
-			}
-
-			if ( $row['user_allow_viewonline'] )
-			{
-				$user_online_link = '<a href="' . append_sid("profile.php?mode=viewprofile&amp;" . POST_USERS_URL . "=" . $row['user_id']) . '"' . $style_color .'>' . $row['username'] . '</a>';
-				$logged_visible_online++;
-			}
-			else
-			{
-				$user_online_link = '<a href="' . append_sid("profile.php?mode=viewprofile&amp;" . POST_USERS_URL . "=" . $row['user_id']) . '"' . $style_color .'><i>' . $row['username'] . '</i></a>';
-				$logged_hidden_online++;
-			}
-
-			if ( $row['user_allow_viewonline'] || $userdata['user_level'] == ADMIN )
-			{
-				$online_userlist .= ( $online_userlist != '' ) ? ', ' . $user_online_link : $user_online_link;
-			}
+			$name = "<b class=\"colorAdmin\">$name</b>";
+			$users_cnt['admin']++;
+		}
+		else if ($level == MOD)
+		{
+			$name = "<b class=\"colorMod\">$name</b>";
+			$users_cnt['mod']++;
+		}
+		else
+		{
+			$users_cnt['user']++;
 		}
 
-		$prev_user_id = $row['user_id'];
+		if ($u['sessions'] > 3)
+		{
+			$color = ($u['sessions'] > 2) ? '#FF0000' : '#B22222';
+			$s = $u['sessions'];
+			$stat[] = "s:<span style=\"color: $color\">$s</span>";
+		}
+		if ($u['ips'] > 2)
+		{
+			$ip = $u['ips'];
+			$stat[] = "ip:<span style=\"color: #0000FF\">$ip</span>";
+		}
+		if ($u['ses_len'] > 6*3600 && $level == USER)
+		{
+			$t = round($u['ses_len'] / 3600, 1);
+			$stat[] = "t:<span style=\"color: #1E90FF\">$t</span>";
+		}
+
+		$ulist[$level][] = ($stat) ? "$name<span class=\"ou_stat\" style=\"color: #707070\" title=\"{$u['session_ip']}\"> [<b>". join(', ', $stat) .'</b>]</span>' : $name;
 	}
 	else
 	{
-		// Skip multiple sessions for one user
-		if ( $row['session_ip'] != $prev_session_ip )
+		$guests_online = $u['ips'];
+		$users_cnt['guest'] = $guests_online;
+	}
+}
+
+if ($ulist)
+{
+	$inline = $block = $short = array();
+
+	foreach ($ulist as $level => $users)
+	{
+		if (empty($users)) continue;
+
+		if (count($users) > 200)
 		{
-			$guests_online++;
+			$style = 'margin: 3px 0; padding: 2px 4px; border: 1px inset; height: 200px; overflow: auto;';
+			$block[] = "<div style=\"$style\">\n". join(",\n", $users) ."</div>\n";
+			$short[] = '<a href="index.php?online_full=1#online">'. $lang['USERS'] .': '. count($users) .'</a>';
 		}
+		else
+		{
+			$inline[] = join(",\n", $users);
+			$short[]  = join(",\n", $users);
+		}
+
+		$logged_online += count($users);
 	}
 
-	$prev_session_ip = $row['session_ip'];
-}
-DB()->sql_freeresult($result);
-
-if ( empty($online_userlist) )
-{
-	$online_userlist = $lang['None'];
-}
-$online_userlist = ( ( isset($forum_id) ) ? $lang['Browsing_forum'] : $lang['Registered_users'] ) . ' ' . $online_userlist;
-
-$total_online_users = $logged_visible_online + $logged_hidden_online + $guests_online;
-
-if ( $total_online_users > $ft_cfg['record_online_users'])
-{
-	$ft_cfg['record_online_users'] = $total_online_users;
-	$ft_cfg['record_online_date'] = time();
-
-	$sql = "UPDATE " . CONFIG_TABLE . "
-		SET config_value = '$total_online_users'
-		WHERE config_name = 'record_online_users'";
-	if ( !DB()->sql_query($sql) )
-	{
-		message_die(GENERAL_ERROR, 'Could not update online user record (nr of users)', '', __LINE__, __FILE__, $sql);
-	}
-
-	$sql = "UPDATE " . CONFIG_TABLE . "
-		SET config_value = '" . $ft_cfg['record_online_date'] . "'
-		WHERE config_name = 'record_online_date'";
-	if ( !DB()->sql_query($sql) )
-	{
-		message_die(GENERAL_ERROR, 'Could not update online user record (date)', '', __LINE__, __FILE__, $sql);
-	}
+	$online['userlist'] = join(",\n", $inline) . join("\n", $block);
+	$online_short['userlist'] = join(",\n", $short);
 }
 
-if ( $total_online_users == 0 )
+if (!$online['userlist'])
 {
-	$l_t_user_s = $lang['Online_users_zero_total'];
+	$online['userlist'] = $online_short['userlist'] = $lang['NONE'];
 }
-else if ( $total_online_users == 1 )
+else if (isset($_REQUEST['f']))
 {
-	$l_t_user_s = $lang['Online_user_total'];
-}
-else
-{
-	$l_t_user_s = $lang['Online_users_total'];
+	$online['userlist'] = $online_short['userlist'] = $lang['BROWSING_FORUM'] .' '. $online['userlist'];
 }
 
-if ( $logged_visible_online == 0 )
+$total_online = $logged_online + $guests_online;
+
+if ($total_online > $ft_cfg['record_online_users'])
 {
-	$l_r_user_s = $lang['Reg_users_zero_total'];
-}
-else if ( $logged_visible_online == 1 )
-{
-	$l_r_user_s = $lang['Reg_user_total'];
-}
-else
-{
-	$l_r_user_s = $lang['Reg_users_total'];
+	ft_update_config(array(
+		'record_online_users' => $total_online,
+		'record_online_date'  => TIMENOW,
+	));
 }
 
-if ( $logged_hidden_online == 0 )
-{
-	$l_h_user_s = $lang['Hidden_users_zero_total'];
-}
-else if ( $logged_hidden_online == 1 )
-{
-	$l_h_user_s = $lang['Hidden_user_total'];
-}
-else
-{
-	$l_h_user_s = $lang['Hidden_users_total'];
-}
+$online['stat'] = $online_short['stat'] = sprintf($lang['ONLINE_USERS'], $total_online, $logged_online, $guests_online);
 
-if ( $guests_online == 0 )
-{
-	$l_g_user_s = $lang['Guest_users_zero_total'];
-}
-else if ( $guests_online == 1 )
-{
-	$l_g_user_s = $lang['Guest_user_total'];
-}
-else
-{
-	$l_g_user_s = $lang['Guest_users_total'];
-}
+$online['cnt'] = $online_short['cnt'] = <<<HTML
+[
+	<span class="colorAdmin bold">{$users_cnt['admin']}</span> <span class="small">&middot;</span>
+	<span class="colorMod bold">{$users_cnt['mod']}</span> <span class="small">&middot;</span>
+	<span class="colorISL">{$users_cnt['ignore_load']}</span> <span class="small">&middot;</span>
+	<span>{$users_cnt['user']}</span> <span class="small">&middot;</span>
+	<span>{$users_cnt['guest']}</span>
+]
+HTML;
 
-$l_online_users = sprintf($l_t_user_s, $total_online_users);
-$l_online_users .= sprintf($l_r_user_s, $logged_visible_online);
-$l_online_users .= sprintf($l_h_user_s, $logged_hidden_online);
-$l_online_users .= sprintf($l_g_user_s, $guests_online);
+CACHE('ft_cache')->set('online_'.$userdata['user_lang'], $online, 60);
+CACHE('ft_cache')->set('online_short_'.$userdata['user_lang'], $online_short, 60);
