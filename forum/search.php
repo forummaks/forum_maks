@@ -7,14 +7,9 @@ require(FT_ROOT . 'common.php');
 require(FT_ROOT . 'includes/bbcode.php');
 require(FT_ROOT . 'includes/functions_search.php');
 
-//
+
 // Start session management
-//
-$userdata = session_pagestart($user_ip);
-init_userprefs($userdata);
-//
-// End session management
-//
+$user->session_start();
 
 $split_search = array();
 

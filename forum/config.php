@@ -113,6 +113,22 @@ $ft_cfg['cookie_domain'] = in_array($domain_name, array(getenv('SERVER_ADDR'), '
 $ft_cfg['cookie_secure'] = (!empty($_SERVER['HTTPS']) ? 1 : 0);
 $ft_cfg['cookie_prefix'] = 'ft_'; // 'ft_'
 
+// Sessions
+$ft_cfg['session_update_intrv']    = 180;          // sec
+$ft_cfg['user_session_duration']   = 1800;         // sec
+$ft_cfg['admin_session_duration']  = 6*3600;       // sec
+$ft_cfg['user_session_gc_ttl']     = 1800;         // number of seconds that a staled session entry may remain in sessions table
+$ft_cfg['session_cache_gc_ttl']    = 1200;         // sec
+$ft_cfg['max_last_visit_days']     = 14;           // days
+$ft_cfg['last_visit_update_intrv'] = 3600;         // sec
+
+// Registration
+$ft_cfg['invalid_logins']          = 5;            // Количество неверных попыток ввода пароля, перед выводом проверки капчей
+$ft_cfg['new_user_reg_disabled']   = false;        // Запретить регистрацию новых учетных записей
+$ft_cfg['unique_ip']               = false;        // Запретить регистрацию нескольких учетных записей с одного ip
+$ft_cfg['new_user_reg_restricted'] = false;        // Ограничить регистрацию новых пользователей по времени с 01:00 до 17:00
+$ft_cfg['reg_email_activation']    = true;         // Требовать активацию учетной записи по email
+
 // Debug
 define('DBG_LOG',              false);    // enable forum debug (off on production)
 define('DBG_TRACKER',          false);    // enable tracker debug (off on production)
@@ -123,6 +139,22 @@ define('SQL_CALC_QUERY_TIME',  true);     // for stats
 define('SQL_LOG_SLOW_QUERIES', true);     // log sql slow queries
 define('SQL_SLOW_QUERY_TIME',  10);       // slow query in seconds
 define('SQL_PREPEND_SRC_COMM', false);    // prepend source file comment to sql query
+
+// Special users
+$ft_cfg['dbg_users'] = array(
+#	user_id => 'name',
+	2 => 'admin',
+);
+
+$ft_cfg['unlimited_users'] = array(
+#	user_id => 'name',
+	2 => 'admin',
+);
+
+$ft_cfg['super_admins'] = array(
+#	user_id => 'name',
+	2 => 'admin',
+);
 
 // Log options
 define('LOG_EXT',      'log');

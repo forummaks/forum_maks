@@ -4,8 +4,7 @@ define('FT_SCRIPT', 'profile');
 define('FT_ROOT', './');
 require(FT_ROOT . 'common.php');
 
-$userdata = session_pagestart($user_ip);
-init_userprefs($userdata);
+$user->session_start();
 
 // session id check
 if (!empty($HTTP_POST_VARS['sid']) || !empty($HTTP_GET_VARS['sid']))

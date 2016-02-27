@@ -565,7 +565,7 @@ function display_attachments($post_id)
 {
 	global $template, $upload_dir, $userdata, $allowed_extensions, $display_categories, $download_modes,  $lang, $attachments, $upload_icons, $attach_config;
 
-	$num_attachments = count($attachments['_' . $post_id]);
+	$num_attachments = @sizeof($attachments['_' . $post_id]);
 
 	if ($num_attachments == 0)
 	{
@@ -584,7 +584,7 @@ function display_attachments($post_id)
 
 		$upload_image = '';
 
-		if ( ($attach_config['upload_img'] != '') && (trim($upload_icons[$attachments['_' . $post_id][$i]['extension']]) == '') )
+		if ($attach_config['upload_img'] && empty($upload_icons[$attachments['_' . $post_id][$i]['extension']]))
 		{
 			$upload_image = '<img src="' . $attach_config['upload_img'] . '" alt="" border="0" />';
 		}
@@ -611,49 +611,27 @@ function display_attachments($post_id)
 		$attachments['_' . $post_id][$i]['extension'] = strtolower(trim($attachments['_' . $post_id][$i]['extension']));
 
 		$denied = false;
-
-		if (!$denied)
+		
+		if (!$denied || IS_ADMIN)
 		{
-			//
-			// Some basic Template Vars
-			//
-			$template->assign_vars(array(
-				'L_DESCRIPTION' => $lang['Description'],
-				'L_DOWNLOAD' => $lang['Download'],
-				'L_FILENAME' => $lang['File_name'],
-				'L_FILESIZE' => $lang['Filesize'])
-			);
-
-			//
 			// define category
-			//
 			$image = FALSE;
-			$stream = FALSE;
-			$swf = FALSE;
 			$thumbnail = FALSE;
 			$link = FALSE;
 
-			if (intval($display_categories[$attachments['_' . $post_id][$i]['extension']]) == STREAM_CAT)
+			if (@intval($display_categories[$attachments['_' . $post_id][$i]['extension']]) == IMAGE_CAT && intval($attach_config['img_display_inlined']))
 			{
-				$stream = TRUE;
-			}
-			else if (intval($display_categories[$attachments['_' . $post_id][$i]['extension']]) == SWF_CAT)
-			{
-				$swf = TRUE;
-			}
-			else if ( (intval($display_categories[$attachments['_' . $post_id][$i]['extension']]) == IMAGE_CAT) && (intval($attach_config['img_display_inlined'])) )
-			{
-				if ( (intval($attach_config['img_link_width']) != 0) || (intval($attach_config['img_link_height']) != 0) )
+				if (intval($attach_config['img_link_width']) != 0 || intval($attach_config['img_link_height']) != 0)
 				{
 					list($width, $height) = image_getdimension($filename);
 
-					if ( ($width == 0) && ($height == 0) )
+					if ($width == 0 && $height == 0)
 					{
 						$image = TRUE;
 					}
 					else
 					{
-						if ( ($width <= intval($attach_config['img_link_width'])) && ($height <= intval($attach_config['img_link_height'])) )
+						if ($width <= intval($attach_config['img_link_width']) && $height <= intval($attach_config['img_link_height']))
 						{
 							$image = TRUE;
 						}
@@ -665,207 +643,94 @@ function display_attachments($post_id)
 				}
 			}
 
-			if ( (intval($display_categories[$attachments['_' . $post_id][$i]['extension']]) == IMAGE_CAT) && ($attachments['_' . $post_id][$i]['thumbnail'] == 1) )
+			if (@intval($display_categories[$attachments['_' . $post_id][$i]['extension']]) == IMAGE_CAT && $attachments['_' . $post_id][$i]['thumbnail'] == 1)
 			{
 				$thumbnail = TRUE;
 				$image = FALSE;
 			}
 
-			if ( (!$image) && (!$stream) && (!$swf) && (!$thumbnail) )
+			if (!$image && !$thumbnail)
 			{
 				$link = TRUE;
 			}
 
 			if ($image)
 			{
-				//
 				// Images
-				// NOTE: If you want to use the download.php everytime an image is displayed inlined, replace the
-				// Section between BEGIN and END with (Without the // of course):
-				//	$img_source = append_sid('download.' . $phpEx . '?id=' . $attachments['_' . $post_id][$i]['attach_id']);
-				//	$download_link = TRUE;
-				//
-				//
-				if ((intval($attach_config['allow_ftp_upload'])) && (trim($attach_config['download_path']) == ''))
+				if ($attach_config['upload_dir'][0] == '/' || ( $attach_config['upload_dir'][0] != '/' && $attach_config['upload_dir'][1] == ':'))
 				{
-					$img_source = append_sid('download.php?id=' . $attachments['_' . $post_id][$i]['attach_id']);
+					$img_source = FT_ROOT . DOWNLOAD_URL . $attachments['_' . $post_id][$i]['attach_id'];
 					$download_link = TRUE;
 				}
 				else
 				{
-					// Check if we can reach the file or if it is stored outside of the webroot
-					if ($attach_config['upload_dir'][0] == '/' || ( $attach_config['upload_dir'][0] != '/' && $attach_config['upload_dir'][1] == ':'))
-					{
-						$img_source = append_sid('download.php?id=' . $attachments['_' . $post_id][$i]['attach_id']);
-						$download_link = TRUE;
-					}
-					else
-					{
-						$img_source = $filename;
-						$download_link = FALSE;
-					}
+					$img_source = $filename;
+					$download_link = FALSE;
 				}
 
 				$template->assign_block_vars('postrow.attach.cat_images', array(
-					'DOWNLOAD_NAME' => $display_name,
+					'DOWNLOAD_NAME'  => $display_name,
 					'S_UPLOAD_IMAGE' => $upload_image,
+					'IMG_SRC'        => $img_source,
+					'FILESIZE'       => $filesize,
+					'COMMENT'        => $comment,
+				));
 
-					'IMG_SRC' => $img_source,
-					'FILESIZE' => $filesize,
-					'SIZE_VAR' => $size_lang,
-					'COMMENT' => $comment,
-					'L_DOWNLOADED_VIEWED' => $lang['Viewed'],
-					'L_DOWNLOAD_COUNT' => sprintf($lang['Download_number'], $attachments['_' . $post_id][$i]['download_count']))
-				);
-
-				//
 				// Directly Viewed Image ... update the download count
-				//
 				if (!$download_link)
 				{
 					$sql = 'UPDATE ' . ATTACHMENTS_DESC_TABLE . '
-					SET download_count = download_count + 1
-					WHERE attach_id = ' . $attachments['_' . $post_id][$i]['attach_id'];
+						SET download_count = download_count + 1
+						WHERE attach_id = ' . (int) $attachments['_' . $post_id][$i]['attach_id'];
 
-					if ( !(DB()->sql_query($sql)) )
+					if (!(DB()->sql_query($sql)))
 					{
-						message_die(GENERAL_ERROR, 'Couldn\'t update attachment download count.', '', __LINE__, __FILE__, $sql);
+						die('Could not update attachment download count');
 					}
 				}
 			}
 
 			if ($thumbnail)
 			{
-				//
 				// Images, but display Thumbnail
-				// NOTE: If you want to use the download.php everytime an thumnmail is displayed inlined, replace the
-				// Section between BEGIN and END with (Without the // of course):
-				//	$thumb_source = append_sid('download.' . $phpEx . '?id=' . $attachments['_' . $post_id][$i]['attach_id'] . '&thumb=1');
-				//
-				if ( (intval($attach_config['allow_ftp_upload'])) && (trim($attach_config['download_path']) == '') )
+				if ($attach_config['upload_dir'][0] == '/' || ( $attach_config['upload_dir'][0] != '/' && $attach_config['upload_dir'][1] == ':'))
 				{
-					$thumb_source = append_sid('download.php?id=' . $attachments['_' . $post_id][$i]['attach_id'] . '&thumb=1');
+					$thumb_source = FT_ROOT . DOWNLOAD_URL . $attachments['_' . $post_id][$i]['attach_id'] . '&thumb=1';
 				}
 				else
 				{
-					// Check if we can reach the file or if it is stored outside of the webroot
-					if ($attach_config['upload_dir'][0] == '/' || ( $attach_config['upload_dir'][0] != '/' && $attach_config['upload_dir'][1] == ':'))
-					{
-						$thumb_source = append_sid('download.php?id=' . $attachments['_' . $post_id][$i]['attach_id'] . '&thumb=1');
-					}
-					else
-					{
-						$thumb_source = $thumbnail_filename;
-					}
+					$thumb_source = $thumbnail_filename;
 				}
 
 				$template->assign_block_vars('postrow.attach.cat_thumb_images', array(
-					'DOWNLOAD_NAME' => $display_name,
+					'DOWNLOAD_NAME'  => $display_name,
 					'S_UPLOAD_IMAGE' => $upload_image,
-
-					'IMG_SRC' => append_sid('download.php?id=' . $attachments['_' . $post_id][$i]['attach_id']),
-					'IMG_THUMB_SRC' => $thumb_source,
-					'FILESIZE' => $filesize,
-					'SIZE_VAR' => $size_lang,
-					'COMMENT' => $comment,
-					'L_DOWNLOADED_VIEWED' => $lang['Viewed'],
-					'L_DOWNLOAD_COUNT' => sprintf($lang['Download_number'], $attachments['_' . $post_id][$i]['download_count']))
-				);
+					'IMG_SRC'        => FT_ROOT . DOWNLOAD_URL . $attachments['_' . $post_id][$i]['attach_id'],
+					'IMG_THUMB_SRC'  => $thumb_source,
+					'FILESIZE'       => $filesize,
+					'COMMENT'        => $comment,
+				));
 			}
 
-			if ($stream)
-			{
-				//
-				// Streams
-				//
-				$template->assign_block_vars('postrow.attach.cat_stream', array(
-					'U_DOWNLOAD_LINK' => $filename,
-					'S_UPLOAD_IMAGE' => $upload_image,
-
-//					'U_DOWNLOAD_LINK' => append_sid('download.' . $phpEx . '?id=' . $attachments['_' . $post_id][$i]['attach_id']),
-					'DOWNLOAD_NAME' => $display_name,
-					'FILESIZE' => $filesize,
-					'SIZE_VAR' => $size_lang,
-					'COMMENT' => $comment,
-					'L_DOWNLOADED_VIEWED' => $lang['Viewed'],
-					'L_DOWNLOAD_COUNT' => sprintf($lang['Download_number'], $attachments['_' . $post_id][$i]['download_count']))
-				);
-
-				//
-				// Viewed/Heared File ... update the download count (download.php is not called here)
-				//
-				$sql = 'UPDATE ' . ATTACHMENTS_DESC_TABLE . '
-				SET download_count = download_count + 1
-				WHERE attach_id = ' . $attachments['_' . $post_id][$i]['attach_id'];
-
-				if ( !(DB()->sql_query($sql)) )
-				{
-					message_die(GENERAL_ERROR, 'Couldn\'t update attachment download count', '', __LINE__, __FILE__, $sql);
-				}
-			}
-
-			if ($swf)
-			{
-				//
-				// Macromedia Flash Files
-				//
-				list($width, $height) = swf_getdimension($filename);
-
-				$template->assign_block_vars('postrow.attach.cat_swf', array(
-					'U_DOWNLOAD_LINK' => $filename,
-					'S_UPLOAD_IMAGE' => $upload_image,
-
-					'DOWNLOAD_NAME' => $display_name,
-					'FILESIZE' => $filesize,
-					'SIZE_VAR' => $size_lang,
-					'COMMENT' => $comment,
-					'L_DOWNLOADED_VIEWED' => $lang['Viewed'],
-					'L_DOWNLOAD_COUNT' => sprintf($lang['Download_number'], $attachments['_' . $post_id][$i]['download_count']),
-					'WIDTH' => $width,
-					'HEIGHT' => $height)
-				);
-
-				//
-				// Viewed/Heared File ... update the download count (download.php is not called here)
-				//
-				$sql = 'UPDATE ' . ATTACHMENTS_DESC_TABLE . '
-				SET download_count = download_count + 1
-				WHERE attach_id = ' . $attachments['_' . $post_id][$i]['attach_id'];
-
-				if ( !(DB()->sql_query($sql)) )
-				{
-					message_die(GENERAL_ERROR, 'Couldn\'t update attachment download count', '', __LINE__, __FILE__, $sql);
-				}
-			}
-
-			//bt
+			// bt
 			if ($link && ($attachments['_'. $post_id][$i]['extension'] === TORRENT_EXT))
 			{
-				require(FT_ROOT .'attach_mod/displaying_torrent.php');
+				include(FT_ROOT . 'attach_mod/displaying_torrent.php');
 			}
-
 			else if ($link)
-			//bt end
 			{
-				$target_blank = ( (intval($display_categories[$attachments['_' . $post_id][$i]['extension']]) == IMAGE_CAT) ) ? 'target="_blank"' : '';
+				$target_blank = ( (@intval($display_categories[$attachments['_' . $post_id][$i]['extension']]) == IMAGE_CAT) ) ? 'target="_blank"' : '';
 
-				//
 				// display attachment
-				//
 				$template->assign_block_vars('postrow.attach.attachrow', array(
-					'U_DOWNLOAD_LINK' => append_sid('download.php?id=' . $attachments['_' . $post_id][$i]['attach_id']),
-					'S_UPLOAD_IMAGE' => $upload_image,
-
-					'DOWNLOAD_NAME' => $display_name,
-					'FILESIZE' => $filesize,
-					'SIZE_VAR' => $size_lang,
-					'COMMENT' => $comment,
-					'TARGET_BLANK' => $target_blank,
-
-					'L_DOWNLOADED_VIEWED' => $lang['Downloaded'],
-					'L_DOWNLOAD_COUNT' => sprintf($lang['Download_number'], $attachments['_' . $post_id][$i]['download_count']))
-				);
-
+					'U_DOWNLOAD_LINK' => FT_ROOT . DOWNLOAD_URL . $attachments['_' . $post_id][$i]['attach_id'],
+					'S_UPLOAD_IMAGE'  => $upload_image,
+					'DOWNLOAD_NAME'   => $display_name,
+					'FILESIZE'        => $filesize,
+					'COMMENT'         => $comment,
+					'TARGET_BLANK'    => $target_blank,
+					'DOWNLOAD_COUNT'  => sprintf($lang['DOWNLOAD_NUMBER'], $attachments['_' . $post_id][$i]['download_count']),
+				));
 			}
 		}
 	}

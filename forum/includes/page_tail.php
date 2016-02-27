@@ -6,12 +6,11 @@ global $ft_cfg, $userdata, $template, $DBS, $lang;
 
 if (!empty($template))
 {
-	$admin_link = ( @$userdata['user_level'] == ADMIN ) ? '<a href="admin/index.php?sid=' . $userdata['session_id'] . '">' . $lang['Admin_panel'] . '</a><br /><br />' : '';
-	
 	$template->assign_vars(array(
 		'SIMPLE_FOOTER'    	=> !empty($gen_simple_header),
 		'TRANSLATION_INFO' 	=> ( isset($lang['TRANSLATION_INFO']) ) ? $lang['TRANSLATION_INFO'] : '',
-		'ADMIN_LINK' 		=> $admin_link
+		'SHOW_ADMIN_LINK'  => (IS_ADMIN && !defined('IN_ADMIN')),
+		'ADMIN_LINK_HREF'  => "admin/index.php",
 	));
 	
 	$template->set_filenames(array('overall_footer' => 'overall_footer.tpl'));

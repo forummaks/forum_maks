@@ -11,14 +11,7 @@ define('FT_ROOT', './');
 require(FT_ROOT . 'common.php');
 
 $current_time = (isset($_GET['time']) && $_GET['time'] == 'all') ? 0 : time();
-//
-// Start session management
-//
-$userdata = session_pagestart($user_ip);
-init_userprefs($userdata);
-//
-// End session management
-//
+$user->session_start();
 //
 // Generate page
 //

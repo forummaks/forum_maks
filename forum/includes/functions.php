@@ -2,6 +2,171 @@
 
 if (!defined('FT_ROOT')) die(basename(__FILE__));
 
+function get_tracks ($type)
+{
+	$c_name = '';
+	
+	switch ($type)
+	{
+		case 'topic':
+			$c_name = COOKIE_TOPIC;
+			break;
+		case 'forum':
+			$c_name = COOKIE_FORUM;
+			break;
+		case 'pm':
+			$c_name = COOKIE_PM;
+			break;
+		default:
+			trigger_error(__FUNCTION__ .": invalid type '$type'", E_USER_ERROR);
+	}
+	
+	$tracks = !empty($_COOKIE[$c_name]) ? @unserialize($_COOKIE[$c_name]) : false;
+	return ($tracks) ? $tracks : array();
+}
+
+function set_tracks ($cookie_name, &$tracking_ary, $tracks = null, $val = TIMENOW)
+{
+	global $tracking_topics, $tracking_forums, $user;
+	
+	if (IS_GUEST) return;
+	
+	$prev_tracking_ary = $tracking_ary;
+	
+	if ($tracks)
+	{
+		if (!is_array($tracks))
+		{
+			$tracks = array($tracks => $val);
+		}
+		foreach ($tracks as $key => $val)
+		{
+			$key = (int) $key;
+			$val++;
+			$curr_track_val = !empty($tracking_ary[$key]) ? $tracking_ary[$key] : 0;
+			
+			if ($val > max($curr_track_val, $user->data['user_lastvisit']))
+			{
+				$tracking_ary[$key] = $val;
+			}
+			elseif ($curr_track_val < $user->data['user_lastvisit'])
+			{
+				unset($tracking_ary[$key]);
+			}
+		}
+	}
+	
+	$overflow = count($tracking_topics) + count($tracking_forums) - COOKIE_MAX_TRACKS;
+	
+	if ($overflow > 0)
+	{
+		arsort($tracking_ary);
+		for ($i = 0; $i < $overflow; $i++)
+		{
+			array_pop($tracking_ary);
+		}
+	}
+	
+	if (array_diff($tracking_ary, $prev_tracking_ary))
+	{
+		ft_setcookie($cookie_name, serialize($tracking_ary));
+	}
+}
+
+function get_last_read ($topic_id = 0, $forum_id = 0)
+{
+	global $tracking_topics, $tracking_forums, $user;
+	
+	$t = isset($tracking_topics[$topic_id]) ? $tracking_topics[$topic_id] : 0;
+	$f = isset($tracking_forums[$forum_id]) ? $tracking_forums[$forum_id] : 0;
+	return max($t, $f, $user->data['user_lastvisit']);
+}
+
+function is_unread ($ref, $topic_id = 0, $forum_id = 0)
+{
+	return (!IS_GUEST && $ref > get_last_read($topic_id, $forum_id));
+}
+
+//
+// Ajax
+//
+/**
+ *  Encode PHP var to JSON (PHP -> JS)
+ */
+function ft_json_encode ($data)
+{
+	return json_encode($data);
+}
+
+/**
+ *  Decode JSON to PHP (JS -> PHP)
+ */
+function ft_json_decode ($data)
+{
+	if (!is_string($data)) trigger_error('invalid argument for '. __FUNCTION__, E_USER_ERROR);
+	return json_decode($data, true);
+}
+
+/**
+ * -- from JsHttpRequest --
+ * Convert a PHP scalar, array or hash to JS scalar/array/hash. This function is
+ * an analog of json_encode(), but it can work with a non-UTF8 input and does not
+ * analyze the passed data. Output format must be fully JSON compatible.
+ *
+ * @param mixed $a   Any structure to convert to JS.
+ * @return string    JavaScript equivalent structure.
+ */
+function php2js ($a = false)
+{
+	if (is_null($a)) return 'null';
+	if ($a === false) return 'false';
+	if ($a === true) return 'true';
+	if (is_scalar($a))
+	{
+		if (is_float($a))
+		{
+			// Always use "." for floats.
+			$a = str_replace(",", ".", strval($a));
+		}
+		// All scalars are converted to strings to avoid indeterminism.
+		// PHP's "1" and 1 are equal for all PHP operators, but
+		// JS's "1" and 1 are not. So if we pass "1" or 1 from the PHP backend,
+		// we should get the same result in the JS frontend (string).
+		// Character replacements for JSON.
+		static $jsonReplaces = array(
+			array("\\", "/", "\n", "\t", "\r", "\b", "\f", '"'),
+			array('\\\\', '\\/', '\\n', '\\t', '\\r', '\\b', '\\f', '\"'),
+		);
+		return '"'. str_replace($jsonReplaces[0], $jsonReplaces[1], $a) .'"';
+	}
+	$isList = true;
+	for ($i = 0, reset($a); $i < count($a); $i++, next($a))
+	{
+		if (key($a) !== $i)
+		{
+			$isList = false;
+			break;
+		}
+	}
+	$result = array();
+	if ($isList)
+	{
+		foreach ($a as $v)
+		{
+			$result[] = php2js($v);
+		}
+		return '[ '. join(', ', $result) .' ]';
+	}
+	else
+	{
+		foreach ($a as $k => $v)
+		{
+			$result[] = php2js($k) .': '. php2js($v);
+		}
+		return '{ '. join(', ', $result) .' }';
+	}
+}
+
 /**
  * Adds commas between every group of thousands
  *
@@ -158,6 +323,81 @@ function checkbox_get_val (&$key, &$val, $default = 1, $on = 1, $off = 0)
 		$val = $default;
 	}
 	return;
+}
+
+/**
+ * Choost russian word declension based on numeric [from dklab.ru]
+ * Example for $expressions: array("ответ", "ответа", "ответов")
+ *
+ * @param        $int
+ * @param        $expressions
+ * @param string $format
+ *
+ * @return string
+ */
+function declension ($int, $expressions, $format = '%1$s %2$s')
+{
+	if (!is_array($expressions))
+	{
+		$expressions = $GLOBALS['lang']['DECLENSION'][strtoupper($expressions)];
+	}
+	
+	if (count($expressions) < 3)
+	{
+		$expressions[2] = $expressions[1];
+	}
+	$count = intval($int) % 100;
+	
+	if ($count >= 5 && $count <= 20)
+	{
+		$result = $expressions['2'];
+	}
+	else
+	{
+		$count = $count % 10;
+		if ($count == 1)
+		{
+			$result = $expressions['0'];
+		}
+		elseif ($count >= 2 && $count <= 4)
+		{
+			$result = $expressions['1'];
+		}
+		else
+		{
+			$result = $expressions['2'];
+		}
+	}
+	
+	return ($format) ? sprintf($format, $int, $result) : $result;
+}
+
+// http://forum.dklab.ru/php/advises/UrlreplaceargChangesValueOfParameterInUrl.html
+function url_arg ($url, $arg, $value, $amp = '&amp;')
+{
+	$arg = preg_quote($arg, '/');
+	
+	// разделяем URL и ANCHOR
+	$anchor = '';
+	if (preg_match('/(.*)(#.*)/s', $url, $m))
+	{
+		$url    = $m[1];
+		$anchor = $m[2];
+	}
+	// заменяем параметр, если он существует
+	if (preg_match("/((\?|&|&amp;)$arg=)[^&]*/s", $url, $m))
+	{
+		$cur = $m[0];
+		$new = is_null($value) ? '' : $m[1] . urlencode($value);
+		$url = str_replace($cur, $new, $url);
+	}
+	// добавляем параметр
+	else if (!is_null($value))
+	{
+		$div = (strpos($url, '?') !== false) ? $amp : '?';
+		$url = $url . $div . $arg .'='. urlencode($value);
+	}
+	return $url . $anchor;
 }
 
 function select_get_val ($key, &$val, $options_ary, $default, $num = TRUE)
@@ -463,8 +703,6 @@ function bt_sql_esc ($x)
 
 function get_db_stat($mode)
 {
-	
-
 	switch( $mode )
 	{
 		case 'usercount':
@@ -725,92 +963,6 @@ function make_jumpbox($action, $match_forum_id = 0, $return_forums_ary = FALSE)
 	return;
 }
 
-//
-// Initialise user settings on page load
-function init_userprefs($userdata)
-{
-	global $ft_cfg, $theme, $images;
-	global $template, $lang;
-	global $nav_links;
-
-	if ( $userdata['user_id'] != GUEST_UID )
-	{
-		if ( !empty($userdata['user_lang']))
-		{
-			$ft_cfg['default_lang'] = $userdata['user_lang'];
-		}
-
-		if ( !empty($userdata['user_dateformat']) )
-		{
-			$ft_cfg['default_dateformat'] = $userdata['user_dateformat'];
-		}
-
-		if ( isset($userdata['user_timezone']) )
-		{
-			$ft_cfg['board_timezone'] = $userdata['user_timezone'];
-		}
-	}
-
-	if ( !file_exists(@phpbb_realpath(FT_ROOT . 'language/lang_' . $ft_cfg['default_lang'] . '/lang_main.php')) )
-	{
-		$ft_cfg['default_lang'] = 'english';
-	}
-
-	require(FT_ROOT . 'language/lang_' . $ft_cfg['default_lang'] . '/lang_main.php');
-
-	if ( defined('IN_ADMIN') )
-	{
-		if( !file_exists(@phpbb_realpath(FT_ROOT . 'language/lang_' . $ft_cfg['default_lang'] . '/lang_admin.php')) )
-		{
-			$ft_cfg['default_lang'] = 'english';
-		}
-
-		require(FT_ROOT . 'language/lang_' . $ft_cfg['default_lang'] . '/lang_admin.php');
-	}
-
-	include_attach_lang();
-	//
-	// Set up style
-	//
-	if ( !$ft_cfg['override_user_style'] )
-	{
-		if ( $userdata['user_id'] != GUEST_UID && $userdata['user_style'] > 0 )
-		{
-			if ( $theme = setup_style($userdata['user_style']) )
-			{
-				return;
-			}
-		}
-	}
-
-	$theme = setup_style();
-
-	//
-	// Mozilla navigation bar
-	// Default items that should be valid on all pages.
-	// Defined here to correctly assign the Language Variables
-	// and be able to change the variables within code.
-	//
-	$nav_links['top'] = array (
-		'url' => append_sid(FT_ROOT . 'index.php'),
-		'title' => sprintf($lang['Forum_Index'], $ft_cfg['sitename'])
-	);
-	$nav_links['search'] = array (
-		'url' => append_sid(FT_ROOT . 'search.php'),
-		'title' => $lang['Search']
-	);
-	$nav_links['help'] = array (
-		'url' => append_sid(FT_ROOT . 'faq.php'),
-		'title' => $lang['FAQ']
-	);
-	$nav_links['author'] = array (
-		'url' => append_sid(FT_ROOT . 'memberlist.php'),
-		'title' => $lang['Memberlist']
-	);
-
-	return;
-}
-
 function setup_style()
 {
 	global $ft_cfg, $template, $userdata;
@@ -1022,10 +1174,75 @@ function obtain_word_list(&$orig_word, &$replacement_word)
 	return true;
 }
 
+/**
+ *  $args = array(
+ *            'tpl'    => 'template file name',
+ *            'simple' => $gen_simple_header,
+ *          );
+ *       OR (string) 'template_file_name'
+ *
+ *  $type = ''        (common forum page)
+ *          'admin'   (adminCP page)
+ *          'simple'  (simple page without common header)
+ *
+ *  $mode = 'no_header'
+ *          'no_footer'
+ *
+ * @param        $args
+ * @param string $type
+ * @param string $mode
+ */
+ 
+function print_page ($args, $type = '', $mode = '')
+{
+	global $template, $gen_simple_header;
+	
+	$tpl = (is_array($args) && !empty($args['tpl'])) ? $args['tpl'] : $args;
+	$tpl = ($type === 'admin') ? ADMIN_TPL_DIR . $tpl : $tpl;
+	
+	$gen_simple_header = (is_array($args) && !empty($args['simple']) OR $type === 'simple') ? true : $gen_simple_header;
+	
+	if ($mode !== 'no_header')
+	{
+		require(PAGE_HEADER);
+	}
+	
+	$template->set_filenames(array('body' => $tpl));
+	$template->pparse('body');
+	
+	if ($mode !== 'no_footer')
+	{
+		require(PAGE_FOOTER);
+	}
+}
+
+function caching_output ($enabled, $mode, $cache_var_name, $ttl = 300)
+{
+	if (!$enabled || !CACHE('ft_cache')->used)
+	{
+		return;
+	}
+	
+	if ($mode == 'send')
+	{
+		if ($cached_contents = CACHE('ft_cache')->get($cache_var_name))
+		{
+			ft_exit($cached_contents);
+		}
+	}
+	else if ($mode == 'store')
+	{
+		if ($output = ob_get_contents())
+		{
+			CACHE('ft_cache')->set($cache_var_name, $output, $ttl);
+		}
+	}
+}
+
 function message_die($msg_code, $msg_text = '', $msg_title = '', $err_line = '', $err_file = '', $sql = '')
 {
 	global  $template, $ft_cfg, $theme, $lang, $nav_links, $gen_simple_header, $images;
-	global $userdata, $user_ip, $session_length;
+	global $userdata, $user_ip, $session_length, $user;
 	global $starttime;
 
 	if(defined('HAS_DIED'))
@@ -1066,8 +1283,7 @@ function message_die($msg_code, $msg_text = '', $msg_title = '', $err_line = '',
 
 	if( empty($userdata) && ( $msg_code == GENERAL_MESSAGE || $msg_code == GENERAL_ERROR ) )
 	{
-		$userdata = session_pagestart($user_ip);
-		init_userprefs($userdata);
+		$user->session_start();
 	}
 
 	//

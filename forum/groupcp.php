@@ -77,14 +77,7 @@ function generate_user_info(&$row, $date_format, $group_mod, &$from, &$posts, &$
 //
 // --------------------------
 
-//
-// Start session management
-//
-$userdata = session_pagestart($user_ip);
-init_userprefs($userdata);
-//
-// End session management
-//
+$user->session_start();
 
 if (!$userdata['session_logged_in'])
 {

@@ -144,14 +144,8 @@ if (!($forum_topic_data = DB()->sql_fetchrow($result))) {
 
 $forum_id = intval($forum_topic_data['forum_id']);
 
-//
 // Start session management
-//
-$userdata = session_pagestart($user_ip);
-init_userprefs($userdata);
-//
-// End session management
-//
+$user->session_start();
 
 //qr
 define('INCL_BBCODE_JS', TRUE);

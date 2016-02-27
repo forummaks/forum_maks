@@ -9,6 +9,7 @@ if (!defined('FT_CFG_LOADED')) trigger_error('File config.php not loaded', E_USE
 unset($stopwords, $synonyms_match, $synonyms_replace);
 $userdata = $theme = $images = $lang = $nav_links = array();
 $gen_simple_header = false;
+$user = null;
 
 // Obtain and encode user IP
 $client_ip = (filter_var($_SERVER['REMOTE_ADDR'], FILTER_VALIDATE_IP)) ? $_SERVER['REMOTE_ADDR'] : '127.0.0.1';
@@ -210,7 +211,12 @@ define('TOPIC_DL_ST_COMPLETE', 2);
 define('SHOW_PEERS_COUNT',     1);
 define('SHOW_PEERS_NAMES',     2);
 define('SHOW_PEERS_FULL',      3);
-//bt end
+
+define('SEARCH_ID_LENGTH', 12);
+define('SID_LENGTH',       20);
+define('LOGIN_KEY_LENGTH', 12);
+define('USERNAME_MAX_LENGTH',  25);
+define('USEREMAIL_MAX_LENGTH', 40);
 
 define('PAGE_HEADER', INC_DIR .'page_header.php');
 define('PAGE_FOOTER', INC_DIR .'page_tail.php');
@@ -376,6 +382,9 @@ require(FT_ROOT . 'db/mysql.php');
 define('SQL_LAYER', 'mysql');
 
 $ft_cfg = array_merge(ft_get_config(CONFIG_TABLE), $ft_cfg);
+
+$user = new user_common();
+$userdata =& $user->data;
 
 if( $ft_cfg['board_disable'] && !defined("IN_ADMIN") && !defined("IN_LOGIN") )
 {

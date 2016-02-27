@@ -4,8 +4,7 @@ define('FT_SCRIPT', 'tracker');
 define('FT_ROOT', './');
 require(FT_ROOT . 'common.php');
 
-$userdata = session_pagestart($user_ip);
-init_userprefs($userdata);
+$user->session_start();
 
 $tor_search_limit    = 500;
 $max_forum_sel_size  = 8;

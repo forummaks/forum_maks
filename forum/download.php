@@ -110,8 +110,7 @@ function send_file_to_browser($attachment, $upload_dir)
 //
 // Start Session Management
 //
-$userdata = session_pagestart($user_ip);
-init_userprefs($userdata);
+$user->session_start();
 
 if (!$download_id)
 {

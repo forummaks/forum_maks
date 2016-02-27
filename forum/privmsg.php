@@ -52,14 +52,8 @@ else
 	$folder = 'inbox';
 }
 
-//
 // Start session management
-//
-$userdata = session_pagestart($user_ip);
-init_userprefs($userdata);
-//
-// End session management
-//
+$user->session_start();
 
 //qr
 define('INCL_BBCODE_JS', TRUE);

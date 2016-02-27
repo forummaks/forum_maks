@@ -7,9 +7,7 @@ require(FT_ROOT . 'common.php');
 $sid = get_var('sid', '');
 
 // Start session management
-$userdata = session_pagestart($user_ip, PAGE_PROFILE);
-init_userprefs($userdata);
-// End session management
+$user->session_start();
 
 // session id check
 if ($sid == '' || $sid != $userdata['session_id'])

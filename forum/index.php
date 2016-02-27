@@ -7,14 +7,8 @@ require(FT_ROOT . 'common.php');
 
 define('LAST_TOPIC_MAX_LEN', 30);
 
-//
-// Start session management
-//
-$userdata = session_pagestart($user_ip);
-init_userprefs($userdata);
-//
-// End session management
-//
+// Init userdata
+$user->session_start();
 
 $viewcat = ( !empty($HTTP_GET_VARS[POST_CAT_URL]) ) ? $HTTP_GET_VARS[POST_CAT_URL] : -1;
 

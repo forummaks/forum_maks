@@ -52,8 +52,7 @@ else
 }
 
 // Start session management
-$userdata = session_pagestart($user_ip);
-init_userprefs($userdata);
+$user->session_start();
 
 // Check if user logged in
 if (!$userdata['session_logged_in'])

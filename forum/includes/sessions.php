@@ -2,385 +2,780 @@
 
 if (!defined('FT_ROOT')) die(basename(__FILE__));
 
-function session_begin($user_id, $user_ip, $auto_create = 0, $enable_autologin = 0, $admin = 0)
+define('ONLY_NEW_POSTS',  1);
+define('ONLY_NEW_TOPICS', 2);
+
+class user_common
 {
-	global  $ft_cfg;
-	global $HTTP_COOKIE_VARS, $HTTP_GET_VARS, $SID;
-
-	$cookiename = $ft_cfg['cookie_prefix'];
-	$cookiepath = $ft_cfg['script_path'];
-	$cookiedomain = $ft_cfg['cookie_domain'];
-	$cookiesecure = $ft_cfg['cookie_secure'];
-
-	if ( isset($HTTP_COOKIE_VARS[$cookiename . '_sid']) || isset($HTTP_COOKIE_VARS[$cookiename . '_data']) )
+	/**
+	*  Config
+	*/
+	var $cfg = array(
+		'req_login'         => false,    // requires user to be logged in
+		'req_session_admin' => false,    // requires active admin session (for moderation or admin actions)
+	);
+	
+	/**
+	*  PHP-JS exchangeable options (JSON'ized as {USER_OPTIONS_JS} in TPL)
+	*/
+	var $opt_js = array(
+		'only_new' => 0,     // show ony new posts or topics
+	);
+	
+	/**
+	 *  Defaults options for guests
+	 */
+	var $opt_js_guest = array(
+		'h_av'     => 1,     // hide avatar
+		'h_rnk_i'  => 1,     // hide rank images
+		'h_smile'  => 1,     // hide smilies
+		'h_sig'    => 1,     // hide signatures
+	);
+	
+	/**
+	*  Sessiondata
+	*/
+	var $sessiondata = array(
+		'uk'  => null,
+		'uid' => null,
+		'sid' => '',
+	);
+	
+	/**
+	*  Old $userdata
+	*/
+	var $data = array();
+	
+	/**
+	*  Shortcuts
+	*/
+	var $id = null;
+	
+	/**
+	*  Constructor
+	*/
+	function user_common ()
 	{
-		$session_id = isset($HTTP_COOKIE_VARS[$cookiename . '_sid']) ? $HTTP_COOKIE_VARS[$cookiename . '_sid'] : '';
-		$sessiondata = isset($HTTP_COOKIE_VARS[$cookiename . '_data']) ? unserialize(stripslashes($HTTP_COOKIE_VARS[$cookiename . '_data'])) : array();
-		$sessionmethod = SESSION_METHOD_COOKIE;
+		$this->get_sessiondata();
 	}
-	else
+	
+	/**
+	 *  Start session (restore existent session or create new)
+	 *
+	 * @param array $cfg
+	 *
+	 * @return array|bool
+	 */
+	function session_start ($cfg = array())
 	{
-		$sessiondata = array();
-		$session_id = ( isset($HTTP_GET_VARS['sid']) ) ? $HTTP_GET_VARS['sid'] : '';
-		$sessionmethod = SESSION_METHOD_GET;
-	}
-
-	//
-	if (!preg_match('/^[A-Za-z0-9]*$/', $session_id))
-	{
-		$session_id = '';
-	}
-
-	$last_visit = 0;
-	$current_time = time();
-	$expiry_time = $current_time - $ft_cfg['session_length'];
-
-	//
-	// Try and pull the last time stored in a cookie, if it exists
-	//
-	$sql = "SELECT *
-		FROM " . USERS_TABLE . "
-		WHERE user_id = $user_id";
-	if ( !($result = DB()->sql_query($sql)) )
-	{
-		message_die(CRITICAL_ERROR, 'Could not obtain lastvisit data from user table', '', __LINE__, __FILE__, $sql);
-	}
-
-	$userdata = DB()->sql_fetchrow($result);
-
-	if ( $user_id != GUEST_UID )
-	{
-		$auto_login_key = $userdata['user_password'];
-
-		if ( $auto_create )
+		global $ft_cfg;
+		
+		$update_sessions_table = false;
+		$this->cfg = array_merge($this->cfg, $cfg);
+		
+		$session_id = $this->sessiondata['sid'];
+		
+		// Does a session exist?
+		if ($session_id || !$this->sessiondata['uk'])
 		{
-			if ( isset($sessiondata['autologinid']) && $userdata['user_active'] )
+			$SQL = DB()->get_empty_sql_array();
+			
+			$SQL['SELECT'][] = "u.*, s.*";
+			
+			$SQL['FROM'][] = SESSIONS_TABLE ." s";
+			$SQL['INNER JOIN'][] = USERS_TABLE ." u ON(u.user_id = s.session_user_id)";
+			
+			if ($session_id)
 			{
-				// We have to login automagically
-				if( $sessiondata['autologinid'] === $auto_login_key )
-				{
-					// autologinid matches password
-					$login = 1;
-					$enable_autologin = 1;
-				}
-				else
-				{
-					// No match; don't login, set as GUEST_UID user
-					$login = 0;
-					$enable_autologin = 0;
-					$user_id = $userdata['user_id'] = GUEST_UID;
+				$SQL['WHERE'][] = "s.session_id = '$session_id'";
 
-					$sql = 'SELECT * FROM ' . USERS_TABLE . ' WHERE user_id = ' . GUEST_UID;
-					$result = DB()->sql_query($sql);
-					$userdata = DB()->sql_fetchrow($result);
-					DB()->sql_freeresult($result);
-				}
+				$userdata_cache_id = $session_id;
 			}
 			else
 			{
-				// Autologin is not set. Don't login, set as GUEST_UID user
-				$login = 0;
-				$enable_autologin = 0;
-				$user_id = $userdata['user_id'] = GUEST_UID;
-
-				$sql = 'SELECT * FROM ' . USERS_TABLE . ' WHERE user_id = ' . GUEST_UID;
-				$result = DB()->sql_query($sql);
-				$userdata = DB()->sql_fetchrow($result);
-				DB()->sql_freeresult($result);
+				$SQL['WHERE'][] = "s.session_ip = '". USER_IP ."'";
+				$SQL['WHERE'][] = "s.session_user_id = ". GUEST_UID;
+				
+				$userdata_cache_id = USER_IP;
+			}
+			
+			if (!$this->data = cache_get_userdata($userdata_cache_id))
+			{
+				$this->data = DB()->fetch_row($SQL);
+				
+				if ($this->data && (TIMENOW - $this->data['session_time']) > $ft_cfg['session_update_intrv'])
+				{
+					$this->data['session_time'] = TIMENOW;
+					$update_sessions_table = true;
+				}
+				
+				cache_set_userdata($this->data);
+			}
+		}
+		
+		// Did the session exist in the DB?	
+		if ($this->data)
+		{
+			// Do not check IP assuming equivalence, if IPv4 we'll check only first 24
+			// bits ... I've been told (by vHiker) this should alleviate problems with
+			// load balanced et al proxies while retaining some reliance on IP security.
+			$ip_check_s = substr($this->data['session_ip'], 0, 6);
+			$ip_check_u = substr(USER_IP, 0, 6);
+			
+			if ($ip_check_s == $ip_check_u)
+			{
+				if ($this->data['user_id'] != GUEST_UID && defined('IN_ADMIN'))
+				{
+					define('SID_GET', "sid={$this->data['session_id']}");
+				}
+				$session_id = $this->sessiondata['sid'] = $this->data['session_id'];
+				
+				// Only update session a minute or so after last update
+				if ($update_sessions_table)
+				{
+					DB()->query("
+						UPDATE ". SESSIONS_TABLE ." SET
+							session_time = ". TIMENOW ."
+						WHERE session_id = '$session_id'
+						LIMIT 1
+					");
+				}
+				$this->set_session_cookies($this->data['user_id']);
+			}
+			else
+			{
+				$this->data = array();
+			}
+		}
+		// If we reach here then no (valid) session exists. So we'll create a new one,
+		// using the cookie user_id if available to pull basic user prefs.
+		if (!$this->data)
+		{
+			$login = false;
+			$user_id = ($ft_cfg['allow_autologin'] && $this->sessiondata['uk'] && $this->sessiondata['uid']) ? $this->sessiondata['uid'] : GUEST_UID;
+			
+			if ($userdata = get_userdata(intval($user_id), false, true))
+			{
+				if ($userdata['user_id'] != GUEST_UID && $userdata['user_active'])
+				{
+					if (verify_id($this->sessiondata['uk'], LOGIN_KEY_LENGTH) && $this->verify_autologin_id($userdata, true, false))
+					{
+						$login = ($userdata['autologin_id'] && $this->sessiondata['uk'] === $userdata['autologin_id']);
+					}
+				}
+			}
+			if (!$userdata || ($userdata['user_id'] != GUEST_UID && !$login))
+			{
+				$userdata = get_userdata(GUEST_UID, false, true);
+			}
+			
+			$this->session_create($userdata, true);
+		}
+		
+		define('IS_GUEST',        (!$this->data['session_logged_in']));
+		define('IS_ADMIN',        (!IS_GUEST && $this->data['user_level'] == ADMIN));
+		define('IS_MOD',          (!IS_GUEST && $this->data['user_level'] == MOD));
+		define('IS_USER',         (!IS_GUEST && $this->data['user_level'] == USER));
+		define('IS_SUPER_ADMIN',  (IS_ADMIN && isset($ft_cfg['super_admins'][$this->data['user_id']])));
+		define('IS_AM',           (IS_ADMIN || IS_MOD));
+		
+		$this->set_shortcuts();
+		
+		// Redirect guests to login page
+		if (IS_GUEST && $this->cfg['req_login'])
+		{
+			login_redirect();
+		}
+		
+		$this->init_userprefs();
+		
+		return $this->data;
+	}
+	
+	/**
+	 *  Create new session for the given user
+	 *
+	 * @param      $userdata
+	 * @param bool $auto_created
+	 *
+	 * @return array
+	 */
+	function session_create ($userdata, $auto_created = false)
+	{
+		global $ft_cfg;
+		
+		$this->data = $userdata;
+		$session_id = $this->sessiondata['sid'];
+		
+		$login   = (int) ($this->data['user_id'] != GUEST_UID);
+		$is_user = ($this->data['user_level'] != ADMIN);
+		$user_id = (int) $this->data['user_id'];
+		$mod_admin_session = ($this->data['user_level'] == ADMIN || $this->data['user_level'] == MOD);
+		
+		// Initial ban check against user_id or IP address
+		if ($is_user)
+		{
+			preg_match('#(..)(..)(..)(..)#', USER_IP, $ip);
+			
+			$where_sql  = "ban_ip IN('". USER_IP ."', '$ip[1]$ip[2]$ip[3]ff', '$ip[1]$ip[2]ffff', '$ip[1]ffffff')";
+			$where_sql .= ($login) ? " OR ban_userid = $user_id" : '';
+			
+			$sql = "SELECT ban_id FROM ". BANLIST_TABLE ." WHERE $where_sql LIMIT 1";
+		}
+		
+		// Create new session
+		for ($i=0, $max_try=5; $i <= $max_try; $i++)
+		{
+			$session_id = make_rand_str(SID_LENGTH);
+			
+			$args = DB()->build_array('INSERT', array(
+				'session_id'        => (string) $session_id,
+				'session_user_id'   => (int) $user_id,
+				'session_start'     => (int) TIMENOW,
+				'session_time'      => (int) TIMENOW,
+				'session_ip'        => (string) USER_IP,
+				'session_logged_in' => (int) $login,
+				'session_admin'     => (int) $mod_admin_session,
+			));
+			$sql = "INSERT INTO ". SESSIONS_TABLE . $args;
+			
+			if (@DB()->query($sql))
+			{
+				break;
+			}
+			if ($i == $max_try)
+			{
+				trigger_error('Error creating new session', E_USER_ERROR);
+			}
+		}
+		// Update last visit for logged in users
+		if ($login)
+		{
+			$last_visit = $this->data['user_lastvisit'];
+			
+			if (!$session_time = $this->data['user_session_time'])
+			{
+				$last_visit = TIMENOW;
+				define('FIRST_LOGON', true);
+			}
+			else if ($session_time < (TIMENOW - $ft_cfg['last_visit_update_intrv']))
+			{
+				$last_visit = max($session_time, (TIMENOW - 86400*$ft_cfg['max_last_visit_days']));
+			}
+			
+			if ($last_visit != $this->data['user_lastvisit'])
+			{
+				DB()->query("
+					UPDATE ". USERS_TABLE ." SET
+						user_session_time = ". TIMENOW .",
+						user_lastvisit = $last_visit,
+						user_last_ip = '". USER_IP ."',
+						user_reg_ip = IF(user_reg_ip = '', '". USER_IP ."', user_reg_ip)
+					WHERE user_id = $user_id
+					LIMIT 1
+				");
+				
+				ft_setcookie(COOKIE_TOPIC, '');
+				ft_setcookie(COOKIE_FORUM, '');
+				
+				$this->data['user_lastvisit'] = $last_visit;
+			}
+			if (!empty($_POST['autologin']) && $ft_cfg['allow_autologin'])
+			{
+				if (!$auto_created)
+				{
+					$this->verify_autologin_id($this->data, true, true);
+				}
+				$this->sessiondata['uk'] = $this->data['autologin_id'];
+			}
+			$this->sessiondata['uid'] = $user_id;
+			$this->sessiondata['sid'] = $session_id;
+		}
+		$this->data['session_id'] = $session_id;
+		$this->data['session_ip'] = USER_IP;
+		$this->data['session_user_id'] = $user_id;
+		$this->data['session_logged_in'] = $login;
+		$this->data['session_start'] = TIMENOW;
+		$this->data['session_time'] = TIMENOW;
+		$this->data['session_admin'] = $mod_admin_session;
+		
+		$this->set_session_cookies($user_id);
+		
+		if ($login && (defined('IN_ADMIN') || $mod_admin_session))
+		{
+			define('SID_GET', "sid=$session_id");
+		}
+		
+		cache_set_userdata($this->data);
+		
+		return $this->data;
+	}
+	
+	/**
+	 *  Initialize sessiondata stored in cookies
+	 *
+	 * @param bool $update_lastvisit
+	 * @param bool $set_cookie
+	 */
+	function session_end ($update_lastvisit = false, $set_cookie = true)
+	{
+		DB()->query("
+			DELETE FROM ". SESSIONS_TABLE ."
+			WHERE session_id = '{$this->data['session_id']}'
+		");
+		
+		if (!IS_GUEST)
+		{
+			if ($update_lastvisit)
+			{
+				DB()->query("
+					UPDATE ". USERS_TABLE ." SET
+						user_session_time = ". TIMENOW .",
+						user_lastvisit = ". TIMENOW .",
+						user_last_ip = '". USER_IP ."',
+						user_reg_ip = IF(user_reg_ip = '', '". USER_IP ."', user_reg_ip)
+					WHERE user_id = {$this->data['user_id']}
+					LIMIT 1
+				");
+			}
+			
+			if (isset($_REQUEST['reset_autologin']))
+			{
+				$this->create_autologin_id($this->data, false);
+				
+				DB()->query("
+					DELETE FROM ". SESSIONS_TABLE ."
+					WHERE session_user_id = '{$this->data['user_id']}'
+				");
+			}
+		}
+		
+		if ($set_cookie)
+		{
+			$this->set_session_cookies(GUEST_UID);
+		}
+	}
+	
+	/**
+	 *  Login
+	 *
+	 * @param      $args
+	 * @param bool $mod_admin_login
+	 *
+	 * @return array
+	 */
+	function login ($args, $mod_admin_login = false)
+	{
+		$username = !empty($args['login_username']) ? clean_username($args['login_username']) : '';
+		$password = !empty($args['login_password']) ? $args['login_password'] : '';
+		
+		if ($username && $password)
+		{
+			$username_sql = str_replace("\\'", "''", $username);
+			$password_sql = md5($password);
+			
+			$sql = "
+				SELECT *
+				FROM ". USERS_TABLE ."
+				WHERE username = '$username_sql'
+				  AND user_password = '$password_sql'
+				  AND user_active = 1
+				  AND user_id != ". GUEST_UID ."
+				LIMIT 1
+			";
+			
+			if ($userdata = DB()->fetch_row($sql))
+			{
+				if (!$userdata['username'] || !$userdata['user_password'] || $userdata['user_id'] == GUEST_UID || md5($password) !== $userdata['user_password'] || !$userdata['user_active'])
+				{
+					trigger_error('invalid userdata', E_USER_ERROR);
+				}
+				
+				// Start mod/admin session
+				if ($mod_admin_login)
+				{
+					DB()->query("
+						UPDATE ". SESSIONS_TABLE ." SET
+							session_admin = ". $this->data['user_level'] ."
+						WHERE session_user_id = ". $this->data['user_id'] ."
+							AND session_id = '". $this->data['session_id'] ."'
+					");
+					$this->data['session_admin'] = $this->data['user_level'];
+					cache_update_userdata($this->data);
+					
+					return $this->data;
+				}
+				else if ($new_session_userdata = $this->session_create($userdata, false))
+				{
+					// Removing guest sessions from this IP
+					DB()->query("
+						DELETE FROM ". SESSIONS_TABLE ."
+						WHERE session_ip = '". USER_IP ."'
+							AND session_user_id = ". GUEST_UID ."
+					");
+					
+					return $new_session_userdata;
+				}
+				else
+				{
+					trigger_error("Could not start session : login", E_USER_ERROR);
+				}
+			}
+		}
+		
+		return array();
+	}
+	
+	/**
+	*  Initialize sessiondata stored in cookies
+	*/
+	function get_sessiondata ()
+	{
+		$sd_resv = !empty($_COOKIE[COOKIE_DATA]) ? @unserialize($_COOKIE[COOKIE_DATA]) : array();
+		
+		// autologin_id
+		if (!empty($sd_resv['uk']) && verify_id($sd_resv['uk'], LOGIN_KEY_LENGTH))
+		{
+			$this->sessiondata['uk'] = $sd_resv['uk'];
+		}
+		// user_id
+		if (!empty($sd_resv['uid']))
+		{
+			$this->sessiondata['uid'] = intval($sd_resv['uid']);
+		}
+		// sid
+		if (!empty($sd_resv['sid']) && verify_id($sd_resv['sid'], SID_LENGTH))
+		{
+			$this->sessiondata['sid'] = $sd_resv['sid'];
+		}
+	}
+	
+	/**
+	 *  Store sessiondata in cookies
+	 *
+	 * @param $user_id
+	 */
+	function set_session_cookies ($user_id)
+	{
+		global $ft_cfg;
+		
+		if ($user_id == GUEST_UID)
+		{
+			$delete_cookies = array(
+				COOKIE_DATA,
+				COOKIE_DBG,
+				'torhelp',
+				'explain',
+				'sql_log',
+				'sql_log_full',
+			);
+			
+			foreach ($delete_cookies as $cookie)
+			{
+				if (isset($_COOKIE[$cookie]))
+				{
+					ft_setcookie($cookie, '', COOKIE_EXPIRED);
+				}
 			}
 		}
 		else
 		{
-			$login = 1;
-		}
-	}
-	else
-	{
-		$login = 0;
-		$enable_autologin = 0;
-	}
-
-	//
-	// Initial ban check against user id, IP and email address
-	//
-	preg_match('/(..)(..)(..)(..)/', $user_ip, $user_ip_parts);
-
-	$sql = "SELECT ban_ip, ban_userid, ban_email
-		FROM " . BANLIST_TABLE . "
-		WHERE ban_ip IN ('" . $user_ip_parts[1] . $user_ip_parts[2] . $user_ip_parts[3] . $user_ip_parts[4] . "', '" . $user_ip_parts[1] . $user_ip_parts[2] . $user_ip_parts[3] . "ff', '" . $user_ip_parts[1] . $user_ip_parts[2] . "ffff', '" . $user_ip_parts[1] . "ffffff')
-			OR ban_userid = $user_id";
-	if ( $user_id != GUEST_UID )
-	{
-		$sql .= " OR ban_email LIKE '" . str_replace("\'", "''", $userdata['user_email']) . "'
-			OR ban_email LIKE '" . substr(str_replace("\'", "''", $userdata['user_email']), strpos(str_replace("\'", "''", $userdata['user_email']), "@")) . "'";
-	}
-	if ( !($result = DB()->sql_query($sql)) )
-	{
-		message_die(CRITICAL_ERROR, 'Could not obtain ban information', '', __LINE__, __FILE__, $sql);
-	}
-
-	if ( $ban_info = DB()->sql_fetchrow($result) )
-	{
-		if ( $ban_info['ban_ip'] || $ban_info['ban_userid'] || $ban_info['ban_email'] )
-		{
-			message_die(CRITICAL_MESSAGE, 'You_been_banned');
-		}
-	}
-
-	//
-	// Create or update the session
-	//
-	$sql = "UPDATE " . SESSIONS_TABLE . "
-		SET session_user_id = $user_id, session_start = $current_time, session_time = $current_time, session_logged_in = $login, session_admin = $admin
-		WHERE session_id = '" . $session_id . "'
-			AND session_ip = '$user_ip'";
-	if ( !DB()->sql_query($sql) || !DB()->affected_rows() )
-	{
-		list($sec, $usec) = explode(' ', microtime());
-		mt_srand((float) $sec + ((float) $usec * 100000));
-		$session_id = md5(uniqid(mt_rand(), true));
-
-		$sql = "INSERT INTO " . SESSIONS_TABLE . "
-			(session_id, session_user_id, session_start, session_time, session_ip, session_logged_in, session_admin)
-			VALUES ('$session_id', $user_id, $current_time, $current_time, '$user_ip', $login, $admin)";
-		if ( !DB()->sql_query($sql) )
-		{
-			message_die(CRITICAL_ERROR, 'Error creating new session', '', __LINE__, __FILE__, $sql);
-		}
-	}
-
-	if ( $user_id != GUEST_UID )
-	{// ( $userdata['user_session_time'] > $expiry_time && $auto_create ) ? $userdata['user_lastvisit'] : (
-		$last_visit = ( $userdata['user_session_time'] > 0 ) ? $userdata['user_session_time'] : $current_time;
-
-		if (!$admin)
-		{
-			$sql = "UPDATE " . USERS_TABLE . "
-				SET user_session_time = $current_time, user_lastvisit = $last_visit
-				WHERE user_id = $user_id";
-			if ( !DB()->sql_query($sql) )
+			$c_sdata_resv = !empty($_COOKIE[COOKIE_DATA]) ? $_COOKIE[COOKIE_DATA] : null;
+			$c_sdata_curr = ($this->sessiondata) ? serialize($this->sessiondata) : '';
+			
+			if ($c_sdata_curr !== $c_sdata_resv)
 			{
-				message_die(CRITICAL_ERROR, 'Error updating last visit time', '', __LINE__, __FILE__, $sql);
+				ft_setcookie(COOKIE_DATA, $c_sdata_curr, COOKIE_PERSIST, true);
+			}
+			
+			if (isset($ft_cfg['dbg_users'][$this->data['user_id']]) && !isset($_COOKIE[COOKIE_DBG]))
+			{
+				ft_setcookie(COOKIE_DBG, 1, COOKIE_SESSION);
 			}
 		}
-
-		$userdata['user_lastvisit'] = $last_visit;
-
-		$sessiondata['autologinid'] = (!$admin) ? (( $enable_autologin && $sessionmethod == SESSION_METHOD_COOKIE ) ? $auto_login_key : '') : $sessiondata['autologinid'];
-		$sessiondata['userid'] = $user_id;
 	}
-
-	$userdata['session_id'] = $session_id;
-	$userdata['session_ip'] = $user_ip;
-	$userdata['session_user_id'] = $user_id;
-	$userdata['session_logged_in'] = $login;
-	$userdata['session_start'] = $current_time;
-	$userdata['session_time'] = $current_time;
-	$userdata['session_admin'] = $admin;
-
-	setcookie($cookiename . '_data', serialize($sessiondata), $current_time + 31536000, $cookiepath, $cookiedomain, $cookiesecure);
-	setcookie($cookiename . '_sid', $session_id, 0, $cookiepath, $cookiedomain, $cookiesecure);
-
-	$SID = 'sid=' . $session_id;
-
-	return $userdata;
-}
-
-//
-// Checks for a given user session, tidies session table and updates user
-// sessions at each page refresh
-//
-function session_pagestart($user_ip)
-{
-	global  $lang, $ft_cfg;
-	global $HTTP_COOKIE_VARS, $HTTP_GET_VARS, $SID;
-
-	$cookiename = $ft_cfg['cookie_prefix'];
-	$cookiepath = $ft_cfg['script_path'];
-	$cookiedomain = $ft_cfg['cookie_domain'];
-	$cookiesecure = $ft_cfg['cookie_secure'];
-
-	$current_time = time();
-	unset($userdata);
-
-	if ( isset($HTTP_COOKIE_VARS[$cookiename . '_sid']) || isset($HTTP_COOKIE_VARS[$cookiename . '_data']) )
+	
+	/**
+	 *  Verify autologin_id
+	 *
+	 * @param      $userdata
+	 * @param bool $expire_check
+	 * @param bool $create_new
+	 *
+	 * @return bool|string
+	 */
+	function verify_autologin_id ($userdata, $expire_check = false, $create_new = true)
 	{
-		$sessiondata = isset( $HTTP_COOKIE_VARS[$cookiename . '_data'] ) ? unserialize(stripslashes($HTTP_COOKIE_VARS[$cookiename . '_data'])) : array();
-		$session_id = isset( $HTTP_COOKIE_VARS[$cookiename . '_sid'] ) ? $HTTP_COOKIE_VARS[$cookiename . '_sid'] : '';
-		$sessionmethod = SESSION_METHOD_COOKIE;
-	}
-	else
-	{
-		$sessiondata = array();
-		$session_id = ( isset($HTTP_GET_VARS['sid']) ) ? $HTTP_GET_VARS['sid'] : '';
-		$sessionmethod = SESSION_METHOD_GET;
-	}
-
-	//
-	if (!preg_match('/^[A-Za-z0-9]*$/', $session_id))
-	{
-		$session_id = '';
-	}
-
-	//
-	// Does a session exist?
-	//
-	if ( !empty($session_id) )
-	{
-		//
-		// session_id exists so go ahead and attempt to grab all
-		// data in preparation
-		//
-		$sql = "SELECT u.*, s.*
-			FROM " . SESSIONS_TABLE . " s, " . USERS_TABLE . " u
-			WHERE s.session_id = '$session_id'
-				AND u.user_id = s.session_user_id";
-		if ( !($result = DB()->sql_query($sql)) )
+		global $ft_cfg;
+		
+		$autologin_id = $userdata['autologin_id'];
+		
+		if ($expire_check)
 		{
-			message_die(CRITICAL_ERROR, 'Error doing DB query userdata row fetch', '', __LINE__, __FILE__, $sql);
-		}
-
-		$userdata = DB()->sql_fetchrow($result);
-
-		//
-		// Did the session exist in the DB?
-		//
-		if ( isset($userdata['user_id']) )
-		{
-			//
-			// Do not check IP assuming equivalence, if IPv4 we'll check only first 24
-			// bits ... I've been told (by vHiker) this should alleviate problems with
-			// load balanced et al proxies while retaining some reliance on IP security.
-			//
-			$ip_check_s = substr($userdata['session_ip'], 0, 6);
-			$ip_check_u = substr($user_ip, 0, 6);
-
-			if ($ip_check_s == $ip_check_u)
+			if ($create_new && !$autologin_id)
 			{
-				$SID = ($sessionmethod == SESSION_METHOD_GET || defined('IN_ADMIN')) ? 'sid=' . $session_id : '';
-
-				//
-				// Only update session DB a minute or so after last update
-				//
-				if ( $current_time - $userdata['session_time'] > 60 )
+				return $this->create_autologin_id($userdata);
+			}
+			else if ($autologin_id && $userdata['user_session_time'] && $ft_cfg['max_autologin_time'])
+			{
+				if (TIMENOW - $userdata['user_session_time'] > $ft_cfg['max_autologin_time']*86400)
 				{
-					// A little trick to reset session_admin on session re-usage
-					$update_admin = (!defined('IN_ADMIN') && $current_time - $userdata['session_time'] > ($ft_cfg['session_length']+60)) ? ', session_admin = 0' : '';
-
-					$sql = "UPDATE " . SESSIONS_TABLE . "
-						SET session_time = $current_time$update_admin
-						WHERE session_id = '" . $userdata['session_id'] . "'";
-					if ( !DB()->sql_query($sql) )
-					{
-						message_die(CRITICAL_ERROR, 'Error updating sessions table', '', __LINE__, __FILE__, $sql);
-					}
-
-					if ( $userdata['user_id'] != GUEST_UID )
-					{
-						$sql = "UPDATE " . USERS_TABLE . "
-							SET user_session_time = $current_time
-							WHERE user_id = " . $userdata['user_id'];
-						if ( !DB()->sql_query($sql) )
-						{
-							message_die(CRITICAL_ERROR, 'Error updating sessions table', '', __LINE__, __FILE__, $sql);
-						}
-					}
-
-					//
-					// Delete expired sessions
-					//
-					$expiry_time = $current_time - $ft_cfg['session_length'];
-					$sql = "DELETE FROM " . SESSIONS_TABLE . "
-						WHERE session_time < $expiry_time
-							AND session_id <> '$session_id'";
-					if ( !DB()->sql_query($sql) )
-					{
-						message_die(CRITICAL_ERROR, 'Error clearing sessions table', '', __LINE__, __FILE__, $sql);
-					}
-
-					setcookie($cookiename . '_data', serialize($sessiondata), $current_time + 31536000, $cookiepath, $cookiedomain, $cookiesecure);
-					setcookie($cookiename . '_sid', $session_id, 0, $cookiepath, $cookiedomain, $cookiesecure);
+					return $this->create_autologin_id($userdata, $create_new);
 				}
+			}
+		}
+		
+		return verify_id($autologin_id, LOGIN_KEY_LENGTH);
+	}
+	
+	/**
+	 *  Create autologin_id
+	 *
+	 * @param      $userdata
+	 * @param bool $create_new
+	 *
+	 * @return string
+	 */
+	function create_autologin_id ($userdata, $create_new = true)
+	{
+		$autologin_id = ($create_new) ? make_rand_str(LOGIN_KEY_LENGTH) : '';
+		
+		DB()->query("
+			UPDATE ". USERS_TABLE ." SET
+				autologin_id = '$autologin_id'
+			WHERE user_id = ". (int) $userdata['user_id'] ."
+			LIMIT 1
+		");
+		
+		return $autologin_id;
+	}
+	
+	/**
+	 *  Set shortcuts
+	 */
+	function set_shortcuts ()
+	{
+		$this->id            =& $this->data['user_id'];
+		$this->active        =& $this->data['user_active'];
+		$this->name          =& $this->data['username'];
+		$this->lastvisit     =& $this->data['user_lastvisit'];
+		$this->regdate       =& $this->data['user_regdate'];
+		$this->level         =& $this->data['user_level'];
+		$this->opt           =& $this->data['user_opt'];
 
-				return $userdata;
+		$this->ip            =  CLIENT_IP;
+	}
+	
+	/**
+	*  Initialise user settings
+	*/
+	function init_userprefs ()
+	{
+		global $ft_cfg, $theme, $lang;
+		
+		if (defined('LANG_DIR')) return;  // prevent multiple calling
+		
+		define('DEFAULT_LANG_DIR', LANG_ROOT_DIR . 'lang_' . $ft_cfg['default_lang'] .'/');
+		define('ENGLISH_LANG_DIR', LANG_ROOT_DIR .'lang_english/');
+		
+		if ($this->data['user_id'] != GUEST_UID)
+		{
+			if ($this->data['user_lang'] && $this->data['user_lang'] != $ft_cfg['default_lang'])
+			{
+				$ft_cfg['default_lang'] = basename($this->data['user_lang']);
+				define('LANG_DIR', LANG_ROOT_DIR . 'lang_' . $ft_cfg['default_lang'] .'/');
+			}
+			
+			if (isset($this->data['user_timezone']))
+			{
+				$ft_cfg['board_timezone'] = $this->data['user_timezone'];
+			}
+		}
+		
+		$this->data['user_lang']       = $ft_cfg['default_lang'];
+		$this->data['user_timezone']   = $ft_cfg['board_timezone'];
+		
+		if (!defined('LANG_DIR')) define('LANG_DIR', DEFAULT_LANG_DIR);
+				
+		require(LANG_DIR .'lang_main.php');
+		setlocale(LC_ALL, 'ru_RU.UTF-8');
+		
+		// Временная функция [BEGIN]
+		if (defined('IN_ADMIN'))
+		{
+			require(FT_ROOT . 'language/lang_' . $ft_cfg['default_lang'] . '/lang_admin.php');
+		}
+		// Временная функция [END]
+		
+		include_attach_lang();
+		$theme = setup_style();
+		
+		// Handle marking posts read
+		if (!IS_GUEST && !empty($_COOKIE[COOKIE_MARK]))
+		{
+			$this->mark_read($_COOKIE[COOKIE_MARK]);
+		}
+		
+		$this->load_opt_js();
+	}
+	
+	/**
+	 *  Mark read
+	 *
+	 * @param $type
+	 */
+	function mark_read ($type)
+	{
+		if ($type === 'all_forums')
+		{
+			// Update session time
+			DB()->query("
+				UPDATE ". SESSIONS_TABLE ." SET
+					session_time = ". TIMENOW ."
+				WHERE session_id = '{$this->data['session_id']}'
+				LIMIT 1
+			");
+			
+			// Update userdata
+			$this->data['session_time']   = TIMENOW;
+			$this->data['user_lastvisit'] = TIMENOW;
+			
+			// Update lastvisit
+			db_update_userdata($this->data, array(
+				'user_session_time' => $this->data['session_time'],
+				'user_lastvisit'    => $this->data['user_lastvisit'],
+			));
+			
+			// Delete cookies
+			ft_setcookie(COOKIE_TOPIC, '');
+			ft_setcookie(COOKIE_FORUM, '');
+			ft_setcookie(COOKIE_MARK,  '');
+		}
+	}
+	
+	/**
+	*  Load misc options
+	*/
+	function load_opt_js ()
+	{
+		if (IS_GUEST)
+		{
+			$this->opt_js = array_merge($this->opt_js, $this->opt_js_guest);
+		}
+		else if (!empty($_COOKIE['opt_js']))
+		{
+			$opt_js = ft_json_decode($_COOKIE['opt_js']);
+
+			if (is_array($opt_js))
+			{
+				$this->opt_js = array_merge($this->opt_js, $opt_js);
 			}
 		}
 	}
-
-	//
-	// If we reach here then no (valid) session exists. So we'll create a new one,
-	// using the cookie user_id if available to pull basic user prefs.
-	//
-	$user_id = ( isset($sessiondata['userid']) ) ? intval($sessiondata['userid']) : GUEST_UID;
-
-	if ( !($userdata = session_begin($user_id, $user_ip, TRUE)) )
+	
+	/**
+	 *  Get not auth forums
+	 *
+	 * @param $auth_type
+	 *
+	 * @return string
+	 */
+	function get_not_auth_forums ($auth_type)
 	{
-		message_die(CRITICAL_ERROR, 'Error creating user session', '', __LINE__, __FILE__, $sql);
+		// Функия будет разработа в перспективе после сворачевание AUTH_MOD
 	}
-
-	return $userdata;
-
+	
+	/**
+	 *  Get excluded forums
+	 *
+	 * @param        $auth_type
+	 * @param string $return_as
+	 *
+	 * @return array|string
+	 */
+	function get_excluded_forums ($auth_type, $return_as = 'csv')
+	{
+		// Функия будет разработа в перспективе после сворачевание AUTH_MOD
+	}
 }
 
 //
-// session_end closes out a session
-// deleting the corresponding entry
-// in the sessions table
+// userdata cache
 //
-function session_end($session_id, $user_id)
+function ignore_cached_userdata ()
 {
-	global  $lang, $ft_cfg;
-	global $HTTP_COOKIE_VARS, $HTTP_GET_VARS, $SID;
+	return (defined('IN_PM')) ? true : false;
+}
 
-	$cookiename = $ft_cfg['cookie_prefix'];
-	$cookiepath = $ft_cfg['script_path'];
-	$cookiedomain = $ft_cfg['cookie_domain'];
-	$cookiesecure = $ft_cfg['cookie_secure'];
+function cache_get_userdata ($id)
+{
+	if (ignore_cached_userdata()) return false;
 
-	$current_time = time();
+	return CACHE('session_cache')->get($id);
+}
 
-	//
-	// Pull cookiedata or grab the URI propagated sid
-	//
-	if ( isset($HTTP_COOKIE_VARS[$cookiename . '_sid']) )
+function cache_set_userdata ($userdata, $force = false)
+{
+	global $ft_cfg;
+
+	if (!$userdata || (ignore_cached_userdata() && !$force)) return false;
+
+	$id = ($userdata['user_id'] == GUEST_UID) ? $userdata['session_ip'] : $userdata['session_id'];
+	return CACHE('session_cache')->set($id, $userdata, $ft_cfg['session_update_intrv']);
+}
+
+function cache_rm_userdata ($userdata)
+{
+	if (!$userdata) return false;
+
+	$id = ($userdata['user_id'] == GUEST_UID) ? $userdata['session_ip'] : $userdata['session_id'];
+	return CACHE('session_cache')->rm($id);
+}
+
+// $user_id - array(id1,id2,..) or (string) id
+function cache_rm_user_sessions ($user_id)
+{
+	$user_id = get_id_csv($user_id);
+
+	$rowset = DB()->fetch_rowset("
+		SELECT session_id FROM ". SESSIONS_TABLE ." WHERE session_user_id IN($user_id)
+	");
+
+	foreach ($rowset as $row)
 	{
-		$session_id = isset( $HTTP_COOKIE_VARS[$cookiename . '_sid'] ) ? $HTTP_COOKIE_VARS[$cookiename . '_sid'] : '';
-		$sessionmethod = SESSION_METHOD_COOKIE;
+		CACHE('session_cache')->rm($row['session_id']);
 	}
-	else
-	{
-		$session_id = ( isset($HTTP_GET_VARS['sid']) ) ? $HTTP_GET_VARS['sid'] : '';
-		$sessionmethod = SESSION_METHOD_GET;
-	}
+}
 
-	if (!preg_match('/^[A-Za-z0-9]*$/', $session_id))
-	{
-		return;
-	}
+function cache_update_userdata ($userdata)
+{
+	return cache_set_userdata($userdata, true);
+}
 
-	//
-	// Delete existing session
-	//
-	$sql = "DELETE FROM " . SESSIONS_TABLE . "
-		WHERE session_id = '$session_id'
-			AND session_user_id = $user_id";
-	if ( !DB()->sql_query($sql) )
-	{
-		message_die(CRITICAL_ERROR, 'Error removing user session', '', __LINE__, __FILE__, $sql);
-	}
+function db_update_userdata ($userdata, $sql_ary, $data_already_escaped = true)
+{
+	if (!$userdata) return false;
 
-	setcookie($cookiename . '_data', '', $current_time - 31536000, $cookiepath, $cookiedomain, $cookiesecure);
-	setcookie($cookiename . '_sid', '', $current_time - 31536000, $cookiepath, $cookiedomain, $cookiesecure);
+	$sql_args = DB()->build_array('UPDATE', $sql_ary, $data_already_escaped);
+	DB()->query("UPDATE ". USERS_TABLE ." SET $sql_args WHERE user_id = {$userdata['user_id']}");
+
+	if (DB()->affected_rows())
+	{
+		cache_rm_userdata($userdata);
+	}
 
 	return true;
 }
 
-//
-// Append $SID to a url. Borrowed from phplib and modified. This is an
-// extra routine utilised by the session code above and acts as a wrapper
-// around every single URL and form action. If you replace the session
-// code you must include this routine, even if it's empty.
-//
+// $user_id - array(id1,id2,..) or (string) id
+function delete_user_sessions ($user_id)
+{
+	cache_rm_user_sessions($user_id);
+
+	$user_id = get_id_csv($user_id);
+	DB()->query("DELETE FROM ". SESSIONS_TABLE ." WHERE session_user_id IN($user_id)");
+}
+
 function append_sid($url, $non_html_amp = false)
 {
 	global $SID;

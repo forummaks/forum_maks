@@ -4,14 +4,8 @@ define('FT_SCRIPT', 'online');
 define('FT_ROOT', './');
 require(FT_ROOT . 'common.php');
 
-//
 // Start session management
-//
-$userdata = session_pagestart($user_ip);
-init_userprefs($userdata);
-//
-// End session management
-//
+$user->session_start();
 
 if (!$userdata['session_logged_in']) {
     redirect(append_sid("login.php?redirect=viewonline.php", true));

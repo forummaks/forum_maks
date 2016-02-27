@@ -40,23 +40,23 @@ function language_select($default, $select_name = "language", $dirname="language
 //
 // Pick a timezone
 //
-function tz_select($default, $select_name = 'timezone')
+function tz_select ($default, $select_name = 'timezone')
 {
 	global $sys_timezone, $lang;
 
-	if ( !isset($default) )
+	if (!isset($default))
 	{
 		$default == $sys_timezone;
 	}
 	$tz_select = '<select name="' . $select_name . '">';
-
-	while( list($offset, $zone) = @each($lang['tz']) )
+	
+	while( list($offset, $zone) = @each($lang['TZ']) )
 	{
 		$selected = ( $offset == $default ) ? ' selected="selected"' : '';
 		$tz_select .= '<option value="' . $offset . '"' . $selected . '>' . $zone . '</option>';
 	}
 	$tz_select .= '</select>';
-
+	
 	return $tz_select;
 }
 

@@ -1,44 +1,46 @@
- 
-<form action="{S_LOGIN_ACTION}" method="post" target="_top">
+<form action="{S_LOGIN_ACTION}" method="post">
 
-<table width="100%" cellspacing="2" cellpadding="2" border="0" align="center">
-  <tr> 
-	<td align="left" class="nav"><a href="{U_INDEX}" class="nav">{L_INDEX}</a></td>
-  </tr>
-</table>
+<input type="hidden" name="redirect" value="{REDIRECT_URL}" />
+<!-- IF ADMIN_LOGIN --><input type="hidden" name="admin" value="1" /><!-- ENDIF -->
 
-<table width="100%" cellpadding="4" cellspacing="1" border="0" class="forumline" align="center">
-  <tr> 
-	<th height="25" class="thHead" nowrap="nowrap">{L_ENTER_PASSWORD}</th>
-  </tr>
-  <tr> 
-	<td class="row1"><table border="0" cellpadding="3" cellspacing="1" width="100%">
-		  <tr> 
-			<td colspan="2" align="center">&nbsp;</td>
-		  </tr>
-		  <tr> 
-			<td width="45%" align="right"><span class="gen">{L_USERNAME}:</span></td>
-			<td> 
-			  <input type="text" class="post" name="username" size="25" maxlength="40" value="{USERNAME}" />
-			</td>
-		  </tr>
-		  <tr> 
-			<td align="right"><span class="gen">{L_PASSWORD}:</span></td>
-			<td> 
-			  <input type="password" class="post" name="password" size="25" maxlength="32" />
-			</td>
-		  </tr>
-		  <tr align="center"> 
-			<td colspan="2"><span class="gen">{L_AUTO_LOGIN}: <input type="checkbox" name="autologin" /></span></td>
-		  </tr>
-		  <tr align="center"> 
-			<td colspan="2">{S_HIDDEN_FIELDS}<input type="submit" name="login" class="mainoption" value="{L_LOGIN}" /></td>
-		  </tr>
-		  <tr align="center"> 
-			<td colspan="2"><span class="gensmall"><a href="{U_SEND_PASSWORD}" class="gensmall">{L_SEND_PASSWORD}</a></span></td>
-		  </tr>
-		</table></td>
-  </tr>
+<p class="nav"><a href="{U_INDEX}">{T_INDEX}</a></p>
+<table class="forumline">
+<tr>
+	<th>{L_ENTER_PASSWORD}</th>
+</tr>
+<tr>
+	<td class="row1">
+
+	<!-- IF ADMIN_LOGIN -->
+	<h4 class="tCenter mrg_16">{L_ADMIN_REAUTHENTICATE}</h4>
+	<!-- ELSE -->
+	<h4 class="tCenter mrg_16">{L_ENTER_PASSWORD}</h4>
+	<!-- ENDIF -->
+
+	<div class="mrg_16">
+	<table class="borderless bCenter">
+	<tr>
+		<td width="35%" align="right">{L_USERNAME}:</td>
+		<td><input type="text" class="post" name="login_username" size="25" maxlength="40" value="{LOGIN_USERNAME}" tabindex="101"<!-- IF ADMIN_LOGIN --> readonly="readonly" style="color: gray"<!-- ENDIF --> /></td>
+	</tr>
+	<tr>
+		<td align="right">{L_PASSWORD}:</td>
+		<td><input type="password" class="post" name="login_password" value="{LOGIN_PASSWORD}" tabindex="102" size="25" maxlength="32" /></td>
+	</tr>
+	<tr>
+		<td colspan="2" class="tCenter nowrap">{L_AUTO_LOGIN}: <input type="checkbox" name="autologin" tabindex="103"<!-- IF ADMIN_LOGIN || AUTOLOGIN_DISABLED --> disabled="disabled"<!-- ELSE -->checked="checked"<!-- ENDIF --> /></td>
+	</tr>
+	<tr>
+		<td colspan="2" class="tCenter pad_6"><input type="submit" name="login" class="bold long" value="{L_LOGIN}" /></td>
+	</tr>
+	<tr>
+		<td colspan="2" align="center"><a href="{U_SEND_PASSWORD}" class="small">{L_FORGOTTEN_PASSWORD}</a></td>
+	</tr>
+	</table>
+	</div>
+
+	</td>
+</tr>
 </table>
 
 </form>

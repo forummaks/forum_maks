@@ -4,14 +4,7 @@ define('FT_SCRIPT', 'faq');
 define('FT_ROOT', './');
 require(FT_ROOT . 'common.php');
 
-//
-// Start session management
-//
-$userdata = session_pagestart($user_ip);
-init_userprefs($userdata);
-//
-// End session management
-//
+$user->session_start();
 
 // Set vars to prevent naughtiness
 $faq = array();

@@ -1,10 +1,10 @@
-<!DOCTYPE>
-<html dir="{S_CONTENT_DIRECTION}">
+<!DOCTYPE html>
+<html>
 <head>
-    <meta http-equiv="Content-Type" content="text/html; charset={S_CONTENT_ENCODING}">
-    <meta http-equiv="Content-Style-Type" content="text/css">
+	<title><!-- IF PAGE_TITLE -->{PAGE_TITLE} :: {SITENAME}<!-- ELSE -->{SITENAME}<!-- ENDIF --></title>
+    <meta http-equiv="Content-Type" content="text/html; charset={CONTENT_ENCODING}" />
+    <meta http-equiv="Content-Style-Type" content="text/css" />
     {META}
-    <title>{PAGE_TITLE} :: {SITENAME}</title>
     <link rel="shortcut icon" href="/favicon.ico" type="image/x-icon">
     <link rel="stylesheet" href="{STYLESHEET}" type="text/css">
 	<script language="JavaScript" type="text/javascript" src="{FT_ROOT}misc/js/jquery.pack.js"></script>
@@ -12,41 +12,92 @@
     <!-- IF INCL_BBCODE_JS -->
     <script language="JavaScript" type="text/javascript" src="{FT_ROOT}misc/js/bbcode.js"></script>
     <!-- ENDIF -->
-    <script type="text/javascript">
-        $(function () {
-            $('#cse-search-btn, #cse-search-btn-top').click(function () {
-                var text_match_input_id = $(this).attr('href');
-                var text_match = $('#' + text_match_input_id).val();
-                if (text_match == '') {
-                    $('#' + text_match_input_id).addClass('hl-err-input').focus();
-                    return false;
-                }
-                $('#cse-text-match').val(text_match);
-                $('#cse-submit-btn').click();
-                return false;
-            });
+	<script type="text/javascript">
+	var FT_ROOT      = "{#FT_ROOT}";
+	var cookieDomain = "{$ft_cfg['cookie_domain']}";
+	var cookiePath   = "{$ft_cfg['script_path']}";
+	var cookiePrefix = "{$ft_cfg['cookie_prefix']}";
+	var cookieSecure = {$ft_cfg['cookie_secure']};
+	var LOGGED_IN    = {LOGGED_IN};
+	var IWP          = 'HEIGHT=510,WIDTH=780,resizable=yes';
+	var IWP_US       = 'HEIGHT=250,WIDTH=400,resizable=yes';
+	var IWP_SM       = 'HEIGHT=420,WIDTH=470,resizable=yes,scrollbars=yes';
+	
+	var user = {
+		opt_js: {USER_OPTIONS_JS},
+		set: function (opt, val, days, reload) {
+			this.opt_js[opt] = val;
+			setCookie('opt_js', $.toJSON(this.opt_js), days);
+			if (reload) {
+				window.location.reload();
+			}
+		}
+	};
+	
+	function getElText (e)
+	{
+		var t = '';
+		if (e.textContent !== undefined) { t = e.textContent; } else if (e.innerText !== undefined) { t = e.innerText; } else { t = jQuery(e).text(); }
+		return t;
+	}
+	function escHTML (txt)
+	{
+		return txt.replace(/</g, '&lt;');
+	}
+	<!-- IF USE_TABLESORTER -->
+	$(document).ready(function() {
+		$('.tablesorter').tablesorter();
+	});
+	<!-- ENDIF -->
+	
+	function cfm (txt)
+	{
+		return window.confirm(txt);
+	}
+	function post2url (url, params) {
+		params = params || {};
+		var f = document.createElement('form');
+		f.setAttribute('method', 'post');
+		f.setAttribute('action', url);
+		params['form_token'] = '{FORM_TOKEN}';
+		for (var k in params) {
+			var h = document.createElement('input');
+			h.setAttribute('type', 'hidden');
+			h.setAttribute('name', k);
+			h.setAttribute('value', params[k]);
+			f.appendChild(h);
+		}
+		document.body.appendChild(f);
+		f.submit();
+		return false;
+	}
+	</script>
+	<!--[if gte IE 7]><style type="text/css">
+	input[type="checkbox"] { margin-bottom: -1px; }
+	</style><![endif]-->
 
-            $('#quick-search').submit(function () {
-                var action = $('#search-action').val();
-                var txt = $('#search-text').val();
-                if (txt == 'поиск...' || txt == '') {
-                    $('#search-text').val('').addClass('hl-err-input').focus();
-                    return false;
-                }
-                if (action == 'cse') {
-                    $('#cse-search-btn-top').click();
-                    return false;
-                }
-                else {
-                    $(this).attr('action', action);
-                }
-            });
-        });
-    </script>
+	<!--[if IE]><style type="text/css">
+	.post-hr { margin: 2px auto; }
+	.fieldsets div > p { margin-bottom: 0; }
+	</style><![endif]-->
 </head>
 <body>
 
 <div id="body_container">
+
+<!--******************-->
+<!-- IF SIMPLE_HEADER -->
+<!--==================-->
+
+<style type="text/css">body { background: #E3E3E3; min-width: 10px; }</style>
+
+<!--=================-->
+<!-- ELSEIF IN_ADMIN -->
+<!--=================-->
+
+<!--======-->
+<!-- ELSE -->
+<!--======-->
 
 <!--page_container-->
 <div id="page_container">
@@ -83,33 +134,12 @@
 <!--/logo-->
 
 <!-- IF LOGGED_IN -->
-<div style="position: absolute; top: 3px; right: 12px;">
-    <form id="quick-search" action="" method="post">
-        <input id="search-text" type="text" name="nm"
-        style="width: 150px; color:#666666; font-style:italic;" id="sk" size="50" value="поиск..."
-        onfocus="if ((this.style.color=='rgb(102, 102, 102)') || (this.style.color=='#666666')) {this.value=''; this.style.color='#000000'; this.style.fontStyle='normal'}"
-        onblur="if (this.value=='' && ((this.style.color=='rgb(0, 0, 0)') || (this.style.color=='#000000'))) {this.style.color='#666666'; this.style.fontStyle='italic'; this.value='поиск...';};"/>
-    <select id="search-action">
-        <option value="tracker.php" selected="selected"> по трекеру</option>
-        <option value="search.php"> по форуму</option>
-    </select>
-    <input type="submit" class="mainoption" value="&raquo;" style="width: 30px;"/>
-    </form>
-</div>
-
 <!--logout-->
 <div class="topmenu">
     <table width="100%" cellpadding="0" cellspacing="0">
     <tr>
         <td align="left">
-            <!-- //bt -->
-            <!-- BEGIN user_ratio -->
-            <span class="mainmenu">Отдано: <span class="seedsmall"><b>{user_ratio.U_UP_TOTAL}</b></span> &#0183; Бонус: 
-			<span class="seedsmall"><b>{user_ratio.U_BONUS_TOTAL}</b></span> &#0183; Скачано: 
-			<span class="leechsmall"><b>{user_ratio.U_DOWN_TOTAL}</b></span> &#0183; Рейтинг: 
-			<span class="small"><b>{user_ratio.U_RATIO}</b></span></span>
-			<!-- END user_ratio -->
-            <!-- //bt end -->
+			{L_USER_WELCOME}&nbsp;<b class="med">{THIS_USER}</b>&nbsp;[ <a href="{U_LOGIN_LOGOUT}" onclick="return confirm('{L_CONFIRM_LOGOUT}');">{L_LOGOUT}</a> ]
         </td>
         <td align="center">
 			<!-- IF PM_FLASH -->
@@ -123,8 +153,7 @@
         </td>
         <td align="right">
 			<a href="{U_EDIT_PROFILE}" class="mainmenu">Настройки</a> &#0183;
-            <a href="{U_PROFILE}" class="mainmenu">Торрент-профиль</a> &#0183;
-            <a href="{U_LOGIN_LOGOUT}" class="mainmenu" onclick="return confirm('Выйти?');">{L_LOGIN_LOGOUT}</a>
+            <a href="{U_PROFILE}" class="mainmenu">Торрент-профиль</a>
         </td>
     </tr>
 	</table>
@@ -135,21 +164,19 @@
 <!--login form-->
 <div class="topmenu">
     <table width="100%" cellpadding="0" cellspacing="0">
-        <!-- BEGIN switch_user_logged_out -->
-        <form method="post" action="{S_LOGIN_ACTION}">
-        <td align="center" style="font-size: 11">
-            <a href="{U_REGISTER}" style="text-decoration:none"><b>{L_REGISTER}</b></a> &#0183;
-            {L_USERNAME}:
-            <input class="post" type="text" name="username" size="10"/>
-            {L_PASSWORD}:
-            <input class="post" type="password" name="password" size="10" maxlength="32"/>
-			<input class="text" type="checkbox" name="autologin"/> Запомнить&nbsp;
-			<input type="submit" class="mainoption" name="login" value="{L_LOGIN}"/> &nbsp;&#0183;&nbsp;
-			<a href="{U_SEND_PASSWORD}" style="text-decoration:none">{L_FORGOTTEN_PASSWORD}</a>
-		</td>
-		</form>
-        <!-- END switch_user_logged_out -->
-		</table>
+       <tr>
+			<td class="tCenter pad_2">
+				<a href="{U_REGISTER}" id="register_link"><b>{L_REGISTER}</b></a> &#0183;
+					<form action="{S_LOGIN_ACTION}" method="post">
+						{L_USERNAME}: <input type="text" name="login_username" size="12" tabindex="1" accesskey="l" />
+						{L_PASSWORD}: <input type="password" name="login_password" size="12" tabindex="2" />
+						<label title="{L_AUTO_LOGIN}"><input type="checkbox" name="autologin" value="1" tabindex="3" checked="checked" />{L_REMEMBER}</label>&nbsp;
+						<input type="submit" name="login" value="{L_LOGIN}" tabindex="4" />
+					</form> &#0183;
+				<a href="{U_SEND_PASSWORD}">{L_FORGOTTEN_PASSWORD}</a>
+			</td>
+		</tr>
+	</table>
 </div>
 <!--/login form-->
 <!-- ENDIF -->
@@ -192,3 +219,10 @@
 			</table>
 			<!-- ENDIF / SHOW_LATEST_NEWS -->
 		</div>
+		
+<!--=======================-->
+<!-- ENDIF / COMMON_HEADER -->
+<!--***********************-->
+
+<!-- page_header.tpl END -->
+<!-- module_xx.tpl START -->

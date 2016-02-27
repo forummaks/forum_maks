@@ -11,8 +11,7 @@ require_once(FT_ROOT . 'includes/bbcode.php');
 require_once(FT_ROOT . 'includes/functions_post.php');
 
 // Start session management
-$userdata = session_pagestart($user_ip);
-init_userprefs($userdata);
+$user->session_start();
 
 $user_id = $userdata['user_id'];
 $current_time=time();

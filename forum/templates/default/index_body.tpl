@@ -22,7 +22,6 @@
 		<!-- IF catrow.forumrow.FORUM_DESC --><div class="genmed" style="margin-top: 1px">{catrow.forumrow.FORUM_DESC}</div><!-- ENDIF -->
 		<!-- BEGIN sf -->
 		<!-- IF catrow.forumrow.sf.SF_NUM == 1 -->
-		<div><img src="images/spacer.gif" alt="" width="1" height="2" /></div>
 		<span class="genmed">{L_SUBFORUMS}:</span>
 		<!-- ENDIF -->
 		<img style="margin-right: 1px" src="{catrow.forumrow.sf.SF_IMG_SRC}" width="12" height="9" title="{catrow.forumrow.sf.SF_IMG_TITLE}"><a class="gensmall" href="{catrow.forumrow.sf.SF_HREF}" title="{catrow.forumrow.sf.SF_DESC}"><b>{catrow.forumrow.sf.SF_NAME}</b></a><!-- IF catrow.forumrow.sf.SF_LAST_SUBF --> <!-- ELSE -->, <!-- ENDIF -->

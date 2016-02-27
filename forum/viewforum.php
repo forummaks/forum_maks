@@ -61,14 +61,8 @@ if ( !($forum_row = DB()->sql_fetchrow($result)) )
 	message_die(GENERAL_MESSAGE, 'Forum_not_exist');
 }
 
-//
 // Start session management
-//
-$userdata = session_pagestart($user_ip);
-init_userprefs($userdata);
-//
-// End session management
-//
+$user->session_start();
 
 //
 // Start auth check

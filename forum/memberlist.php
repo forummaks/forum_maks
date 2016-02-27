@@ -3,14 +3,9 @@ define('IN_FORUM', true);
 define('FT_SCRIPT', 'memberlist');
 define('FT_ROOT', './');
 require(FT_ROOT . 'common.php');
-//
-// Start session management
-//
-$userdata = session_pagestart($user_ip);
-init_userprefs($userdata);
-//
-// End session management
-//
+
+$user->session_start();
+
 $start = ( isset($HTTP_GET_VARS['start']) ) ? intval($HTTP_GET_VARS['start']) : 0;
 if ( isset($HTTP_GET_VARS['mode']) || isset($HTTP_POST_VARS['mode']) )
 {

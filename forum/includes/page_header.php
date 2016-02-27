@@ -5,20 +5,19 @@ if (defined('PAGE_HEADER_SENT')) return;
 
 // Parse and show the overall page header
 
-global $page_cfg, $userdata, $ads, $ft_cfg, $template, $lang, $images;
+global $page_cfg, $userdata, $user, $ft_cfg, $template, $lang, $images;
 
-if ( @$userdata['session_logged_in'] )
+$logged_in = (int) !empty($userdata['session_logged_in']);
+
+// Generate logged in/logged out status
+if ($logged_in)
 {
-	$u_login_logout = 'login.php?logout=true&amp;sid=' . $userdata['session_id'];
-	$l_login_logout = $lang['Logout'] . ' [ ' . $userdata['username'] . ' ]';
+	$u_login_logout = FT_ROOT . LOGIN_URL . "?logout=1";
 }
 else
 {
-	$u_login_logout = 'login.php';
-	$l_login_logout = $lang['Login'];
+	$u_login_logout = FT_ROOT . LOGIN_URL;
 }
-
-$s_last_visit = ( @$userdata['session_logged_in'] ) ? create_date($ft_cfg['default_dateformat'], $userdata['user_lastvisit'], $ft_cfg['board_timezone']) : '';
 
 if (defined('SHOW_ONLINE') && SHOW_ONLINE)
 {
@@ -31,7 +30,7 @@ if (defined('SHOW_ONLINE') && SHOW_ONLINE)
 		'cnt'      => '',
 	);
 
-	if ($userdata['session_logged_in']) // Временная строка $userdata['session_logged_in']
+	if (defined('IS_GUEST') && !(IS_GUEST || IS_USER))
 	{
 		$template->assign_var('SHOW_ONLINE_LIST');
 
@@ -50,7 +49,6 @@ if (defined('SHOW_ONLINE') && SHOW_ONLINE)
 }
 
 // Obtain number of new private messages
-// if user is logged in
 if ( (@$userdata['session_logged_in']) && (empty($gen_simple_header)) )
 {
 	if ( $userdata['user_new_privmsg'] )
@@ -102,34 +100,91 @@ else
 	$l_privmsgs_text_unread = '';
 	$s_privmsg_new = 0;
 }
+$template->assign_vars(array(
+	'PRIVATE_MESSAGE_INFO' 			=> $l_privmsgs_text,
+	'PRIVATE_MESSAGE_INFO_UNREAD' 	=> $l_privmsgs_text_unread,
+	'PRIVATE_MESSAGE_NEW_FLAG' 		=> $s_privmsg_new,
+));
 
-// Format Timezone. We are unable to use array_pop here, because of PHP3 compatibility
-$l_timezone = explode('.', $ft_cfg['board_timezone']);
-$l_timezone = (count($l_timezone) > 1 && $l_timezone[count($l_timezone)-1] != 0) ? $lang[sprintf('%.1f', $ft_cfg['board_timezone'])] : $lang[number_format($ft_cfg['board_timezone'])];
-//
-// The following assigns all _common_ variables that may be used at any point
-// in a template.
-//
 $template->assign_vars(array(
 	'SIMPLE_HEADER'      => !empty($gen_simple_header),
+	'CONTENT_ENCODING'   => 'ru_RU.UTF-8',
+	
 	'IN_ADMIN'           => defined('IN_ADMIN'),
+	'USER_HIDE_CAT'      => (FT_SCRIPT == 'index'),
+	
+	'USER_LANG'          => $userdata['user_lang'],
+	
+	'INCLUDE_BBCODE_JS'  => !empty($page_cfg['include_bbcode_js']),
+	'USER_OPTIONS_JS'    => (IS_GUEST) ? '{}' : ft_json_encode($user->opt_js),
+	
+	'USE_TABLESORTER'    => !empty($page_cfg['use_tablesorter']),
+	
 	'SITENAME' 			 => $ft_cfg['sitename'],
-	'SITE_DESCRIPTION' 	 => $ft_cfg['site_desc'],
+	'U_INDEX' 			 => FT_ROOT . 'index.php',
 	'PAGE_TITLE' 		 => (isset($page_title)) ? $page_title : '',
-	'LAST_VISIT_DATE' 	 => sprintf($lang['You_last_visit'], $s_last_visit),
-	'CURRENT_TIME' 		 => sprintf($lang['Current_time'], create_date($ft_cfg['default_dateformat'], time(), $ft_cfg['board_timezone'])),
-	'PRIVATE_MESSAGE_INFO' => $l_privmsgs_text,
-	'PRIVATE_MESSAGE_INFO_UNREAD' => $l_privmsgs_text_unread,
-	'PRIVATE_MESSAGE_NEW_FLAG' => $s_privmsg_new,
+		
+	'IS_GUEST'           => IS_GUEST,
+	'IS_USER'            => IS_USER,
+	'IS_ADMIN'           => IS_ADMIN,
+	'IS_MOD'             => IS_MOD,
+	'IS_AM'              => IS_AM,
 	
 	'FORUM_PATH'         => FORUM_PATH,
 	'FULL_URL'           => FULL_URL,
 	
+	'CURRENT_TIME' 		 => sprintf($lang['Current_time'], create_date($ft_cfg['default_dateformat'], time(), $ft_cfg['board_timezone'])),
+	'S_TIMEZONE'         => preg_replace('/\(.*?\)/', '', sprintf($lang['ALL_TIMES'], $lang['TZ'][str_replace(',', '.', floatval($ft_cfg['board_timezone']))])),
+	'BOARD_TIMEZONE'     => $ft_cfg['board_timezone'],
+	
+	'PRIVMSG_IMG' 		 => $icon_pm,
+	
+	'LOGGED_IN'          => $logged_in,
+	'SESSION_USER_ID'    => $userdata['user_id'],
+	'THIS_USER'          => $userdata['username'],
+	'SHOW_LOGIN_LINK'    => !defined('IN_LOGIN'),
+	'AUTOLOGIN_DISABLED' => !$ft_cfg['allow_autologin'],
+	'S_LOGIN_ACTION'     => LOGIN_URL,
+	
+	'U_SEARCH_UNANSWERED' => 'search.php?search_id=unanswered',
+	'U_SEARCH_SELF' 	 => 'search.php?search_id=egosearch',
+	'U_SEARCH_NEW' 		 => 'search.php?search_id=newposts',
+	'U_REGISTER' 		 => 'profile.php?mode=register',
+	'U_PROFILE' 		 => 'profile.php?mode=editprofile',
+    'U_EDIT_PROFILE' 	 => 'profile.php?mode=editprofile',
+	'U_PRIVATEMSGS' 	 => 'privmsg.php?folder=inbox',
+	'U_PRIVATEMSGS_POPUP' => 'privmsg.php?mode=newpm',
+	'U_SEARCH' 			 => 'search.php',
+	'U_MEMBERLIST' 		 => 'memberlist.php',
+    'U_TOP-10' 			 => 'medal.php',
+	'U_MODCP' 			 => 'modcp.php',
+	'U_FAQ' 			 => 'faq.php',
+	'U_VIEWONLINE' 		 => 'viewonline.php',
+	'U_LOGIN_LOGOUT' 	 => $u_login_logout,
+    'U_SEND_PASSWORD' 	 => "profile.php?mode=sendpassword",
+	'U_GROUP_CP' 		 => 'groupcp.php',
+	'U_PROFILE' 		 => "profile.php?mode=viewprofile&amp;u=". $userdata['user_id'],
+	'TRACKER_HREF' 		 => "tracker.php",
+	
 	'SHOW_SIDEBAR1'      => (!empty($page_cfg['show_sidebar1'][FT_SCRIPT]) || $ft_cfg['show_sidebar1_on_every_page']),
 	'SHOW_SIDEBAR2'      => (!empty($page_cfg['show_sidebar2'][FT_SCRIPT]) || $ft_cfg['show_sidebar2_on_every_page']),
-
-	'LOGGED_IN' 		 => @$userdata['session_logged_in'],
 	
+	// Common urls
+	'CAT_URL'            => FT_ROOT . CAT_URL,
+	'DOWNLOAD_URL'       => FT_ROOT . DOWNLOAD_URL,
+	'FORUM_URL'          => FT_ROOT . FORUM_URL,
+	'GROUP_URL'          => FT_ROOT . GROUP_URL,
+	'LOGIN_URL'          => $ft_cfg['login_url'],
+	'NEWEST_URL'         => '&amp;view=newest#newest',
+	'PM_URL'             => $ft_cfg['pm_url'],
+	'POST_URL'           => FT_ROOT . POST_URL,
+	'POSTING_URL'        => $ft_cfg['posting_url'],
+	'PROFILE_URL'        => FT_ROOT . PROFILE_URL,
+	'TOPIC_URL'          => FT_ROOT . TOPIC_URL,
+	
+	'ONLY_NEW_POSTS'     => ONLY_NEW_POSTS,
+	'ONLY_NEW_TOPICS'    => ONLY_NEW_TOPICS,
+
 	// Misc
 	'BOT_UID'            => BOT_UID,
 	'COOKIE_MARK'        => COOKIE_MARK,
@@ -141,14 +196,8 @@ $template->assign_vars(array(
 	'READONLY'           => HTML_READONLY,
 	'SELECTED'           => HTML_SELECTED,
 
-	'PRIVMSG_IMG' 		 => $icon_pm,
-
 	'L_USERNAME' => $lang['Username'],
 	'L_PASSWORD' => $lang['Password'],
-	'L_LOGIN_LOGOUT' => $l_login_logout,
-	'L_LOGIN' => $lang['Login'],
-	'L_LOG_ME_IN' => $lang['Log_me_in'],
-	'L_AUTO_LOGIN' => $lang['Log_me_in'],
 	'L_INDEX' => sprintf($lang['Forum_Index'], $ft_cfg['sitename']),
 	'L_REGISTER' => $lang['Register'],
 	'L_PROFILE' => $lang['Profile'],
@@ -158,6 +207,7 @@ $template->assign_vars(array(
 	'L_MEMBERLIST' => $lang['Memberlist'],
       'L_TOP-10' => $lang['Top-10'],
 	'L_FAQ' => $lang['FAQ'],
+	'L_TRACKER' 		 => $lang['Tracker'],
 	'L_USERGROUPS' => $lang['Usergroups'],
 	'L_SEARCH_NEW' => $lang['Search_new'],
 	'L_SEARCH_UNANSWERED' => $lang['Search_unanswered'],
@@ -165,84 +215,19 @@ $template->assign_vars(array(
 	'L_WHOSONLINE_ADMIN' => sprintf($lang['Admin_online_color'], '<span class="colorAdmin">', '</span>'),
 	'L_WHOSONLINE_MOD' => sprintf($lang['Mod_online_color'], '<span class="colorMod">', '</span>'),
 
-	'U_SEARCH_UNANSWERED' => append_sid('search.php?search_id=unanswered'),
-	'U_SEARCH_SELF' => append_sid('search.php?search_id=egosearch'),
-	'U_SEARCH_NEW' => append_sid('search.php?search_id=newposts'),
-	'U_INDEX' => append_sid('index.php'),
-	'U_REGISTER' => append_sid('profile.php?mode=register'),
-	'U_PROFILE' => append_sid('profile.php?mode=editprofile'),
-      'U_EDIT_PROFILE' => append_sid('profile.php?mode=editprofile'),
-	'U_PRIVATEMSGS' => append_sid('privmsg.php?folder=inbox'),
-	'U_PRIVATEMSGS_POPUP' => append_sid('privmsg.php?mode=newpm'),
-	'U_SEARCH' => append_sid('search.php'),
-	'U_MEMBERLIST' => append_sid('memberlist.php'),
-      'U_TOP-10' => append_sid('medal.php'),
-	'U_MODCP' => append_sid('modcp.php'),
-	'U_FAQ' => append_sid('faq.php'),
-	'U_VIEWONLINE' => append_sid('viewonline.php'),
-	'U_LOGIN_LOGOUT' => append_sid($u_login_logout),
-      'U_SEND_PASSWORD' => append_sid("profile.php?mode=sendpassword"),
-	'U_GROUP_CP' => append_sid('groupcp.php'),
-	'U_PROFILE' => append_sid("profile.php?mode=viewprofile&amp;u=". $userdata['user_id']) .'#torrent',
-	'L_TRACKER' => $lang['Tracker'],
-	'TRACKER_HREF' => append_sid("tracker.php"),
-
 	'S_CONTENT_DIRECTION' => $lang['DIRECTION'],
 	'S_CONTENT_ENCODING' => $lang['ENCODING'],
 	'S_CONTENT_DIR_LEFT' => $lang['LEFT'],
-	'S_CONTENT_DIR_RIGHT' => $lang['RIGHT'],
-	'S_TIMEZONE' => sprintf($lang['All_times'], $l_timezone),
-	'S_LOGIN_ACTION' => append_sid('login.php')
-	));
+	'S_CONTENT_DIR_RIGHT' => $lang['RIGHT']
+));
 
 //qr
 $template->assign_vars(array('INCL_BBCODE_JS' => (defined('INCL_BBCODE_JS')) ? TRUE : FALSE));
 //qr end
 
-//bt
-if ($ft_cfg['bt_show_dl_stat_on_index'] && $userdata['session_logged_in'])
-{
-   $sql = 'SELECT u_up_total, u_down_total, u_bonus_total
-      FROM '. BT_USERS_TABLE .'
-      WHERE user_id = '. $userdata['user_id'];
-
-   if (!$result = DB()->sql_query($sql))
-   {
-      message_die(GENERAL_ERROR, 'Could not query ', '', __LINE__, __FILE__, $sql);
-   }
-
-   $row = DB()->sql_fetchrow($result);
-
-   $ul    = ($row['u_up_total']) ? $row['u_up_total'] : 0;
-   $dl    = ($row['u_down_total']) ? $row['u_down_total'] : 0;
-   $bl    = ($row['u_bonus_total']) ? $row['u_bonus_total'] : 0;
-   $ratio = ($dl) ? round((($ul + $bl) / $dl), 2) : 0;
-
-   $template->assign_block_vars('user_ratio', array(
-		'U_UP_TOTAL'    => ($ul) ? humn_size($ul) : 0,
-        'U_BONUS_TOTAL' => ($bl) ? humn_size($bl) : 0,
-		'U_DOWN_TOTAL'  => ($dl) ? humn_size($dl) : 0,
-		'U_RATIO'       => ($ratio) ? $ratio : '-'
-   ));
-}
-//bt end
-
-//
-// Login box?
-//
-if ( !@$userdata['session_logged_in'] )
-{
-	$template->assign_block_vars('switch_user_logged_out', array());
-}
-else
-{
-	$template->assign_block_vars('switch_user_logged_in', array());
-
-	if ( !empty($userdata['user_popup_pm']) )
-	{
-		$template->assign_block_vars('switch_enable_pm_popup', array());
-	}
-}
+// Login box
+$in_out = ($logged_in) ? 'in' : 'out';
+$template->assign_block_vars("switch_user_logged_{$in_out}", array());
 
 if (!GUEST_UID)
 {
