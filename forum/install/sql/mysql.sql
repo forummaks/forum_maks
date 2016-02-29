@@ -1,7 +1,5 @@
 SET SQL_MODE = "";
 
--- --------------------------------------------------------
-
 --
 -- Структура таблицы `ft_attachments`
 --
@@ -488,7 +486,8 @@ INSERT INTO `ft_config` (`config_name`, `config_value`) VALUES
 ('xs_downloads_default', '0'),
 ('xs_shownav', '17'),
 ('xs_template_time', '1455741544'),
-('xs_version', '');
+('xs_version', ''),
+('allow_autologin', '1');
 
 -- --------------------------------------------------------
 
@@ -683,7 +682,7 @@ CREATE TABLE IF NOT EXISTS `ft_privmsgs` (
   PRIMARY KEY (`privmsgs_id`),
   KEY `privmsgs_from_userid` (`privmsgs_from_userid`),
   KEY `privmsgs_to_userid` (`privmsgs_to_userid`)
-) ENGINE=MyISAM  DEFAULT CHARSET=utf8 AUTO_INCREMENT=1 ;
+) ENGINE=MyISAM DEFAULT CHARSET=utf8 AUTO_INCREMENT=1 ;
 
 -- --------------------------------------------------------
 
@@ -768,7 +767,7 @@ CREATE TABLE IF NOT EXISTS `ft_search_wordlist` (
   `word_common` tinyint(1) unsigned NOT NULL DEFAULT '0',
   PRIMARY KEY (`word_text`),
   KEY `word_id` (`word_id`)
-) ENGINE=MyISAM  DEFAULT CHARSET=utf8 AUTO_INCREMENT=1 ;
+) ENGINE=MyISAM DEFAULT CHARSET=utf8 AUTO_INCREMENT=1 ;
 
 -- --------------------------------------------------------
 
@@ -808,7 +807,9 @@ CREATE TABLE IF NOT EXISTS `ft_sessions` (
 --
 
 INSERT INTO `ft_sessions` (`session_id`, `session_user_id`, `session_start`, `session_time`, `session_ip`, `session_logged_in`, `session_admin`) VALUES
-('6d72a0d035618a9238914b0f955d6642', 2, 1456348546, 1456429636, '7f000001', 1, 0);
+('b161c3b7e12682061b5bc8d4087d700d', 2, 1456567560, 1456567685, '7f000001', 1, 0),
+('dkQCs1zK4T2wmkxVC0KK', 2, 1456584411, 1456584411, '7f000001', 1, 1),
+('0p90QghaFO8xyi2zJhbD', 2, 1456612417, 1456612417, '7f000001', 1, 1);
 
 -- --------------------------------------------------------
 
@@ -915,8 +916,8 @@ CREATE TABLE IF NOT EXISTS `ft_topics` (
 --
 
 INSERT INTO `ft_topics` (`topic_id`, `forum_id`, `topic_title`, `topic_poster`, `topic_time`, `topic_views`, `topic_replies`, `topic_status`, `topic_vote`, `topic_type`, `topic_first_post_id`, `topic_last_post_id`, `topic_moved_id`, `topic_attachment`, `topic_dl_type`, `topic_dl_status`) VALUES
-(1, 1, 'Welcome to phpBB 2', 2, 972086460, 39, 0, 0, 0, 0, 1, 1, 0, 0, 0, 0),
-(3, 3, 'Download Topic 1', 4, 1117362875, 180, 0, 0, 0, 0, 4, 4, 0, 1, 1, 1);
+(1, 1, 'Welcome to phpBB 2', 2, 972086460, 43, 0, 0, 0, 0, 1, 1, 0, 0, 0, 0),
+(3, 3, 'Download Topic 1', 4, 1117362875, 198, 0, 0, 0, 0, 4, 4, 0, 1, 1, 1);
 
 -- --------------------------------------------------------
 
@@ -965,6 +966,8 @@ CREATE TABLE IF NOT EXISTS `ft_users` (
   `user_password` varchar(32) NOT NULL DEFAULT '',
   `user_session_time` int(11) NOT NULL DEFAULT '0',
   `user_lastvisit` int(11) NOT NULL DEFAULT '0',
+  `user_last_ip` char(32) NOT NULL,
+  `user_reg_ip` char(32) NOT NULL,
   `user_regdate` int(11) NOT NULL DEFAULT '0',
   `user_level` tinyint(4) DEFAULT '0',
   `user_posts` mediumint(8) unsigned NOT NULL DEFAULT '0',
@@ -1000,6 +1003,7 @@ CREATE TABLE IF NOT EXISTS `ft_users` (
   `user_interests` varchar(255) DEFAULT NULL,
   `user_actkey` varchar(32) DEFAULT NULL,
   `user_newpasswd` varchar(32) DEFAULT NULL,
+  `autologin_id` varchar(12) CHARACTER SET utf8 COLLATE utf8_bin NOT NULL,
   `user_allow_passkey` tinyint(1) NOT NULL DEFAULT '1',
   `bt_tor_browse_set` text,
   PRIMARY KEY (`user_id`),
@@ -1010,12 +1014,12 @@ CREATE TABLE IF NOT EXISTS `ft_users` (
 -- Дамп данных таблицы `ft_users`
 --
 
-INSERT INTO `ft_users` (`user_id`, `user_active`, `username`, `user_password`, `user_session_time`, `user_lastvisit`, `user_regdate`, `user_level`, `user_posts`, `user_timezone`, `user_style`, `user_lang`, `user_dateformat`, `user_new_privmsg`, `user_unread_privmsg`, `user_last_privmsg`, `user_emailtime`, `user_viewemail`, `user_attachsig`, `user_allowhtml`, `user_allowbbcode`, `user_allowsmile`, `user_allowavatar`, `user_allow_pm`, `user_allow_viewonline`, `user_notify`, `user_notify_pm`, `user_popup_pm`, `user_rank`, `user_avatar`, `user_avatar_type`, `user_email`, `user_icq`, `user_website`, `user_from`, `user_sig`, `user_sig_bbcode_uid`, `user_occ`, `user_interests`, `user_actkey`, `user_newpasswd`, `user_allow_passkey`, `bt_tor_browse_set`) VALUES
-(-1, 0, 'Anonymous', '', 0, 0, 1455565573, 0, 0, '0.00', NULL, '', '', 0, 0, 0, NULL, 0, 0, 1, 1, 1, 1, 0, 1, 0, 1, 0, NULL, '', 0, '', '', '', '', '', NULL, '', '', '', '', 1, ''),
-(2, 1, 'admin', '21232f297a57a5a743894a0e4a801fc3', 1456429636, 1456348515, 1455565573, 1, 1, '0.00', 1, 'russian', 'Y-m-d H:i', 0, 0, 1456348546, NULL, 1, 0, 0, 1, 1, 1, 1, 1, 0, 1, 1, 1, '', 0, 'admin@admin.com', '', '', '', '', '', '', '', '', '', 1, 'a:15:{s:3:"sid";s:32:"6d72a0d035618a9238914b0f955d6642";s:1:"n";i:0;s:2:"sd";i:0;s:1:"a";i:0;s:2:"my";i:0;s:1:"f";s:1:"3";s:3:"pid";i:0;s:2:"pn";s:0:"";s:3:"sns";i:-2;s:1:"o";i:1;s:1:"s";i:2;s:2:"tm";i:30;s:3:"shf";i:1;s:3:"sha";i:1;s:3:"shs";i:0;}'),
-(-746, 0, 'bot', '', 1117115716, 1117115634, 1455565573, 0, 0, '0.00', 1, 'english', 'Y-m-d H:i', 0, 0, 0, NULL, 0, 0, 1, 0, 1, 1, 1, 1, 0, 0, 0, 0, 'bot.gif', 1, 'bot@bot.bot', '', '', '', '', '', '', '', '', NULL, 1, ''),
-(4, 1, 'user1', 'c4ca4238a0b923820dcc509a6f75849b', 1117378293, 1117362875, 1455565573, 0, 1, '0.00', 1, 'english', 'Y-m-d H:i', 0, 0, 1455662105, NULL, 0, 1, 0, 1, 1, 1, 1, 1, 0, 1, 1, 0, '', 0, '1@11.com', '', '', '', '', '', '', '', '', NULL, 1, ''),
-(5, 1, 'user2', 'c4ca4238a0b923820dcc509a6f75849b', 1117378592, 1117378303, 1455565573, 0, 0, '0.00', 1, 'english', 'Y-m-d H:i', 0, 0, 0, NULL, 0, 1, 0, 1, 1, 1, 1, 1, 0, 1, 1, 0, '', 0, '2@2.com', '', '', '', '', '', '', '', '', NULL, 1, '');
+INSERT INTO `ft_users` (`user_id`, `user_active`, `username`, `user_password`, `user_session_time`, `user_lastvisit`, `user_last_ip`, `user_reg_ip`, `user_regdate`, `user_level`, `user_posts`, `user_timezone`, `user_style`, `user_lang`, `user_dateformat`, `user_new_privmsg`, `user_unread_privmsg`, `user_last_privmsg`, `user_emailtime`, `user_viewemail`, `user_attachsig`, `user_allowhtml`, `user_allowbbcode`, `user_allowsmile`, `user_allowavatar`, `user_allow_pm`, `user_allow_viewonline`, `user_notify`, `user_notify_pm`, `user_popup_pm`, `user_rank`, `user_avatar`, `user_avatar_type`, `user_email`, `user_icq`, `user_website`, `user_from`, `user_sig`, `user_sig_bbcode_uid`, `user_occ`, `user_interests`, `user_actkey`, `user_newpasswd`, `autologin_id`, `user_allow_passkey`, `bt_tor_browse_set`) VALUES
+(-1, 0, 'Anonymous', '', 0, 0, '', '', 1455565573, 0, 0, '0.00', NULL, '', '', 0, 0, 0, NULL, 0, 0, 1, 1, 1, 1, 0, 1, 0, 1, 0, NULL, '', 0, '', '', '', '', '', NULL, '', '', '', '', '', 1, ''),
+(2, 1, 'admin', '21232f297a57a5a743894a0e4a801fc3', 1456612417, 1456607537, '7f000001', '7f000001', 1455565573, 1, 1, '0.00', 1, 'russian', 'Y-m-d H:i', 0, 0, 1456607537, NULL, 1, 0, 0, 1, 1, 1, 1, 1, 0, 1, 1, 1, '', 0, 'admin@admin.com', '', '', '', '', '', '', '', '', '', 'eObMmX4H29Jl', 1, 'a:15:{s:3:"sid";s:20:"83dShc6g1IDO01Dqj3g8";s:1:"n";i:0;s:2:"sd";i:0;s:1:"a";i:0;s:2:"my";i:0;s:1:"f";s:1:"3";s:3:"pid";i:0;s:2:"pn";s:0:"";s:3:"sns";i:-2;s:1:"o";i:1;s:1:"s";i:2;s:2:"tm";i:30;s:3:"shf";i:1;s:3:"sha";i:1;s:3:"shs";i:0;}'),
+(-746, 0, 'bot', '', 1117115716, 1117115634, '', '', 1455565573, 0, 0, '0.00', 1, 'english', 'Y-m-d H:i', 0, 0, 0, NULL, 0, 0, 1, 0, 1, 1, 1, 1, 0, 0, 0, 0, 'bot.gif', 1, 'bot@bot.bot', '', '', '', '', '', '', '', '', NULL, '', 1, ''),
+(4, 1, 'user1', 'c4ca4238a0b923820dcc509a6f75849b', 1117378293, 1117362875, '', '', 1455565573, 0, 1, '0.00', 1, 'english', 'Y-m-d H:i', 0, 0, 1455662105, NULL, 0, 1, 0, 1, 1, 1, 1, 1, 0, 1, 1, 0, '', 0, '1@11.com', '', '', '', '', '', '', '', '', NULL, '', 1, ''),
+(5, 1, 'user2', 'c4ca4238a0b923820dcc509a6f75849b', 1117378592, 1117378303, '', '', 1455565573, 0, 0, '0.00', 1, 'english', 'Y-m-d H:i', 0, 0, 0, NULL, 0, 1, 0, 1, 1, 1, 1, 1, 0, 1, 1, 0, '', 0, '2@2.com', '', '', '', '', '', '', '', '', NULL, '', 1, '');
 
 -- --------------------------------------------------------
 

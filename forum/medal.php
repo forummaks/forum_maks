@@ -16,7 +16,7 @@ $user->session_start();
 // Generate page
 //
 $start    = isset($_GET['start']) ? abs(intval($_GET['start'])) : 0;
-$page_title = 'Доска почета!';
+$page_title = $lang['TOP_10'];
 require(FT_ROOT . 'includes/page_header.php');
 $template->set_filenames(array(
         'body' => 'medal_body.tpl')

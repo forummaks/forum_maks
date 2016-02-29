@@ -1,189 +1,185 @@
 <div align="center"><table width="700px">
 
-<tr><td>
+		<tr><td>
 
-<form method="post" action="{S_MODE_ACTION}">
+				<form method="post" action="{S_MODE_ACTION}">
 
-  <table width="100%" cellspacing="2" cellpadding="2" border="0" align="center">
+					<table width="100%" cellspacing="2" cellpadding="2" border="0" align="center">
 
-	<tr> 
+						<tr>
+							<td align="left"><span class="nav"><a href="{U_INDEX}" class="nav">{L_INDEX}</a></span><br /><br />
+						</tr>
 
-	  <td align="left"><span class="nav"><a href="{U_INDEX}" class="nav">{L_INDEX}</a></span><br /><br />
+					</table>
 
-        <span class="gensmall">Рейтинг считается с учетом бонуса, т.е. по формуле (отдано + бонус)/скачано</span></td>
+					<table width="100%" cellspacing="2" border="0" align="center" cellpadding="2">
 
-	</tr>
+						<tr>
 
-  </table>
+							<td align="center" valign="top"><b><font color="#000000">{L_TOP_UP}</font></b></td>
 
-  <table width="100%" cellspacing="2" border="0" align="center" cellpadding="2">
+						</tr>
 
-	<tr> 
+					</table>
 
-	  <td align="center" valign="top"><b><font color="#000000">Топ-10 по Upload</font></b></td>
+					<table width="100%" cellpadding="3" cellspacing="1" border="0" class="forumline">
 
-	</tr>
+						<tr>
 
-  </table>
+							<th height="25" class="thCornerL" nowrap="nowrap">{L_NUMBER}</th>
 
-  <table width="100%" cellpadding="3" cellspacing="1" border="0" class="forumline">
+							<th class="thTop" nowrap="nowrap">{L_USERNAME}</th>
 
-	<tr> 
+							<th class="thTop" nowrap="nowrap">{L_JOINED}</th>
 
-	  <th height="25" class="thCornerL" nowrap="nowrap">Место</th>
+							<th class="thTop" nowrap="nowrap">{L_UP}</th>
 
-	  <th class="thTop" nowrap="nowrap">{L_USERNAME}</th>
+							<th class="thTop" nowrap="nowrap">{L_BONUS}</th>
 
-	  <th class="thTop" nowrap="nowrap">{L_JOINED}</th>
+							<th class="thTop" nowrap="nowrap">{L_DOWN}</th>
 
-	  <th class="thTop" nowrap="nowrap">Отдано</th>
+							<th class="thTop" nowrap="nowrap">{L_UP_DOWN_RATING}</th>
 
-        <th class="thTop" nowrap="nowrap">Бонус</th> 
- 
-	  <th class="thTop" nowrap="nowrap">Скачано</th>
+						</tr>
 
-	  <th class="thTop" nowrap="nowrap">Рейтинг</th>
+						<!-- BEGIN memberrow1 -->
 
-	</tr>
+						<tr>
 
-	<!-- BEGIN memberrow1 -->
+							<td class="{memberrow1.ROW_CLASS}" align="center"><span class="gen">&nbsp;{memberrow1.ROW_NUMBER}&nbsp;</span></td>
 
-	<tr> 
+							<td class="{memberrow1.ROW_CLASS}" align="center"><span class="gen"><a href="{memberrow1.U_VIEWPROFILE}" class="gen">{memberrow1.USERNAME}</a></span></td>
+							<td class="{memberrow1.ROW_CLASS}" align="center" valign="middle"><span class="gensmall">{memberrow1.JOINED}</span></td>
 
-	  <td class="{memberrow1.ROW_CLASS}" align="center"><span class="gen">&nbsp;{memberrow1.ROW_NUMBER}&nbsp;</span></td>
+							<td class="{memberrow1.ROW_CLASS}" align="center" valign="middle"><b><span class="seed">{memberrow1.UP}</span></b></td>
 
-	  <td class="{memberrow1.ROW_CLASS}" align="center"><span class="gen"><a href="{memberrow1.U_VIEWPROFILE}" class="gen">{memberrow1.USERNAME}</a></span></td>
-	  <td class="{memberrow1.ROW_CLASS}" align="center" valign="middle"><span class="gensmall">{memberrow1.JOINED}</span></td>
+							<td class="{memberrow1.ROW_CLASS}" align="center" valign="middle"><b><span class="seed">{memberrow1.BONUS}</span></b></td>
 
-	  <td class="{memberrow1.ROW_CLASS}" align="center" valign="middle"><b><span class="seed">{memberrow1.UP}</span></b></td>
-	
-	  <td class="{memberrow1.ROW_CLASS}" align="center" valign="middle"><b><span class="seed">{memberrow1.BONUS}</span></b></td>
-  
-	  <td class="{memberrow1.ROW_CLASS}" align="center" valign="middle"><b><span class="leech">{memberrow1.DOWN}</span></b></td>
+							<td class="{memberrow1.ROW_CLASS}" align="center" valign="middle"><b><span class="leech">{memberrow1.DOWN}</span></b></td>
 
-	  <td class="{memberrow1.ROW_CLASS}" align="center"><span class="gen"><b>{memberrow1.UP_DOWN_RATIO}</b></span></td>
+							<td class="{memberrow1.ROW_CLASS}" align="center"><span class="gen"><b>{memberrow1.UP_DOWN_RATIO}</b></span></td>
 
-	</tr>
+						</tr>
 
-	<!-- END memberrow1 -->
+						<!-- END memberrow1 -->
 
-	<tr> 
+						<tr>
 
-	  <td class="catBottom" colspan="8" height="28">&nbsp;</td>
+							<td class="catBottom" colspan="8" height="28">&nbsp;</td>
 
-	</tr>
+						</tr>
 
-  </table>
- 
-  <table width="100%" cellspacing="2" border="0" align="center" cellpadding="2">
+					</table>
 
-	<tr> 
+					<table width="100%" cellspacing="2" border="0" align="center" cellpadding="2">
 
-	  <td align="center" valign="top"><b><font color="#000000">Топ-10 по Download</font></b></td>
+						<tr>
 
-	</tr>
+							<td align="center" valign="top"><b><font color="#000000">{L_TOP_DOWNLOAD}</font></b></td>
 
-  </table>
+						</tr>
 
-  <table width="100%" cellpadding="3" cellspacing="1" border="0" class="forumline">
+					</table>
 
-	<tr> 
+					<table width="100%" cellpadding="3" cellspacing="1" border="0" class="forumline">
 
-	  <th height="25" class="thCornerL" nowrap="nowrap">Место</th>
+						<tr>
 
-	  <th class="thTop" nowrap="nowrap">{L_USERNAME}</th>
+							<th height="25" class="thCornerL" nowrap="nowrap">{L_NUMBER}</th>
 
-	  <th class="thTop" nowrap="nowrap">{L_JOINED}</th>
+							<th class="thTop" nowrap="nowrap">{L_USERNAME}</th>
 
-        <th class="thTop" nowrap="nowrap">Скачано</th>
+							<th class="thTop" nowrap="nowrap">{L_JOINED}</th>
 
-	  <th class="thTop" nowrap="nowrap">Отдано</th>
+							<th class="thTop" nowrap="nowrap">{L_DOWN}</th>
 
-        <th class="thTop" nowrap="nowrap">Бонус</th> 
+							<th class="thTop" nowrap="nowrap">{L_UP}</th>
 
-	  <th class="thTop" nowrap="nowrap">Рейтинг</th>
+							<th class="thTop" nowrap="nowrap">{L_BONUS}</th>
 
-	</tr>
+							<th class="thTop" nowrap="nowrap">{L_UP_DOWN_RATING}</th>
 
-	<!-- BEGIN memberrow2 -->
+						</tr>
 
-	<tr> 
+						<!-- BEGIN memberrow2 -->
 
-	  <td class="{memberrow2.ROW_CLASS}" align="center"><span class="gen">&nbsp;{memberrow2.ROW_NUMBER}&nbsp;</span></td>
+						<tr>
 
-	  <td class="{memberrow2.ROW_CLASS}" align="center"><span class="gen"><a href="{memberrow2.U_VIEWPROFILE}" class="gen">{memberrow2.USERNAME}</a></span></td>
-	  <td class="{memberrow2.ROW_CLASS}" align="center" valign="middle"><span class="gensmall">{memberrow2.JOINED}</span></td>
+							<td class="{memberrow2.ROW_CLASS}" align="center"><span class="gen">&nbsp;{memberrow2.ROW_NUMBER}&nbsp;</span></td>
 
-        <td class="{memberrow2.ROW_CLASS}" align="center" valign="middle"><b><span class="leech">{memberrow2.DOWN}</span></b></td> 
+							<td class="{memberrow2.ROW_CLASS}" align="center"><span class="gen"><a href="{memberrow2.U_VIEWPROFILE}" class="gen">{memberrow2.USERNAME}</a></span></td>
+							<td class="{memberrow2.ROW_CLASS}" align="center" valign="middle"><span class="gensmall">{memberrow2.JOINED}</span></td>
 
-	  <td class="{memberrow2.ROW_CLASS}" align="center" valign="middle"><b><span class="seed">{memberrow2.UP}</span></b></td>
+							<td class="{memberrow2.ROW_CLASS}" align="center" valign="middle"><b><span class="leech">{memberrow2.DOWN}</span></b></td>
 
-        <td class="{memberrow2.ROW_CLASS}" align="center" valign="middle"><b><span class="seed">{memberrow2.BONUS}</span></b></td>
+							<td class="{memberrow2.ROW_CLASS}" align="center" valign="middle"><b><span class="seed">{memberrow2.UP}</span></b></td>
 
-	  <td class="{memberrow2.ROW_CLASS}" align="center"><span class="gen"><b>{memberrow2.UP_DOWN_RATIO}</b></span></td>
+							<td class="{memberrow2.ROW_CLASS}" align="center" valign="middle"><b><span class="seed">{memberrow2.BONUS}</span></b></td>
 
-	</tr>
+							<td class="{memberrow2.ROW_CLASS}" align="center"><span class="gen"><b>{memberrow2.UP_DOWN_RATIO}</b></span></td>
 
-	<!-- END memberrow2 -->
+						</tr>
 
-	<tr> 
+						<!-- END memberrow2 -->
 
-	  <td class="catBottom" colspan="8" height="28">&nbsp;</td>
+						<tr>
 
-	</tr>
+							<td class="catBottom" colspan="8" height="28">&nbsp;</td>
 
-  </table>
+						</tr>
 
-  <table width="100%" cellspacing="2" border="0" align="center" cellpadding="2">
+					</table>
 
-	<tr> 
+					<table width="100%" cellspacing="2" border="0" align="center" cellpadding="2">
 
-	  <td align="center" valign="top"><b><font color="#000000">Топ-10 по Ratio</font></b></td>
+						<tr>
 
-	</tr>
+							<td align="center" valign="top"><b><font color="#000000">{L_TOP_RATING}</font></b></td>
 
-  </table>
+						</tr>
 
-  <table width="100%" cellpadding="3" cellspacing="1" border="0" class="forumline">
+					</table>
 
-	<tr> 
+					<table width="100%" cellpadding="3" cellspacing="1" border="0" class="forumline">
 
-	  <th height="25" class="thCornerL" nowrap="nowrap">Место</th>
+						<tr>
 
-	  <th class="thTop" nowrap="nowrap">{L_USERNAME}</th>
+							<th height="25" class="thCornerL" nowrap="nowrap">{L_NUMBER}</th>
 
-	  <th class="thTop" nowrap="nowrap">{L_JOINED}</th>
+							<th class="thTop" nowrap="nowrap">{L_USERNAME}</th>
 
-        <th class="thTop" nowrap="nowrap">Рейтинг</th>
+							<th class="thTop" nowrap="nowrap">{L_JOINED}</th>
 
-	  <th class="thTop" nowrap="nowrap">Отдано</th>
+							<th class="thTop" nowrap="nowrap">{L_UP_DOWN_RATING}</th>
 
-        <th class="thTop" nowrap="nowrap">Бонус</th>
- 
-	  <th class="thTop" nowrap="nowrap">Скачано</th>
+							<th class="thTop" nowrap="nowrap">{L_UP}</th>
 
-	</tr>
+							<th class="thTop" nowrap="nowrap">{L_BONUS}</th>
 
-	<!-- BEGIN memberrow3 -->
+							<th class="thTop" nowrap="nowrap">{L_DOWN}</th>
 
-	<tr> 
+						</tr>
 
-	  <td class="{memberrow3.ROW_CLASS}" align="center"><span class="gen">&nbsp;{memberrow3.ROW_NUMBER}&nbsp;</span></td>
+						<!-- BEGIN memberrow3 -->
 
-	  <td class="{memberrow3.ROW_CLASS}" align="center"><span class="gen"><a href="{memberrow3.U_VIEWPROFILE}" class="gen">{memberrow3.USERNAME}</a></span></td>
-	  <td class="{memberrow3.ROW_CLASS}" align="center" valign="middle"><span class="gensmall">{memberrow3.JOINED}</span></td>
- 
-        <td class="{memberrow3.ROW_CLASS}" align="center"><span class="gen"><b>{memberrow3.UP_DOWN_RATIO}</b></span></td>
+						<tr>
 
-	  <td class="{memberrow3.ROW_CLASS}" align="center" valign="middle"><b><span class="seed">{memberrow3.UP}</span></b></td>
-	  
-        <td class="{memberrow3.ROW_CLASS}" align="center" valign="middle"><b><span class="seed">{memberrow3.BONUS}</span></b></td>
+							<td class="{memberrow3.ROW_CLASS}" align="center"><span class="gen">&nbsp;{memberrow3.ROW_NUMBER}&nbsp;</span></td>
 
-	  <td class="{memberrow3.ROW_CLASS}" align="center" valign="middle"><b><span class="leech">{memberrow3.DOWN}</span></b></td>
+							<td class="{memberrow3.ROW_CLASS}" align="center"><span class="gen"><a href="{memberrow3.U_VIEWPROFILE}" class="gen">{memberrow3.USERNAME}</a></span></td>
+							<td class="{memberrow3.ROW_CLASS}" align="center" valign="middle"><span class="gensmall">{memberrow3.JOINED}</span></td>
 
-	</tr>
+							<td class="{memberrow3.ROW_CLASS}" align="center"><span class="gen"><b>{memberrow3.UP_DOWN_RATIO}</b></span></td>
 
-	<!-- END memberrow3 -->
+							<td class="{memberrow3.ROW_CLASS}" align="center" valign="middle"><b><span class="seed">{memberrow3.UP}</span></b></td>
+
+							<td class="{memberrow3.ROW_CLASS}" align="center" valign="middle"><b><span class="seed">{memberrow3.BONUS}</span></b></td>
+
+							<td class="{memberrow3.ROW_CLASS}" align="center" valign="middle"><b><span class="leech">{memberrow3.DOWN}</span></b></td>
+
+						</tr>
+
+						<!-- END memberrow3 -->
 
 	<tr> 
 
@@ -197,7 +193,7 @@
 
 	<tr> 
 
-  <td align="center" valign="top"><b><font color="#000000">Топ-10 лучших раздач</font></b></td>
+  <td align="center" valign="top"><b><font color="#000000">{L_TOP_TORRENTS}</font></b></td>
 
 	</tr>
 
@@ -208,17 +204,17 @@
 
 	<tr>
 
-	  <th height="25" class="thCornerL" nowrap>Место</th>
+	  <th height="25" class="thCornerL" nowrap>{L_NUMBER}</th>
 
 	  <th class="thTop" nowrap>{L_USERNAME}</th>
 		  
-	  <th class="thTop" nowrap>Тема</th>
+	  <th class="thTop" nowrap>{L_TOPIC_TITLE}</th>
 	  
-	  <th class="thTop" nowrap>Форум</th>
+	  <th class="thTop" nowrap>{L_FORUM_NAME}</th>
 	
-	  <th class="thTop" nowrap>Скачано</th>
+	  <th class="thTop" nowrap>{L_COMPLETE_COUNT}</th>
 
-	  <th class="thTop" nowrap>Зарегистрирован</th>
+	  <th class="thTop" nowrap>{L_REG_TIME}</th>
 
 	</tr>
 

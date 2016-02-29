@@ -1062,3 +1062,27 @@ $lang['OFF'] = 'выкл';
 $lang['MEMORY'] = 'Память: ';
 $lang['QUERIES'] = 'запр.';
 $lang['LIMIT'] = 'Лимит:';
+
+//Profile
+$lang['RANG'] = 'Звание';
+
+// Medal head title
+$lang['TOP_10'] = 'Топ-10';
+
+// Medal
+$lang['TOP_UP'] = 'ТОП-10 скачивающих';
+$lang['TOP_DOWNLOAD'] = 'ТОП-10 по загрузкам';
+$lang['TOP_RATING'] = 'ТОП-10 по рейтингу';
+$lang['TOP_TORRENTS'] = 'ТОП-10 торрент раздач';
+
+$lang['NUMBER'] = '#';
+$lang['JOINED'] = 'Зарегистрирован';
+$lang['BONUS'] = 'Бонус';
+$lang['UP'] = 'Скачано';
+$lang['DOWN'] = 'Роздано';
+$lang['UP_DOWN_RATING'] = 'Рейтинг скачано/роздано';
+
+$lang['TOPIC_TITLE'] = 'Название темы';
+$lang['FORUM_NAME'] = 'Имя на форуме';
+$lang['COMPLETE_COUNT'] = 'Полный анализ';
+$lang['REG_TIME'] = 'Время регистрации';

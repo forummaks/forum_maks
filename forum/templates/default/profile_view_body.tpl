@@ -25,7 +25,7 @@
  <tr>
 		<td class="row1" valign="top" style="padding: 0px" width="30%"><table width="100%" border="0" cellspacing="0" cellpadding="3">
 	<tr>
-		<td class="row1" valign="top" align="center" colspan="2">{AVATAR_IMG}<!-- IF RANK_IMAGE --><div style="padding-top: 8px">{RANK_IMAGE}</div><!-- ENDIF --><!-- IF POSTER_RANK --><div class="genmed" style="padding-top: 8px">Звание: <b>{POSTER_RANK}</b></div><!-- ENDIF --></td>
+		<td class="row1" valign="top" align="center" colspan="2">{AVATAR_IMG}<!-- IF RANK_IMAGE --><div style="padding-top: 8px">{RANK_IMAGE}</div><!-- ENDIF --><!-- IF POSTER_RANK --><div class="genmed" style="padding-top: 8px">{L_RANG}: <b>{POSTER_RANK}</b></div><!-- ENDIF --></td>
 	</tr>
  <tr>
 		<td class="cat forumline" style="border-width: 1px 0px 1px 0px;" align="center" height="28" colspan="2"><b><span class="gen">{L_CONTACT} {USERNAME} </span></b></td>
