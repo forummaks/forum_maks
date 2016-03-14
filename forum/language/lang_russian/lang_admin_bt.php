@@ -1,163 +1,163 @@
 <?php
 
-$lang['return_config'] = '%sВернуться к настройкам%s';
-$lang['config_upd'] = 'Конфигурация успешно изменена';
-$lang['set_defaults'] = 'Значения по умолчанию';
+$lang['RETURN_CONFIG'] = '%sВернуться к настройкам%s';
+$lang['CONFIG_UPD'] = 'Конфигурация успешно изменена';
+$lang['SET_DEFAULTS'] = 'Значения по умолчанию';
 
-//
-// Tracker config
-//
-$lang['tracker_cfg_title'] = 'Трекер';
-$lang['forum_cfg_title'] = 'Настройки форумов';
-$lang['tracker_settings'] = 'Настройки трекера';
+////
+// Tracker config//
+////
+$lang['TRACKER_CFG_TITLE'] = 'Трекер';
+$lang['FORUM_CFG_TITLE'] = 'Настройки форумов';
+$lang['TRACKER_SETTINGS'] = 'Настройки трекера';
 
-$lang['off'] = 'Отключить трекер';
-$lang['off_show_reason'] = 'Продолжать отвечать на запросы клиентов';
-$lang['off_show_reason_expl'] = 'отправлять клиенту сообщение о причине остановки трекера';
-$lang['off_reason'] = 'Причина отключения';
-$lang['off_reason_expl'] = 'этот текст будет отправляться клиенту пока трекер отключен';
-$lang['bt_debug'] = 'Режим отладки';
-$lang['bt_debug_expl'] = 'включать в сообщения об ошибках дополнительную информацию';
-$lang['silent_mode'] = 'Не сообщать об ошибках';
-$lang['silent_mode_expl'] = 'в случае ошибок завершать работу без отправки клиенту сообщения об ошибках';
-$lang['autoclean'] = 'Автоочистка';
-$lang['autoclean_expl'] = 'периодически очищать таблицу peer\'s - не отключайте без особой необходимости!';
-$lang['autoclean_interval'] = 'Интервал автоочистки';
-$lang['compact_mode'] = 'Компактный режим';
-$lang['compact_mode_expl'] = '"Да" - трекер будет работать только в компактном режиме<br />"Нет" - будет определяется клиентом<br />в компактном режиме расход трафика наименьший, но могут возникнуть проблемы из-за несовместимости со старыми клиентами';
-$lang['browser_redirect_url'] = 'Browser redirect URL';
-$lang['browser_redirect_url_expl'] = "переадресация на этот URL при попытке зайти на трекер Web browser'ом<br />* оставьте пустым для отключения";
+$lang['OFF'] = 'Отключить трекер';
+$lang['OFF_SHOW_REASON'] = 'Продолжать отвечать на запросы клиентов';
+$lang['OFF_SHOW_REASON_EXPL'] = 'отправлять клиенту сообщение о причине остановки трекера';
+$lang['OFF_REASON'] = 'Причина отключения';
+$lang['OFF_REASON_EXPL'] = 'этот текст будет отправляться клиенту пока трекер отключен';
+$lang['BT_DEBUG'] = 'Режим отладки';
+$lang['BT_DEBUG_EXPL'] = 'включать в сообщения об ошибках дополнительную информацию';
+$lang['SILENT_MODE'] = 'Не сообщать об ошибках';
+$lang['SILENT_MODE_EXPL'] = 'в случае ошибок завершать работу без отправки клиенту сообщения об ошибках';
+$lang['AUTOCLEAN'] = 'Автоочистка';
+$lang['AUTOCLEAN_EXPL'] = 'периодически очищать таблицу peer\'s - не отключайте без особой необходимости!';
+$lang['AUTOCLEAN_INTERVAL'] = 'Интервал автоочистки';
+$lang['COMPACT_MODE'] = 'Компактный режим';
+$lang['COMPACT_MODE_EXPL'] = '"Да" - трекер будет работать только в компактном режиме<br />"Нет" - будет определяется клиентом<br />в компактном режиме расход трафика наименьший, но могут возникнуть проблемы из-за несовместимости со старыми клиентами';
+$lang['BROWSER_REDIRECT_URL'] = 'Browser redirect URL';
+$lang['BROWSER_REDIRECT_URL_EXPL'] = 'переадресация на этот URL при попытке зайти на трекер Web browserом<br />* оставьте пустым для отключения';
 
-$lang['do_gzip_head'] = 'GZip';
-$lang['do_gzip'] = 'Использовать сжатие GZip';
-$lang['do_gzip_expl'] = 'уроверь компрессии можно настроить в "bt/config.php"';
-$lang['force_gzip'] = 'Всегда использовать сжатие';
-$lang['force_gzip_expl'] = 'отключает проверку поддержки клиентом GZip';
-$lang['client_compat_gzip'] = 'Только если клиент поддерживает';
-$lang['client_compat_gzip_expl'] = 'выполнять сжатие через ob_gzhandler()';
+$lang['DO_GZIP_HEAD'] = 'GZip';
+$lang['DO_GZIP'] = 'Использовать сжатие GZip';
+$lang['DO_GZIP_EXPL'] = 'уроверь компрессии можно настроить в "bt/config.php"';
+$lang['FORCE_GZIP'] = 'Всегда использовать сжатие';
+$lang['FORCE_GZIP_EXPL'] = 'отключает проверку поддержки клиентом GZip';
+$lang['CLIENT_COMPAT_GZIP'] = 'Только если клиент поддерживает';
+$lang['CLIENT_COMPAT_GZIP_EXPL'] = 'выполнять сжатие через ob_gzhandler()';
 
-$lang['ignor_given_ip_head'] = 'IP';
-$lang['ignor_given_ip'] = 'Игнорировать указанный клиентом IP';
-$lang['ignor_given_ip_expl'] = 'всегда использовать только $_SERVER["REMOTE_ADDR"]';
-$lang['allow_host_ip'] = 'Разрешить использовать вместо IP имя хоста';
-$lang['allow_host_ip_expl'] = '';
+$lang['IGNOR_GIVEN_IP_HEAD'] = 'IP';
+$lang['IGNOR_GIVEN_IP'] = 'Игнорировать указанный клиентом IP';
+$lang['IGNOR_GIVEN_IP_EXPL'] = 'всегда использовать только $_SERVER["REMOTE_ADDR"]';
+$lang['ALLOW_HOST_IP'] = 'Разрешить использовать вместо IP имя хоста';
+$lang['ALLOW_HOST_IP_EXPL'] = '';
 
-$lang['ignor_numwant_head'] = 'Numwant';
-$lang['ignor_numwant'] = 'Игнорировать numwant';
-$lang['ignor_numwant_expl'] = 'игнорировать запрашиваемое клиентом количество источников';
-$lang['numwant'] = 'Значение numwant';
-$lang['numwant_expl'] = 'количество источников (peers) отправляемых клиенту';
-$lang['numwant_max'] = 'Максимальное значение numwant';
-$lang['numwant_max_expl'] = 'максимальное количество источников (peers) отправляемых клиенту';
+$lang['IGNOR_NUMWANT_HEAD'] = 'Numwant';
+$lang['IGNOR_NUMWANT'] = 'Игнорировать numwant';
+$lang['IGNOR_NUMWANT_EXPL'] = 'игнорировать запрашиваемое клиентом количество источников';
+$lang['NUMWANT'] = 'Значение numwant';
+$lang['NUMWANT_EXPL'] = 'количество источников (peers) отправляемых клиенту';
+$lang['NUMWANT_MAX'] = 'Максимальное значение numwant';
+$lang['NUMWANT_MAX_EXPL'] = 'максимальное количество источников (peers) отправляемых клиенту';
 
-$lang['min_ann_intv_head'] = 'Announce';
-$lang['min_ann_intv'] = 'Announce интервал';
-$lang['min_ann_intv_expl'] = 'пауза между announcements в секундах';
-$lang['expire_factor'] = 'Фактор смерти peer\'ов';
-$lang['expire_factor_expl'] = "время жизни peer'а расчитывается как announce интервал умноженный на фактор смерти peer'а<br />должен быть не меньше 1";
+$lang['MIN_ANN_INTV_HEAD'] = 'Announce';
+$lang['MIN_ANN_INTV'] = 'Announce интервал';
+$lang['MIN_ANN_INTV_EXPL'] = 'пауза между announcements в секундах';
+$lang['EXPIRE_FACTOR'] = 'Фактор смерти peer\'ов';
+$lang['EXPIRE_FACTOR_EXPL'] = 'время жизни peer\'а расчитывается как announce интервал умноженный на фактор смерти peer\'а<br />должен быть не меньше 1';
 
-$lang['limit_active_tor_head'] = 'Ограничения';
-$lang['limit_active_tor'] = 'Ограничить количество одновременных закачек';
-$lang['limit_active_tor_expl'] = 'работает только при наличии passkey! для гостей - неактивно';
-$lang['limit_seed_count'] = 'Seeding ограничение';
-$lang['limit_seed_count_expl'] = 'ограничение на количество одновременных раздач<br />0 - нет ограничений';
-$lang['limit_leech_count'] = 'Leeching ограничение';
-$lang['limit_leech_count_expl'] = 'ограничение на количество одновременных закачек<br />0 - нет ограничений';
-$lang['leech_expire_factor'] = 'Leech expire factor';
-$lang['leech_expire_factor_expl'] = 'сколько минут считать начатую закачку активной, независимо от того, остановил ли ее юзер<br />0 - учитывать остановку';
-$lang['limit_concurrent_ips'] = 'Ограничить количество подключений с разных IP';
-$lang['limit_concurrent_ips_expl'] = 'учитывается отдельно для каждого торрента';
-$lang['limit_seed_ips'] = 'Seeding IP ограничение';
-$lang['limit_seed_ips_expl'] = "раздаваь можно не более чем с <i>хх</i> IP's<br />(0 - нет ограничений)";
-$lang['limit_leech_ips'] = 'Leeching IP ограничение';
-$lang['limit_leech_ips_expl'] = "скачивать можно не более чем с <i>хх</i> IP's<br />(0 - нет ограничений)";
+$lang['LIMIT_ACTIVE_TOR_HEAD'] = 'Ограничения';
+$lang['LIMIT_ACTIVE_TOR'] = 'Ограничить количество одновременных закачек';
+$lang['LIMIT_ACTIVE_TOR_EXPL'] = 'работает только при наличии passkey! для гостей - неактивно';
+$lang['LIMIT_SEED_COUNT'] = 'Seeding ограничение';
+$lang['LIMIT_SEED_COUNT_EXPL'] = 'ограничение на количество одновременных раздач<br />0 - нет ограничений';
+$lang['LIMIT_LEECH_COUNT'] = 'Leeching ограничение';
+$lang['LIMIT_LEECH_COUNT_EXPL'] = 'ограничение на количество одновременных закачек<br />0 - нет ограничений';
+$lang['LEECH_EXPIRE_FACTOR'] = 'Leech expire factor';
+$lang['LEECH_EXPIRE_FACTOR_EXPL'] = 'сколько минут считать начатую закачку активной, независимо от того, остановил ли ее юзер<br />0 - учитывать остановку';
+$lang['LIMIT_CONCURRENT_IPS'] = 'Ограничить количество подключений с разных IP';
+$lang['LIMIT_CONCURRENT_IPS_EXPL'] = 'учитывается отдельно для каждого торрента';
+$lang['LIMIT_SEED_IPS'] = 'Seeding IP ограничение';
+$lang['LIMIT_SEED_IPS_EXPL'] = 'раздаваь можно не более чем с <i>хх</i> IP\'s<br />(0 - нет ограничений)';
+$lang['LIMIT_LEECH_IPS'] = 'Leeching IP ограничение';
+$lang['LIMIT_LEECH_IPS_EXPL'] = 'скачивать можно не более чем с <i>хх</i> IP\'s<br />(0 - нет ограничений)';
 
-$lang['use_auth_key_head'] = 'Авторизация';
-$lang['use_auth_key'] = 'Passkey';
-$lang['use_auth_key_expl'] = 'включить авторизацию по passkey<br />(aвтодобавление passkey к торент-файлам перед их скачиванием можно включить в настройках форума: TorrentPier - Forum Config)';
-$lang['auth_key_name'] = 'Имя ключа passkey';
-$lang['auth_key_name_expl'] = 'имя ключа, который будет добавляться в GET запросе к announce url для идентификации юзера';
-$lang['allow_guest_dl'] = 'Разрешить "гостям" (неавторизованным юзерам) доступ к трекеру';
+$lang['USE_AUTH_KEY_HEAD'] = 'Авторизация';
+$lang['USE_AUTH_KEY'] = 'Passkey';
+$lang['USE_AUTH_KEY_EXPL'] = 'включить авторизацию по passkey<br />(aвтодобавление passkey к торент-файлам перед их скачиванием можно включить в настройках форума: TorrentPier - Forum Config)';
+$lang['AUTH_KEY_NAME'] = 'Имя ключа passkey';
+$lang['AUTH_KEY_NAME_EXPL'] = 'имя ключа, который будет добавляться в GET запросе к announce url для идентификации юзера';
+$lang['ALLOW_GUEST_DL'] = 'Разрешить "гостям" (неавторизованным юзерам) доступ к трекеру';
 
-$lang['update_users_dl_status_head'] = 'Статистика';
-$lang['update_users_dl_status'] = 'Обновлять статус закачки "Качаю"';
-$lang['update_users_dl_status_expl'] = 'автоматически изменять статус закачки юзера на "Качаю" если юзер начал закачку';
-$lang['update_users_compl_status'] = 'Обновлять статус закачки "Скачал"';
-$lang['update_users_compl_status_expl'] = 'автоматически изменять статус закачки юзера на "Скачал" по завершению закачки';
-$lang['upd_user_up_down_stat'] = 'Вести учет скачанного/отданного юзером';
-$lang['user_statistic_upd_interval'] = 'Интервал обновления статистики скачанного/отданного юзером';
-$lang['seed_last_seen_upd_interval'] = "Интервал обновления записи о последнем seeder'e";
+$lang['UPDATE_USERS_DL_STATUS_HEAD'] = 'Статистика';
+$lang['UPDATE_USERS_DL_STATUS'] = 'Обновлять статус закачки "Качаю"';
+$lang['UPDATE_USERS_DL_STATUS_EXPL'] = 'автоматически изменять статус закачки юзера на "Качаю" если юзер начал закачку';
+$lang['UPDATE_USERS_COMPL_STATUS'] = 'Обновлять статус закачки "Скачал"';
+$lang['UPDATE_USERS_COMPL_STATUS_EXPL'] = 'автоматически изменять статус закачки юзера на "Скачал" по завершению закачки';
+$lang['UPD_USER_UP_DOWN_STAT'] = 'Вести учет скачанного/отданного юзером';
+$lang['USER_STATISTIC_UPD_INTERVAL'] = 'Интервал обновления статистики скачанного/отданного юзером';
+$lang['SEED_LAST_SEEN_UPD_INTERVAL'] = 'Интервал обновления записи о последнем seeder\'e';
 
-//
-// Forum config
-//
-$lang['forum_cfg_expl'] = 'Настройки форума';
+////
+// Forum config//
+////
+$lang['FORUM_CFG_EXPL'] = 'Настройки форума';
 
-$lang['bt_select_forums'] = 'Форумы, в которых:';
-$lang['bt_select_forums_expl'] = 'для выделения нескольких форумов, отмечайте их с нажатой клавишей <i>Ctrl</i>';
+$lang['BT_SELECT_FORUMS'] = 'Форумы, в которых:';
+$lang['BT_SELECT_FORUMS_EXPL'] = 'для выделения нескольких форумов, отмечайте их с нажатой клавишей <i>Ctrl</i>';
 
-$lang['allow_reg_tracker'] = 'Разрешена регистрация торентов на трекере';
-$lang['allow_dl_topic'] = 'Разрешено создавать Download топики';
-$lang['dl_type_default'] = 'Новые топики имеют статус Download по умолчанию';
-$lang['show_dl_buttons'] = 'Показывать кнопки для изменения DL-статуса';
-$lang['self_moderated'] = 'Автор топика может перенести его в другой форум';
+$lang['ALLOW_REG_TRACKER'] = 'Разрешена регистрация торентов на трекере';
+$lang['ALLOW_DL_TOPIC'] = 'Разрешено создавать Download топики';
+$lang['DL_TYPE_DEFAULT'] = 'Новые топики имеют статус Download по умолчанию';
+$lang['SHOW_DL_BUTTONS'] = 'Показывать кнопки для изменения DL-статуса';
+$lang['SELF_MODERATED'] = 'Автор топика может перенести его в другой форум';
 
-$lang['bt_announce_url_head'] = 'Announce URL';
-$lang['bt_announce_url'] = 'Announce url';
-$lang['bt_announce_url_expl'] = 'дополнительные разрешенные адреса можно задать в "includes/announce_urls.php"';
-$lang['bt_check_announce_url'] = 'Проверять announce url';
-$lang['bt_check_announce_url_expl'] = 'разрешить регистрацию на трекере только если announce url входит в список разрешенных';
-$lang['bt_replace_ann_url'] = 'Заменять announce url';
-$lang['bt_replace_ann_url_expl'] = 'заменять оригинальный announce url в .torrent файлах на ваш';
-$lang['bt_del_addit_ann_urls'] = 'Удалять все дополнительные announce urls';
-$lang['bt_del_addit_ann_urls_expl'] = 'если торент содержит адреса других трекеров, они будут удалены';
-$lang['bt_add_comment'] = 'Добавлять в торент комментарий';
-$lang['bt_add_comment_expl'] = 'оставьте пустым для добавления адреса топика к качестве комментария';
-$lang['bt_add_publisher'] = 'Добавлять адрес топика как publisher-url и это имя в качестве имени publisher';
-$lang['bt_add_publisher_expl'] = 'для отключения - оставьте пустым';
+$lang['BT_ANNOUNCE_URL_HEAD'] = 'Announce URL';
+$lang['BT_ANNOUNCE_URL'] = 'Announce url';
+$lang['BT_ANNOUNCE_URL_EXPL'] = 'дополнительные разрешенные адреса можно задать в "includes/announce_urls.php"';
+$lang['BT_CHECK_ANNOUNCE_URL'] = 'Проверять announce url';
+$lang['BT_CHECK_ANNOUNCE_URL_EXPL'] = 'разрешить регистрацию на трекере только если announce url входит в список разрешенных';
+$lang['BT_REPLACE_ANN_URL'] = 'Заменять announce url';
+$lang['BT_REPLACE_ANN_URL_EXPL'] = 'заменять оригинальный announce url в .torrent файлах на ваш';
+$lang['BT_DEL_ADDIT_ANN_URLS'] = 'Удалять все дополнительные announce urls';
+$lang['BT_DEL_ADDIT_ANN_URLS_EXPL'] = 'если торент содержит адреса других трекеров, они будут удалены';
+$lang['BT_ADD_COMMENT'] = 'Добавлять в торент комментарий';
+$lang['BT_ADD_COMMENT_EXPL'] = 'оставьте пустым для добавления адреса топика к качестве комментария';
+$lang['BT_ADD_PUBLISHER'] = 'Добавлять адрес топика как publisher-url и это имя в качестве имени publisher';
+$lang['BT_ADD_PUBLISHER_EXPL'] = 'для отключения - оставьте пустым';
 
-$lang['bt_show_peers_head'] = 'Peers-List';
-$lang['bt_show_peers'] = 'Показывать список источников (seeders/leechers)';
-$lang['bt_show_peers_expl'] = 'будет выводиться над топиком с торентом';
-$lang['bt_show_peers_mode'] = 'По умолчанию показывать источники как:';
-$lang['bt_show_peers_mode_count'] = 'Только количество';
-$lang['bt_show_peers_mode_names'] = 'Только имена';
-$lang['bt_show_peers_mode_full'] = 'Подробно';
-$lang['bt_allow_spmode_change'] = 'Разрешить подробный показ источников';
-$lang['bt_allow_spmode_change_expl'] = 'если выбрано "нет" - будет доступен только режим по умолчанию';
-$lang['bt_show_ip_only_moder'] = '<b>IP</b> могут видеть только модераторы';
-$lang['bt_show_port_only_moder'] = '<b>Port</b> могут видеть только модераторы';
+$lang['BT_SHOW_PEERS_HEAD'] = 'Peers-List';
+$lang['BT_SHOW_PEERS'] = 'Показывать список источников (seeders/leechers)';
+$lang['BT_SHOW_PEERS_EXPL'] = 'будет выводиться над топиком с торентом';
+$lang['BT_SHOW_PEERS_MODE'] = 'По умолчанию показывать источники как:';
+$lang['BT_SHOW_PEERS_MODE_COUNT'] = 'Только количество';
+$lang['BT_SHOW_PEERS_MODE_NAMES'] = 'Только имена';
+$lang['BT_SHOW_PEERS_MODE_FULL'] = 'Подробно';
+$lang['BT_ALLOW_SPMODE_CHANGE'] = 'Разрешить подробный показ источников';
+$lang['BT_ALLOW_SPMODE_CHANGE_EXPL'] = 'если выбрано "нет" - будет доступен только режим по умолчанию';
+$lang['BT_SHOW_IP_ONLY_MODER'] = '<b>IP</b> могут видеть только модераторы';
+$lang['BT_SHOW_PORT_ONLY_MODER'] = '<b>Port</b> могут видеть только модераторы';
 
-$lang['bt_show_dl_list_head'] = 'DL-List';
-$lang['bt_show_dl_list'] = 'Выводить DL-List при просмотре топика';
-$lang['bt_dl_list_only_1st_page'] = 'Выводить DL-List только на первой странице топика';
-$lang['bt_dl_list_only_count'] = 'Выводить только количество';
-$lang['bt_dl_list_expire'] = 'Срок действия статуса <i>Буду качать</i> и <i>Качаю</i>';
-$lang['bt_dl_list_expire_expl'] = 'по истечении этого срока отметившиеся юзеры будут автоматически удаляться из списка<br />0 - отключить эту опцию';
-$lang['bt_show_dl_list_buttons'] = 'Показывать кнопки для изменения DL-статуса';
-$lang['bt_show_dl_list_buttons_expl'] = 'глобальная настройка';
-$lang['bt_show_dl_but_will'] = $lang['dlWill'];
-$lang['bt_show_dl_but_down'] = $lang['dlDown'];
-$lang['bt_show_dl_but_compl'] = $lang['dlComplete'];
-$lang['bt_show_dl_but_cancel'] = $lang['dlCancel'];
+$lang['BT_SHOW_DL_LIST_HEAD'] = 'DL-List';
+$lang['BT_SHOW_DL_LIST'] = 'Выводить DL-List при просмотре топика';
+$lang['BT_DL_LIST_ONLY_1ST_PAGE'] = 'Выводить DL-List только на первой странице топика';
+$lang['BT_DL_LIST_ONLY_COUNT'] = 'Выводить только количество';
+$lang['BT_DL_LIST_EXPIRE'] = 'Срок действия статуса <i>Буду качать</i> и <i>Качаю</i>';
+$lang['BT_DL_LIST_EXPIRE_EXPL'] = 'по истечении этого срока отметившиеся юзеры будут автоматически удаляться из списка<br />0 - отключить эту опцию';
+$lang['BT_SHOW_DL_LIST_BUTTONS'] = 'Показывать кнопки для изменения DL-статуса';
+$lang['BT_SHOW_DL_LIST_BUTTONS_EXPL'] = 'глобальная настройка';
+$lang['BT_SHOW_DL_BUT_WILL'] = $lang['DLWILL'];
+$lang['BT_SHOW_DL_BUT_DOWN'] = $lang['DLDOWN'];
+$lang['BT_SHOW_DL_BUT_COMPL'] = $lang['DLCOMPLETE'];
+$lang['BT_SHOW_DL_BUT_CANCEL'] = $lang['DLCANCEL'];
 
-$lang['bt_add_auth_key_head'] = 'Passkey';
-$lang['bt_add_auth_key'] = 'Aвтодобавление passkey к торент-файлам перед их скачиванием';
-$lang['bt_force_passkey'] = 'Обязательное добавление passkey';
-$lang['bt_force_passkey_expl'] = 'перенаправлять гостей на страницу логина при попытке скачать торент-файл';
-$lang['bt_gen_passkey_on_reg'] = 'Автоматически генерировать passkey';
-$lang['bt_gen_passkey_on_reg_expl'] = 'если passkey не найден, генерировать его при первом скачивании торента';
+$lang['BT_ADD_AUTH_KEY_HEAD'] = 'Passkey';
+$lang['BT_ADD_AUTH_KEY'] = 'Aвтодобавление passkey к торент-файлам перед их скачиванием';
+$lang['BT_FORCE_PASSKEY'] = 'Обязательное добавление passkey';
+$lang['BT_FORCE_PASSKEY_EXPL'] = 'перенаправлять гостей на страницу логина при попытке скачать торент-файл';
+$lang['BT_GEN_PASSKEY_ON_REG'] = 'Автоматически генерировать passkey';
+$lang['BT_GEN_PASSKEY_ON_REG_EXPL'] = 'если passkey не найден, генерировать его при первом скачивании торента';
 
-$lang['bt_tor_browse_only_reg_head'] = 'Torrent browser (трекер)';
-$lang['bt_tor_browse_only_reg'] = 'Torrent browser (tracker.php) не доступен для гостей';
-$lang['bt_search_bool_mode'] = 'Разрешить полнотекстовый поиск в логическом режиме';
-$lang['bt_search_bool_mode_expl'] = 'использовать *, +, - и т.д. при поиске. Работает только если MySQL > 4.0.1';
+$lang['BT_TOR_BROWSE_ONLY_REG_HEAD'] = 'Torrent browser (трекер)';
+$lang['BT_TOR_BROWSE_ONLY_REG'] = 'Torrent browser (tracker.php) не доступен для гостей';
+$lang['BT_SEARCH_BOOL_MODE'] = 'Разрешить полнотекстовый поиск в логическом режиме';
+$lang['BT_SEARCH_BOOL_MODE_EXPL'] = 'использовать *, +, - и т.д. при поиске. Работает только если MySQL > 4.0.1';
 
-$lang['bt_show_dl_stat_on_index_head'] = "Разное";
-$lang['bt_show_dl_stat_on_index'] = 'Показывать UL/DL статистику юзера на главной странице форума';
-$lang['bt_newtopic_auto_reg'] = 'Регистрировать торенты на трекере для новых топиков';
-$lang['bt_set_dltype_on_tor_reg'] = 'Изменять статус топка на "Download" во время регистрации торента на трекере';
-$lang['bt_set_dltype_on_tor_reg_expl'] = 'не зависит от того, разрешено ли в этом форуме создавать Download-топики (в настройках форумов)';
-$lang['bt_unset_dltype_on_tor_unreg'] = 'Изменять статус топка на "Normal" во время удаления торента с трекера';
+$lang['BT_SHOW_DL_STAT_ON_INDEX_HEAD'] = 'Разное';
+$lang['BT_SHOW_DL_STAT_ON_INDEX'] = 'Показывать UL/DL статистику юзера на главной странице форума';
+$lang['BT_NEWTOPIC_AUTO_REG'] = 'Регистрировать торенты на трекере для новых топиков';
+$lang['BT_SET_DLTYPE_ON_TOR_REG'] = 'Изменять статус топка на "Download" во время регистрации торента на трекере';
+$lang['BT_SET_DLTYPE_ON_TOR_REG_EXPL'] = 'не зависит от того, разрешено ли в этом форуме создавать Download-топики (в настройках форумов)';
+$lang['BT_UNSET_DLTYPE_ON_TOR_UNREG'] = 'Изменять статус топка на "Normal" во время удаления торента с трекера';
 
 ?>
